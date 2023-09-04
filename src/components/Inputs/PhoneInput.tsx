@@ -15,7 +15,6 @@ const ZemblPhoneInput = ({ control, name, label, required, defaultCountry }: Zem
             ref,
             required: true,
           }}
-          //   className='rounded-md'
           dropdownClass="text-zembl-p max-w-[200px]"
           containerClass="flex gap-8 w-full min-w-[200px]"
           buttonClass="!rounded-md"

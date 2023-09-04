@@ -8,7 +8,7 @@ import { Button, Input, Radio, Typography } from '@material-tailwind/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
 
 import 'react-phone-input-2/lib/style.css'
-import ZemblPhoneInput from '../../components/PhoneInput'
+import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
 
 const HomePage = () => {
   const { fireAlert } = useToast()
@@ -16,7 +16,7 @@ const HomePage = () => {
   const { register, handleSubmit, control } = useForm()
   const { executeRecaptcha }: IGoogleReCaptchaConsumerProps = useGoogleReCaptcha()
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: Record<string, string>) => {
     console.log(data)
     if (!executeRecaptcha) return
 
@@ -54,14 +54,7 @@ const HomePage = () => {
             crossOrigin={''}
           />
           <Input className="bg-white" label="Email" {...register('email', { required: true })} crossOrigin={''} />
-          {/* <Input
-            className="bg-white"
-            label="Mobile Number"
-            {...register('mobileNumber', { required: true })}
-            crossOrigin={''}
-          /> */}
-          <ZemblPhoneInput control={control} label='Phone Number' name="phone" required defaultCountry={'au'} />
-          {/* <PhoneInput country="au" {...register('mobileNumber')} /> */}
+          <ZemblPhoneInput control={control} label="Phone Number" name="phone" required defaultCountry={'au'} />
           <div className="flex gap-3 justify-center">
             <Radio
               label="Business"
@@ -94,10 +87,6 @@ const HomePage = () => {
           </Button>
         </form>
       </div>
-
-      {/* <div>
-        <img className='w-full' src={sponsorsImage} alt="Sponsors" />
-      </div> */}
     </div>
   )
 }
