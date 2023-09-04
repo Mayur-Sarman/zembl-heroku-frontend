@@ -19,7 +19,7 @@ const links: FooterLink[] = [
   },
 ]
 
-const Footer = forwardRef(function Footer(props, ref: ForwardedRef<HTMLElement>) {
+const Footer = forwardRef(function Footer(_, ref: ForwardedRef<HTMLElement>) {
   const linkDisplay = links.map((item, index) => (
     <span key={index} className={`w-full lg:w-4/12`}>
       <a
