@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, redirect, useRouteError } from 'react-router-dom'
+import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom'
 
 import { Button, Typography } from '@material-tailwind/react'
 import Header from '../../components/Header'
@@ -7,6 +7,7 @@ import Footer from '../../components/Footer'
 import zemblLogo from '../../assets/zembl-icon.svg'
 
 const ErrorPage = () => {
+  const navigate = useNavigate();
   // const routerError: unknown & { statusText: string; message: string } = useRouteError()
   const error = useRouteError()
   let errorMessage: string
@@ -34,7 +35,7 @@ const ErrorPage = () => {
         <Typography variant="h6" className="text-slate-400">
           <i>{errorMessage}</i>
         </Typography>
-        <Button onClick={() => redirect('..')}>Back</Button>
+        <Button className='bg-zembl-action-primary text-zembl-p' onClick={() => navigate('..')}>Back to Zembl</Button>
       </div>
       <Footer />
     </div>

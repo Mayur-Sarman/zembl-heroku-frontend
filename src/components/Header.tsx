@@ -3,14 +3,16 @@ import zemblLogo from '../assets/zembl.svg'
 
 import { Navbar, IconButton, Collapse, Button } from '@material-tailwind/react'
 import ContactUs from './ContactUs'
-import { redirect } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/20/solid'
 
 const Header = () => {
+  const navigate = useNavigate()
   const [openNav, setOpenNav] = useState(false)
 
   const onLogoClickedHandler = useCallback(() => {
-    redirect('/')
-  }, [])
+    navigate('/')
+  }, [navigate])
 
   const windowResizeListener = useCallback(() => {
     window.innerWidth >= 768 && setOpenNav(false)
@@ -40,29 +42,7 @@ const Header = () => {
             ripple={false}
             onClick={() => setOpenNav(!openNav)}
           >
-            {openNav ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                className="h-6 w-6"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-            )}
+            {openNav ? <XMarkIcon width={24} height={24} /> : <Bars3Icon width={24} height={24} />}
           </IconButton>
         </div>
       </div>
