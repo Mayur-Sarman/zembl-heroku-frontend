@@ -4,17 +4,17 @@ import { ForwardedRef, ReactNode, forwardRef } from 'react'
 const links: FooterLink[] = [
   {
     displayText: 'Privacy Policy',
-    targetLink: 'https://www.google.com/',
+    targetLink: 'https://www.zembl.com.au/privacy-policy',
     isExternal: true,
   },
   {
     displayText: 'Terms & Conditions',
-    targetLink: 'https://www.google.com/',
+    targetLink: 'https://www.zembl.com.au/terms-and-conditions',
     isExternal: true,
   },
   {
     displayText: 'Retailer Network',
-    targetLink: 'https://www.google.com/',
+    targetLink: 'https://www.zembl.com.au/suppliers',
     isExternal: true,
   },
 ]
