@@ -7,6 +7,7 @@ import { YES_NO_OPTIONS } from '../../../constants'
 import RadioGroupInput, { InputOptions } from '../../../components/Inputs/RadioGroupInput'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import PreferenceSelector from '../../../components/PreferenceSelector'
 
 const SUBSCRIBE_TYPE_OPTIONS: InputOptions[] = [
   { value: 'Email', label: 'Email' },
@@ -16,17 +17,6 @@ const SUBSCRIBE_TYPE_OPTIONS: InputOptions[] = [
 const LIFE_SUPPORT_OPTIONS: InputOptions[] = YES_NO_OPTIONS
 const SOLAR_OPTIONS: InputOptions[] = YES_NO_OPTIONS
 const SOLAR_CONSIDERATION_OPTIONS: InputOptions[] = YES_NO_OPTIONS
-const PERFERENCES_OPTIONS: InputOptions[] = [
-  { value: 'Green or Carbon Neutral', label: 'Green or Carbon Neutral' },
-  { value: 'Australian Owned', label: 'Australian Owned' },
-  { value: 'Lowest Price', label: 'Lowest Price' },
-  { value: 'Fixed Price', label: 'Fixed Price' },
-  { value: 'Local Customer Service', label: 'Local Customer Service' },
-  { value: 'Life Support', label: 'Life Support' },
-  { value: 'Solar at Property', label: 'Solar at Property' },
-  { value: 'Email Notifications', label: 'Email Notifications' },
-  { value: 'No Preference', label: 'No Preference' },
-]
 
 const BasicInfoPage2 = () => {
   const [preferences, setPreferences] = useState<string[]>([])
@@ -129,18 +119,7 @@ const BasicInfoPage2 = () => {
         </div>
       </AccordionCard>
 
-      <AccordionCard alwaysOpen open title="Preferences">
-        <div className="w-full flex flex-col gap-3 text-left">
-          <RadioGroupInput
-            label="What's important to you?"
-            values={preferences}
-            onChange={onPreferenceSelected}
-            options={PERFERENCES_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 p-1"
-            optionsContainerClassName="inline-flex flex-wrap"
-          />
-        </div>
-      </AccordionCard>
+      <PreferenceSelector onChange={onPreferenceSelected} preferences={preferences} title="Preferences" />
 
       <div className="flex flex-col lg:flex-row gap-6 justify-center">
         <Button
