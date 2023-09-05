@@ -24,7 +24,7 @@ const BillUploadPage = () => {
   const isUpload: boolean =
     typeof watchBillType === 'string' ? watchBillType.toLocaleLowerCase().startsWith('upload') : false
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: Record<string, string>) => {
     console.log(data)
   }
 
