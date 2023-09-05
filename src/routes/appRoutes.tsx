@@ -5,7 +5,7 @@ import ZemblAssistPage from '../pages/ZemblAssistPage/ZemblAssistPage'
 import ABNErrorPage from '../pages/ABNErrorPage/ABNErrorPage'
 import BasicInfoPage from '../pages/BasicInfoPage/BasicInfoPage'
 import BillUploadPage from '../pages/BillUploadPage/BillUploadPage'
-// import SelectPlansPage from '../pages/SelectPlansPage/SelectPlansPage'
+import SelectPlansPage from '../pages/SelectPlansPage/SelectPlansPage'
 
 const appRoutes = [
   {
@@ -19,9 +19,9 @@ const appRoutes = [
       { path: 'basic-info-1', element: <BasicInfoPage pageNo={1} /> },
       { path: 'basic-info-2', element: <BasicInfoPage pageNo={2} /> },
       { path: 'bill-upload', element: <BillUploadPage /> },
-      // { path: 'electricity-plans', element: <SelectPlansPage /> },
-      // { path: 'gas-plans', element: <SelectPlansPage /> },
-      // { path: 'plans', element: <SelectPlansPage /> },
+      { path: 'electricity-plans', element: <SelectPlansPage /> },
+      { path: 'gas-plans', element: <SelectPlansPage /> },
+      { path: 'plans', element: <SelectPlansPage /> },
       { path: '', element: <EnergyFormPage /> },
     ],
   },
