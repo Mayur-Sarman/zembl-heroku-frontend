@@ -1,7 +1,7 @@
 import { Button, Card, CardBody, CardFooter,  Typography } from '@material-tailwind/react'
 import { useCallback } from 'react'
 
-const PlanCard = ({ planDescription, brand, onPlanChoose, planId, minimized }: PlanCardProps) => {
+const PlanCard = ({ onPlanChoose, planId }: PlanCardProps) => {
   const onPlanChooseHandler = useCallback(() => onPlanChoose(planId), [planId, onPlanChoose])
   return (
     <Card className="bg-zembl-s1 w-full border">
