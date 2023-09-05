@@ -3,17 +3,25 @@ import { useEffect } from 'react'
 import { useModal, useToast } from '../../hooks'
 import { useForm } from 'react-hook-form'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { useNavigate } from 'react-router-dom'
 
-import { Button, Input, Radio, Typography } from '@material-tailwind/react'
+import { Button, Radio } from '@material-tailwind/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
 
 import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
+import PageWrapper from '../../components/PageWrapper'
+import InputWithLabel from '../../components/Inputs/InputWithLabel'
+
+import EnergyFormPageTitle from './EnergyFormPageTitle'
 
 const HomePage = () => {
   const { fireAlert } = useToast()
   const { openModal } = useModal()
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, control, watch } = useForm()
   const { executeRecaptcha }: IGoogleReCaptchaConsumerProps = useGoogleReCaptcha()
+  const navigate = useNavigate()
+
+  const typeWatcher: unknown = watch('type', 'business')
 
   const onSubmit = async (data: Record<string, string>) => {
     console.log(data)
@@ -31,62 +39,49 @@ const HomePage = () => {
   }, [fireAlert, openModal])
 
   return (
-    <div className="flex flex-col text-center bg-zembl-s h-full">
-      <div className="flex flex-col items-center gap-6 py-6 px-4 max-w-screen-lg w-full m-auto">
-        <Typography variant="h1" className="text-zembl-p text-3xl md:text-5xl">
-          Zembl your energy
-        </Typography>
-        <Typography variant="small" className="text-zembl-p px-12 text-xs lg:text-base max-w-lg">
-          Compare products from a range of retailers and sign up online to one that suits your needs.
-        </Typography>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 md:w-1/2">
-          <Input
-            className="bg-white"
-            label="First Name"
-            {...register('firstName', { required: true })}
-            crossOrigin={''}
+    <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
+      <EnergyFormPageTitle />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 md:w-1/2 ">
+        <InputWithLabel className="bg-white" inputLabel="First Name" {...register('firstName')} />
+        <InputWithLabel className="bg-white" inputLabel="Last Name" {...register('lastName')} />
+        <InputWithLabel className="bg-white" inputLabel="Email" {...register('email')} />
+        <ZemblPhoneInput control={control} label="Phone Number" name="phone" required defaultCountry={'au'} />
+        <div className="flex gap-3 justify-center">
+          <Radio
+            label="Business"
+            labelProps={{ className: 'text-sm' }}
+            defaultChecked
+            value="business"
+            {...register('type')}
+            crossOrigin={undefined}
+            icon={<CheckIcon height={12} width={12} />}
           />
-          <Input
-            className="bg-white"
-            label="Last Name"
-            {...register('lastName', { required: true })}
-            crossOrigin={''}
+          <Radio
+            label="Residential"
+            value="residential"
+            {...register('type')}
+            labelProps={{ className: 'text-sm' }}
+            crossOrigin={undefined}
+            icon={<CheckIcon height={12} width={12} />}
           />
-          <Input className="bg-white" label="Email" {...register('email', { required: true })} crossOrigin={''} />
-          <ZemblPhoneInput control={control} label="Phone Number" name="phone" required defaultCountry={'au'} />
-          <div className="flex gap-3 justify-center">
-            <Radio
-              label="Business"
-              labelProps={{ className: 'text-sm' }}
-              defaultChecked
-              value="business"
-              {...register('type', { required: true })}
-              crossOrigin={undefined}
-              icon={<CheckIcon height={12} width={12} />}
-            />
-            <Radio
-              label="Residential"
-              value="residential"
-              {...register('type', { required: true })}
-              labelProps={{ className: 'text-sm' }}
-              crossOrigin={undefined}
-              icon={<CheckIcon height={12} width={12} />}
-            />
-          </div>
-          <div className="flex gap-3">
-            <Button variant="outlined" className="w-1/2 bg-zembl-s1">
-              Talk to an expert
-            </Button>
-            <Button variant="outlined" className="w-1/2 bg-zembl-s1">
-              Compare online
-            </Button>
-          </div>
-          <Button type="submit" className="bg-zembl-action-primary text-zembl-p w-1/3 place-self-center">
-            Save
+        </div>
+        <div className={`flex gap-3 ${typeWatcher !== 'residential' ? '' : 'hidden'}`}>
+          <Button variant="outlined" className="w-1/2 bg-zembl-s1">
+            Talk to an expert
           </Button>
-        </form>
-      </div>
-    </div>
+          <Button variant="outlined" className="w-1/2 bg-zembl-s1">
+            Compare online
+          </Button>
+        </div>
+        <Button
+          type="submit"
+          onClick={() => navigate('/basic-info-1')}
+          className="bg-zembl-action-primary text-zembl-p w-1/3 place-self-center"
+        >
+          Save
+        </Button>
+      </form>
+    </PageWrapper>
   )
 }
 

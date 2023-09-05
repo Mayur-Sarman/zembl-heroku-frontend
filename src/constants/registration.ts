@@ -21,3 +21,8 @@ export type BILLING_TYPE_MONTHLY = 'monthly'
 export type BILLING_TYPE_QUARTERLY = 'quarterly'
 export type PERIOD_SPEND_MORE = 'more'
 export type PERIOD_SPEND_LESS = 'less'
+
+export const YES_NO_OPTIONS = [
+  { value: 'yes', label: 'Yes' },
+  { value: 'no', label: 'No' },
+]
