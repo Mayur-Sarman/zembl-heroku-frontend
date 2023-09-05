@@ -69,10 +69,7 @@ const SelectPlansPage = () => {
           >
             Back
           </Button>
-          <Button
-            type="submit"
-            className="bg-zembl-action-primary text-zembl-p w-full lg:w-1/3 place-self-center"
-          >
+          <Button type="submit" className="bg-zembl-action-primary text-zembl-p w-full lg:w-1/3 place-self-center">
             Next
           </Button>
         </div>
