@@ -12,12 +12,17 @@
   background-color: #ffffff;
 
   min-height: 100vh;
+  height: 100%;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+body, #root {
+  height: 100%;
 }
 
 :focus-visible {

@@ -11,14 +11,13 @@ function Root() {
   return (
     <div className="max-h-screen h-screen w-full overflow-scroll flex flex-col">
       <Header />
-      {/* <div className="mx-auto max-w-screen-md px-6 md:px-0 py-6 md:py-8 lg:py-12"> */}
-      <GoogleReCaptchaProvider reCaptchaKey={GOOGLE_RECAPTCHA_KEY}>
-        <AlertContextProvider>
-          <div className="mx-auto w-full min-h-fit h-full">
+      <div className="mx-auto w-full min-h-fit flex-grow">
+        <GoogleReCaptchaProvider reCaptchaKey={GOOGLE_RECAPTCHA_KEY}>
+          <AlertContextProvider>
             <Outlet />
-          </div>
-        </AlertContextProvider>
-      </GoogleReCaptchaProvider>
+          </AlertContextProvider>
+        </GoogleReCaptchaProvider>
+      </div>
       <Footer />
     </div>
   )

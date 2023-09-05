@@ -37,7 +37,7 @@ const Footer = forwardRef(function Footer(_, ref: ForwardedRef<HTMLElement>) {
   return (
     <footer
       ref={ref}
-      className="flex w-full flex-row flex-wrap bg-zembl-p items-center justify-center gap-y-3 lg:gap-y-6 gap-x-12 border-t border-blue-gray-50 p-8 lg:justify-between mt-auto"
+      className="flex w-full flex-row flex-wrap bg-zembl-p items-center justify-center gap-y-3 lg:gap-y-6 gap-x-12 border-t border-blue-gray-50 p-8 lg:justify-between"
     >
       <Typography variant="paragraph" className="text-xs lg:text-base">
         *Zembl Pty Ltd (ABN 29138847757) helps you compare energy and gas plans and providers. Not all plans or
