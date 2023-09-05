@@ -31,7 +31,8 @@
     "react-hook-form": "^7.45.4",
     "react-phone-input-2": "^2.15.1",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.15.0"
+    "react-router-dom": "^6.15.0",
+    "tailwind-datepicker-react": "^1.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.21",

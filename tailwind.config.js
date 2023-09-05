@@ -3,13 +3,13 @@ const withMT = require('@material-tailwind/react/utils/withMT')
 const plugin = require('tailwindcss/plugin')
 
 export default withMT({
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './node_modules/tailwind-datepicker-react/dist/**/*.js'],
   theme: {
     colors: {
       'zembl-p': '#19292C',
       'zembl-s': '#F0F0E6',
       'zembl-s1': '#F9F9F2',
-      'zembl-action-primary': '#8EFF95'
+      'zembl-action-primary': '#8EFF95',
     },
     extend: {},
   },

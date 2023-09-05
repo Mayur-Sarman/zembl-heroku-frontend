@@ -7,7 +7,6 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { Button, Input, Radio, Typography } from '@material-tailwind/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
 
-import 'react-phone-input-2/lib/style.css'
 import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
 
 const HomePage = () => {
@@ -61,14 +60,14 @@ const HomePage = () => {
               labelProps={{ className: 'text-sm' }}
               defaultChecked
               value="business"
-              {...register('type')}
+              {...register('type', { required: true })}
               crossOrigin={undefined}
               icon={<CheckIcon height={12} width={12} />}
             />
             <Radio
               label="Residential"
               value="residential"
-              {...register('type')}
+              {...register('type', { required: true })}
               labelProps={{ className: 'text-sm' }}
               crossOrigin={undefined}
               icon={<CheckIcon height={12} width={12} />}
