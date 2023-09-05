@@ -29,7 +29,7 @@ const Header = () => {
   const contact = <ContactUs />
 
   return (
-    <Navbar className="sticky px-6 top-0 z-10 h-max max-w-full border-0 rounded-none bg-zembl-p bg-opacity-100 md:px-8 md:py-4">
+    <Navbar className="sticky px-6 top-0 z-20 h-max max-w-full border-0 rounded-none bg-zembl-p bg-opacity-100 md:px-8 md:py-4">
       <div className="flex items-center justify-between text-white">
         <Button onClick={onLogoClickedHandler} ripple className="bg-zembl-p rounded-md">
           <img src={zemblLogo} alt="Zembl" />
