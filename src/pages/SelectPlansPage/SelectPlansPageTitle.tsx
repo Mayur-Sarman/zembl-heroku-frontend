@@ -17,7 +17,7 @@ const SelectPlansPageTitle = ({ energyType }: { energyType: string }) => {
   }
   return (
     <div className="flex flex-col gap-6 w-full items-center">
-      <div className="flex flex-col gap-3 w-full items-baseline px-2 my-2 lg:my-4 lg:flex-row">
+      <div className="flex flex-col gap-3 w-full px-2 my-2 items-center lg:items-baseline lg:my-4 lg:flex-row">
         <Typography className="text-zembl-p w-full font-normal text-3xl lg:font-medium md:text-5xl lg:w-auto">
           {titleName}
         </Typography>
