@@ -6,6 +6,7 @@ import ABNErrorPage from '../pages/ABNErrorPage/ABNErrorPage'
 import BasicInfoPage from '../pages/BasicInfoPage/BasicInfoPage'
 import BillUploadPage from '../pages/BillUploadPage/BillUploadPage'
 import SelectPlansPage from '../pages/SelectPlansPage/SelectPlansPage'
+import PersonalDetailPage from '../pages/PersonalDetailPage/PersonalDetailPage'
 
 const appRoutes = [
   {
@@ -22,6 +23,8 @@ const appRoutes = [
       { path: 'electricity-plans', element: <SelectPlansPage /> },
       { path: 'gas-plans', element: <SelectPlansPage /> },
       { path: 'plans', element: <SelectPlansPage /> },
+      { path: 'personal-detail-1', element: <PersonalDetailPage pageNo={1} /> },
+      { path: 'personal-detail-2', element: <PersonalDetailPage pageNo={2} /> },
       { path: '', element: <EnergyFormPage /> },
     ],
   },

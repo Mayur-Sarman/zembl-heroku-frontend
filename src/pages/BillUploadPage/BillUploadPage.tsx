@@ -1,19 +1,13 @@
 import { Controller, useForm } from 'react-hook-form'
 import AccordionCard from '../../components/AccordionCard'
-import RadioGroupInput, { InputOptions } from '../../components/Inputs/RadioGroupInput'
+import RadioGroupInput from '../../components/Inputs/RadioGroupInput'
 import PaperBillForm from './PaperBillForm'
 import FileUploadInput from '../../components/Inputs/FileUploadInput'
 import { Button } from '@material-tailwind/react'
 import { useNavigate } from 'react-router-dom'
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
-
-const UPLOAD_BILL_TYPE_OPTIONS: InputOptions[] = [
-  { value: 'Upload PDF Bill', label: 'Upload PDF Bill' },
-  { value: 'Have Paper Bill', label: 'Have Paper Bill' },
-  { value: 'Upload Electricity Bill', label: 'Upload Electricity Bill' },
-  { value: 'Upload Gas Bill', label: 'Upload Gas Bill' },
-]
+import { UPLOAD_BILL_TYPE_OPTIONS } from '../../constants'
 
 const BillUploadPage = () => {
   const { handleSubmit, control, setValue, watch, register } = useForm()

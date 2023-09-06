@@ -21,8 +21,10 @@ import { useNavigate } from 'react-router-dom'
 
 const BasicInfoPage1 = () => {
   // On load page get data from context
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, control, watch } = useForm()
   const navigate = useNavigate()
+
+  const billingType: unknown = watch<string>('billingType', '')
 
   const { field: energyTypeCtrl } = useController({
     name: 'energyType',
@@ -39,13 +41,6 @@ const BasicInfoPage1 = () => {
   const { field: movingCtrl } = useController({
     name: 'movingToNewLocation',
     control,
-    rules: { required: true },
-  })
-
-  const { field: movingDateCtrl } = useController({
-    name: 'movingDate',
-    control,
-    defaultValue: null,
     rules: { required: true },
   })
 
@@ -187,7 +182,7 @@ const BasicInfoPage1 = () => {
               Moving Date?
             </Typography>
             <div className="w-full lg:w-1/2">
-              <DateInput onChange={movingDateCtrl.onChange} datepickerClassNames={'top-auto bottom-16'} />
+              <DateInput control={control} name="movingDate" datepickerClassNames={'top-auto'} />
             </div>
           </div>
         </div>
@@ -222,60 +217,64 @@ const BasicInfoPage1 = () => {
               </div>
             </div>
           </div>
-          <div className="text-left">
-            <Typography variant="small" className="mb-2 pl-1">
-              Roughly how much does your business spend on energy per month?
-            </Typography>
-            <div className="flex flex-wrap lg:flex-nowrap gap-3">
-              <div className="w-full lg:w-1/3">
-                <StatefulButton
-                  className="h-12"
-                  checked={amountPerPeriodCtrl.value === PERIOD_SPEND_LESS}
-                  onChange={amountPerPeriodCtrl.onChange}
-                  value={PERIOD_SPEND_LESS}
-                >
-                  Less than $2,500
-                </StatefulButton>
-              </div>
-              <div className="w-full lg:w-1/3">
-                <StatefulButton
-                  className="h-12"
-                  checked={amountPerPeriodCtrl.value === PERIOD_SPEND_MORE}
-                  onChange={amountPerPeriodCtrl.onChange}
-                  value={PERIOD_SPEND_MORE}
-                >
-                  More than $2,500
-                </StatefulButton>
-              </div>
-            </div>
-          </div>
-          <div className="text-left">
-            <Typography variant="small" className="mb-2 pl-1">
-              Roughly how much does your business spend on energy per quarter?
-            </Typography>
-            <div className="flex flex-wrap lg:flex-nowrap gap-3">
-              <div className="w-full lg:w-1/3">
-                <StatefulButton
-                  className="h-12"
-                  checked={amountPerPeriodCtrl.value === PERIOD_SPEND_LESS}
-                  onChange={amountPerPeriodCtrl.onChange}
-                  value={PERIOD_SPEND_LESS}
-                >
-                  Less than $7,500
-                </StatefulButton>
-              </div>
-              <div className="w-full lg:w-1/3">
-                <StatefulButton
-                  className="h-12"
-                  checked={amountPerPeriodCtrl.value === PERIOD_SPEND_MORE}
-                  onChange={amountPerPeriodCtrl.onChange}
-                  value={PERIOD_SPEND_MORE}
-                >
-                  More than $7,500
-                </StatefulButton>
+          {billingType === BILLING_TYPE_MONTHLY ? (
+            <div className="text-left">
+              <Typography variant="small" className="mb-2 pl-1">
+                Roughly how much does your business spend on energy per month?
+              </Typography>
+              <div className="flex flex-wrap lg:flex-nowrap gap-3">
+                <div className="w-full lg:w-1/3">
+                  <StatefulButton
+                    className="h-12"
+                    checked={amountPerPeriodCtrl.value === PERIOD_SPEND_LESS}
+                    onChange={amountPerPeriodCtrl.onChange}
+                    value={PERIOD_SPEND_LESS}
+                  >
+                    Less than $2,500
+                  </StatefulButton>
+                </div>
+                <div className="w-full lg:w-1/3">
+                  <StatefulButton
+                    className="h-12"
+                    checked={amountPerPeriodCtrl.value === PERIOD_SPEND_MORE}
+                    onChange={amountPerPeriodCtrl.onChange}
+                    value={PERIOD_SPEND_MORE}
+                  >
+                    More than $2,500
+                  </StatefulButton>
+                </div>
               </div>
             </div>
-          </div>
+          ) : null}
+          {billingType === BILLING_TYPE_QUARTERLY ? (
+            <div className="text-left">
+              <Typography variant="small" className="mb-2 pl-1">
+                Roughly how much does your business spend on energy per quarter?
+              </Typography>
+              <div className="flex flex-wrap lg:flex-nowrap gap-3">
+                <div className="w-full lg:w-1/3">
+                  <StatefulButton
+                    className="h-12"
+                    checked={amountPerPeriodCtrl.value === PERIOD_SPEND_LESS}
+                    onChange={amountPerPeriodCtrl.onChange}
+                    value={PERIOD_SPEND_LESS}
+                  >
+                    Less than $7,500
+                  </StatefulButton>
+                </div>
+                <div className="w-full lg:w-1/3">
+                  <StatefulButton
+                    className="h-12"
+                    checked={amountPerPeriodCtrl.value === PERIOD_SPEND_MORE}
+                    onChange={amountPerPeriodCtrl.onChange}
+                    value={PERIOD_SPEND_MORE}
+                  >
+                    More than $7,500
+                  </StatefulButton>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </div>
       </AccordionCard>
 

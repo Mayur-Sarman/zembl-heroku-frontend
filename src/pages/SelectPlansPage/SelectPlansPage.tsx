@@ -32,7 +32,7 @@ const mockupPlans = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et tellus est. Nam nec urna quis lectus dignissim auctor eget sit amet augue. Nulla id metus et mauris ullamcorper faucibus. Praesent sit amet porttitor tortor, a pharetra orci. Nunc nec lobortis lacus, vel tempus justo. Praesent quis eros et quam volutpat sodales. Quisque nibh quam, congue a dolor in, dignissim commodo ligula. Donec ex tellus, mollis non maximus eu, varius nec lectus. Vivamus auctor cursus pretium. Nulla rhoncus blandit dui non bibendum. Cras convallis fringilla dolor, quis ullamcorper tellus tristique sed. Praesent nec magna et neque luctus pharetra at convallis ante. Nulla facilisi. Mauris volutpat dui quam, nec tincidunt elit lobortis ac. Maecenas laoreet mi non mollis scelerisque.Thrifty Business is 28% less than the DMO Reference Price. This applies to a Small business customer with a flat rate tariff in the Ausgrid distribution area. We estimate an annual cost of $4981 for an average customer who uses 20000kWh per year. Depending on your usage, your annual cost could be different.',
     planBenefits: ['No Exit Fees', '100% Australian Owned', '100% Australian Owned', '100% Australian Owned'],
     planType: GAS_VALUE,
-    planLessThanCurrentPricePercent: 0.10,
+    planLessThanCurrentPricePercent: 0.1,
     planEstAnnualSaving: 1400,
     planEstCostPerMonth: 620,
     planEstCostPerYear: 6000,

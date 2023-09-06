@@ -1,6 +1,5 @@
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useState } from 'react'
 import PropTypes from 'prop-types'
-import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
 
 export const RegistrationContext = createContext({} as ModalActions)
 export const RegistrationContextProvider = ({ children }: PropsWithChildren) => {
@@ -28,7 +27,7 @@ interface BusinessDetail {
 }
 
 interface EnergyType {
-  energyType: ELECTRICITY_VALUE | GAS_VALUE | BOTH_VALUE
+  energyType: string
   hasMoreThanOneBusiness: boolean
   movingToNewLocation: boolean
   movingDate?: Date

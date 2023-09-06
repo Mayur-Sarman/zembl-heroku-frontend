@@ -102,8 +102,8 @@ const PlanCard = ({
 
   return isSelected ? (
     <Badge
-      placement="top-end"
-      className="bg-gradient-to-tr from-green-400 to-green-600 border-2 border-white shadow-lg shadow-black/20"
+      placement="bottom-end"
+      className="bg-gradient-to-tr from-green-400 to-green-600 border-2 border-white shadow-lg shadow-black/20 bottom-8 right-8"
       content={<CheckIcon className="h-4 w-4 text-white" strokeWidth={2.5} />}
     >
       {cardDisplay}

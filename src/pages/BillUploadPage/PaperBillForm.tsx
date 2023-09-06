@@ -2,15 +2,9 @@ import { Typography } from '@material-tailwind/react'
 
 import InputWithLabel from '../../components/Inputs/InputWithLabel'
 import SelectInput from '../../components/Inputs/SelectInput'
-import RadioGroupInput, { InputOptions } from '../../components/Inputs/RadioGroupInput'
+import RadioGroupInput from '../../components/Inputs/RadioGroupInput'
 import { Controller, FieldValues, UseFormRegister, UseFormReturn, UseFormSetValue } from 'react-hook-form'
-import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
-
-const CURRENT_USAGE_OPTIONS: InputOptions[] = [
-  { value: 'Low', label: 'Low' },
-  { value: 'Medium', label: 'Medium' },
-  { value: 'High', label: 'High' },
-]
+import { CURRENT_USAGE_OPTIONS, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
 
 const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFormProps) => {
   const gasForm =
@@ -82,7 +76,7 @@ const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFor
 interface PaperBillFormProps extends Partial<UseFormReturn> {
   setValue: UseFormSetValue<FieldValues>
   register: UseFormRegister<FieldValues>
-  energyType: GAS_VALUE | ELECTRICITY_VALUE | BOTH_VALUE
+  energyType: string
 }
 
 export default PaperBillForm
