@@ -17,7 +17,7 @@ const MedicareCardForm = ({ control, register }: MedicareCardFormProps) => {
         textLabel="Individual Reference Number"
         {...register('medicareCard.refNumber')}
       />
-      <div className="flex flex-col gap-y-3 col-span-2">
+      <div className="flex flex-col gap-y-3 col-span-1 lg:col-span-2">
         <Controller
           control={control}
           name="medicareCard.colour"
@@ -28,7 +28,7 @@ const MedicareCardForm = ({ control, register }: MedicareCardFormProps) => {
                 {...field}
                 values={[field.value]}
                 options={MEDICARE_COLOUR_LIST_OPTIONS}
-                optionsContainerClassName="grid grid-cols-4 gap-6"
+                optionsContainerClassName="grid grid-cols-1 lg:grid-cols-4 gap-6"
                 buttonContainerClassName="w-full"
               />
             )
