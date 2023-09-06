@@ -2,7 +2,6 @@ import { ReactNode, useCallback, useState } from 'react'
 import { Accordion, AccordionBody, AccordionHeader } from '@material-tailwind/react'
 
 import PlanCard from './PlanCard'
-import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
 
 const PlanSelector = ({ plans, selectedPlanId, onPlanSelect, title }: PlanSelectorProps) => {
   const [open, setOpen] = useState<boolean>(true)
@@ -81,7 +80,7 @@ interface Plan {
   planEstAnnualSaving: number
   planEstCostPerMonth: number
   planEstCostPerYear: number
-  planType: GAS_VALUE | ELECTRICITY_VALUE
+  planType: string
   brand: string
   logoURL: string
 }

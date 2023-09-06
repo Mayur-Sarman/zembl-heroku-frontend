@@ -1,7 +1,7 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { Badge, Button, Card, CardBody, CardFooter, CardProps, Typography } from '@material-tailwind/react'
 import { useCallback } from 'react'
-import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
+import { ELECTRICITY_VALUE } from '../constants'
 import { formatCurrency, formatPercent } from '../helpers/formatter'
 
 const PlanCard = ({
@@ -59,7 +59,7 @@ const PlanCard = ({
 
             <PlanHilight className="!bg-zembl-action-primary">
               <Typography className="text-xs font-normal">Estimated Annual Saving</Typography>
-              <div className='flex items-baseline justify-center gap-1 '>
+              <div className="flex items-baseline justify-center gap-1 ">
                 <Typography variant="h4" className="text-lg">
                   {formatCurrency(planEstAnnualSaving)}
                 </Typography>
@@ -69,7 +69,7 @@ const PlanCard = ({
 
             <PlanHilight>
               <Typography className="text-xs font-normal">Estimated Cost</Typography>
-              <div className='flex items-baseline justify-center gap-1 '>
+              <div className="flex items-baseline justify-center gap-1 ">
                 <Typography variant="h6" className="text-lg">
                   {planEstCostPerMonth ? formatCurrency(planEstCostPerMonth) : 'N/A'}
                 </Typography>
@@ -79,7 +79,7 @@ const PlanCard = ({
 
             <PlanHilight>
               <Typography className="text-xs font-normal">Estimated Cost</Typography>
-              <div className='flex items-baseline justify-center gap-1 '>
+              <div className="flex items-baseline justify-center gap-1 ">
                 <Typography variant="h6" className="text-lg">
                   {planEstCostPerYear ? formatCurrency(planEstCostPerYear) : 'N/A'}
                 </Typography>
@@ -131,7 +131,7 @@ export interface PlanCardProps {
   planBenefits?: string[]
   selectButtonText?: string
   isSelected?: boolean
-  planType: ELECTRICITY_VALUE | GAS_VALUE
+  planType: string
   planLessThanCurrentPricePercent?: number
   planEstAnnualSaving?: number
   planEstCostPerMonth?: number
