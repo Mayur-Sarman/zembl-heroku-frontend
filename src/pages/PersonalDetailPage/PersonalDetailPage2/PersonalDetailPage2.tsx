@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form'
 import { Button } from '@material-tailwind/react'
 import { useNavigate } from 'react-router-dom'
 import SecondaryAccountHolderForm from '../../../components/Forms/PersonalDetails/SecondaryAccountHolderForm'
+import LifeSupportForm from '../../../components/Forms/PersonalDetails/LifeSupportForm'
+import ReZemblForm from '../../../components/Forms/PersonalDetails/ReZemblForm'
 
 const PersonalDetailPage2 = () => {
   // On load page get data from context
@@ -19,6 +21,8 @@ const PersonalDetailPage2 = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <SecondaryAccountHolderForm control={control} register={register} setValue={setValue} />
+      <LifeSupportForm register={register} setValue={setValue} />
+      <ReZemblForm control={control} />
 
       <div className="flex flex-col lg:flex-row gap-6 justify-center">
         <Button
