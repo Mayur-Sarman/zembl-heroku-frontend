@@ -6,7 +6,7 @@ import PlanCard from './PlanCard'
 const PlanSelector = ({ plans, selectedPlanId, onPlanSelect, title }: PlanSelectorProps) => {
   const [open, setOpen] = useState<boolean>(true)
 
-  const openToggleHandler = useCallback((forceState: unknown) => setOpen((prev) => !!forceState || !prev), [])
+  const openToggleHandler = useCallback(() => setOpen((prev) => !prev), [])
   const planSelectedHandler = useCallback(
     (value: string) => {
       onPlanSelect(value)

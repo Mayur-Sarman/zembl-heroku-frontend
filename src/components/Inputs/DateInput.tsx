@@ -1,30 +1,49 @@
+import { Typography } from '@material-tailwind/react'
 import { ReactNode, useState } from 'react'
+import { Control, Controller } from 'react-hook-form'
 import Datepicker from 'tailwind-datepicker-react'
 
-const DateInput = ({ alwaysOpen, onChange, datepickerClassNames, defaultDate }: DateInputProps) => {
+const DateInput = ({ name, alwaysOpen, datepickerClassNames, defaultDate, label, control }: DateInputProps) => {
   const [movingDateOpen, setMovingDateOpen] = useState<boolean>(alwaysOpen ?? false)
 
+  const labelDisplay = label ? (
+    <Typography variant="small" className="mb-2 pl-1">
+      {label}
+    </Typography>
+  ) : null
+
   return (
-    <Datepicker
-      show={movingDateOpen}
-      setShow={(prev) => setMovingDateOpen(alwaysOpen ?? prev)}
-      onChange={onChange}
-      options={{
-        defaultDate: defaultDate,
-        datepickerClassNames: datepickerClassNames,
-        theme: {
-          background: 'bg-white dark:bg-zembl-p',
-          todayBtn: 'bg-zembl-action-primary text-zembl-p',
-          clearBtn: '',
-          icons: '',
-          text: '',
-          disabledText: 'bg-grey-500',
-          input: 'bg-white dark:bg-zembl-p',
-          inputIcon: '',
-          selected: '',
-        },
-      }}
-    />
+    <div className="w-full">
+      {labelDisplay}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => {
+          return (
+            <Datepicker
+              onChange={field.onChange}
+              show={movingDateOpen}
+              setShow={(prev) => setMovingDateOpen(alwaysOpen ?? prev)}
+              options={{
+                defaultDate: defaultDate,
+                datepickerClassNames: `left-0 ${datepickerClassNames} lg:left-auto`,
+                theme: {
+                  background: 'bg-white dark:bg-zembl-p',
+                  todayBtn: 'bg-zembl-action-primary text-zembl-p',
+                  clearBtn: '',
+                  icons: '',
+                  text: '',
+                  disabledText: 'bg-grey-500',
+                  input: 'bg-white dark:bg-zembl-p border-blue-gray-200 focus:border-gray-900',
+                  inputIcon: '',
+                  selected: '',
+                },
+              }}
+            />
+          )
+        }}
+      />
+    </div>
   )
 }
 
@@ -32,6 +51,9 @@ interface DateInputProps extends IDatePickerProps {
   alwaysOpen?: boolean
   datepickerClassNames?: string
   defaultDate?: Date | undefined
+  label?: ReactNode
+  name: string
+  control: Control
 }
 
 interface IDatePickerProps {

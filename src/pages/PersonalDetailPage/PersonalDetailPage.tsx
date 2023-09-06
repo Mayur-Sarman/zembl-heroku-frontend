@@ -1,24 +1,22 @@
 import { useEffect } from 'react'
 import { useModal, useToast } from '../../hooks'
-import BasicInfoPageTitle from './BasicInfoPageTitle'
+import PersonalDetailPage1 from './PersonalDetailPage1/PersonalDetailPage1'
+import PersonalDetailPage2 from './PersonalDetailPage2/PersonalDetailPage2'
 import PageWrapper from '../../components/PageWrapper'
-import BasicInfoPage1 from './BasicInfoPage1/BasicInfoPage1'
-import BasicInfoPage2 from './BasicInfoPage2/BasicInfoPage2'
+import RegistrationStep from '../../components/RegistrationStep'
 
-const BasicInfoPage = ({ pageNo }: { pageNo: number }) => {
+const PersonalDetailPage = ({ pageNo }: { pageNo: number }) => {
   const { fireAlert } = useToast()
   const { openModal } = useModal()
 
-  let header = null
   let content = null
 
   switch (pageNo) {
     case 1:
-      header = <BasicInfoPageTitle />
-      content = <BasicInfoPage1 />
+      content = <PersonalDetailPage1 />
       break
     case 2:
-      content = <BasicInfoPage2 />
+      content = <PersonalDetailPage2 />
       break
   }
 
@@ -31,10 +29,17 @@ const BasicInfoPage = ({ pageNo }: { pageNo: number }) => {
 
   return (
     <PageWrapper>
-      {header}
-      {content}
+      <div className="flex flex-col gap-6 w-full md:w-10/12">
+        <div className="lg:h-32 lg:py-3 lg:px-14 lg:mt-6">
+          <div className="hidden lg:block">
+            <RegistrationStep currentStep={2} />
+          </div>
+        </div>
+        <hr className="hidden lg:block" />
+        {content}
+      </div>
     </PageWrapper>
   )
 }
 
-export default BasicInfoPage
+export default PersonalDetailPage

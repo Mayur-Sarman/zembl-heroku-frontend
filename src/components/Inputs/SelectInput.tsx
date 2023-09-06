@@ -2,7 +2,7 @@ import { Option, Select, SelectOptionProps, SelectProps, Typography } from '@mat
 import { ForwardedRef, ReactNode, forwardRef } from 'react'
 
 const SelectInput = forwardRef(function SelectInput(
-  { options, textLabel, ...rest }: SelectInputProps,
+  { options, textLabel, onChange, ...rest }: SelectInputProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const optionDisplay = options.map((opt) => (
@@ -16,7 +16,14 @@ const SelectInput = forwardRef(function SelectInput(
       <Typography variant="small" className="mb-2 pl-1">
         {textLabel}
       </Typography>
-      <Select {...rest} ref={ref}>
+      <Select
+        {...rest}
+        ref={ref}
+        onChange={onChange}
+        placeholder='Select...'
+        className="!border !border-blue-gray-200 focus:!border-gray-900"
+        labelProps={{ className: 'hidden' }}
+      >
         {optionDisplay}
       </Select>
     </div>
