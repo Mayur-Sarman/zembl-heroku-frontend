@@ -1,7 +1,8 @@
 import { ReactNode, useCallback, useState } from 'react'
 import { Accordion, AccordionBody, AccordionHeader } from '@material-tailwind/react'
 
-import PlanCard, { PlanHilightItem } from './PlanCard'
+import PlanCard from './PlanCard'
+import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
 
 const PlanSelector = ({ plans, selectedPlanId, onPlanSelect, title }: PlanSelectorProps) => {
   const [open, setOpen] = useState<boolean>(true)
@@ -30,7 +31,11 @@ const PlanSelector = ({ plans, selectedPlanId, onPlanSelect, title }: PlanSelect
               logoURL={plan.logoURL}
               planBenefits={plan.planBenefits}
               planDescription={plan.planDescription}
-              planHighlights={plan.planHighlights}
+              planLessThanCurrentPricePercent={plan.planLessThanCurrentPricePercent}
+              planEstAnnualSaving={plan.planEstAnnualSaving}
+              planEstCostPerMonth={plan.planEstCostPerMonth}
+              planEstCostPerYear={plan.planEstCostPerYear}
+              planType={plan.planType}
               isSelected={selectedPlanId === plan.planId}
               selectButtonText={selectedPlanId === plan.planId && open ? 'Change Plan' : 'Choose Plan'}
               onPlanChoose={planSelectedHandler}
@@ -46,7 +51,11 @@ const PlanSelector = ({ plans, selectedPlanId, onPlanSelect, title }: PlanSelect
             logoURL={selectedPlan.logoURL}
             planBenefits={selectedPlan.planBenefits}
             planDescription={selectedPlan.planDescription}
-            planHighlights={selectedPlan.planHighlights}
+            planLessThanCurrentPricePercent={selectedPlan.planLessThanCurrentPricePercent}
+            planEstAnnualSaving={selectedPlan.planEstAnnualSaving}
+            planEstCostPerMonth={selectedPlan.planEstCostPerMonth}
+            planEstCostPerYear={selectedPlan.planEstCostPerYear}
+            planType={selectedPlan.planType}
             isSelected
             selectButtonText="Change Plan"
             onPlanChoose={openToggleHandler}
@@ -68,7 +77,11 @@ interface Plan {
   planId: string
   planDescription: string
   planBenefits: string[]
-  planHighlights: PlanHilightItem[]
+  planLessThanCurrentPricePercent?: number
+  planEstAnnualSaving: number
+  planEstCostPerMonth: number
+  planEstCostPerYear: number
+  planType: GAS_VALUE | ELECTRICITY_VALUE
   brand: string
   logoURL: string
 }

@@ -1,17 +1,19 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
-import { Badge, Button, Card, CardBody, CardFooter, Typography } from '@material-tailwind/react'
+import { Badge, Button, Card, CardBody, CardFooter, CardProps, Typography } from '@material-tailwind/react'
 import { useCallback } from 'react'
+import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
+import { formatCurrency, formatPercent } from '../helpers/formatter'
 
 const PlanCard = ({
   onPlanChoose,
   planId,
   planDescription = 'Thrifty Business is 28% less than the DMO Reference Price. This applies to a Small business customer with a flat rate tariff in the Ausgrid distribution area. We estimate an annual cost of $4981 for an average customer who uses 20000kWh per year. Depending on your usage, your annual cost could be different.',
   planBenefits = ['No Exit Fees', '100% Australian Owned', '100% Australian Owned', '100% Australian Owned'],
-  planHighlights = [
-    { title: '24% less than', subtitle: 'The current reference price', hilight: true },
-    { title: '24% less than', subtitle: 'Best price' },
-    { title: '24% less than', subtitle: 'The current reference price' },
-  ],
+  planLessThanCurrentPricePercent,
+  planEstAnnualSaving,
+  planEstCostPerMonth,
+  planEstCostPerYear,
+  planType = 'electricity',
   brand = 'Big Boss Electicity',
   logoURL = '/vite.svg',
   selectButtonText,
@@ -48,22 +50,47 @@ const PlanCard = ({
             )) ?? null}
           </div>
           <div className="grid grid-cols-2 gap-3 w-full lg:w-2/5 auto-rows-max">
-            {planHighlights?.map((item, index) => (
-              <div
-                key={item.title + index}
-                className={`rounded-md bg-zembl-s p-4 border border-zembl-p ${
-                  item.hilight ? '!bg-zembl-action-primary' : ''
-                }`}
-              >
-                <Typography variant="h6" className="text-lg">
-                  {item.title}
+            <PlanHilight className={planType === ELECTRICITY_VALUE ? '' : 'opacity-0 h-0 pointer-events-none'}>
+              <Typography variant="h6" className="text-lg">
+                {formatPercent(planLessThanCurrentPricePercent)} Less than
+              </Typography>
+              <Typography className="text-xs font-normal">the current reference price</Typography>
+            </PlanHilight>
+
+            <PlanHilight className="!bg-zembl-action-primary">
+              <Typography className="text-xs font-normal">Estimated Annual Saving</Typography>
+              <div className='flex items-baseline justify-center gap-1 '>
+                <Typography variant="h4" className="text-lg">
+                  {formatCurrency(planEstAnnualSaving)}
                 </Typography>
-                <Typography className="text-xs">{item.subtitle}</Typography>
+                <Typography className="text-xs font-normal">inc GST</Typography>
               </div>
-            )) ?? null}
+            </PlanHilight>
+
+            <PlanHilight>
+              <Typography className="text-xs font-normal">Estimated Cost</Typography>
+              <div className='flex items-baseline justify-center gap-1 '>
+                <Typography variant="h6" className="text-lg">
+                  {planEstCostPerMonth ? formatCurrency(planEstCostPerMonth) : 'N/A'}
+                </Typography>
+                <Typography className="text-xs font-normal">/month</Typography>
+              </div>
+            </PlanHilight>
+
+            <PlanHilight>
+              <Typography className="text-xs font-normal">Estimated Cost</Typography>
+              <div className='flex items-baseline justify-center gap-1 '>
+                <Typography variant="h6" className="text-lg">
+                  {planEstCostPerYear ? formatCurrency(planEstCostPerYear) : 'N/A'}
+                </Typography>
+                <Typography className="text-xs font-normal">/year</Typography>
+              </div>
+            </PlanHilight>
           </div>
         </div>
-        <Typography variant="small" className='font-normal' title={planDescription}>{planDescription}</Typography>
+        <Typography variant="small" className="font-normal" title={planDescription}>
+          {planDescription}
+        </Typography>
       </CardBody>
       <CardFooter>
         <Button onClick={onPlanChooseHandler} className="bg-zembl-action-primary text-zembl-p">
@@ -77,19 +104,20 @@ const PlanCard = ({
     <Badge
       placement="top-end"
       className="bg-gradient-to-tr from-green-400 to-green-600 border-2 border-white shadow-lg shadow-black/20"
-      // className="bg-zembl-action-primary text-zembl-p top-0 px-3 py-2 right-[5%]"
       content={<CheckIcon className="h-4 w-4 text-white" strokeWidth={2.5} />}
-      // content={
-      //   <div className="flex gap-1 items-center">
-      //     <CheckCircleIcon className="h-4 w-4" />
-      //     Current
-      //   </div>
-      // }
     >
       {cardDisplay}
     </Badge>
   ) : (
     cardDisplay
+  )
+}
+
+const PlanHilight = ({ children, className }: CardProps) => {
+  return (
+    <div className={`flex flex-col justify-between rounded-md p-2 border border-zembl-p bg-zembl-s ${className}`}>
+      {children}
+    </div>
   )
 }
 
@@ -101,15 +129,13 @@ export interface PlanCardProps {
   brand?: string
   logoURL?: string
   planBenefits?: string[]
-  planHighlights?: PlanHilightItem[]
   selectButtonText?: string
   isSelected?: boolean
-}
-
-export interface PlanHilightItem {
-  title: string
-  subtitle?: string
-  hilight?: boolean
+  planType: ELECTRICITY_VALUE | GAS_VALUE
+  planLessThanCurrentPricePercent?: number
+  planEstAnnualSaving?: number
+  planEstCostPerMonth?: number
+  planEstCostPerYear?: number
 }
 
 export default PlanCard
