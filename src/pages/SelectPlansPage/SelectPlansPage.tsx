@@ -1,18 +1,51 @@
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useCallback, useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { Accordion, Button } from '@material-tailwind/react'
+import { Button } from '@material-tailwind/react'
 
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
 import PreferenceSelector from '../../components/PreferenceSelector'
 import SelectPlansPageTitle from './SelectPlansPageTitle'
-import { BOTH_VALUE } from '../../constants'
-import PlanCard from '../../components/PlanCard'
+import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
+import PlanSelector from '../../components/PlanSelector'
+import RegistrationContext from '../../contexts/RegistrationContext'
+
+const mockupPlans = [
+  {
+    planId: 'test1',
+    planDescription:
+      'Thrifty Business is 28% less than the DMO Reference Price. This applies to a Small business customer with a flat rate tariff in the Ausgrid distribution area. We estimate an annual cost of $4981 for an average customer who uses 20000kWh per year. Depending on your usage, your annual cost could be different.',
+    planBenefits: ['No Exit Fees', '100% Australian Owned', 'Best Price'],
+    planHighlights: [
+      { title: '24% less than', subtitle: 'The current reference price', hilight: true },
+      { title: '24% less than', subtitle: 'Best price' },
+      { title: '24% less than', subtitle: 'The current reference price' },
+    ],
+    brand: 'Big Boss Electicity',
+    logoURL: '/vite.svg',
+  },
+  {
+    planId: 'test2',
+    planDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et tellus est. Nam nec urna quis lectus dignissim auctor eget sit amet augue. Nulla id metus et mauris ullamcorper faucibus. Praesent sit amet porttitor tortor, a pharetra orci. Nunc nec lobortis lacus, vel tempus justo. Praesent quis eros et quam volutpat sodales. Quisque nibh quam, congue a dolor in, dignissim commodo ligula. Donec ex tellus, mollis non maximus eu, varius nec lectus. Vivamus auctor cursus pretium. Nulla rhoncus blandit dui non bibendum. Cras convallis fringilla dolor, quis ullamcorper tellus tristique sed. Praesent nec magna et neque luctus pharetra at convallis ante. Nulla facilisi. Mauris volutpat dui quam, nec tincidunt elit lobortis ac. Maecenas laoreet mi non mollis scelerisque.Thrifty Business is 28% less than the DMO Reference Price. This applies to a Small business customer with a flat rate tariff in the Ausgrid distribution area. We estimate an annual cost of $4981 for an average customer who uses 20000kWh per year. Depending on your usage, your annual cost could be different.',
+    planBenefits: ['No Exit Fees', '100% Australian Owned', '100% Australian Owned', '100% Australian Owned'],
+    planHighlights: [
+      { title: '21% less than', subtitle: 'The current reference price', hilight: true },
+      { title: '22% less than', subtitle: 'Something' },
+      { title: '23% less than', subtitle: 'Some text with a longer text than the other text in the group.' },
+    ],
+    brand: 'Lorem ipsum',
+    logoURL: 'https://www.lipsum.com/images/banners/black_234x60.gif',
+  },
+]
 
 const SelectPlansPage = () => {
+  const { registrationData } = useContext(RegistrationContext)
   const [preferences, setPreferences] = useState<string[]>([])
+  const [selectedElecPlanId, setSelectedElecPlanId] = useState<string | null>(null)
+  const [selectedGasPlanId, setSelectedGasPlanId] = useState<string | null>(null)
 
   // On load page get data from context
   const { handleSubmit, setValue } = useForm({
@@ -34,12 +67,22 @@ const SelectPlansPage = () => {
     [setValue],
   )
 
+  const onElecPlanSelected = useCallback((planId: string) => {
+    setSelectedElecPlanId(planId)
+  }, [])
+
+  const onGasPlanSelected = useCallback((planId: string) => {
+    setSelectedGasPlanId(planId)
+  }, [])
+
   const onSubmit = (data: Record<string, string | string[]>) => {
     console.log(data)
 
     // Call API
     // Put data to context
   }
+
+  const selectedEnergyType = registrationData.energyType?.energyType
 
   return (
     <PageWrapper>
@@ -53,13 +96,23 @@ const SelectPlansPage = () => {
 
         <PreferenceSelector preferences={preferences} onChange={onPreferenceSelected} editable label="" />
         <SelectPlansPageTitle energyType={BOTH_VALUE} />
+        {selectedEnergyType !== GAS_VALUE ? (
+          <PlanSelector
+            title="Electricity Plan"
+            plans={mockupPlans}
+            selectedPlanId={selectedElecPlanId}
+            onPlanSelect={onElecPlanSelected}
+          />
+        ) : null}
 
-        <Accordion className="flex flex-col gap-6" open>
-          <PlanCard planId="test" onPlanChoose={(value) => console.log(value)} />
-          <PlanCard planId="test" onPlanChoose={(value) => console.log(value)} />
-          <PlanCard planId="test" onPlanChoose={(value) => console.log(value)} />
-          <PlanCard planId="test" onPlanChoose={(value) => console.log(value)} />
-        </Accordion>
+        {selectedEnergyType !== ELECTRICITY_VALUE ? (
+          <PlanSelector
+            title="Gas Plan"
+            plans={mockupPlans}
+            selectedPlanId={selectedGasPlanId}
+            onPlanSelect={onGasPlanSelected}
+          />
+        ) : null}
 
         <div className="flex flex-col lg:flex-row gap-6 justify-center">
           <Button

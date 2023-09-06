@@ -10,6 +10,7 @@ import appRoutes from './routes/appRoutes'
 
 import { ErrorBoundary } from 'react-error-boundary'
 import ErrorPage from './pages/ErrorPage/ErrorPage'
+import { RegistrationContextProvider } from './contexts/RegistrationContext'
 
 const router = createBrowserRouter(appRoutes)
 
@@ -18,7 +19,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ErrorBoundary fallback={<ErrorPage />}>
       <ThemeProvider>
         <ModalContextProvider>
-          <RouterProvider router={router} />
+          <RegistrationContextProvider>
+            <RouterProvider router={router} />
+          </RegistrationContextProvider>
         </ModalContextProvider>
       </ThemeProvider>
     </ErrorBoundary>

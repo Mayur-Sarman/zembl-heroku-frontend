@@ -1,12 +1,16 @@
-import { Dispatch, PropsWithChildren, ReactNode, SetStateAction, createContext, useState } from 'react'
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
 
-export const ModalContext = createContext({} as ModalActions)
-export const ModalContextProvider = ({ children }: PropsWithChildren) => {
+export const RegistrationContext = createContext({} as ModalActions)
+export const RegistrationContextProvider = ({ children }: PropsWithChildren) => {
   const [registrationData, setRegistrationData] = useState<RegistrationData>({} as RegistrationData)
 
-  return <ModalContext.Provider value={{ registrationData, setRegistrationData }}>{children}</ModalContext.Provider>
+  return (
+    <RegistrationContext.Provider value={{ registrationData, setRegistrationData }}>
+      {children}
+    </RegistrationContext.Provider>
+  )
 }
 
 interface ModalActions {
@@ -15,13 +19,7 @@ interface ModalActions {
 }
 
 interface RegistrationData {
-  businessDetails: BusinessDetail
-  dismissible?: boolean
-  title?: ReactNode
-  content: ReactNode
-  footer?: ReactNode
-  actions?: ReactNode
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+  energyType: EnergyType
 }
 
 interface BusinessDetail {
@@ -41,9 +39,9 @@ interface EnergySpend {
   amountPerPeriod: 'more' | 'less'
 }
 
-ModalContextProvider.propTypes = {
+RegistrationContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
 export type { ModalActions, RegistrationData, BusinessDetail, EnergyType, EnergySpend }
-export default ModalContext
+export default RegistrationContext
