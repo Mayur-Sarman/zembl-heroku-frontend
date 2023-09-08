@@ -1,51 +1,77 @@
+import { Checkbox } from '@material-tailwind/react'
 import AccordionCard from '../../AccordionCard'
-import { Typography } from '@material-tailwind/react'
-import { Control, Controller } from 'react-hook-form'
+import { Control, Controller, FieldValues, UseFormRegister } from 'react-hook-form'
 import { YES_NO_OPTIONS } from '../../../constants'
 import RadioGroupInput from '../../Inputs/RadioGroupInput'
+import ReZemblNote from '../../Notes/ReZemblNote'
+import MiniPlanCard from '../../MiniPlanCard'
 
-const ReZemblForm = ({ control }: ReZemblFormProps) => {
+import zemblIcon from '../../../assets/zembl-icon.svg'
+
+const ReZemblForm = ({ control, register, hideIcon }: ReZemblFormProps) => {
   return (
-    <AccordionCard title="Re-Zembl" alwaysOpen open bodyClassName="w-full flex flex-col gap-3 text-left">
-      <div className="flex flex-col gap-y-4 bg-zembl-s1 p-4 rounded-md border">
-        <Typography variant="h6">Like to save time down the line? Re-Zembl is how.</Typography>
-        <Typography>Re-Zembl is our free auto-renewal service for your energycontract.</Typography>
-        <Typography>
-          As your 2-year anniversary approaches, we’ll automatically source a new competitive energy offer from our
-          panel of retailers.
-        </Typography>
-        <Typography>
-          It’ll keep your rates competitive and save you time arranging energy deals over and over. You can cancel at
-          any time.
-        </Typography>
-        <ul className='list-disc px-6'>
-          <li>Keeps rates competitive</li>
-          <li>Saves time & hassle</li>
-          <li>Free Zembl service</li>
-          <li>Cancel at any time</li>
-        </ul>
-      </div>
+    <AccordionCard
+      title="Re-Zembl"
+      alwaysOpen
+      open
+      bodyClassName={`w-full flex flex-col gap-3 text-left ${!hideIcon ? 'p-0' : ''}`}
+      containerClassName={`${!hideIcon ? 'contents' : ''}`}
+      headerClassName={!hideIcon ? `hidden` : ''}
+    >
+      <div className="hidden">
+        <ReZemblNote />
 
-      <div className="w-full flex flex-col gap-3 text-left">
-        <Controller
-          control={control}
-          name="reZembl"
-          render={({ field }) => (
-            <RadioGroupInput
-              {...field}
-              label="Register for Re-Zembl?"
-              values={[field.value]}
-              options={YES_NO_OPTIONS}
-            />
-          )}
-        />
+        <div className="w-full flex flex-col gap-3 text-left">
+          <Controller
+            control={control}
+            name="reZembl"
+            render={({ field }) => (
+              <RadioGroupInput
+                {...field}
+                label="Register for Re-Zembl?"
+                values={[field.value]}
+                options={YES_NO_OPTIONS}
+              />
+            )}
+          />
+        </div>
       </div>
+      <div className={`p-6 ${hideIcon ? 'hidden' : ''}`}>
+        <MiniPlanCard brandIcon={zemblIcon} planName="Re-Zembl" energyType="" />
+      </div>
+      <ReZemblNote />
+      {!hideIcon ? (
+        <Checkbox
+          type="checkbox"
+          label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
+          {...register(`acceptReZemblTC`)}
+          crossOrigin=""
+        />
+      ) : null}
+      {hideIcon ? (
+        <div className="w-full flex flex-col gap-3 text-left">
+          <Controller
+            control={control}
+            name="reZembl"
+            render={({ field }) => (
+              <RadioGroupInput
+                {...field}
+                label="Register for Re-Zembl?"
+                values={[field.value]}
+                options={YES_NO_OPTIONS}
+              />
+            )}
+          />
+        </div>
+      ) : null}
     </AccordionCard>
   )
 }
 
 interface ReZemblFormProps {
   control: Control
+  register: UseFormRegister<FieldValues>
+  hideIcon?: boolean
 }
 
 export default ReZemblForm

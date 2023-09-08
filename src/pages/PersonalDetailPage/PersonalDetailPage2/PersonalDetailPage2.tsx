@@ -16,13 +16,14 @@ const PersonalDetailPage2 = () => {
 
     // Call API
     // Put data to context
+    navigate('/verification-code')
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <SecondaryAccountHolderForm control={control} register={register} setValue={setValue} />
       <LifeSupportForm register={register} setValue={setValue} />
-      <ReZemblForm control={control} />
+      <ReZemblForm control={control} register={register} hideIcon={true} />
 
       <div className="flex flex-col lg:flex-row gap-6 justify-center">
         <Button
@@ -32,11 +33,7 @@ const PersonalDetailPage2 = () => {
         >
           Back
         </Button>
-        <Button
-          type="submit"
-          // onClick={() => navigate('/bill-upload')}
-          className="bg-zembl-action-primary text-zembl-p w-full lg:w-1/3 place-self-center"
-        >
+        <Button type="submit" className="bg-zembl-action-primary text-zembl-p w-full lg:w-1/3 place-self-center">
           Next
         </Button>
       </div>

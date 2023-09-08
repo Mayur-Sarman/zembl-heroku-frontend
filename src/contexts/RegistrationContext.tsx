@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 
 export const RegistrationContext = createContext({} as ModalActions)
 export const RegistrationContextProvider = ({ children }: PropsWithChildren) => {
-  const [registrationData, setRegistrationData] = useState<RegistrationData>({} as RegistrationData)
+  const [registrationData, setRegistrationData] = useState<RegistrationData>({
+    phoneNumber: 'test'
+  } as RegistrationData)
 
   return (
     <RegistrationContext.Provider value={{ registrationData, setRegistrationData }}>
@@ -18,6 +20,7 @@ interface ModalActions {
 }
 
 interface RegistrationData {
+  phoneNumber: string
   energyType: EnergyType
 }
 

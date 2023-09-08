@@ -1,16 +1,12 @@
 import AccordionCard from '../../AccordionCard'
-import { Typography } from '@material-tailwind/react'
 import SelectInput from '../../Inputs/SelectInput'
 import { FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import LifeSupportNote from '../../Notes/LifeSupportNote'
 
 const LifeSupportForm = ({ register, setValue }: LifeSupportFormProps) => {
   return (
     <AccordionCard title="Life Support" alwaysOpen open bodyClassName="w-full flex flex-col gap-3 text-left">
-      <div className="bg-zembl-s1 p-4 rounded-md border">
-        <Typography className="font-normal">
-          You have indicated that someone in the property has life support equipment.
-        </Typography>
-      </div>
+      <LifeSupportNote />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
         <div className="w-full lg:col-span-2 lg:w-1/2">

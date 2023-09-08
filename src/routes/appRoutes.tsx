@@ -7,6 +7,10 @@ import BasicInfoPage from '../pages/BasicInfoPage/BasicInfoPage'
 import BillUploadPage from '../pages/BillUploadPage/BillUploadPage'
 import SelectPlansPage from '../pages/SelectPlansPage/SelectPlansPage'
 import PersonalDetailPage from '../pages/PersonalDetailPage/PersonalDetailPage'
+import PlanConfirmationPage from '../pages/PlanConfirmationPage/PlanConfirmationPage'
+import VerificationCodePage from '../pages/VerificationCodePage/VerificationCodePage'
+import ReviewPage from '../pages/ReviewPage/ReviewPage'
+import ThankyouPage from '../pages/ThankyouPage/ThankyouPage'
 
 const appRoutes = [
   {
@@ -25,6 +29,10 @@ const appRoutes = [
       { path: 'plans', element: <SelectPlansPage /> },
       { path: 'personal-detail-1', element: <PersonalDetailPage pageNo={1} /> },
       { path: 'personal-detail-2', element: <PersonalDetailPage pageNo={2} /> },
+      { path: 'plan-confirmation', element: <PlanConfirmationPage /> },
+      { path: 'verification-code', element: <VerificationCodePage /> },
+      { path: 'review', element: <ReviewPage /> },
+      { path: 'thankyou', element: <ThankyouPage />},
       { path: '', element: <EnergyFormPage /> },
     ],
   },
