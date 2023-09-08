@@ -82,7 +82,7 @@ const SelectPlansPage = () => {
     // Put data to context
   }
 
-  const selectedEnergyType = registrationData.energyType?.energyType
+  const selectedEnergyType = registrationData?.energyType?.energyType
 
   return (
     <PageWrapper>

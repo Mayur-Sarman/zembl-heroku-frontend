@@ -7,6 +7,7 @@ const AccordionCard = ({
   title,
   children,
   containerClassName,
+  headerClassName,
   bodyClassName,
 }: AccordionCardProps) => {
   const [_open, setOpen] = useState<boolean>(open)
@@ -17,7 +18,7 @@ const AccordionCard = ({
 
   const titleDisplay = title ? (
     <AccordionHeader
-      className={`py-3 px-6 bg-zembl-s rounded-t-lg ${alwaysOpen ? 'pointer-events-none' : ''}`}
+      className={`py-3 px-6 bg-zembl-s rounded-t-lg ${alwaysOpen ? 'pointer-events-none' : ''} ${headerClassName ?? ''}`}
       onClick={handleOpen}
     >
       {title}
@@ -38,6 +39,7 @@ interface AccordionCardProps {
   title?: ReactNode
   children: ReactNode
   containerClassName?: string
+  headerClassName?: string
   bodyClassName?: string
 }
 

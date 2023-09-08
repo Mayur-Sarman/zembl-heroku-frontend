@@ -2,7 +2,7 @@ import { Input, InputProps, Typography } from '@material-tailwind/react'
 import { ForwardedRef, ReactNode, forwardRef } from 'react'
 
 const InputWithLabel = forwardRef(function InputWithLabel(
-  { name, onChange, inputLabel, textLabel, className, ...rest }: InputWithLabelProps,
+  { name, onChange, inputLabel, textLabel, className, containerClassName, ...rest }: InputWithLabelProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const textLabelDisplay = textLabel ? (
@@ -12,7 +12,7 @@ const InputWithLabel = forwardRef(function InputWithLabel(
   ) : null
 
   return (
-    <div className="text-left w-full">
+    <div className={`text-left w-full ${containerClassName}`}>
       {textLabelDisplay}
       <Input
         label={inputLabel}
@@ -32,6 +32,7 @@ const InputWithLabel = forwardRef(function InputWithLabel(
 interface InputWithLabelProps extends InputProps {
   inputLabel?: string
   textLabel?: ReactNode
+  containerClassName?: string
 }
 
 export default InputWithLabel
