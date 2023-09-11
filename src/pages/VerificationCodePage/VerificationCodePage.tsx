@@ -12,7 +12,7 @@ const VerificationCodePage = () => {
   const navigate = useNavigate()
 
   // On load page get data from context
-  const { handleSubmit, control, setValue } = useForm({})
+  const { handleSubmit, control, setValue } = useForm()
 
   const onResendClick = useCallback(() => {
     console.log(registrationData.phoneNumber)
@@ -29,7 +29,7 @@ const VerificationCodePage = () => {
   return (
     <PageWrapper>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
-        <Typography variant="h1" className="text-center text-zembl-p">
+        <Typography variant="h1" className="text-center text-zembl-p text-3xl lg:text-5xl">
           Energy Plan Confirmation
         </Typography>
         <Typography className="text-center text-base font-normal text-zembl-p">

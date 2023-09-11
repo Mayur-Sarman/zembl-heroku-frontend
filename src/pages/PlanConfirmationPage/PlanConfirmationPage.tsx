@@ -8,7 +8,7 @@ const PlanConfirmationPage = () => {
 
   return (
     <PageWrapper>
-      <div id="error-page" className="flex text-black flex-col gap-8 justify-center items-center py-8 px-6 sm:px-0">
+      <div className="flex text-black flex-col gap-8 justify-center items-center py-8 px-6 sm:px-0">
         <RegistrationStep currentStep={3} />
         <Typography className="text-center text-base md:text-2xl font-normal text-zembl-p">
           Energy Plan Confirmation
