@@ -14,10 +14,14 @@ export default withMT({
     extend: {},
   },
   plugins: [
-    plugin(function ({ addComponents }) {
+    plugin(function ({ addComponents, theme }) {
       addComponents({
-        '.example': {
-          padding: '.5rem 1rem',
+        '.zembl-btn': {
+          color: theme('zembl-p', '#19292C'),
+          'background-color': theme('zembl-action-primary', '#8EFF95'),
+          '&:active': {
+            'background-color': '#7FE586',
+          },
         },
       })
     }),

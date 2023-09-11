@@ -93,7 +93,7 @@ const PlanCard = ({
         </Typography>
       </CardBody>
       <CardFooter>
-        <Button onClick={onPlanChooseHandler} className="bg-zembl-action-primary text-zembl-p">
+        <Button onClick={onPlanChooseHandler} className="!zembl-btn">
           {selectButtonText ? selectButtonText : 'Choose Plan'}
         </Button>
       </CardFooter>
