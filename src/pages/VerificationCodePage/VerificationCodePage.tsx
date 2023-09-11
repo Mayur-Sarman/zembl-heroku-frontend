@@ -21,7 +21,7 @@ const VerificationCodePage = () => {
   const onSubmit = (data: Record<string, string | string[]>) => {
     console.log(data)
 
-    navigate('/review')
+    navigate('/review-plan')
     // Call API
     // Put data to context
   }

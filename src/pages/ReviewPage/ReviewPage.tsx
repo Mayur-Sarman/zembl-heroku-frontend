@@ -20,7 +20,7 @@ const ReviewPage = () => {
     console.log(registrationData)
     // Call API
     // Put data to context
-    navigate('/thankyou')
+    navigate('/rezembl-no-thank-you')
   }
 
   return (

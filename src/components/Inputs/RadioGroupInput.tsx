@@ -3,7 +3,7 @@ import StatefulButton from './StatefulButton'
 import { FormEventHandler, ForwardedRef, ReactNode, forwardRef } from 'react'
 
 const RadioGroupInput = forwardRef(function RadioGroupInput(
-  { label, disabled, values, onChange, buttonContainerClassName, optionsContainerClassName, options }: RadioGroupInputProps,
+  { label, disabled, values, onChange, buttonContainerClassName, optionsContainerClassName, options, readOnly }: RadioGroupInputProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const labelDisplay = label ? (
@@ -13,7 +13,7 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
   ) : null
 
   const optionsDisplay: ReactNode[] = options.map((option) => {
-    const className = buttonContainerClassName ?? 'w-full lg:w-1/3'
+    const className = buttonContainerClassName ?? `w-full lg:w-1/3 ${buttonContainerClassName ?? ''} ${readOnly ? 'pointer-events-none' : ''}`
     return (
       <div key={option.value} className={className}>
         <StatefulButton
@@ -45,6 +45,7 @@ interface RadioGroupInputProps {
   options: InputOptions[]
   disabled?: boolean
   onChange?: FormEventHandler<HTMLButtonElement>
+  readOnly?: boolean
 }
 
 export interface InputOptions {
