@@ -1,10 +1,14 @@
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useState } from 'react'
 import PropTypes from 'prop-types'
+import { BOTH_VALUE } from '../constants'
 
 export const RegistrationContext = createContext({} as ModalActions)
 export const RegistrationContextProvider = ({ children }: PropsWithChildren) => {
   const [registrationData, setRegistrationData] = useState<RegistrationData>({
-    phoneNumber: 'test'
+    phoneNumber: 'test',
+    energyType: {
+      energyType: BOTH_VALUE
+    }
   } as RegistrationData)
 
   return (

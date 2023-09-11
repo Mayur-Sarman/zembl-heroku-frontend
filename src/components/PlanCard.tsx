@@ -1,7 +1,7 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { Badge, Button, Card, CardBody, CardFooter, CardProps, Typography } from '@material-tailwind/react'
 import { useCallback } from 'react'
-import { ELECTRICITY_VALUE } from '../constants'
+import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
 import { formatCurrency, formatPercent } from '../helpers/formatter'
 
 const PlanCard = ({
@@ -9,17 +9,18 @@ const PlanCard = ({
   planId,
   planDescription = 'Thrifty Business is 28% less than the DMO Reference Price. This applies to a Small business customer with a flat rate tariff in the Ausgrid distribution area. We estimate an annual cost of $4981 for an average customer who uses 20000kWh per year. Depending on your usage, your annual cost could be different.',
   planBenefits = ['No Exit Fees', '100% Australian Owned', '100% Australian Owned', '100% Australian Owned'],
-  planLessThanCurrentPricePercent,
-  planEstAnnualSaving,
-  planEstCostPerMonth,
-  planEstCostPerYear,
+  planLessThanCurrentPricePercent = 0.5,
+  planEstAnnualSaving = 255,
+  planEstCostPerMonth = 255,
+  planEstCostPerYear = 2555,
   planType = 'electricity',
   brand = 'Big Boss Electicity',
   logoURL = '/vite.svg',
   selectButtonText,
   isSelected,
+  hideSelectButton = false,
 }: PlanCardProps) => {
-  const onPlanChooseHandler = useCallback(() => onPlanChoose(planId), [planId, onPlanChoose])
+  const onPlanChooseHandler = useCallback(() => (onPlanChoose ? onPlanChoose(planId) : null), [planId, onPlanChoose])
 
   const cardDisplay = (
     <Card className={`bg-zembl-s1 w-full border ${isSelected ? 'border-green-400 border-2' : ''}`}>
@@ -50,14 +51,16 @@ const PlanCard = ({
             )) ?? null}
           </div>
           <div className="grid grid-cols-2 gap-3 w-full lg:w-2/5 auto-rows-max">
-            <PlanHilight className={planType === ELECTRICITY_VALUE ? '' : 'opacity-0 h-0 pointer-events-none'}>
+            <PlanHilight className={planType === ELECTRICITY_VALUE ? '' : 'hidden lg:flex opacity-0 h-0 pointer-events-none'}>
               <Typography variant="h6" className="text-lg">
                 {formatPercent(planLessThanCurrentPricePercent)} Less than
               </Typography>
               <Typography className="text-xs font-normal">the current reference price</Typography>
             </PlanHilight>
 
-            <PlanHilight className="!bg-zembl-action-primary">
+            <PlanHilight
+              className={`!bg-zembl-action-primary ${planType === GAS_VALUE ? 'col-span-2 lg:col-span-1' : ''}`}
+            >
               <Typography className="text-xs font-normal">Estimated Annual Saving</Typography>
               <div className="flex items-baseline justify-center gap-1 ">
                 <Typography variant="h4" className="text-lg">
@@ -92,8 +95,8 @@ const PlanCard = ({
           {planDescription}
         </Typography>
       </CardBody>
-      <CardFooter>
-        <Button onClick={onPlanChooseHandler} className="!zembl-btn">
+      <CardFooter className={`${hideSelectButton ? 'hidden' : ''}`}>
+        <Button onClick={onPlanChooseHandler} className={`!zembl-btn`}>
           {selectButtonText ? selectButtonText : 'Choose Plan'}
         </Button>
       </CardFooter>
@@ -123,7 +126,7 @@ const PlanHilight = ({ children, className }: CardProps) => {
 
 export interface PlanCardProps {
   planId: string
-  onPlanChoose: (planId: string) => void
+  onPlanChoose?: (planId: string) => void
   planDescription?: string
   minimized?: boolean
   brand?: string
@@ -131,6 +134,7 @@ export interface PlanCardProps {
   planBenefits?: string[]
   selectButtonText?: string
   isSelected?: boolean
+  hideSelectButton?: boolean
   planType: string
   planLessThanCurrentPricePercent?: number
   planEstAnnualSaving?: number

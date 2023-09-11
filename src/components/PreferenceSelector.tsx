@@ -2,7 +2,7 @@ import { FormEventHandler, MouseEventHandler, useCallback, useState } from 'reac
 import AccordionCard from './AccordionCard'
 import RadioGroupInput, { InputOptions } from './Inputs/RadioGroupInput'
 import { Typography } from '@material-tailwind/react'
-import { CheckCircleIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
+import EditActionButton from './Buttons/EditActionButton'
 
 const PERFERENCES_OPTIONS: InputOptions[] = [
   { value: 'Green or Carbon Neutral', label: 'Green or Carbon Neutral' },
@@ -15,8 +15,6 @@ const PERFERENCES_OPTIONS: InputOptions[] = [
   { value: 'Email Notifications', label: 'Email Notifications' },
   { value: 'No Preference', label: 'No Preference' },
 ]
-
-const ICON_CLASS_NAME = 'w-4 h-4'
 
 const PreferenceSelector = ({
   preferences,
@@ -34,16 +32,7 @@ const PreferenceSelector = ({
   }, [])
 
   const editButton = editable ? (
-    <div
-      tabIndex={0}
-      onKeyDown={undefined}
-      role="button"
-      onClick={onEditClickHandler}
-      className="flex items-center gap-2 bg-transparent border-transparent shadow-none text-zembl-p pointer-events-auto"
-    >
-      {isEditing ? <CheckCircleIcon className={ICON_CLASS_NAME} /> : <PencilSquareIcon className={ICON_CLASS_NAME} />}
-      <Typography className="text-sm">{isEditing ? 'Save' : 'Edit'}</Typography>
-    </div>
+    <EditActionButton isEditing={isEditing} onEditClickHandler={onEditClickHandler} />
   ) : null
 
   const titleDisplay = (

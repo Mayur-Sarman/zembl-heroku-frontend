@@ -12,6 +12,7 @@ import VerificationCodePage from '../pages/VerificationCodePage/VerificationCode
 import ReviewPage from '../pages/ReviewPage/ReviewPage'
 import NoReZemblThankPage from '../pages/NoReZemblThankPage/NoReZemblThankPage'
 import ReZemblThankPage from '../pages/ReZemblThankPage/ReZemblThankPage'
+import ReviewPlanPage from '../pages/ReviewPlanPage/ReviewPlanPage'
 
 const appRoutes = [
   {
@@ -34,6 +35,7 @@ const appRoutes = [
       { path: 'plan-confirmation', element: <PlanConfirmationPage /> },
       { path: 'verification-code', element: <VerificationCodePage /> },
       { path: 'review', element: <ReviewPage /> },
+      { path: 'review-plan', element: <ReviewPlanPage /> },
       { path: 'rezembl-no-thank-you', element: <NoReZemblThankPage /> },
       { path: 'rezembl-thank-you', element: <ReZemblThankPage /> },
       { path: '', element: <EnergyFormPage /> },

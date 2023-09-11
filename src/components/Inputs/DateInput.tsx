@@ -3,7 +3,17 @@ import { ReactNode, useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import Datepicker from 'tailwind-datepicker-react'
 
-const DateInput = ({ name, alwaysOpen, datepickerClassNames, defaultDate, label, control }: DateInputProps) => {
+const DateInput = ({
+  name,
+  alwaysOpen,
+  datepickerClassNames,
+  defaultDate,
+  label,
+  control,
+  disabled,
+  readOnly,
+  ...rest
+}: DateInputProps) => {
   const [movingDateOpen, setMovingDateOpen] = useState<boolean>(alwaysOpen ?? false)
 
   const labelDisplay = label ? (
@@ -13,7 +23,7 @@ const DateInput = ({ name, alwaysOpen, datepickerClassNames, defaultDate, label,
   ) : null
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${!!disabled || !!readOnly ? 'pointer-events-none' : ''}`}>
       {labelDisplay}
       <Controller
         name={name}
@@ -23,6 +33,7 @@ const DateInput = ({ name, alwaysOpen, datepickerClassNames, defaultDate, label,
             <Datepicker
               onChange={field.onChange}
               show={movingDateOpen}
+              {...rest}
               setShow={(prev) => setMovingDateOpen(alwaysOpen ?? prev)}
               options={{
                 defaultDate: defaultDate,
@@ -34,7 +45,10 @@ const DateInput = ({ name, alwaysOpen, datepickerClassNames, defaultDate, label,
                   icons: '',
                   text: '',
                   disabledText: 'bg-grey-500',
-                  input: 'bg-white dark:bg-zembl-p border-blue-gray-200 focus:border-gray-900',
+                  input: `bg-white dark:bg-zembl-p border-blue-gray-200 focus:border-gray-900 ${
+                    disabled ? 'pointer-events-none !bg-blue-gray-50 !border' : ''
+                  }
+                  ${readOnly ? 'pointer-events-none' : ''}`,
                   inputIcon: '',
                   selected: '',
                 },
@@ -54,6 +68,8 @@ interface DateInputProps extends IDatePickerProps {
   label?: ReactNode
   name: string
   control: Control
+  disabled?: boolean
+  readOnly?: boolean
 }
 
 interface IDatePickerProps {
