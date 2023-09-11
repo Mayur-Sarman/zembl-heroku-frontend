@@ -25,7 +25,7 @@ const ReZemblThankPage = () => {
             panel of retailers.
           </Typography>
         </div>
-        <Button className="bg-zembl-action-primary text-zembl-p m-auto" onClick={() => navigate('/')}>
+        <Button className="!zembl-btn m-auto" onClick={() => navigate('/')}>
           Back to Zembl
         </Button>
       </div>

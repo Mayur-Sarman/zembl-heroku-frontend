@@ -132,7 +132,7 @@ const BasicInfoPage2 = () => {
         <Button
           type="submit"
           onClick={() => navigate('/bill-upload')}
-          className="bg-zembl-action-primary text-zembl-p w-full lg:w-1/3 place-self-center"
+          className="!zembl-btn w-full lg:w-1/3 place-self-center"
         >
           Next
         </Button>

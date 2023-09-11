@@ -2,7 +2,7 @@ import { ClipboardDocumentListIcon, DocumentCheckIcon, IdentificationIcon, UserI
 import { Step, Stepper, Typography } from '@material-tailwind/react'
 
 const ICON_CLASS = 'h-5 w-5'
-const COMPLETED_CLASS_NAME = 'bg-zembl-action-primary text-zembl-p'
+const COMPLETED_CLASS_NAME = '!zembl-btn active:!bg-zembl-action-primary'
 
 const RegistrationStep = ({ currentStep }: { currentStep: number }) => {
   return (

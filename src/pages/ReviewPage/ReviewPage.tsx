@@ -39,7 +39,7 @@ const ReviewPage = () => {
           control={control}
         />
 
-        <Button type="submit" className="bg-zembl-action-primary text-zembl-p">
+        <Button type="submit" className="!zembl-btn">
           Submit Application
         </Button>
         <Typography className="text-xs text-zembl-p">

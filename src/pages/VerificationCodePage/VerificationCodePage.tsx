@@ -44,7 +44,7 @@ const VerificationCodePage = () => {
           />
           <Button
             type="submit"
-            className="bg-zembl-action-primary text-zembl-p"
+            className="!zembl-btn"
             // onClick={() => navigate('/review')}
           >
             Submit

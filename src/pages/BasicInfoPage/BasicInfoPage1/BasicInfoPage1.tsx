@@ -289,7 +289,7 @@ const BasicInfoPage1 = () => {
         <Button
           type="submit"
           onClick={() => navigate('/basic-info-2')}
-          className="bg-zembl-action-primary text-zembl-p w-full lg:w-1/3 place-self-center"
+          className="!zembl-btn w-full lg:w-1/3 place-self-center"
         >
           Next
         </Button>

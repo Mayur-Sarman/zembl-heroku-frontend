@@ -78,7 +78,7 @@ const HomePage = () => {
           <Button
             type="submit"
             onClick={() => navigate('/basic-info-1')}
-            className="bg-zembl-action-primary text-zembl-p w-1/3 place-self-center"
+            className="!zembl-btn w-1/3 place-self-center"
           >
             Save
           </Button>

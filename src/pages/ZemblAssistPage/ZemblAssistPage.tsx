@@ -18,7 +18,7 @@ const ZemblAssistPage = () => {
             We will be in contact shortly to assist.
           </Typography>
         </div>
-        <Button className="bg-zembl-action-primary text-zembl-p" onClick={() => navigate('/')}>
+        <Button className="!zembl-btn" onClick={() => navigate('/')}>
           Back to Zembl
         </Button>
       </div>
