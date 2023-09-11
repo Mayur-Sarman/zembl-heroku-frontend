@@ -3,30 +3,42 @@ import { toNumber } from 'lodash'
 import { ChangeEvent, ChangeEventHandler, ClipboardEventHandler, MouseEventHandler } from 'react'
 import { Control, Controller, FieldValues, UseFormSetValue } from 'react-hook-form'
 
+const CODE_DIGITS = 4
 const INPUT_CLASS =
   'peer bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 border-t-transparent focus:border-t-transparent px-3 py-2.5 rounded-[7px] !border !border-blue-gray-200 focus:!border-gray-900 w-12 h-12 lg:w-20 lg:h-20 text-lg lg:text-3xl text-center'
 
 const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber }: VerificationCodeInputProps) => {
-  const onVerificationDigitInput = (e: ChangeEvent, callback: ChangeEventHandler<Element>, value: string) => {
+  const onVerificationDigitInput = (
+    e: ChangeEvent,
+    callback: ChangeEventHandler<Element>,
+    value: string,
+    index: number,
+  ) => {
     const target: HTMLInputElement = e.target as HTMLInputElement
     const inputValue: string = target.value
     const nextElement: HTMLInputElement = target.nextElementSibling as HTMLInputElement
     const prevElement: HTMLInputElement = target.previousElementSibling as HTMLInputElement
 
     if (inputValue) {
-      const newValue = (value += inputValue)
-      target.value = newValue.slice(0, 4)
+      const updatedValue = [...value]
+      updatedValue[index] = inputValue
+
+      const newValue = updatedValue.join('')
+
+      // const newValue = (value += inputValue.trim())
+      target.value = newValue
 
       if (!toNumber(newValue)) {
         return
       }
 
-      if (nextElement) {
+      if (nextElement && newValue[index]) {
         nextElement.focus()
       }
     } else {
-      target.value = value.slice(0, value.length - 1)
-      if (prevElement) {
+      const newValue = value.slice(0, value.length - 1)
+      target.value = newValue
+      if (prevElement && !newValue[index]) {
         prevElement.focus()
       }
     }
@@ -56,34 +68,17 @@ const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber
           control={control}
           render={({ field }) => {
             const fieldValue: string = (field.value as string) ?? ''
-            return (
-              <div className="flex gap-2 lg:gap-3 justify-center z-[1]">
-                <input
-                  className={INPUT_CLASS}
-                  value={fieldValue[0] ?? ''}
-                  onChange={(e) => onVerificationDigitInput(e, field.onChange, fieldValue)}
-                  onPaste={onCodePasted}
-                />
-                <input
-                  className={INPUT_CLASS}
-                  value={fieldValue[1] ?? ''}
-                  onChange={(e) => onVerificationDigitInput(e, field.onChange, fieldValue)}
-                  onPaste={onCodePasted}
-                />
-                <input
-                  className={INPUT_CLASS}
-                  value={fieldValue[2] ?? ''}
-                  onChange={(e) => onVerificationDigitInput(e, field.onChange, fieldValue)}
-                  onPaste={onCodePasted}
-                />
-                <input
-                  className={INPUT_CLASS}
-                  value={fieldValue[3] ?? ''}
-                  onChange={(e) => onVerificationDigitInput(e, field.onChange, fieldValue)}
-                  onPaste={onCodePasted}
-                />
-              </div>
-            )
+            const inputDigits = Array.from(new Array(CODE_DIGITS)).map((_, index) => (
+              <input
+                key={index}
+                className={INPUT_CLASS}
+                maxLength={1}
+                value={fieldValue[index] ?? ''}
+                onChange={(e) => onVerificationDigitInput(e, field.onChange, fieldValue, index)}
+                onPaste={onCodePasted}
+              />
+            ))
+            return <div className="flex gap-2 lg:gap-3 justify-center z-[1]">{inputDigits}</div>
           }}
         />
         <hr className="border-b border-zembl-p absolute w-48 lg:w-72 top-1/2" />

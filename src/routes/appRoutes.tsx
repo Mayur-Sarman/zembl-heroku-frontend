@@ -10,7 +10,8 @@ import PersonalDetailPage from '../pages/PersonalDetailPage/PersonalDetailPage'
 import PlanConfirmationPage from '../pages/PlanConfirmationPage/PlanConfirmationPage'
 import VerificationCodePage from '../pages/VerificationCodePage/VerificationCodePage'
 import ReviewPage from '../pages/ReviewPage/ReviewPage'
-import ThankyouPage from '../pages/ThankyouPage/ThankyouPage'
+import NoReZemblThankPage from '../pages/NoReZemblThankPage/NoReZemblThankPage'
+import ReZemblThankPage from '../pages/ReZemblThankPage/ReZemblThankPage'
 
 const appRoutes = [
   {
@@ -21,6 +22,7 @@ const appRoutes = [
       { path: 'energy', element: <EnergyFormPage /> },
       { path: 'zembl-assist', element: <ZemblAssistPage /> },
       { path: 'abn-error', element: <ABNErrorPage /> },
+      { path: 'nmi-mirn-error', element: <ABNErrorPage /> },
       { path: 'basic-info-1', element: <BasicInfoPage pageNo={1} /> },
       { path: 'basic-info-2', element: <BasicInfoPage pageNo={2} /> },
       { path: 'bill-upload', element: <BillUploadPage /> },
@@ -32,7 +34,8 @@ const appRoutes = [
       { path: 'plan-confirmation', element: <PlanConfirmationPage /> },
       { path: 'verification-code', element: <VerificationCodePage /> },
       { path: 'review', element: <ReviewPage /> },
-      { path: 'thankyou', element: <ThankyouPage />},
+      { path: 'rezembl-no-thank-you', element: <NoReZemblThankPage /> },
+      { path: 'rezembl-thank-you', element: <ReZemblThankPage /> },
       { path: '', element: <EnergyFormPage /> },
     ],
   },
