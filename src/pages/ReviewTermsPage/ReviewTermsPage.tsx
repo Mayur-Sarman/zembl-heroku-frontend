@@ -17,12 +17,14 @@ const MOCKUP_HTML = `
 const MOCKUP_ELECTRIC_PLAN = {
   brandIconSrc: 'https://logos-world.net/wp-content/uploads/2021/08/Among-Us-Logo.png',
   planName: 'Among Us Red Corp',
+  brand: 'Among Us Test',
   termAndConditions: MOCKUP_HTML,
 }
 
 const MOCKUP_GAS_PLAN = {
   brandIconSrc: 'https://i.redd.it/wyqn5yu8x7o51.png',
   planName: 'Among Us Blue Corp',
+  brand: 'Among Us',
   termAndConditions: MOCKUP_HTML,
 }
 
@@ -53,7 +55,6 @@ const ReviewTermsPage = () => {
 
         <SelectedPlans
           title="Your Acknowledgment and Acceptance"
-          onEditClick={() => console.log('Edit')}
           register={register}
           control={control}
           electricityPlan={MOCKUP_ELECTRIC_PLAN}

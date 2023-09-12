@@ -7,7 +7,7 @@ import RichText from './RichText'
 const FullPlanCard = ({ planName, brandIconSrc, energyType, termAndConditions, register }: FullPlanCardProps) => {
   return (
     <div className="grid grid-cols-1 gap-3">
-      <div className="p-6">
+      <div className="p-2 md:p-6">
         <MiniPlanCard brandIcon={brandIconSrc} energyType={energyType} planName={planName} />
       </div>
       <TextNote>
