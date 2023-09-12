@@ -13,6 +13,7 @@ import ReviewPage from '../pages/ReviewPage/ReviewPage'
 import NoReZemblThankPage from '../pages/NoReZemblThankPage/NoReZemblThankPage'
 import ReZemblThankPage from '../pages/ReZemblThankPage/ReZemblThankPage'
 import ReviewPlanPage from '../pages/ReviewPlanPage/ReviewPlanPage'
+import RetailerPreferencePage from '../pages/RetailerPreferencePage/RetailerPreferencePage'
 
 const appRoutes = [
   {
@@ -36,6 +37,7 @@ const appRoutes = [
       { path: 'verification-code', element: <VerificationCodePage /> },
       { path: 'review', element: <ReviewPage /> },
       { path: 'review-plan', element: <ReviewPlanPage /> },
+      { path: 'preferences', element: <RetailerPreferencePage /> },
       { path: 'rezembl-no-thank-you', element: <NoReZemblThankPage /> },
       { path: 'rezembl-thank-you', element: <ReZemblThankPage /> },
       { path: '', element: <EnergyFormPage /> },
