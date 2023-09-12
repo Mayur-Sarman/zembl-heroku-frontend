@@ -13,7 +13,7 @@ const SelectInput = forwardRef(function SelectInput(
 
   return (
     <div className="w-full">
-      <Typography variant="small" className="mb-2 pl-1">
+      <Typography variant="small" className="mb-2 pl-1 md:text-base">
         {textLabel}
       </Typography>
       <Select

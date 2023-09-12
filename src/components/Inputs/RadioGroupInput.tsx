@@ -7,7 +7,7 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const labelDisplay = label ? (
-    <Typography variant="small" className="mb-2 pl-1">
+    <Typography className="mb-2 pl-1 font-light text-base">
       {label}
     </Typography>
   ) : null
