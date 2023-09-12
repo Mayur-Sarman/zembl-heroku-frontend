@@ -9,11 +9,14 @@ import SelectPlansPage from '../pages/SelectPlansPage/SelectPlansPage'
 import PersonalDetailPage from '../pages/PersonalDetailPage/PersonalDetailPage'
 import PlanConfirmationPage from '../pages/PlanConfirmationPage/PlanConfirmationPage'
 import VerificationCodePage from '../pages/VerificationCodePage/VerificationCodePage'
-import ReviewPage from '../pages/ReviewPage/ReviewPage'
+// import ReviewPage from '../pages/ReviewPage/ReviewPage'
 import NoReZemblThankPage from '../pages/NoReZemblThankPage/NoReZemblThankPage'
 import ReZemblThankPage from '../pages/ReZemblThankPage/ReZemblThankPage'
 import ReviewPlanPage from '../pages/ReviewPlanPage/ReviewPlanPage'
 import RetailerPreferencePage from '../pages/RetailerPreferencePage/RetailerPreferencePage'
+import ReviewTermsPage from '../pages/ReviewTermsPage/ReviewTermsPage'
+import RegistrationThankYouPage from '../pages/RegistrationThankYouPage/RegistrationThankYouPage'
+import ReZemblDetailPage from '../pages/ReZemblDetailPage/ReZemblDetailPage'
 
 const appRoutes = [
   {
@@ -35,9 +38,12 @@ const appRoutes = [
       { path: 'personal-detail-2', element: <PersonalDetailPage pageNo={2} /> },
       { path: 'plan-confirmation', element: <PlanConfirmationPage /> },
       { path: 'verification-code', element: <VerificationCodePage /> },
-      { path: 'review', element: <ReviewPage /> },
+      // { path: 'review', element: <ReviewPage /> },
       { path: 'review-plan', element: <ReviewPlanPage /> },
       { path: 'preferences', element: <RetailerPreferencePage /> },
+      { path: 'review-terms', element: <ReviewTermsPage /> },
+      { path: 'rezembl-details', element: <ReZemblDetailPage /> },
+      { path: 'thank-you', element: <RegistrationThankYouPage /> },
       { path: 'rezembl-no-thank-you', element: <NoReZemblThankPage /> },
       { path: 'rezembl-thank-you', element: <ReZemblThankPage /> },
       { path: '', element: <EnergyFormPage /> },

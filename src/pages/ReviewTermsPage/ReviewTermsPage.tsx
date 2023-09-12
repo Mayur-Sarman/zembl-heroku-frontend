@@ -1,11 +1,11 @@
-import PageWrapper from '../../components/PageWrapper'
-import RegistrationStep from '../../components/RegistrationStep'
-import { useContext } from 'react'
-import RegistrationContext from '../../contexts/RegistrationContext'
-import { useForm } from 'react-hook-form'
-import SelectedPlans from '../../components/SelectedPlans'
-import { Button, Typography } from '@material-tailwind/react'
 import { useNavigate } from 'react-router-dom'
+import PageWrapper from '../../components/PageWrapper'
+import { useForm } from 'react-hook-form'
+// import RegistrationContext from '../../contexts/RegistrationContext'
+// import { useContext } from 'react'
+import { Button, Typography } from '@material-tailwind/react'
+import RegistrationStep from '../../components/RegistrationStep'
+import SelectedPlans from '../../components/SelectedPlans'
 import { BOTH_VALUE } from '../../constants'
 
 const MOCKUP_HTML = `
@@ -26,42 +26,42 @@ const MOCKUP_GAS_PLAN = {
   termAndConditions: MOCKUP_HTML,
 }
 
-const ReviewPage = () => {
+const ReviewTermsPage = () => {
+  //   const { registrationData } = useContext(RegistrationContext)
   const navigate = useNavigate()
-  const { registrationData } = useContext(RegistrationContext)
 
   // On load page get data from context
-  const { handleSubmit, register, control } = useForm()
+  const { handleSubmit, control, register } = useForm()
 
   const onSubmit = (data: Record<string, string | string[]>) => {
     console.log(data)
 
-    console.log(registrationData)
+    navigate('/thank-you')
     // Call API
     // Put data to context
-    navigate('/rezembl-no-thank-you')
   }
 
   return (
     <PageWrapper>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-        <div className="lg:h-32 lg:py-3 lg:px-14 lg:mt-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12 items-center">
+        <div className="lg:h-32 lg:py-3 lg:px-14 lg:mt-6 w-full">
           <div className="hidden lg:block">
-            <RegistrationStep currentStep={3} />
+            <RegistrationStep currentStep={4} />
           </div>
         </div>
         <hr className="hidden lg:block" />
+
         <SelectedPlans
-          title="Your Plans"
+          title="Your Acknowledgment and Acceptance"
           onEditClick={() => console.log('Edit')}
           register={register}
           control={control}
-          gasPlan={MOCKUP_GAS_PLAN}
           electricityPlan={MOCKUP_ELECTRIC_PLAN}
+          gasPlan={MOCKUP_GAS_PLAN}
           energyType={BOTH_VALUE}
         />
 
-        <Button type="submit" className="!zembl-btn">
+        <Button type="submit" className="w-full lg:w-auto !zembl-btn">
           Submit Application
         </Button>
         <Typography className="text-xs text-zembl-p">
@@ -73,4 +73,4 @@ const ReviewPage = () => {
   )
 }
 
-export default ReviewPage
+export default ReviewTermsPage
