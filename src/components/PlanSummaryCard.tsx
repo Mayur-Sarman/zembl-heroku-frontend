@@ -7,7 +7,20 @@ import PlanCard from './PlanCard'
 
 const ICON_CLASSES = 'w-6 h-6'
 
-const PlanSummaryCard = ({ planId, planType, fullAddress, gasOrEnergyCode }: PlanSummaryCardProps) => {
+const PlanSummaryCard = ({
+  planId,
+  planType,
+  fullAddress,
+  gasOrEnergyCode,
+  planBrand,
+  planLogoURL,
+  planBenefits,
+  planDescription,
+  planLessThanCurrentPricePercent,
+  planEstAnnualSaving,
+  planEstCostPerMonth,
+  planEstCostPerYear,
+}: PlanSummaryCardProps) => {
   let planTypeIcon = null
   let nmiOrMirnText = null
 
@@ -37,7 +50,19 @@ const PlanSummaryCard = ({ planId, planType, fullAddress, gasOrEnergyCode }: Pla
   )
   return (
     <AccordionCard open alwaysOpen title={cardHeader} bodyClassName="flex flex-col p-0">
-      <PlanCard planId={planId} planType={planType} hideSelectButton />
+      <PlanCard
+        planId={planId}
+        planType={planType}
+        brand={planBrand}
+        logoURL={planLogoURL}
+        planBenefits={planBenefits}
+        planDescription={planDescription}
+        planLessThanCurrentPricePercent={planLessThanCurrentPricePercent}
+        planEstAnnualSaving={planEstAnnualSaving}
+        planEstCostPerMonth={planEstCostPerMonth}
+        planEstCostPerYear={planEstCostPerYear}
+        hideSelectButton
+      />
     </AccordionCard>
   )
 }
@@ -47,6 +72,14 @@ interface PlanSummaryCardProps {
   planType: string
   fullAddress: string
   gasOrEnergyCode: string
+  planBrand: string
+  planLogoURL: string
+  planBenefits: string[]
+  planDescription: string
+  planLessThanCurrentPricePercent: number
+  planEstAnnualSaving: number
+  planEstCostPerMonth: number
+  planEstCostPerYear: number
 }
 
 export default PlanSummaryCard

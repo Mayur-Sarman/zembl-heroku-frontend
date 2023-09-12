@@ -2,6 +2,7 @@ import TextNote from './TextNote'
 import MiniPlanCard from './MiniPlanCard'
 import { Checkbox } from '@material-tailwind/react'
 import { FieldValues, UseFormRegister } from 'react-hook-form'
+import RichText from './RichText'
 
 const FullPlanCard = ({ planName, brandIconSrc, energyType, termAndConditions, register }: FullPlanCardProps) => {
   return (
@@ -10,22 +11,20 @@ const FullPlanCard = ({ planName, brandIconSrc, energyType, termAndConditions, r
         <MiniPlanCard brandIcon={brandIconSrc} energyType={energyType} planName={planName} />
       </div>
       <TextNote>
-        <div dangerouslySetInnerHTML={{ __html: termAndConditions }}></div>
+        <RichText htmlString={termAndConditions} />
       </TextNote>
-      <div className="hidden">
-        <Checkbox
-          type="checkbox"
-          label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-          {...register(`accept${energyType}TC1`)}
-          crossOrigin=""
-        />
-        <Checkbox
-          type="checkbox"
-          label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-          {...register(`accept${energyType}TC2`)}
-          crossOrigin=""
-        />
-      </div>
+      <Checkbox
+        type="checkbox"
+        label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
+        {...register(`accept${energyType}TC1`)}
+        crossOrigin=""
+      />
+      <Checkbox
+        type="checkbox"
+        label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
+        {...register(`accept${energyType}TC2`)}
+        crossOrigin=""
+      />
     </div>
   )
 }

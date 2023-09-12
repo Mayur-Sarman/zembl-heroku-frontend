@@ -29,6 +29,14 @@ const ReviewPlanPage = () => {
       <PlanSummaryCard
         planId="test"
         planType={ELECTRICITY_VALUE}
+        planBrand='Big Boss Electicity'
+        planLogoURL='/vite.svg'
+        planBenefits={['No Exit Fees', '100% Australian Owned']}
+        planDescription='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eleifend sagittis tortor nec fermentum. Pellentesque id nulla vel dui pretium aliquam. Fusce auctor varius orci, eu rhoncus lorem. Suspendisse sollicitudin metus sed est vulputate, vitae commodo elit dapibus. Vivamus eleifend neque quam. Duis vel condimentum orci. Maecenas quis aliquet turpis. Proin feugiat magna mi, nec pharetra eros imperdiet sed. Ut eleifend dictum quam ac auctor. Morbi convallis tempus arcu, ac rutrum ligula.'
+        planEstAnnualSaving={0.5}
+        planLessThanCurrentPricePercent={0.25}
+        planEstCostPerMonth={500}
+        planEstCostPerYear={469}
         fullAddress="5/100 William Street, Woolloomooloo NSW 2011"
         gasOrEnergyCode="41234512834"
       />
@@ -39,6 +47,14 @@ const ReviewPlanPage = () => {
       <PlanSummaryCard
         planId="test"
         planType={GAS_VALUE}
+        planBrand='Big Boss Electicity'
+        planLogoURL='/vite.svg'
+        planBenefits={['No Exit Fees', '100% Australian Owned']}
+        planDescription='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eleifend sagittis tortor nec fermentum. Pellentesque id nulla vel dui pretium aliquam. Fusce auctor varius orci, eu rhoncus lorem. Suspendisse sollicitudin metus sed est vulputate, vitae commodo elit dapibus. Vivamus eleifend neque quam. Duis vel condimentum orci. Maecenas quis aliquet turpis. Proin feugiat magna mi, nec pharetra eros imperdiet sed. Ut eleifend dictum quam ac auctor. Morbi convallis tempus arcu, ac rutrum ligula.'
+        planEstAnnualSaving={0.5}
+        planLessThanCurrentPricePercent={0.25}
+        planEstCostPerMonth={500}
+        planEstCostPerYear={469}
         fullAddress="5/100 William Street, Woolloomooloo NSW 2011"
         gasOrEnergyCode="41234512834"
       />
