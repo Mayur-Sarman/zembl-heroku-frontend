@@ -17,6 +17,7 @@ import RetailerPreferencePage from '../pages/RetailerPreferencePage/RetailerPref
 import ReviewTermsPage from '../pages/ReviewTermsPage/ReviewTermsPage'
 import RegistrationThankYouPage from '../pages/RegistrationThankYouPage/RegistrationThankYouPage'
 import ReZemblDetailPage from '../pages/ReZemblDetailPage/ReZemblDetailPage'
+import ReZemblTermsPage from '../pages/ReZemblTermsPage/ReZemblTermsPage'
 
 const appRoutes = [
   {
@@ -43,6 +44,7 @@ const appRoutes = [
       { path: 'preferences', element: <RetailerPreferencePage /> },
       { path: 'review-terms', element: <ReviewTermsPage /> },
       { path: 'rezembl-details', element: <ReZemblDetailPage /> },
+      { path: 'rezembl-terms', element: <ReZemblTermsPage /> },
       { path: 'thank-you', element: <RegistrationThankYouPage /> },
       { path: 'rezembl-no-thank-you', element: <NoReZemblThankPage /> },
       { path: 'rezembl-thank-you', element: <ReZemblThankPage /> },
