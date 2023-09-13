@@ -23,11 +23,7 @@ const RetailerPreferencePage = () => {
   return (
     <PageWrapper>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
-        <div className="lg:h-32 lg:py-3 lg:px-14 lg:mt-6 w-full">
-          <div className="hidden lg:block">
-            <RegistrationStep currentStep={3} />
-          </div>
-        </div>
+        <RegistrationStep currentStep={3} />
         <hr className="hidden lg:block" />
 
         <BasicPreference control={control} />

@@ -25,13 +25,9 @@ const BillUploadPage = () => {
   return (
     <PageWrapper>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
-        <div className="lg:h-32 lg:py-3 lg:px-14 lg:mt-6 w-full">
-          <div className="hidden lg:block">
-            <RegistrationStep currentStep={0} />
-          </div>
-        </div>
-
+        <RegistrationStep currentStep={0} />
         <hr className="hidden lg:block" />
+
         <AccordionCard alwaysOpen open title="Bill & Messages">
           <div className="w-full flex flex-col gap-3 text-left">
             <Controller

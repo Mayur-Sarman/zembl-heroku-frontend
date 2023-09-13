@@ -1,7 +1,7 @@
-interface DecimalOptions {
-  maxDecimal: number
-  minDecimal: number
-}
+import { DateTime } from 'luxon'
+import { DATA_TYPE_CURRENCY, DATA_TYPE_DATE, DATA_TYPE_NUMBER, DATA_TYPE_PERCENT, DATA_TYPE_TEXT } from '../constants'
+import { isDate, toNumber } from 'lodash'
+import { ReactNode } from 'react'
 
 export const formatCurrency = (
   number: number | null | undefined,
@@ -28,4 +28,55 @@ export const formatPercent = (
         minimumFractionDigits: options.minDecimal,
       }).format(number)
     : 'N/A'
+}
+
+export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM YYYY HH:mm') => {
+  const dateValue = new Date(value)
+  const luxonDate = DateTime.fromJSDate(dateValue)
+  if (!luxonDate.isValid) return 'N/A'
+
+  return luxonDate.toFormat(preferredFormat)
+}
+
+export const formatData: FormatDataFunction = (value, dataType, formatOptions) => {
+  let formattedValue = null
+
+  if (isDate(formattedValue)) dataType = DATA_TYPE_DATE
+
+  switch (dataType) {
+    case DATA_TYPE_NUMBER:
+      formattedValue = toNumber(value)
+      break
+    case DATA_TYPE_DATE:
+      formattedValue = formatDateTime(value as string | Date, formatOptions?.dateFormat)
+      break
+    case DATA_TYPE_CURRENCY:
+      formattedValue = formatCurrency(value as number, formatOptions?.numberFormatOptions)
+      break
+    case DATA_TYPE_PERCENT:
+      formattedValue = formatPercent(value as number, formatOptions?.numberFormatOptions)
+      break
+    case DATA_TYPE_TEXT:
+    default:
+      formattedValue = value as string
+      break
+  }
+
+  return formattedValue
+}
+
+export type FormatDataFunction = (
+  value: unknown,
+  dataType: string,
+  transformOptions?: TransformOptions,
+) => string | ReactNode
+
+export interface TransformOptions {
+  dateFormat?: string
+  numberFormatOptions?: DecimalOptions
+}
+
+export interface DecimalOptions {
+  maxDecimal: number
+  minDecimal: number
 }
