@@ -30,11 +30,7 @@ const PersonalDetailPage = ({ pageNo }: { pageNo: number }) => {
   return (
     <PageWrapper>
       <div className="flex flex-col gap-6 w-full md:w-10/12">
-        <div className="lg:h-32 lg:py-3 lg:px-14 lg:mt-6">
-          <div className="hidden lg:block">
-            <RegistrationStep currentStep={2} />
-          </div>
-        </div>
+        <RegistrationStep currentStep={2} />
         <hr className="hidden lg:block" />
         {content}
       </div>
