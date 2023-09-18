@@ -9,7 +9,6 @@ import SelectPlansPage from '../pages/SelectPlansPage/SelectPlansPage'
 import PersonalDetailPage from '../pages/PersonalDetailPage/PersonalDetailPage'
 import PlanConfirmationPage from '../pages/PlanConfirmationPage/PlanConfirmationPage'
 import VerificationCodePage from '../pages/VerificationCodePage/VerificationCodePage'
-// import ReviewPage from '../pages/ReviewPage/ReviewPage'
 import NoReZemblThankPage from '../pages/NoReZemblThankPage/NoReZemblThankPage'
 import ReZemblThankPage from '../pages/ReZemblThankPage/ReZemblThankPage'
 import ReviewPlanPage from '../pages/ReviewPlanPage/ReviewPlanPage'
@@ -18,6 +17,15 @@ import ReviewTermsPage from '../pages/ReviewTermsPage/ReviewTermsPage'
 import RegistrationThankYouPage from '../pages/RegistrationThankYouPage/RegistrationThankYouPage'
 import ReZemblDetailPage from '../pages/ReZemblDetailPage/ReZemblDetailPage'
 import ReZemblTermsPage from '../pages/ReZemblTermsPage/ReZemblTermsPage'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import { GOOGLE_RECAPTCHA_KEY } from '../constants'
+import ZemblUploadPage from '../pages/ZemblUploadPage/ZemblUploadPage'
+
+const wrappedEnergyPage = (
+  <GoogleReCaptchaProvider reCaptchaKey={GOOGLE_RECAPTCHA_KEY}>
+    <EnergyFormPage />
+  </GoogleReCaptchaProvider>
+)
 
 const appRoutes = [
   {
@@ -25,8 +33,8 @@ const appRoutes = [
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
-      { path: 'energy', element: <EnergyFormPage /> },
       { path: 'zembl-assist', element: <ZemblAssistPage /> },
+      { path: 'zembl-assist-upload', element: <ZemblUploadPage /> },
       { path: 'abn-error', element: <ABNErrorPage /> },
       { path: 'nmi-mirn-error', element: <ABNErrorPage /> },
       { path: 'basic-info-1', element: <BasicInfoPage pageNo={1} /> },
@@ -48,7 +56,8 @@ const appRoutes = [
       { path: 'thank-you', element: <RegistrationThankYouPage /> },
       { path: 'rezembl-no-thank-you', element: <NoReZemblThankPage /> },
       { path: 'rezembl-thank-you', element: <ReZemblThankPage /> },
-      { path: '', element: <EnergyFormPage /> },
+      { path: 'energy', element: wrappedEnergyPage },
+      { path: '', element: wrappedEnergyPage },
     ],
   },
 ]

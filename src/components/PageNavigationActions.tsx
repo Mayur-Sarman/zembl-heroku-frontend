@@ -8,12 +8,13 @@ const PageNavigationActions = ({
   nextLabel = 'Next',
   nextClass,
   nextLink,
+  nextDisabled = false,
   hideNext = false,
   prevLabel = 'Back',
   prevClass,
   prevLink,
   hidePrev = false,
-  containerClass
+  containerClass,
 }: PageNavigationActionsProps) => {
   const navigate = useNavigate()
 
@@ -28,6 +29,7 @@ const PageNavigationActions = ({
       </Button>
       <Button
         type="submit"
+        disabled={nextDisabled}
         onClick={() => navigate(nextLink ?? '#')}
         className={`${NEXT_CLASS} ${hideNext ? 'hidden' : ''} ${nextClass ?? ''}`}
       >
@@ -47,6 +49,7 @@ interface PageNavigationActionsProps {
   prevClass?: string
   hidePrev?: boolean
   containerClass?: string
+  nextDisabled?: boolean
 }
 
 export default PageNavigationActions

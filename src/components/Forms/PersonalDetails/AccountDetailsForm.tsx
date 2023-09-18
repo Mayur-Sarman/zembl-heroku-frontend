@@ -1,15 +1,16 @@
 import AccordionCard from '../../AccordionCard'
-import { Control, Controller, FieldValues, UseFormRegister } from 'react-hook-form'
-import RadioGroupInput from '../../Inputs/RadioGroupInput'
-import InputWithLabel from '../../Inputs/InputWithLabel'
+import { Control } from 'react-hook-form'
 import DateInput from '../../Inputs/DateInput'
 import ZemblPhoneInput from '../../Inputs/PhoneInput'
 import { TITLE_LIST_OPTIONS } from '../../../constants'
 import { MouseEventHandler, useCallback, useState } from 'react'
 import EditActionButton from '../../Buttons/EditActionButton'
 import { Typography } from '@material-tailwind/react'
+import ControllerInput from '../../Inputs/ControllerInput'
+import { EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../../constants/validation'
+import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
 
-const AccountDetailsForm = ({ control, register, readOnly }: AccountDetailsFormProps) => {
+const AccountDetailsForm = ({ control, readOnly }: AccountDetailsFormProps) => {
   const [isEditing, setIsEditing] = useState(!readOnly)
 
   const onEditClickHandler: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
@@ -33,48 +34,55 @@ const AccountDetailsForm = ({ control, register, readOnly }: AccountDetailsFormP
 
   return (
     <AccordionCard alwaysOpen open title={titleDisplay} bodyClassName="w-full flex flex-col gap-3 text-left">
-      <div className="flex flex-col gap-y-3">
-        <Controller
+      <div className="flex flex-col gap-y-3 w-full lg:w-1/2">
+        <ControllerSelectInput
           control={control}
           name="title"
-          render={({ field }) => {
-            return (
-              <RadioGroupInput
-                label="Your title"
-                {...field}
-                values={[field.value]}
-                options={TITLE_LIST_OPTIONS}
-                optionsContainerClassName="grid grid-cols-3 gap-2 md:flex lg:w-2/3"
-                readOnly={isFieldsReadOnly}
-              />
-            )
-          }}
+          label="Your title"
+          textLabel="Your title"
+          required
+          options={TITLE_LIST_OPTIONS}
+          readOnly={isFieldsReadOnly}
+          rules={REQUIRED_VALIDATION}
         />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
-        <InputWithLabel
+        <ControllerInput
+          name="firstName"
           label="First Name"
+          control={control}
+          rules={{ ...STANDARD_SF_TEXT_VALIDATION, ...REQUIRED_VALIDATION }}
           textLabel="First Name (As per ID)"
-          {...register('firstName')}
           readOnly={isFieldsReadOnly}
         />
-        <InputWithLabel label="Last Name" textLabel="Last Name" {...register('lastName')} readOnly={isFieldsReadOnly} />
+        <ControllerInput
+          name="lastName"
+          label="Last Name"
+          control={control}
+          rules={{ ...STANDARD_SF_TEXT_VALIDATION, ...REQUIRED_VALIDATION }}
+          textLabel="Last Name"
+          readOnly={isFieldsReadOnly}
+        />
         <DateInput
+          name="dateOfBirth"
           label="Date of Birth"
           control={control}
-          name="dateOfBirth"
+          required
           datepickerClassNames={'top-auto'}
           readOnly={isFieldsReadOnly}
         />
-        <InputWithLabel
+        <ControllerInput
+          name="email"
           label="Email"
+          control={control}
+          rules={{ ...EMAIL_VALIDATION, ...REQUIRED_VALIDATION }}
           textLabel="Email"
           type="email"
-          {...register('email')}
           readOnly={isFieldsReadOnly}
         />
         <ZemblPhoneInput
           control={control}
+          required
           label="Mobile Number"
           name="mobileNumber"
           defaultCountry={'au'}
@@ -96,7 +104,6 @@ const AccountDetailsForm = ({ control, register, readOnly }: AccountDetailsFormP
 
 interface AccountDetailsFormProps {
   control: Control
-  register: UseFormRegister<FieldValues>
   readOnly?: boolean
 }
 

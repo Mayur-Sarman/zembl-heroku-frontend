@@ -3,10 +3,11 @@ import PageWrapper from '../../components/PageWrapper'
 import { useForm } from 'react-hook-form'
 // import RegistrationContext from '../../contexts/RegistrationContext'
 // import { useContext } from 'react'
-import { Button, Typography } from '@material-tailwind/react'
+import { Typography } from '@material-tailwind/react'
 import RegistrationStep from '../../components/RegistrationStep'
 import SelectedPlans from '../../components/SelectedPlans'
 import { BOTH_VALUE } from '../../constants'
+import PageNavigationActions from '../../components/PageNavigationActions'
 
 const MOCKUP_HTML = `
 <p><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</b> Sed condimentum pretium maximus. Maecenas vulputate sollicitudin sem, in sollicitudin ante laoreet eu. Vivamus quis ante laoreet, vestibulum nisi quis, ornare libero. Ut semper neque vel lectus venenatis, a pellentesque nisl imperdiet. Etiam luctus elementum quam vitae dictum. Etiam convallis dapibus felis, sed tempus velit blandit non. Morbi ornare nunc accumsan est mollis aliquet. Quisque sodales scelerisque lectus eu sagittis. Suspendisse blandit ante quis quam iaculis, in porta quam egestas. Nulla in suscipit est. Curabitur id tempor neque. Cras non mauris ultricies, posuere purus vel, aliquet ex. Duis molestie lacus ut arcu auctor aliquam ut nec eros.</p>
@@ -24,7 +25,7 @@ const MOCKUP_ELECTRIC_PLAN = {
 const MOCKUP_GAS_PLAN = {
   brandIconSrc: 'https://i.redd.it/wyqn5yu8x7o51.png',
   planName: 'Among Us Blue Corp',
-  brand: 'Among Us',
+  brand: 'Among Us Test',
   termAndConditions: MOCKUP_HTML,
 }
 
@@ -33,7 +34,7 @@ const ReviewTermsPage = () => {
   const navigate = useNavigate()
 
   // On load page get data from context
-  const { handleSubmit, control, register } = useForm()
+  const { handleSubmit, control } = useForm()
 
   const onSubmit = (data: Record<string, string | string[]>) => {
     console.log(data)
@@ -51,16 +52,14 @@ const ReviewTermsPage = () => {
 
         <SelectedPlans
           title="Your Acknowledgment and Acceptance"
-          register={register}
           control={control}
           electricityPlan={MOCKUP_ELECTRIC_PLAN}
           gasPlan={MOCKUP_GAS_PLAN}
           energyType={BOTH_VALUE}
         />
 
-        <Button type="submit" className="w-full lg:w-auto !zembl-btn">
-          Submit Application
-        </Button>
+        <PageNavigationActions nextLabel="Submit Application" hidePrev />
+
         <Typography className="text-xs text-zembl-p">
           Note: By submitting this application, you acknowledge that you have read and agree to the terms and conditions
           of this offer.

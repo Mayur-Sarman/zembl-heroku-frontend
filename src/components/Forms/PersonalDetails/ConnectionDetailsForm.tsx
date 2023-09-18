@@ -1,12 +1,14 @@
-import InputWithLabel from '../../Inputs/InputWithLabel'
 import AccordionCard from '../../AccordionCard'
 import { Typography } from '@material-tailwind/react'
-import SelectInput from '../../Inputs/SelectInput'
 import { STATE_LIST_OPTIONS } from '../../../constants'
-import { FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import { Control, FieldValues, UseFormSetValue } from 'react-hook-form'
 import { MouseEventHandler, useCallback, useState } from 'react'
+import ControllerInput from '../../Inputs/ControllerInput'
+import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
+import { REQUIRED_VALIDATION } from '../../../constants/validation'
+import GoogleAddressInput from '../../Inputs/GoogleAddressInput'
 
-const ConnectionDetailsForm = ({ register, setValue }: ConnectionDetailsFormProps) => {
+const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps) => {
   const [isManualAddress, setIsManualAddress] = useState<boolean>(false)
 
   const onToggleManualAddressClick = useCallback<MouseEventHandler>(() => {
@@ -20,56 +22,83 @@ const ConnectionDetailsForm = ({ register, setValue }: ConnectionDetailsFormProp
   return (
     <AccordionCard alwaysOpen open title="Connection Details" bodyClassName="w-full flex flex-col gap-3 text-left">
       <div className={`flex flex-col gap-y-6`}>
-        <InputWithLabel
-          label="Enter and select your address"
+        <GoogleAddressInput
+          control={control}
+          required
+          onSelectedCallback={(data) => {
+            setValue('unitNumber', data?.unitNumber)
+            setValue('unitType', data?.unitType)
+            setValue('streetNumber', data?.street)
+            setValue('streetName', data?.route)
+            setValue('city', data?.suburb)
+            setValue('postcode', data?.postalCode)
+            setValue('state', data?.state)
+          }}
           textLabel="Your Connection Address"
+          name="address"
+          rules={!isManualAddress ? { ...REQUIRED_VALIDATION } : {}}
           disabled={isManualAddress}
-          {...register('address')}
         />
         <Typography className="text-xs underline cursor-pointer" onClick={onToggleManualAddressClick}>
           {toggleAddressLabel}
         </Typography>
       </div>
       <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6`}>
-        <InputWithLabel
+        <ControllerInput
+          name="unitNumber"
+          control={control}
           label="Unit Number"
           textLabel="Unit Number (optional)"
-          {...register('unitNumber')}
           disabled={!isManualAddress}
         />
-        <InputWithLabel
+        <ControllerInput
+          name="unitType"
+          control={control}
           label="Unit Type"
           textLabel="Unit Type (optional)"
-          {...register('unitType')}
           disabled={!isManualAddress}
         />
-        <InputWithLabel
+        <ControllerInput
+          name="streetNumber"
+          control={control}
+          required={isManualAddress}
           label="Street Number"
           textLabel="Street Number"
-          {...register('streetNumber')}
           disabled={!isManualAddress}
         />
-        <InputWithLabel
+        <ControllerInput
+          name="streetName"
+          control={control}
+          required={isManualAddress}
           label="Street Name"
           textLabel="Street Name"
-          {...register('streetName')}
           disabled={!isManualAddress}
         />
-        <InputWithLabel
+        <ControllerInput
+          name="city"
+          control={control}
+          required={isManualAddress}
           label="Suburb/City"
           textLabel="Suburb or City"
-          {...register('city')}
           disabled={!isManualAddress}
         />
-        <InputWithLabel label="Postcode" textLabel="Postcode" {...register('postcode')} disabled={!isManualAddress} />
-        <SelectInput
+        <ControllerInput
+          name="postcode"
+          control={control}
+          required={isManualAddress}
+          label="Postcode"
+          textLabel="Postcode"
+          disabled={!isManualAddress}
+        />
+        <ControllerSelectInput
+          name="state"
+          control={control}
           textLabel="State"
           label="State"
           placeholder="Select..."
           options={STATE_LIST_OPTIONS}
           disabled={!isManualAddress}
-          {...register('state')}
-          onChange={(e) => setValue('state', e)}
+          rules={isManualAddress ? REQUIRED_VALIDATION : {}}
         />
       </div>
     </AccordionCard>
@@ -77,7 +106,7 @@ const ConnectionDetailsForm = ({ register, setValue }: ConnectionDetailsFormProp
 }
 
 interface ConnectionDetailsFormProps {
-  register: UseFormRegister<FieldValues>
+  control: Control
   setValue: UseFormSetValue<FieldValues>
 }
 

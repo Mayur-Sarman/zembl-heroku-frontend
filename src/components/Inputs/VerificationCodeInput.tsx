@@ -9,6 +9,7 @@ import {
   WheelEventHandler,
 } from 'react'
 import { Control, Controller, FieldValues, UseFormSetValue } from 'react-hook-form'
+import { REQUIRED_VALIDATION, getExactLengthValidation } from '../../constants/validation'
 
 const CODE_DIGITS = 4
 const INPUT_CLASS =
@@ -108,6 +109,7 @@ const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber
         <Controller
           name="verificationCode"
           control={control}
+          rules={{ ...REQUIRED_VALIDATION, ...getExactLengthValidation(CODE_DIGITS) }}
           render={({ field }) => {
             const fieldValue: string = (field.value as string) ?? ''
             const inputDigits = Array.from(new Array(CODE_DIGITS)).map((_, index) => (

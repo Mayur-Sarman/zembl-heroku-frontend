@@ -1,25 +1,18 @@
 import AccordionCard from '../AccordionCard'
-import { Control, Controller } from 'react-hook-form'
-import RadioGroupInput from '../Inputs/RadioGroupInput'
+import { Control } from 'react-hook-form'
 import { YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
+import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
 const EnergyLocalsPreference = ({ control }: EnergyLocalsPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="Energy Locals  Preferences" bodyClassName="flex-col text-left gap-y-6">
-      <Controller
+      <ControllerRadioGroupInput
         control={control}
         name="isConsentBureauCreditCheck"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={`As part of our signup process, we will be conducting a credit check with our credit bureau. Do you consent to a credit check?`}
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        label={`As part of our signup process, we will be conducting a credit check with our credit bureau. Do you consent to a credit check?`}
+        options={YES_NO_OPTIONS}
+        required
       />
 
       <TextNote>

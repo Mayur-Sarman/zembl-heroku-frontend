@@ -1,39 +1,33 @@
 import AccordionCard from '../AccordionCard'
-import { Control, Controller, FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import RadioGroupInput from '../Inputs/RadioGroupInput'
+import { Control } from 'react-hook-form'
 import { YES_NO_OPTIONS } from '../../constants'
-import SelectInput from '../Inputs/SelectInput'
 import TextNote from '../TextNote'
+import ControllerSelectInput from '../Inputs/ControllerSelectInput'
+import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
-const NextBusinessEnergyPreference = ({ control, register, setValue }: NextBusinessEnergyPreferenceProps) => {
+const NextBusinessEnergyPreference = ({ control }: NextBusinessEnergyPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="Next Business Energy Preferences" bodyClassName="flex-col text-left gap-y-6">
       <TextNote>You have indicated that someone in the property has life support equipment.</TextNote>
 
       <div className="w-full lg:w-1/2">
-        <SelectInput
+        <ControllerSelectInput
+          name="lifeSupportEquipmentType"
+          control={control}
           label="Please select your machine type"
           textLabel="Please select your machine type"
           placeholder="Select..."
           options={[]}
-          {...register('lifeSupportEquipmentType')}
-          onChange={(e) => setValue('lifeSupportEquipmentType', e)}
+          required
         />
       </div>
 
-      <Controller
+      <ControllerRadioGroupInput
         control={control}
         name="isElectricUsedForBusiness"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={'Do you confirm that the electricity used at your address is for business purposes?'}
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        label={'Do you confirm that the electricity used at your address is for business purposes?'}
+        options={YES_NO_OPTIONS}
+        required
       />
 
       <TextNote>
@@ -46,8 +40,6 @@ const NextBusinessEnergyPreference = ({ control, register, setValue }: NextBusin
 
 interface NextBusinessEnergyPreferenceProps {
   control: Control
-  register: UseFormRegister<FieldValues>
-  setValue: UseFormSetValue<FieldValues>
 }
 
 export default NextBusinessEnergyPreference

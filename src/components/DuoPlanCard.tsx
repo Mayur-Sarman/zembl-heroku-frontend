@@ -2,11 +2,11 @@ import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
 import MiniPlanCard from './MiniPlanCard'
 import TextNote from './TextNote'
 import RichText from './RichText'
-import { Checkbox } from '@material-tailwind/react'
 import { PlanData } from './SelectedPlans'
-import { FieldValues, UseFormRegister } from 'react-hook-form'
+import { Control } from 'react-hook-form'
+import ControllerCheckBox from './Inputs/ControllerCheckBox'
 
-const DuoPlanCard = ({ electricityPlan, gasPlan, register }: DuoPlanCardProps) => {
+const DuoPlanCard = ({ electricityPlan, gasPlan, control }: DuoPlanCardProps) => {
   return (
     <div className="grid grid-cols-1 gap-3">
       <div className="grid p-2 md:p-6 grid-cols-1 gap-y-3 lg:grid-cols-2">
@@ -20,32 +20,32 @@ const DuoPlanCard = ({ electricityPlan, gasPlan, register }: DuoPlanCardProps) =
       <TextNote>
         <RichText htmlString={electricityPlan.termAndConditions} />
       </TextNote>
-      <Checkbox
-        type="checkbox"
+      <ControllerCheckBox
+        name={`acceptElectricTC1`}
+        control={control}
         label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-        {...register(`acceptElectricTC1`)}
-        crossOrigin=""
+        required
       />
-      <Checkbox
-        type="checkbox"
+      <ControllerCheckBox
+        name={`acceptElectricTC2`}
+        control={control}
         label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-        {...register(`accept$ElectricTC2`)}
-        crossOrigin=""
+        required
       />
       <TextNote>
         <RichText htmlString={gasPlan.termAndConditions} />
       </TextNote>
-      <Checkbox
-        type="checkbox"
+      <ControllerCheckBox
+        name={`acceptGasTC1`}
+        control={control}
         label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-        {...register(`acceptGasTC1`)}
-        crossOrigin=""
+        required
       />
-      <Checkbox
-        type="checkbox"
+      <ControllerCheckBox
+        name={`acceptGasTC2`}
+        control={control}
         label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-        {...register(`accept$GasTC2`)}
-        crossOrigin=""
+        required
       />
     </div>
   )
@@ -54,7 +54,7 @@ const DuoPlanCard = ({ electricityPlan, gasPlan, register }: DuoPlanCardProps) =
 interface DuoPlanCardProps {
   electricityPlan: PlanData
   gasPlan: PlanData
-  register: UseFormRegister<FieldValues>
+  control: Control
 }
 
 export default DuoPlanCard

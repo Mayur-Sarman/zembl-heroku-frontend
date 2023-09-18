@@ -13,7 +13,7 @@ import MomentumEnergyPreference from '../../components/Preferences/MomentumEnerg
 import NextBusinessEnergyPreference from '../../components/Preferences/NextBusinessEnergyPreference'
 
 const RetailerPreferencePage = () => {
-  const { handleSubmit, control, register, setValue } = useForm()
+  const { handleSubmit, control } = useForm()
   const navigate = useNavigate()
 
   const onSubmit = (data: Record<string, string>) => {
@@ -27,13 +27,13 @@ const RetailerPreferencePage = () => {
         <hr className="hidden lg:block" />
 
         <BasicPreference control={control} />
-        <AGLPreference control={control} register={register} setValue={setValue} />
+        <AGLPreference control={control} />
         <BlueNRGPreference control={control} />
         <SimplyEnergyPreference />
-        <EnergyAUPreference siteAddress="asdfsadfkajsdf" register={register} control={control} setValue={setValue} />
+        <EnergyAUPreference siteAddress="asdfsadfkajsdf" control={control} />
         <EnergyLocalsPreference control={control} />
         <MomentumEnergyPreference control={control} />
-        <NextBusinessEnergyPreference control={control} setValue={setValue} register={register} />
+        <NextBusinessEnergyPreference control={control} />
 
         <PageNavigationActions prevLink="/review-plan" />
       </form>

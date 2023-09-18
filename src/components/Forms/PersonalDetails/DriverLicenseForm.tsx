@@ -1,31 +1,44 @@
-import { Control, FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import InputWithLabel from '../../Inputs/InputWithLabel'
+import { Control } from 'react-hook-form'
 import DateInput from '../../Inputs/DateInput'
-import SelectInput from '../../Inputs/SelectInput'
 import { STATE_LIST_OPTIONS } from '../../../constants'
+import ControllerInput from '../../Inputs/ControllerInput'
+import { CUSTOM_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../../constants/validation'
+import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
 
-const DriverLicenseForm = ({ control, register, setValue }: DriverLicenseFormProps) => {
+const DriverLicenseForm = ({ control }: DriverLicenseFormProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
-      <InputWithLabel label="License Number" textLabel="License Number" {...register('driverLicense.licenseNumber')} />
-      <InputWithLabel
+      <ControllerInput
+        name="driverLicense.licenseNumber"
+        control={control}
+        required
+        rules={CUSTOM_SF_TEXT_VALIDATION}
+        label="License Number"
+        textLabel="License Number"
+      />
+      <ControllerInput
+        name="driverLicense.cardNumber"
+        control={control}
+        required
+        rules={CUSTOM_SF_TEXT_VALIDATION}
         label="License Card Number"
         textLabel="License Card Number"
-        {...register('driverLicense.cardNumber')}
       />
       <DateInput
-        label="Expiry Date"
         name="driverLicense.expiryDate"
         control={control}
+        required
+        label="Expiry Date"
         datepickerClassNames={'top-auto'}
       />
-      <SelectInput
+      <ControllerSelectInput
         label="Driver's License State"
         textLabel="Driver's License State"
         placeholder="Select..."
+        control={control}
         options={STATE_LIST_OPTIONS}
-        {...register('driverLicense.state')}
-        onChange={(e) => setValue('driverLicense.state', e)}
+        name={'driverLicense.state'}
+        rules={REQUIRED_VALIDATION}
       />
     </div>
   )
@@ -33,8 +46,6 @@ const DriverLicenseForm = ({ control, register, setValue }: DriverLicenseFormPro
 
 interface DriverLicenseFormProps {
   control: Control
-  register: UseFormRegister<FieldValues>
-  setValue: UseFormSetValue<FieldValues>
 }
 
 export default DriverLicenseForm

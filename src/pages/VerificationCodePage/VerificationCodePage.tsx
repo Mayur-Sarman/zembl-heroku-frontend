@@ -1,4 +1,4 @@
-import { Button, Typography } from '@material-tailwind/react'
+import { Typography } from '@material-tailwind/react'
 import PageWrapper from '../../components/PageWrapper'
 import { useNavigate } from 'react-router-dom'
 import AccordionCard from '../../components/AccordionCard'
@@ -6,13 +6,14 @@ import { useCallback, useContext } from 'react'
 import RegistrationContext from '../../contexts/RegistrationContext'
 import { useForm } from 'react-hook-form'
 import VerificationCodeInput from '../../components/Inputs/VerificationCodeInput'
+import PageNavigationActions from '../../components/PageNavigationActions'
 
 const VerificationCodePage = () => {
   const { registrationData } = useContext(RegistrationContext)
   const navigate = useNavigate()
 
   // On load page get data from context
-  const { handleSubmit, control, setValue } = useForm()
+  const { handleSubmit, control, setValue, formState } = useForm()
 
   const onResendClick = useCallback(() => {
     console.log(registrationData.phoneNumber)
@@ -42,13 +43,7 @@ const VerificationCodePage = () => {
             phoneNumber={registrationData.phoneNumber}
             onResendClicked={onResendClick}
           />
-          <Button
-            type="submit"
-            className="!zembl-btn"
-            // onClick={() => navigate('/review')}
-          >
-            Submit
-          </Button>
+          <PageNavigationActions hidePrev nextDisabled={!formState.isValid} />
         </AccordionCard>
       </form>
     </PageWrapper>

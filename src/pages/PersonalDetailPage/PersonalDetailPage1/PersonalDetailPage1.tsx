@@ -1,5 +1,5 @@
-import { Controller, useForm } from 'react-hook-form'
-import { Button, Typography } from '@material-tailwind/react'
+import { useForm } from 'react-hook-form'
+import { Typography } from '@material-tailwind/react'
 import { useNavigate } from 'react-router-dom'
 
 import AccordionCard from '../../../components/AccordionCard'
@@ -14,7 +14,6 @@ import {
   IDENTITY_TYPE_OPTIONS,
   MEDICARE_CARD_VALUE,
 } from '../../../constants'
-import RadioGroupInput from '../../../components/Inputs/RadioGroupInput'
 import DriverLicenseForm from '../../../components/Forms/PersonalDetails/DriverLicenseForm'
 import AustralianPassportForm from '../../../components/Forms/PersonalDetails/AustralianPassportForm'
 import MedicareCardForm from '../../../components/Forms/PersonalDetails/MedicareCard'
@@ -22,10 +21,13 @@ import ForeignPassportForm from '../../../components/Forms/PersonalDetails/Forei
 import AccountDetailsForm from '../../../components/Forms/PersonalDetails/AccountDetailsForm'
 import BusinessDetailsForm from '../../../components/Forms/PersonalDetails/BusinessDetailsForm'
 import ConnectionDetailsForm from '../../../components/Forms/PersonalDetails/ConnectionDetailsForm'
+import PageNavigationActions from '../../../components/PageNavigationActions'
+import ControllerRadioGroupInput from '../../../components/Inputs/ControllerRadioGroupInput'
+// import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
 
 const PersonalDetailPage1 = () => {
   // On load page get data from context
-  const { register, handleSubmit, control, setValue, watch } = useForm()
+  const { handleSubmit, control, setValue, watch } = useForm()
   const navigate = useNavigate()
 
   const identificationTypeWatcher: unknown = watch<string>('identificationType', '')
@@ -35,6 +37,7 @@ const PersonalDetailPage1 = () => {
 
     // Call API
     // Put data to context
+    navigate('/personal-detail-2')
   }
 
   const electricPlanBrandName = 'Big Boss Electricity'
@@ -43,16 +46,16 @@ const PersonalDetailPage1 = () => {
   let identificationForm = null
   switch (identificationTypeWatcher) {
     case DRIVER_LICENSE_VALUE:
-      identificationForm = <DriverLicenseForm register={register} control={control} setValue={setValue} />
+      identificationForm = <DriverLicenseForm control={control} />
       break
     case AUSTRALIAN_PASSPORT_VALUE:
-      identificationForm = <AustralianPassportForm register={register} control={control} setValue={setValue} />
+      identificationForm = <AustralianPassportForm control={control} />
       break
     case MEDICARE_CARD_VALUE:
-      identificationForm = <MedicareCardForm register={register} control={control} />
+      identificationForm = <MedicareCardForm control={control} />
       break
     case FOREIGN_PASSPORT_VALUE:
-      identificationForm = <ForeignPassportForm register={register} control={control} setValue={setValue} />
+      identificationForm = <ForeignPassportForm control={control} />
       break
   }
 
@@ -68,27 +71,18 @@ const PersonalDetailPage1 = () => {
         <MiniPlanCard brandIcon="/vite.svg" energyType={GAS_VALUE} planName={gasPlanBrandName} />
       </AccordionCard>
 
-      <AccountDetailsForm control={control} register={register} />
-      <BusinessDetailsForm register={register} />
-      <ConnectionDetailsForm register={register} setValue={setValue} />
+      <AccountDetailsForm control={control} />
+      <BusinessDetailsForm control={control} />
+      <ConnectionDetailsForm control={control} setValue={setValue} />
 
       <AccordionCard alwaysOpen open title="Proof of Identity" bodyClassName="w-full flex flex-col gap-3 text-left">
         <div className="flex flex-col gap-y-3">
-          <Controller
+          <ControllerRadioGroupInput
+            label="Identification Type"
             control={control}
             name="identificationType"
-            render={({ field }) => {
-              return (
-                <RadioGroupInput
-                  label="Identification Type"
-                  {...field}
-                  values={[field.value]}
-                  options={IDENTITY_TYPE_OPTIONS}
-                  optionsContainerClassName="grid grid-cols-1 lg:grid-cols-4 gap-6"
-                  buttonContainerClassName="w-full"
-                />
-              )
-            }}
+            options={IDENTITY_TYPE_OPTIONS}
+            required
           />
         </div>
         {identificationForm}
@@ -101,22 +95,7 @@ const PersonalDetailPage1 = () => {
         </div>
       </AccordionCard>
 
-      <div className="flex flex-col lg:flex-row gap-6 justify-center">
-        <Button
-          variant="outlined"
-          onClick={() => navigate('/plans')}
-          className="text-zembl-p w-full lg:w-1/3 place-self-center"
-        >
-          Back
-        </Button>
-        <Button
-          type="submit"
-          onClick={() => navigate('/personal-detail-2')}
-          className="!zembl-btn w-full lg:w-1/3 place-self-center"
-        >
-          Next
-        </Button>
-      </div>
+      <PageNavigationActions prevLink="/plans" />
     </form>
   )
 }
