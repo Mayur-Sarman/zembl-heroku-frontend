@@ -1,15 +1,41 @@
-import { FieldValues, UseFormRegister } from 'react-hook-form'
+import { Control } from 'react-hook-form'
 import AccordionCard from '../../AccordionCard'
-import InputWithLabel from '../../Inputs/InputWithLabel'
+import ControllerInput from '../../Inputs/ControllerInput'
+import {
+  REQUIRED_VALIDATION,
+  STANDARD_SF_TEXT_VALIDATION,
+  ABN_NMI_MIRN_VALIDATION,
+} from '../../../constants/validation'
 
-const BusinessDetailsForm = ({ register, readOnly, compactForm }: BusinessDetailsFormProps) => {
+const BusinessDetailsForm = ({ control, readOnly, compactForm }: BusinessDetailsFormProps) => {
   return (
     <AccordionCard alwaysOpen open title="Business Details" bodyClassName="w-full flex flex-col gap-3 text-left">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
-        <InputWithLabel label="Legal Name" textLabel="Legal Name" {...register('legalName')} readOnly={readOnly} />
-        <InputWithLabel label="ABN Number" textLabel="ABN Number" {...register('abn')} readOnly={readOnly} />
+        <ControllerInput
+          name="legalName"
+          control={control}
+          label="Legal Name"
+          textLabel="Legal Name"
+          rules={{ ...STANDARD_SF_TEXT_VALIDATION, ...REQUIRED_VALIDATION }}
+          readOnly={readOnly}
+        />
+        <ControllerInput
+          name="abn"
+          control={control}
+          label="ABN Number"
+          textLabel="ABN Number"
+          readOnly={readOnly}
+          rules={{ ...ABN_NMI_MIRN_VALIDATION, ...REQUIRED_VALIDATION }}
+        />
         {compactForm ? null : (
-          <InputWithLabel label="Position" textLabel="Position" {...register('position')} readOnly={readOnly} />
+          <ControllerInput
+            name={'position'}
+            label="Position"
+            control={control}
+            textLabel="Position"
+            rules={{ ...STANDARD_SF_TEXT_VALIDATION, ...REQUIRED_VALIDATION }}
+            readOnly={readOnly}
+          />
         )}
       </div>
     </AccordionCard>
@@ -17,7 +43,7 @@ const BusinessDetailsForm = ({ register, readOnly, compactForm }: BusinessDetail
 }
 
 interface BusinessDetailsFormProps {
-  register: UseFormRegister<FieldValues>
+  control: Control
   readOnly?: boolean
   compactForm?: boolean
 }

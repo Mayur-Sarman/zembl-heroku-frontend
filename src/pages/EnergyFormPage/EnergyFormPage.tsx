@@ -1,35 +1,60 @@
 import { useEffect } from 'react'
 
 import { useModal, useToast } from '../../hooks'
-import { useForm } from 'react-hook-form'
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
 
-import { Button, Radio } from '@material-tailwind/react'
-import { CheckIcon } from '@heroicons/react/20/solid'
+import { Button } from '@material-tailwind/react'
 
 import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
 import PageWrapper from '../../components/PageWrapper'
 import InputWithLabel from '../../components/Inputs/InputWithLabel'
 
 import EnergyFormPageTitle from './EnergyFormPageTitle'
-import { GOOGLE_RECAPTCHA_KEY } from '../../constants'
+// import { extractAddressComponent } from '../../helpers/googleMap'
+import RadioGroupInput from '../../components/Inputs/RadioGroupInput'
+import {
+  BUSINESS_REGISTRATION_TYPE_OPTIONS,
+  REGISTRATION_TYPE_BUSINESS,
+  REGISTRATION_TYPE_OPTIONS,
+  REGISTRATION_TYPE_RESIDENTIAL,
+} from '../../constants'
+import RadioCheckGroupInput from '../../components/Inputs/RadioCheckGroupInput'
+import { EMAIL_VALIDATION, STANDARD_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../constants/validation'
+
+const FORM_DEFAULT_VALUE: FieldValues = {
+  registrationType: null,
+}
 
 const HomePage = () => {
   const { fireAlert } = useToast()
   const { openModal } = useModal()
-  const { register, handleSubmit, control, watch } = useForm()
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: FORM_DEFAULT_VALUE,
+    mode: 'all',
+  })
   const { executeRecaptcha }: IGoogleReCaptchaConsumerProps = useGoogleReCaptcha()
   const navigate = useNavigate()
 
-  const typeWatcher: unknown = watch('type', 'business')
+  const typeWatcher: unknown = watch('registrationType', REGISTRATION_TYPE_BUSINESS)
 
   const onSubmit = async (data: Record<string, string>) => {
     console.log(data)
+    // console.log(extractAddressComponent(data?.googleAddress as google.maps.places.PlaceResult))
+    // if (data) return
     if (!executeRecaptcha) return
 
     const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
     console.log(token)
+
+    navigate('/basic-info-1')
   }
 
   useEffect(() => {
@@ -40,51 +65,64 @@ const HomePage = () => {
   }, [fireAlert, openModal])
 
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={GOOGLE_RECAPTCHA_KEY}>
-      <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
-        <EnergyFormPageTitle />
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 md:w-1/2 ">
-          <InputWithLabel className="bg-white" inputLabel="First Name" {...register('firstName')} />
-          <InputWithLabel className="bg-white" inputLabel="Last Name" {...register('lastName')} />
-          <InputWithLabel className="bg-white" inputLabel="Email" {...register('email')} />
-          <ZemblPhoneInput control={control} name="phone" required defaultCountry={'au'} />
-          <div className="flex gap-3 justify-center">
-            <Radio
-              label="Business"
-              labelProps={{ className: 'text-sm' }}
-              defaultChecked
-              value="business"
-              {...register('type')}
-              crossOrigin={undefined}
-              icon={<CheckIcon height={12} width={12} />}
-            />
-            <Radio
-              label="Residential"
-              value="residential"
-              {...register('type')}
-              labelProps={{ className: 'text-sm' }}
-              crossOrigin={undefined}
-              icon={<CheckIcon height={12} width={12} />}
-            />
-          </div>
-          <div className={`flex gap-3 ${typeWatcher !== 'residential' ? '' : 'hidden'}`}>
-            <Button variant="outlined" className="w-1/2 bg-zembl-s1">
-              Talk to an expert
-            </Button>
-            <Button variant="outlined" className="w-1/2 bg-zembl-s1">
-              Compare online
-            </Button>
-          </div>
-          <Button
-            type="submit"
-            onClick={() => navigate('/basic-info-1')}
-            className="!zembl-btn w-1/3 place-self-center"
-          >
-            Save
-          </Button>
-        </form>
-      </PageWrapper>
-    </GoogleReCaptchaProvider>
+    <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
+      <EnergyFormPageTitle />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 md:w-1/2 ">
+        <InputWithLabel
+          inputLabel="First Name"
+          {...register('firstName', {
+            ...REQUIRED_VALIDATION,
+            ...STANDARD_SF_TEXT_VALIDATION,
+          })}
+          errors={errors}
+        />
+        <InputWithLabel
+          inputLabel="Last Name"
+          {...register('lastName', {
+            ...REQUIRED_VALIDATION,
+            ...STANDARD_SF_TEXT_VALIDATION,
+          })}
+          errors={errors}
+        />
+        <InputWithLabel
+          inputLabel="Email"
+          {...register('email', {
+            ...REQUIRED_VALIDATION,
+            ...EMAIL_VALIDATION,
+          })}
+          errors={errors}
+        />
+        <ZemblPhoneInput control={control} name="phone" required defaultCountry={'au'} />
+        <RadioCheckGroupInput
+          register={register}
+          required
+          options={REGISTRATION_TYPE_OPTIONS}
+          name="registrationType"
+          errors={errors}
+        />
+        <Controller
+          control={control}
+          name="businessRegisType"
+          rules={{ required: { value: true, message: 'Select a value' } }}
+          render={({ field, fieldState }) => {
+            if (typeWatcher === REGISTRATION_TYPE_RESIDENTIAL) return <></>
+            return (
+              <RadioGroupInput
+                {...field}
+                values={[field.value]}
+                error={fieldState.error}
+                options={BUSINESS_REGISTRATION_TYPE_OPTIONS}
+                optionsContainerClassName="md:flex-nowrap"
+                buttonContainerClassName="w-full md:w-1/2 bg-zembl-s1"
+              />
+            )
+          }}
+        />
+        <Button type="submit" className="!zembl-btn w-1/3 place-self-center flex-shrink-0">
+          Save
+        </Button>
+      </form>
+    </PageWrapper>
   )
 }
 

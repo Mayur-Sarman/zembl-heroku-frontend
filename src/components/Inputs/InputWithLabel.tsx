@@ -1,15 +1,32 @@
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
+import { ErrorMessage } from '@hookform/error-message'
 import { Input, InputProps, Typography } from '@material-tailwind/react'
 import { ForwardedRef, ReactNode, forwardRef } from 'react'
+import { FieldError, FieldErrors, FieldValues } from 'react-hook-form'
+import ErrorTextMessage from '../ErrorTextMessage'
 
 const InputWithLabel = forwardRef(function InputWithLabel(
-  { name, onChange, inputLabel, textLabel, className, containerClassName, ...rest }: InputWithLabelProps,
+  {
+    name,
+    onChange,
+    inputLabel,
+    textLabel,
+    className,
+    containerClassName,
+    errors,
+    fieldError,
+    required,
+    ...rest
+  }: InputWithLabelProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const textLabelDisplay = textLabel ? (
-    <Typography variant="small" className="mb-2 pl-1">
+    <Typography variant="small" className={`mb-2 pl-1 ${required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''}`}>
       {textLabel}
     </Typography>
   ) : null
+
+  const hasError = !!errors?.[name] || !!fieldError
 
   return (
     <div className={`text-left w-full ${containerClassName}`}>
@@ -22,17 +39,42 @@ const InputWithLabel = forwardRef(function InputWithLabel(
         ref={ref}
         crossOrigin=""
         placeholder={inputLabel ?? rest.label}
-        className={`!border !border-blue-gray-200 focus:!border-gray-900 ${className}`}
+        className={`!border bg-white focus:!border-gray-900 border-t-blue-gray-200 ${className} ${
+          hasError ? '!border-red-500' : '!border-t-blue-gray-200'
+        }`}
         labelProps={{ className: 'hidden' }}
+        error={hasError}
+        icon={hasError ? <ExclamationCircleIcon color="red" className="h-5 w-5" /> : rest.icon}
       />
+      {errors?.[name] ? (
+        <div className="mt-1 px-1">
+          <ErrorMessage
+            name={name}
+            errors={errors ?? {}}
+            render={({ message }) => <ErrorTextMessage>{message}</ErrorTextMessage>}
+          />
+        </div>
+      ) : null}
+      {fieldError ? (
+        <div className="mt-1 px-1 text-left">
+          <ErrorTextMessage>{fieldError.message ?? ''}</ErrorTextMessage>
+        </div>
+      ) : null}
     </div>
   )
 })
 
-interface InputWithLabelProps extends InputProps {
+export const DEFAULT_INPUT_CLASS_NAME =
+  'peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] !border !border-blue-gray-200 focus:!border-gray-900 bg-white'
+
+export interface InputWithLabelProps extends InputProps {
+  name: string
+  errors?: FieldErrors<FieldValues>
   inputLabel?: string
   textLabel?: ReactNode
   containerClassName?: string
+  fieldError?: FieldError
+  required?: boolean
 }
 
 export default InputWithLabel

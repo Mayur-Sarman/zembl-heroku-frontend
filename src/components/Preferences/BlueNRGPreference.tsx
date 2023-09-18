@@ -1,27 +1,21 @@
 import AccordionCard from '../AccordionCard'
-import { Control, Controller } from 'react-hook-form'
-import RadioGroupInput from '../Inputs/RadioGroupInput'
+import { Control } from 'react-hook-form'
 import { YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import { Typography } from '@material-tailwind/react'
+import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
 const BlueNRGPreference = ({ control }: BlueNRGPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="Blue NRG Preferences" bodyClassName="flex-col text-left gap-y-6">
-      <Controller
+      <ControllerRadioGroupInput
         control={control}
         name="isConsentMonthlyNGLBills"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={'Do you consent to receive your energy bills from Blue NRG on a monthly basis?'}
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        required
+        label={'Do you consent to receive your energy bills from Blue NRG on a monthly basis?'}
+        options={YES_NO_OPTIONS}
       />
+
       <TextNote>
         This plan is not available to customers who do not consent to monthly billing. Update your preference or please
         call Zembl on 1300 957 721 for assistance.
@@ -33,40 +27,28 @@ const BlueNRGPreference = ({ control }: BlueNRGPreferenceProps) => {
         your credit worthiness prior to switching to Blue NRG. You will receive a copy of these terms and conditions via
         your preferred communication method.
       </Typography>
-      <Controller
+
+      <ControllerRadioGroupInput
         control={control}
         name="isAcceptBlueNGLTerms"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={'Do you understand and accept these terms?”'}
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        required
+        label={'Do you understand and accept these terms?”'}
+        options={YES_NO_OPTIONS}
       />
+
       <TextNote>
         This plan is not available to where the electricity at the site is not used predominately for business purposes.
         Update your preference or please call Zembl on 1300 957 721 for assistance.
       </TextNote>
 
-      <Controller
+      <ControllerRadioGroupInput
         control={control}
         name="isSmallBuinessAgreed"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={
-              'The electricity at the supply address must be used predominantly for business purposes and must be a business premises. Blue NRG does not provide electricity for residential purposes. Do you agree that you are a small business customer for the purposes of this agreement?” '
-            }
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        required
+        label={
+          'The electricity at the supply address must be used predominantly for business purposes and must be a business premises. Blue NRG does not provide electricity for residential purposes. Do you agree that you are a small business customer for the purposes of this agreement?” '
+        }
+        options={YES_NO_OPTIONS}
       />
 
       <TextNote>

@@ -1,71 +1,41 @@
 import AccordionCard from '../AccordionCard'
-import { Control, Controller } from 'react-hook-form'
-import RadioGroupInput from '../Inputs/RadioGroupInput'
+import { Control } from 'react-hook-form'
 import { YES_NO_OPTIONS } from '../../constants'
+import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
 const BasicPreference = ({ control }: BasicPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="Preferences" bodyClassName="flex-col text-left gap-y-6">
-      <Controller
+      <ControllerRadioGroupInput
         control={control}
         name="isRequireMedicalEquipment"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={'Does anyone at the premise require the use of medical equipment for life support?'}
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        required
+        label={'Does anyone at the premise require the use of medical equipment for life support?'}
+        options={YES_NO_OPTIONS}
       />
 
-      <Controller
+      <ControllerRadioGroupInput
         control={control}
         name="isReceiveMonthlyBilling"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={'Would you like to receive monthly billing?'}
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        required
+        label={'Would you like to receive monthly billing?'}
+        options={YES_NO_OPTIONS}
       />
 
-      <Controller
+      <ControllerRadioGroupInput
         control={control}
         name="isConsentMomentumCreditCheck"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={'Do you consent to Momentum performing a credit check on you?'}
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        required
+        label={'Do you consent to Momentum performing a credit check on you?'}
+        options={YES_NO_OPTIONS}
       />
 
-      <Controller
+      <ControllerRadioGroupInput
         control={control}
         name="isAcknowledgedMomentumCreditRequirement"
-        render={({ field }) => (
-          <RadioGroupInput
-            {...field}
-            label={
-              'Do you understand if you don’t meet Momentum’s credit requirements, your application may be rejected?'
-            }
-            values={[field.value]}
-            options={YES_NO_OPTIONS}
-            buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-            optionsContainerClassName="flex flex-wrap w-full"
-          />
-        )}
+        required
+        label={'Do you understand if you don’t meet Momentum’s credit requirements, your application may be rejected?'}
+        options={YES_NO_OPTIONS}
       />
     </AccordionCard>
   )

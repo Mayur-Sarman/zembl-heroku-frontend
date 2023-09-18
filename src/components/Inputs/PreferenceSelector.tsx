@@ -1,8 +1,10 @@
 import { FormEventHandler, MouseEventHandler, useCallback, useState } from 'react'
-import AccordionCard from './AccordionCard'
-import RadioGroupInput, { InputOptions } from './Inputs/RadioGroupInput'
+import AccordionCard from '../AccordionCard'
+import RadioGroupInput, { InputOptions } from './RadioGroupInput'
 import { Typography } from '@material-tailwind/react'
-import EditActionButton from './Buttons/EditActionButton'
+import EditActionButton from '../Buttons/EditActionButton'
+import { FieldError } from 'react-hook-form'
+import ErrorTextMessage from '../ErrorTextMessage'
 
 const PERFERENCES_OPTIONS: InputOptions[] = [
   { value: 'Green or Carbon Neutral', label: 'Green or Carbon Neutral' },
@@ -22,6 +24,8 @@ const PreferenceSelector = ({
   editable,
   title = 'Your Preferences',
   label = "What's important to you?",
+  error,
+  required,
 }: PreferenceSelectorProps) => {
   const [isEditing, setIsEditing] = useState(!editable)
 
@@ -36,7 +40,7 @@ const PreferenceSelector = ({
   ) : null
 
   const titleDisplay = (
-    <div className="flex items-center w-full justify-between">
+    <div className={`flex items-center w-full justify-between`}>
       <Typography variant="h6">{title}</Typography>
       {editButton}
     </div>
@@ -47,24 +51,32 @@ const PreferenceSelector = ({
       <div className="w-full flex flex-col gap-3 text-left">
         <RadioGroupInput
           label={label}
+          required={required}
           disabled={!isEditing}
           values={preferences}
           onChange={onChange}
           options={PERFERENCES_OPTIONS}
           buttonContainerClassName="w-full md:w-1/3 p-1"
-          optionsContainerClassName="inline-flex flex-wrap"
+          optionsContainerClassName="inline-flex !flex-wrap gap-0"
         />
+        {error ? (
+          <div className="mt-1 px-1 text-left">
+            <ErrorTextMessage>{error.message ?? ''}</ErrorTextMessage>
+          </div>
+        ) : null}
       </div>
     </AccordionCard>
   )
 }
 
-interface PreferenceSelectorProps {
+export interface PreferenceSelectorProps {
   label?: string
   title?: string
   preferences: string[]
   onChange: FormEventHandler<HTMLButtonElement>
   editable?: boolean
+  error?: FieldError
+  required?: boolean
 }
 
 export default PreferenceSelector

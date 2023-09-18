@@ -1,26 +1,39 @@
-import { Control, FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import InputWithLabel from '../../Inputs/InputWithLabel'
+import { Control } from 'react-hook-form'
 import DateInput from '../../Inputs/DateInput'
-import SelectInput from '../../Inputs/SelectInput'
 import { COUNTRY_LIST_OPTIONS } from '../../../constants'
+import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
+import { DATE_MUST_FUTURE, PASSPORT_VALIDATION, REQUIRED_VALIDATION } from '../../../constants/validation'
+import ControllerInput from '../../Inputs/ControllerInput'
 
-const ForeignPassportForm = ({ control, register, setValue }: ForeignPassportFormProps) => {
+const ForeignPassportForm = ({ control }: ForeignPassportFormProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
-      <SelectInput
+      <ControllerSelectInput
         label="Select Country"
         textLabel="Select Country"
         placeholder="Select..."
+        control={control}
         options={COUNTRY_LIST_OPTIONS}
-        {...register('foreignPassport.country')}
-        onChange={(e) => setValue('foreignPassport.country', e)}
+        name={'foreignPassport.country'}
+        rules={REQUIRED_VALIDATION}
       />
-      <InputWithLabel label="Passport Number" textLabel="Passport Number" {...register('foreignPassport.passportNumber')} />
+      <ControllerInput
+        label="Passport Number"
+        textLabel="Passport Number"
+        name="foreignPassport.passportNumber"
+        control={control}
+        required
+        rules={PASSPORT_VALIDATION}
+      />
       <DateInput
         label="Expiry Date"
         name="foreignPassport.expiryDate"
         control={control}
         datepickerClassNames={'top-auto'}
+        options={{ minDate: new Date() }}
+        required
+        rules={DATE_MUST_FUTURE}
+        minDate={new Date()}
       />
     </div>
   )
@@ -28,8 +41,6 @@ const ForeignPassportForm = ({ control, register, setValue }: ForeignPassportFor
 
 interface ForeignPassportFormProps {
   control: Control
-  register: UseFormRegister<FieldValues>
-  setValue: UseFormSetValue<FieldValues>
 }
 
 export default ForeignPassportForm

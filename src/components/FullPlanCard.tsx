@@ -1,10 +1,10 @@
 import TextNote from './TextNote'
 import MiniPlanCard from './MiniPlanCard'
-import { Checkbox } from '@material-tailwind/react'
-import { FieldValues, UseFormRegister } from 'react-hook-form'
+import { Control } from 'react-hook-form'
 import RichText from './RichText'
+import ControllerCheckBox from './Inputs/ControllerCheckBox'
 
-const FullPlanCard = ({ planName, brandIconSrc, energyType, termAndConditions, register }: FullPlanCardProps) => {
+const FullPlanCard = ({ planName, brandIconSrc, energyType, termAndConditions, control }: FullPlanCardProps) => {
   return (
     <div className="grid grid-cols-1 gap-3">
       <div className="p-2 md:p-6">
@@ -13,17 +13,17 @@ const FullPlanCard = ({ planName, brandIconSrc, energyType, termAndConditions, r
       <TextNote>
         <RichText htmlString={termAndConditions} />
       </TextNote>
-      <Checkbox
-        type="checkbox"
+      <ControllerCheckBox
+        name={`accept${energyType}TC1`}
+        control={control}
+        required
         label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-        {...register(`accept${energyType}TC1`)}
-        crossOrigin=""
       />
-      <Checkbox
-        type="checkbox"
+      <ControllerCheckBox
+        name={`accept${energyType}TC1`}
+        control={control}
+        required
         label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-        {...register(`accept${energyType}TC2`)}
-        crossOrigin=""
       />
     </div>
   )
@@ -34,7 +34,7 @@ interface FullPlanCardProps {
   brandIconSrc: string
   energyType: string
   termAndConditions: string
-  register: UseFormRegister<FieldValues>
+  control: Control
 }
 
 export default FullPlanCard

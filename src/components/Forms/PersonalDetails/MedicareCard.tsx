@@ -1,50 +1,48 @@
-import { Control, Controller, FieldValues, UseFormRegister } from 'react-hook-form'
-import InputWithLabel from '../../Inputs/InputWithLabel'
+import { Control } from 'react-hook-form'
 import DateInput from '../../Inputs/DateInput'
-import RadioGroupInput from '../../Inputs/RadioGroupInput'
-import { MEDICARE_COLOUR_LIST_OPTIONS } from '../../../constants'
+import { MEDICARE_COLOUR_LIST_OPTIONS, MEDICARE_REF_NO_OPTIONS } from '../../../constants'
+import ControllerInput from '../../Inputs/ControllerInput'
+import { DATE_MUST_FUTURE, REQUIRED_VALIDATION, getExactLengthValidation } from '../../../constants/validation'
+import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
+import ControllerRadioGroupInput from '../../Inputs/ControllerRadioGroupInput'
 
-const MedicareCardForm = ({ control, register }: MedicareCardFormProps) => {
+const MedicareCardForm = ({ control }: MedicareCardFormProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
-      <InputWithLabel
+      <ControllerInput
         label="Medicare Card Number"
+        control={control}
         textLabel="Medicare Card Number"
-        {...register('medicareCard.cardNumber')}
+        name="medicareCard.cardNumber"
+        required
+        rules={getExactLengthValidation(10)}
       />
-      <InputWithLabel
+      <ControllerSelectInput
+        control={control}
+        name="medicareCard.refNumber"
+        options={MEDICARE_REF_NO_OPTIONS}
         label="Individual Reference Number"
         textLabel="Individual Reference Number"
-        {...register('medicareCard.refNumber')}
+        rules={REQUIRED_VALIDATION}
       />
       <div className="flex flex-col gap-y-3 col-span-1 lg:col-span-2">
-        <Controller
+        <ControllerRadioGroupInput
           control={control}
           name="medicareCard.colour"
-          render={({ field }) => {
-            return (
-              <RadioGroupInput
-                label="Card Colour"
-                {...field}
-                values={[field.value]}
-                options={MEDICARE_COLOUR_LIST_OPTIONS}
-                optionsContainerClassName="grid grid-cols-1 lg:grid-cols-4 gap-6"
-                buttonContainerClassName="w-full"
-              />
-            )
-          }}
+          label="Card Colour"
+          required
+          options={MEDICARE_COLOUR_LIST_OPTIONS}
         />
       </div>
-      <InputWithLabel
-        label="Middle Name"
-        textLabel="Middle Name (if applicable)"
-        {...register('medicareCard.middleName')}
-      />
       <DateInput
         label="Expiry Date"
         name="medicareCard.expiryDate"
         control={control}
         datepickerClassNames={'top-auto'}
+        options={{ minDate: new Date() }}
+        required
+        rules={DATE_MUST_FUTURE}
+        minDate={new Date()}
       />
     </div>
   )
@@ -52,7 +50,6 @@ const MedicareCardForm = ({ control, register }: MedicareCardFormProps) => {
 
 interface MedicareCardFormProps {
   control: Control
-  register: UseFormRegister<FieldValues>
 }
 
 export default MedicareCardForm

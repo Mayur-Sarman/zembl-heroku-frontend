@@ -1,16 +1,16 @@
-import { ChangeEvent, useCallback, useContext, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useContext } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-
-import { Button } from '@material-tailwind/react'
 
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
-import PreferenceSelector from '../../components/PreferenceSelector'
 import SelectPlansPageTitle from './SelectPlansPageTitle'
 import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
 import PlanSelector from '../../components/PlanSelector'
 import RegistrationContext from '../../contexts/RegistrationContext'
+import { REQUIRED_VALIDATION } from '../../constants/validation'
+import ControllerPreferencesSelector from '../../components/Inputs/ControllerPreferencesSelector'
+import PageNavigationActions from '../../components/PageNavigationActions'
 
 const mockupPlans = [
   {
@@ -37,49 +37,25 @@ const mockupPlans = [
     planEstCostPerMonth: 620,
     planEstCostPerYear: 6000,
     brand: 'Lorem ipsum',
-    logoURL: 'https://www.lipsum.com/images/banners/black_234x60.gif',
+    logoURL: '/vite.svg',
   },
 ]
 
 const SelectPlansPage = () => {
   const { registrationData } = useContext(RegistrationContext)
-  const [preferences, setPreferences] = useState<string[]>([])
-  const [selectedElecPlanId, setSelectedElecPlanId] = useState<string | null>(null)
-  const [selectedGasPlanId, setSelectedGasPlanId] = useState<string | null>(null)
 
   // On load page get data from context
-  const { handleSubmit, setValue } = useForm({
-    defaultValues: { preferences: [] },
+  const { handleSubmit, control, formState } = useForm({
+    mode: 'all',
   })
   const navigate = useNavigate()
-
-  const onPreferenceSelected = useCallback(
-    (event: ChangeEvent<HTMLButtonElement>) => {
-      const value = event.target.value
-      setPreferences((prev) => {
-        const isSelected = prev.includes(value)
-        const values = isSelected ? prev.filter((i) => i != value) : [...prev, value]
-
-        setValue('preferences', values as never)
-        return values
-      })
-    },
-    [setValue],
-  )
-
-  const onElecPlanSelected = useCallback((planId: string) => {
-    setSelectedElecPlanId(planId)
-  }, [])
-
-  const onGasPlanSelected = useCallback((planId: string) => {
-    setSelectedGasPlanId(planId)
-  }, [])
 
   const onSubmit = (data: Record<string, string | string[]>) => {
     console.log(data)
 
     // Call API
     // Put data to context
+    navigate('/personal-detail-1')
   }
 
   const selectedEnergyType = registrationData?.energyType?.energyType
@@ -90,42 +66,52 @@ const SelectPlansPage = () => {
         <RegistrationStep currentStep={1} />
         <hr className="hidden lg:block" />
 
-        <PreferenceSelector preferences={preferences} onChange={onPreferenceSelected} editable label="" />
+        <ControllerPreferencesSelector
+          name={'preferences'}
+          control={control}
+          rules={REQUIRED_VALIDATION}
+          editable
+          label=""
+        />
+        {/* <PreferenceSelector preferences={preferences} onChange={onPreferenceSelected} editable label="" /> */}
         <SelectPlansPageTitle energyType={BOTH_VALUE} />
         {selectedEnergyType !== GAS_VALUE ? (
-          <PlanSelector
-            title="Electricity Plan"
-            plans={mockupPlans}
-            selectedPlanId={selectedElecPlanId}
-            onPlanSelect={onElecPlanSelected}
+          <Controller
+            name="electricPlanId"
+            control={control}
+            rules={REQUIRED_VALIDATION}
+            render={({ field }) => {
+              return (
+                <PlanSelector
+                  title="Electricity Plan"
+                  plans={mockupPlans}
+                  selectedPlanId={field.value as string}
+                  onPlanSelect={field.onChange}
+                />
+              )
+            }}
           />
         ) : null}
 
         {selectedEnergyType !== ELECTRICITY_VALUE ? (
-          <PlanSelector
-            title="Gas Plan"
-            plans={mockupPlans}
-            selectedPlanId={selectedGasPlanId}
-            onPlanSelect={onGasPlanSelected}
+          <Controller
+            name="gasPlanId"
+            control={control}
+            rules={REQUIRED_VALIDATION}
+            render={({ field }) => {
+              return (
+                <PlanSelector
+                  title="Gas Plan"
+                  plans={mockupPlans}
+                  selectedPlanId={field.value as string}
+                  onPlanSelect={field.onChange}
+                />
+              )
+            }}
           />
         ) : null}
 
-        <div className="flex flex-col lg:flex-row gap-6 justify-center">
-          <Button
-            variant="outlined"
-            onClick={() => navigate('/bill-upload')}
-            className="text-zembl-p w-full lg:w-1/3 place-self-center"
-          >
-            Back
-          </Button>
-          <Button
-            type="submit"
-            onClick={() => navigate('/personal-detail-1')}
-            className="!zembl-btn w-full lg:w-1/3 place-self-center"
-          >
-            Next
-          </Button>
-        </div>
+        <PageNavigationActions prevLink="/bill-upload" nextDisabled={!formState.isValid} />
       </form>
     </PageWrapper>
   )

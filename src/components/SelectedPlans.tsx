@@ -1,7 +1,7 @@
 import AccordionCard from './AccordionCard'
 import FullPlanCard from './FullPlanCard'
 import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
-import { Control, FieldValues, UseFormRegister } from 'react-hook-form'
+import { Control } from 'react-hook-form'
 import DuoPlanCard from './DuoPlanCard'
 
 // const ICON_CLASS_NAME = 'w-4 h-4'
@@ -9,7 +9,7 @@ import DuoPlanCard from './DuoPlanCard'
 const SelectedPlans = ({
   title,
   // onEditClick,
-  register,
+  control,
   energyType,
   electricityPlan,
   gasPlan,
@@ -33,15 +33,13 @@ const SelectedPlans = ({
   const individualPlanDisplay = (
     <>
       {energyType !== GAS_VALUE ? (
-        <FullPlanCard energyType={ELECTRICITY_VALUE} {...electricityPlan} register={register} />
+        <FullPlanCard energyType={ELECTRICITY_VALUE} {...electricityPlan} control={control} />
       ) : null}
-      {energyType !== ELECTRICITY_VALUE ? (
-        <FullPlanCard energyType={GAS_VALUE} {...gasPlan} register={register} />
-      ) : null}
+      {energyType !== ELECTRICITY_VALUE ? <FullPlanCard energyType={GAS_VALUE} {...gasPlan} control={control} /> : null}
     </>
   )
 
-  const duoPlanDisplay = <DuoPlanCard electricityPlan={electricityPlan} gasPlan={gasPlan} register={register} />
+  const duoPlanDisplay = <DuoPlanCard electricityPlan={electricityPlan} gasPlan={gasPlan} control={control} />
 
   return (
     <AccordionCard open alwaysOpen title={title}>
@@ -55,7 +53,6 @@ const SelectedPlans = ({
 interface SelectedPlansProps {
   title: string
   // onEditClick: MouseEventHandler
-  register: UseFormRegister<FieldValues>
   control: Control
   energyType: string
   electricityPlan: PlanData
