@@ -35,6 +35,10 @@ export const REQUIRED_VALIDATION = {
   required: { value: true, message: 'Enter a value' },
 }
 
+export const CHECKBOX_REQUIRED_VALIDATION = {
+  required: { value: true, message: 'Select a value' }
+}
+
 export const EMAIL_VALIDATION = {
   maxLength: {
     value: MAX_STD_TEXT_FIELD_LENGTH,

@@ -12,13 +12,13 @@ const ControllerRadioGroupInput = ({
   ...rest
 }: ControllerRadioGroupInputProps) => {
   const combinedRules = required ? { ...rules, ...REQUIRED_VALIDATION } : { ...rules }
+  if (hidden) return null
   return (
     <Controller
       control={control}
       name={name}
       rules={combinedRules}
       render={({ field, fieldState }) => {
-        if (hidden) return <></>
         return (
           <RadioGroupInput
             {...field}

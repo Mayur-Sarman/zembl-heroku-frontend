@@ -1,4 +1,6 @@
 import { getNames } from 'country-list'
+import { Lead } from '../api/lead'
+import { Site, SiteResponse } from '../api/site'
 
 export const ELECTRICITY_VALUE = 'Electricity'
 export const GAS_VALUE = 'Gas'
@@ -35,8 +37,11 @@ export const MEDICARE_CARD_YELLOW = 'Yellow'
 
 export const BILLING_TYPE_MONTHLY = 'Monthly'
 export const BILLING_TYPE_QUARTERLY = 'Quarterly'
-export const PERIOD_SPEND_MORE = 'More'
-export const PERIOD_SPEND_LESS = 'Less'
+
+export const MONTHLY_SPEND_MORE = '> 2,500'
+export const MONTHLY_SPEND_LESS = '< 2,500'
+export const QUARTERLY_SPEND_MORE = '> 7,500'
+export const QUARTERLY_SPEND_LESS = '< 7,500'
 
 export const EMAIL_VALUE = 'Email'
 export const POST_VALUE = 'Post'
@@ -56,6 +61,44 @@ export const UPLOAD_GAS_BILL = 'Upload Gas Bill'
 export const REGISTRATION_TYPE_BUSINESS = 'Business'
 export const REGISTRATION_TYPE_RESIDENTIAL = 'Residential'
 
+export const SME_VALUE = 'SME'
+export const CAndI_VALUE = 'C_I'
+export const RESIDENTIAL_VALUE = 'Residential'
+
+export const LEAD_STATUS_CONVERTED_WON = 'Converted Won'
+
+export const ABN_ACTIVE = 'Active'
+
+export const GREEN_OR_CARBON_NEUTRAL = 'Green or Carbon Neutral'
+export const AUSTRALIAN_OWNED = 'Australian Owned'
+export const LOCAL_CUSTOMER_SERVICE = 'Local Customer Service'
+export const LOWEST_PRICE = 'Lowest Price'
+export const FIXED_PRICE = 'Fixed Price'
+export const NO_PREFERENCE = 'No Preference'
+
+export const ACTEW = 'Actew'
+export const AGL = 'AGL'
+export const ALINTA = 'Alinta'
+export const BLUE_NRG = 'Blue NRG'
+export const COVA_U = 'CovaU'
+export const ENERGY_AUSTRALIA = 'Energy Australia'
+export const ENERGY_LOCALS = 'Energy Locals'
+export const ENGIE = 'ENGIE'
+export const FLOW_POWER = 'Flow Power'
+export const LUMO = 'Lumo'
+export const MOMENTUM = 'Momentum'
+export const NECTR = 'Nectr'
+export const NEXT_BUSINESS_ENERGY = 'Next Business Energy'
+export const ORIGIN = 'Origin'
+export const OTHER = 'Other'
+export const POWERSHOP = 'Powershop'
+export const RED_ENERGY = 'Red Energy'
+export const SHELL = 'Shell'
+export const SIMPLY_ENERGY = 'Simply Energy'
+export const SMARTEST_ENERGY = 'Smartest Energy'
+export const SUMO = 'Sumo'
+export const TANGO = 'Tango'
+
 export const REGISTRATION_TYPE_OPTIONS = [
   { value: REGISTRATION_TYPE_BUSINESS, label: REGISTRATION_TYPE_BUSINESS },
   { value: REGISTRATION_TYPE_RESIDENTIAL, label: REGISTRATION_TYPE_RESIDENTIAL },
@@ -71,14 +114,28 @@ export const BUSINESS_REGISTRATION_TYPE_OPTIONS = [
   { value: SELF_SERVE_VALUE, label: SELF_SERVE_VALUE },
 ]
 
-export const getPeriodSpendTypeOptions = (billingType: string) => [
-  { value: PERIOD_SPEND_LESS, label: billingType === BILLING_TYPE_MONTHLY ? 'Less than $2,500' : 'Less than $7,500' },
-  { value: PERIOD_SPEND_MORE, label: billingType === BILLING_TYPE_MONTHLY ? 'More than $2,500' : 'More than $7,500' },
+export const QUARTERLY_SPEND_OPTIONS = [
+  { value: QUARTERLY_SPEND_LESS, label: 'Less than $7,500' },
+  { value: QUARTERLY_SPEND_MORE, label: 'More than $7,500' },
+]
+
+export const MONTHLY_SPEND_OPTIONS = [
+  { value: MONTHLY_SPEND_LESS, label: 'Less than $2,500' },
+  { value: MONTHLY_SPEND_MORE, label: 'More than $2,500' },
 ]
 
 export const YES_NO_OPTIONS = [
   { value: YES_VALUE, label: YES_VALUE },
   { value: NO_VALUE, label: NO_VALUE },
+]
+
+export const PERFERENCES_OPTIONS: SelectOption[] = [
+  { value: GREEN_OR_CARBON_NEUTRAL, label: GREEN_OR_CARBON_NEUTRAL },
+  { value: AUSTRALIAN_OWNED, label: AUSTRALIAN_OWNED },
+  { value: LOCAL_CUSTOMER_SERVICE, label: LOCAL_CUSTOMER_SERVICE },
+  { value: LOWEST_PRICE, label: LOWEST_PRICE },
+  { value: FIXED_PRICE, label: FIXED_PRICE },
+  { value: NO_PREFERENCE, label: NO_PREFERENCE },
 ]
 
 export const TITLE_LIST_OPTIONS = [MISS_VALUE, MS_VALUE, MR_VALUE, SIR_VALUE, MRS_VALUE, DR_VALUE, MX_VALUE].map(
@@ -119,7 +176,7 @@ export const MEDICARE_COLOUR_LIST_OPTIONS = [MEDICARE_CARD_GREEN, MEDICARE_CARD_
 export const ENERGY_TYPE_OPTIONS: SelectOption[] = [
   { value: ELECTRICITY_VALUE, label: ELECTRICITY_VALUE },
   { value: GAS_VALUE, label: GAS_VALUE },
-  { value: BOTH_VALUE, label: BOTH_VALUE },
+  { value: BOTH_VALUE, label: 'Electricity & Gas' },
 ]
 
 export const SUBSCRIBE_TYPE_OPTIONS: SelectOption[] = [
@@ -144,10 +201,50 @@ export const MEDICARE_REF_NO_OPTIONS: SelectOption[] = ['1', '2', '3', '4'].map(
   label: item,
 }))
 
+export const RETAILER_OPTIONS: SelectOption[] = [
+  ACTEW,
+  AGL,
+  ALINTA,
+  BLUE_NRG,
+  COVA_U,
+  ENERGY_AUSTRALIA,
+  ENERGY_LOCALS,
+  ENGIE,
+  FLOW_POWER,
+  LUMO,
+  MOMENTUM,
+  NECTR,
+  NEXT_BUSINESS_ENERGY,
+  ORIGIN,
+  OTHER,
+  POWERSHOP,
+  RED_ENERGY,
+  SHELL,
+  SIMPLY_ENERGY,
+  SMARTEST_ENERGY,
+  SUMO,
+  TANGO,
+].map((i) => ({ value: i, label: i }))
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 export const COUNTRY_LIST_OPTIONS: SelectOption[] = getNames().map((item) => ({ label: item, value: item }))
 
 export interface SelectOption {
   value: string
   label: string
+}
+
+export interface RegistrationData extends Lead, Site, SiteResponse, Record<string, unknown> {
+  leadId?: string | null
+  energyType?: string
+  registrationType?: string
+  businessRegisType?: string
+  gasBillInfo?: BillInfo
+  electricityBillInfo?: BillInfo
+}
+
+interface BillInfo {
+  billFiles?: FileList
+  currentRetailer?: string
+  currentUsage?: string
 }

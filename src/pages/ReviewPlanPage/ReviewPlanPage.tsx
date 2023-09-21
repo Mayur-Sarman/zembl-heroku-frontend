@@ -27,7 +27,7 @@ const ReviewPlanPage = () => {
   }
 
   const electricityPlanSummary =
-    registrationData.energyType.energyType !== GAS_VALUE ? (
+    registrationData.energyType !== GAS_VALUE ? (
       <PlanSummaryCard
         planId="test"
         planType={ELECTRICITY_VALUE}
@@ -45,7 +45,7 @@ const ReviewPlanPage = () => {
     ) : null
 
   const gasPlanSummary =
-    registrationData.energyType.energyType !== ELECTRICITY_VALUE ? (
+    registrationData.energyType !== ELECTRICITY_VALUE ? (
       <PlanSummaryCard
         planId="test"
         planType={GAS_VALUE}

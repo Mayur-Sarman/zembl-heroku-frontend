@@ -1,28 +1,105 @@
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
 import AccordionCard from '../../components/AccordionCard'
 import PaperBillForm from './PaperBillForm'
 import FileUploadInput from '../../components/Inputs/FileUploadInput'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
-import { HAVE_PAPER_BILL, UPLOAD_BILL_TYPE_OPTIONS, UPLOAD_ELECTRICITY_BILL, UPLOAD_GAS_BILL } from '../../constants'
+import {
+  BOTH_VALUE,
+  ELECTRICITY_VALUE,
+  GAS_VALUE,
+  HAVE_PAPER_BILL,
+  RegistrationData,
+  UPLOAD_BILL_TYPE_OPTIONS,
+  UPLOAD_ELECTRICITY_BILL,
+  UPLOAD_GAS_BILL,
+} from '../../constants'
 import PageNavigationActions from '../../components/PageNavigationActions'
 import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
 import { REQUIRED_VALIDATION } from '../../constants/validation'
+import { MAX_FILE_SIZE, PDF_FILE_TYPE } from '../../constants/file'
+import { useRegistration } from '../../hooks/useRegistration'
+import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
+import { useToast } from '../../hooks'
+
+const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
 const BillUploadPage = () => {
-  const { handleSubmit, control, setValue, watch, register } = useForm({ mode: 'all' })
-  const navigate = useNavigate()
+  const { fireAlert } = useToast()
+  const { registrationData, ocrFileMutation, setRegistrationData } = useRegistration()
+  const { handleSubmit, control, setValue, watch, formState } = useForm({
+    defaultValues: registrationData as FieldValues,
+    mode: 'all',
+  })
+  // const navigate = useNavigate()
 
-  const watchBillType: unknown = watch('billType', null)
+  const watchBillFileType: unknown = watch('billFileType', null)
 
-  // const isUpload: boolean =
-  //   typeof watchBillType === 'string' ? watchBillType.toLocaleLowerCase().startsWith('upload') : false
+  const fileValidation = (value: FileList) => {
+    const file = value?.[0] ?? null
+    if (!file) return true
+    if (file.size > MAX_FILE_SIZE) return 'File size must be less than 15MB.'
+    if (!file?.type || !SUPPORTED_FILE_TYPES.includes(file.type)) return 'File type must be PDF only.'
+    return true
+  }
 
-  const onSubmit = (data: Record<string, string>) => {
+  const onSubmit = async (data: Partial<RegistrationData>) => {
     console.log(data)
 
-    navigate('/plans')
+    let nmi: string | undefined = data?.nmi as string
+    let mirn: string | undefined = data?.mirn as string
+    // let buildedData = data
+
+    if (data.billFileType === HAVE_PAPER_BILL) {
+      // buildedData = { ...data }
+      // MUTEAT
+    }
+
+    let shouldSwitchHavePaperBill = false
+    try {
+      if (data.electricityBillInfo?.billFiles?.length) {
+        const electricOCRFile = await transformToOCRFile(data.electricityBillInfo.billFiles[0])
+        const electricOCRResponse = await ocrFileMutation.mutateAsync({
+          file: electricOCRFile,
+          type: ELECTRICITY_VALUE,
+        })
+
+        nmi = extractNMI(electricOCRResponse)
+      }
+
+      if (data.gasBillInfo?.billFiles?.length) {
+        const gasOCRFile = await transformToOCRFile(data.gasBillInfo.billFiles[0])
+        const gasOCRResponse = await ocrFileMutation.mutateAsync({ file: gasOCRFile, type: GAS_VALUE })
+
+        mirn = extractMIRN(gasOCRResponse)
+      }
+
+      shouldSwitchHavePaperBill =
+        (!nmi && registrationData.energyType !== GAS_VALUE) ||
+        (!mirn && registrationData.energyType !== ELECTRICITY_VALUE)
+    } catch (error) {
+      fireAlert({
+        children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+        type: 'info',
+      })
+      shouldSwitchHavePaperBill = true
+    }
+
+    setRegistrationData((prev) => ({
+      ...prev,
+      nmi,
+      mirn,
+      billFileType: shouldSwitchHavePaperBill ? HAVE_PAPER_BILL : registrationData.billFileType,
+    }))
+  }
+
+  let uploadOptions = UPLOAD_BILL_TYPE_OPTIONS
+  if (registrationData.energyType !== BOTH_VALUE) {
+    uploadOptions = UPLOAD_BILL_TYPE_OPTIONS.filter((item) => {
+      if (!registrationData.energyType) return false
+      return item.value.includes(registrationData.energyType)
+    })
   }
 
   return (
@@ -35,50 +112,58 @@ const BillUploadPage = () => {
           <div className="w-full flex flex-col gap-3 text-left">
             <ControllerRadioGroupInput
               control={control}
-              name="billType"
+              name="billFileType"
               rules={REQUIRED_VALIDATION}
-              options={UPLOAD_BILL_TYPE_OPTIONS}
+              options={uploadOptions}
             />
-            {watchBillType === HAVE_PAPER_BILL ? (
-              <PaperBillForm control={control} register={register} energyType="both" setValue={setValue} />
+            {watchBillFileType === HAVE_PAPER_BILL && registrationData.energyType ? (
+              <PaperBillForm control={control} energyType={registrationData.energyType} setValue={setValue} />
             ) : null}
 
-            {watchBillType === UPLOAD_ELECTRICITY_BILL ? (
+            {registrationData.energyType !== GAS_VALUE ? (
               <Controller
-                name={`electricity.billFile`}
+                name={`electricityBillInfo.billFiles`}
                 control={control}
-                rules={REQUIRED_VALIDATION}
+                rules={{
+                  validate: fileValidation,
+                }}
                 render={({ field, fieldState }) => {
+                  if (watchBillFileType !== UPLOAD_ELECTRICITY_BILL) return <></>
                   return (
                     <FileUploadInput
                       labelText="Upload File"
                       labelClassName="mb-4"
                       dropzoneText="Click to upload or drag and drop"
                       helpText="PDF (MAX. 4MB)"
+                      accept={PDF_FILE_TYPE}
                       {...field}
                       error={fieldState.error}
-                      onChange={(e) => field.onChange(e.target.files)}
+                      onChange={(files: FileList | null) => field.onChange(files)}
                     />
                   )
                 }}
               />
             ) : null}
 
-            {watchBillType === UPLOAD_GAS_BILL ? (
+            {registrationData.energyType !== ELECTRICITY_VALUE ? (
               <Controller
-                name={`gas.billFile`}
+                name={`gasBillInfo.billFiles`}
                 control={control}
-                rules={REQUIRED_VALIDATION}
+                rules={{
+                  validate: fileValidation,
+                }}
                 render={({ field, fieldState }) => {
+                  if (watchBillFileType !== UPLOAD_GAS_BILL) return <></>
                   return (
                     <FileUploadInput
                       labelText="Upload File"
                       labelClassName="mb-4"
                       dropzoneText="Click to upload or drag and drop"
                       helpText="PDF (MAX. 4MB)"
+                      accept={PDF_FILE_TYPE}
                       {...field}
                       error={fieldState.error}
-                      onChange={(e) => field.onChange(e.target.files)}
+                      onChange={(files: FileList | null) => field.onChange(files)}
                     />
                   )
                 }}
@@ -87,7 +172,7 @@ const BillUploadPage = () => {
           </div>
         </AccordionCard>
 
-        <PageNavigationActions prevLink="/basic-info-2" />
+        <PageNavigationActions prevLink="/basic-info-2" nextDisabled={!formState.isValid} />
       </form>
     </PageWrapper>
   )

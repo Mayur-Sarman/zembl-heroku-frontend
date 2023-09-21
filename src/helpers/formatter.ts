@@ -45,7 +45,7 @@ export const formatData: FormatDataFunction = (value, dataType, formatOptions) =
 
   switch (dataType) {
     case DATA_TYPE_NUMBER:
-      formattedValue = toNumber(value)
+      formattedValue = toNumber(value).toFixed(2)
       break
     case DATA_TYPE_DATE:
       formattedValue = formatDateTime(value as string | Date, formatOptions?.dateFormat)

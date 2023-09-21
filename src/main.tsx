@@ -10,20 +10,21 @@ import appRoutes from './routes/appRoutes'
 
 import { ErrorBoundary } from 'react-error-boundary'
 import ErrorPage from './pages/ErrorPage/ErrorPage'
-import { RegistrationContextProvider } from './contexts/RegistrationContext'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const router = createBrowserRouter(appRoutes)
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary fallback={<ErrorPage />}>
-      <ThemeProvider>
-        <ModalContextProvider>
-          <RegistrationContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <ModalContextProvider>
             <RouterProvider router={router} />
-          </RegistrationContextProvider>
-        </ModalContextProvider>
-      </ThemeProvider>
+          </ModalContextProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   </React.StrictMode>,
 )

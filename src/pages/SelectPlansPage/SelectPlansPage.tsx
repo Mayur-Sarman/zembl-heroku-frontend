@@ -58,7 +58,7 @@ const SelectPlansPage = () => {
     navigate('/personal-detail-1')
   }
 
-  const selectedEnergyType = registrationData?.energyType?.energyType
+  const selectedEnergyType = registrationData?.energyType
 
   return (
     <PageWrapper>
