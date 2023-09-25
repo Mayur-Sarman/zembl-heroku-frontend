@@ -49,7 +49,7 @@ const HomePage = () => {
     const buildedData = {
       ...data,
       phone: `+${data.phone}`,
-      recordType: data.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
+      recordType: data?.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
     }
 
     const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
@@ -65,7 +65,7 @@ const HomePage = () => {
 
   // TODO: ERROR HANDLING (EXTRACT DATA)
   useEffect(() => {
-    if (createLeadMutation.isError && createLeadMutation.error) {
+    if (createLeadMutation?.isError && createLeadMutation?.error) {
       console.log(createLeadMutation.error)
       fireAlert({ children: <Typography>Oops! Something has error!</Typography>, type: 'error' })
       return
@@ -76,8 +76,8 @@ const HomePage = () => {
   useEffect(() => {
     if (createLeadMutation.isSuccess) {
       if (
-        registrationData.registrationType === REGISTRATION_TYPE_BUSINESS &&
-        registrationData.businessRegisType === ZEMBL_ASSIST_VALUE
+        registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS &&
+        registrationData?.businessRegisType === ZEMBL_ASSIST_VALUE
       ) {
         navigate('/zembl-assist-upload')
       } else {
@@ -85,7 +85,7 @@ const HomePage = () => {
       }
       createLeadMutation.reset()
     }
-  }, [createLeadMutation, registrationData.registrationType, registrationData.businessRegisType, navigate])
+  }, [createLeadMutation, registrationData?.registrationType, registrationData?.businessRegisType, navigate])
 
   useEffect(() => {
     setRegistrationData({} as RegistrationData)

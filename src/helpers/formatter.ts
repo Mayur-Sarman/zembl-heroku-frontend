@@ -38,6 +38,14 @@ export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM YY
   return luxonDate.toFormat(preferredFormat)
 }
 
+export const getJSONDateString = (value: string | Date, preferredFormat = 'yyyy-MM-dd') => {
+  const dateValue = new Date(value)
+  const luxonDate = DateTime.fromJSDate(dateValue)
+  if (!luxonDate.isValid) return null
+
+  return luxonDate.toFormat(preferredFormat)
+}
+
 export const formatData: FormatDataFunction = (value, dataType, formatOptions) => {
   let formattedValue = null
 

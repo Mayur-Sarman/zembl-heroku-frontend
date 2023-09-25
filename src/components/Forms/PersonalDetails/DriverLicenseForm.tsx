@@ -2,14 +2,14 @@ import { Control } from 'react-hook-form'
 import DateInput from '../../Inputs/DateInput'
 import { STATE_LIST_OPTIONS } from '../../../constants'
 import ControllerInput from '../../Inputs/ControllerInput'
-import { CUSTOM_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../../constants/validation'
+import { CUSTOM_SF_TEXT_VALIDATION, DATE_MUST_FUTURE, REQUIRED_VALIDATION } from '../../../constants/validation'
 import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
 
 const DriverLicenseForm = ({ control }: DriverLicenseFormProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
       <ControllerInput
-        name="driverLicense.licenseNumber"
+        name="proofOfIdentity.licenceNo"
         control={control}
         required
         rules={CUSTOM_SF_TEXT_VALIDATION}
@@ -17,7 +17,7 @@ const DriverLicenseForm = ({ control }: DriverLicenseFormProps) => {
         textLabel="License Number"
       />
       <ControllerInput
-        name="driverLicense.cardNumber"
+        name="proofOfIdentity.licenceCardNo"
         control={control}
         required
         rules={CUSTOM_SF_TEXT_VALIDATION}
@@ -25,11 +25,13 @@ const DriverLicenseForm = ({ control }: DriverLicenseFormProps) => {
         textLabel="License Card Number"
       />
       <DateInput
-        name="driverLicense.expiryDate"
+        name="proofOfIdentity.expiryDate"
         control={control}
         required
         label="Expiry Date"
         datepickerClassNames={'top-auto'}
+        minDate={new Date()}
+        rules={DATE_MUST_FUTURE}
       />
       <ControllerSelectInput
         label="Driver's License State"
@@ -37,7 +39,7 @@ const DriverLicenseForm = ({ control }: DriverLicenseFormProps) => {
         placeholder="Select..."
         control={control}
         options={STATE_LIST_OPTIONS}
-        name={'driverLicense.state'}
+        name={'proofOfIdentity.licenceState'}
         rules={REQUIRED_VALIDATION}
       />
     </div>

@@ -1,3 +1,24 @@
+import {
+  AUSTRALIAN_OWNED,
+  FIXED_PRICE,
+  GREEN_OR_CARBON_NEUTRAL,
+  LOCAL_CUSTOMER_SERVICE,
+  LOWEST_PRICE,
+  NO_PREFERENCE,
+} from '../constants'
+
+export const convertPreference = (prefList: string[]) => {
+  const preferences = {
+    greenOrCarbon: prefList.includes(GREEN_OR_CARBON_NEUTRAL),
+    fixedPrice: prefList.includes(FIXED_PRICE),
+    australianOwned: prefList.includes(AUSTRALIAN_OWNED),
+    lowestPrice: prefList.includes(LOWEST_PRICE),
+    localCustomerService: prefList.includes(LOCAL_CUSTOMER_SERVICE),
+    noPreferences: prefList.includes(NO_PREFERENCE),
+  }
+  return preferences
+}
+
 export interface Preference {
   greenOrCarbon: boolean
   fixedPrice: boolean

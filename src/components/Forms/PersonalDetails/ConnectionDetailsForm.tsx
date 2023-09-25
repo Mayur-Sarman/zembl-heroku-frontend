@@ -31,7 +31,7 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
             setValue('address.streetNumber', data?.street)
             setValue('address.streetName', data?.route)
             setValue('address.city', data?.suburb)
-            setValue('address.postcode', data?.postCode)
+            setValue('address.postCode', data?.postCode)
             setValue('address.state', data?.state)
           }}
           textLabel="Your Connection Address"

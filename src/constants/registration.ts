@@ -1,6 +1,8 @@
 import { getNames } from 'country-list'
 import { Lead } from '../api/lead'
-import { Site, SiteResponse } from '../api/site'
+import { ProcessSiteOutput, Site } from '../api/site'
+import { Account } from '../api/account'
+import { ProcessQuoteOutput } from '../api/quote'
 
 export const ELECTRICITY_VALUE = 'Electricity'
 export const GAS_VALUE = 'Gas'
@@ -191,9 +193,9 @@ export const CURRENT_USAGE_OPTIONS: SelectOption[] = [
 ]
 
 export const UPLOAD_BILL_TYPE_OPTIONS: SelectOption[] = [
-  { value: HAVE_PAPER_BILL, label: HAVE_PAPER_BILL },
   { value: UPLOAD_ELECTRICITY_BILL, label: UPLOAD_ELECTRICITY_BILL },
   { value: UPLOAD_GAS_BILL, label: UPLOAD_GAS_BILL },
+  { value: HAVE_PAPER_BILL, label: HAVE_PAPER_BILL },
 ]
 
 export const MEDICARE_REF_NO_OPTIONS: SelectOption[] = ['1', '2', '3', '4'].map((item) => ({
@@ -234,13 +236,20 @@ export interface SelectOption {
   label: string
 }
 
-export interface RegistrationData extends Lead, Site, SiteResponse, Record<string, unknown> {
+export interface RegistrationData
+  extends Lead,
+    Site,
+    ProcessSiteOutput,
+    Account,
+    ProcessQuoteOutput,
+    Record<string, unknown> {
   leadId?: string | null
   energyType?: string
   registrationType?: string
   businessRegisType?: string
   gasBillInfo?: BillInfo
   electricityBillInfo?: BillInfo
+  accountName?: string | null | undefined
 }
 
 interface BillInfo {

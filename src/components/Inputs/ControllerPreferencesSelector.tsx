@@ -1,20 +1,21 @@
-import { ChangeEvent, useCallback } from 'react'
+import { ChangeEvent } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import { ValidationObject } from '../../constants/validation'
 import PreferenceSelector, { PreferenceSelectorProps } from './PreferenceSelector'
 
 const ControllerPreferencesSelector = ({ name, control, rules, ...rest }: ControllerPreferencesSelectorProps) => {
-  const onPreferenceSelected = useCallback(
-    (event: ChangeEvent<HTMLButtonElement>, currentSelections: string[], onChange: (event: unknown) => unknown) => {
-      const value = event.target.value
-      const prev = currentSelections ?? []
-      const isSelected = prev.includes(value)
-      const values = isSelected ? prev.filter((i) => i != value) : [...prev, value]
+  const onPreferenceSelected = (
+    event: ChangeEvent<HTMLButtonElement>,
+    currentSelections: string[],
+    onChange: (event: unknown) => unknown,
+  ) => {
+    const value = event.target.value
+    const prev = currentSelections ?? []
+    const isSelected = prev.includes(value)
+    const values = isSelected ? prev.filter((i) => i != value) : [...prev, value]
 
-      onChange(values)
-    },
-    [],
-  )
+    onChange(values)
+  }
 
   return (
     <Controller

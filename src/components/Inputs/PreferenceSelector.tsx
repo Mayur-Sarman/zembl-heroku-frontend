@@ -1,4 +1,4 @@
-import { FormEventHandler, MouseEventHandler, useCallback, useState } from 'react'
+import { FormEventHandler, MouseEventHandler, useState } from 'react'
 import AccordionCard from '../AccordionCard'
 import RadioGroupInput from './RadioGroupInput'
 import { Typography } from '@material-tailwind/react'
@@ -10,6 +10,7 @@ import { PERFERENCES_OPTIONS } from '../../constants'
 const PreferenceSelector = ({
   preferences,
   onChange,
+  onChangeSaved,
   editable,
   title = 'Your Preferences',
   label = "What's important to you?",
@@ -18,11 +19,14 @@ const PreferenceSelector = ({
 }: PreferenceSelectorProps) => {
   const [isEditing, setIsEditing] = useState(!editable)
 
-  const onEditClickHandler: MouseEventHandler<HTMLDivElement> = useCallback((event) => {
+  const onEditClickHandler: MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    setIsEditing((prev) => !prev)
-  }, [])
+    setIsEditing((editing) => {
+      if (editing && onChangeSaved) onChangeSaved(preferences)
+      return !editing
+    })
+  }
 
   const editButton = editable ? (
     <EditActionButton isEditing={isEditing} onEditClickHandler={onEditClickHandler} />
@@ -63,6 +67,7 @@ export interface PreferenceSelectorProps {
   title?: string
   preferences: string[]
   onChange: FormEventHandler<HTMLButtonElement>
+  onChangeSaved?: (preferences: string[]) => unknown
   editable?: boolean
   error?: FieldError
   required?: boolean

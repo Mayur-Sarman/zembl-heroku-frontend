@@ -24,7 +24,7 @@ export interface Lead {
   electricity?: boolean
   gas?: boolean
   newConnection?: boolean
-  moveInDate?: Date
+  moveInDate?: string | null
   billFrequency?: string // 'Monthly' | 'Quarterly'
   billEnergySpend?: string // '< 2,500' | '> 2,500' | '< 7,500' | '> 7,500'
   abn?: string

@@ -22,12 +22,13 @@ import { MAX_FILE_SIZE, PDF_FILE_TYPE } from '../../constants/file'
 import { useRegistration } from '../../hooks/useRegistration'
 import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
 import { useToast } from '../../hooks'
+import { buildCreateAccountPayload } from '../../api/account'
 
 const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
 const BillUploadPage = () => {
   const { fireAlert } = useToast()
-  const { registrationData, ocrFileMutation, setRegistrationData } = useRegistration()
+  const { registrationData, ocrFileMutation, createAccountMutation, setRegistrationData } = useRegistration()
   const { handleSubmit, control, setValue, watch, formState } = useForm({
     defaultValues: registrationData as FieldValues,
     mode: 'all',
@@ -47,13 +48,14 @@ const BillUploadPage = () => {
   const onSubmit = async (data: Partial<RegistrationData>) => {
     console.log(data)
 
-    let nmi: string | undefined = data?.nmi as string
-    let mirn: string | undefined = data?.mirn as string
+    let nmi: string | undefined = data?.nmi
+    let mirn: string | undefined = data?.mirn
     // let buildedData = data
 
     if (data.billFileType === HAVE_PAPER_BILL) {
-      // buildedData = { ...data }
-      // MUTEAT
+      const buildedData = buildCreateAccountPayload(data, nmi, mirn)
+      setRegistrationData((prev) => ({ ...prev, ...data }))
+      return createAccountMutation.mutate(buildedData)
     }
 
     let shouldSwitchHavePaperBill = false
@@ -79,26 +81,34 @@ const BillUploadPage = () => {
         (!nmi && registrationData.energyType !== GAS_VALUE) ||
         (!mirn && registrationData.energyType !== ELECTRICITY_VALUE)
     } catch (error) {
+      shouldSwitchHavePaperBill = true
+    }
+
+    console.log('registrationData.energyType:', registrationData.energyType)
+    console.log('shouldSwitchHavePaperBill:', shouldSwitchHavePaperBill)
+
+    // NMI/MIRN found
+    if (!shouldSwitchHavePaperBill) {
+      const buildedData = buildCreateAccountPayload(data, nmi, mirn)
+      setRegistrationData((prev) => ({ ...prev, ...data, nmi, mirn }))
+      return createAccountMutation.mutate(buildedData)
+    } else {
+      setValue('billFileType', HAVE_PAPER_BILL)
+      setValue('nmi', nmi)
+      setValue('mirn', mirn)
+
       fireAlert({
         children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
         type: 'info',
       })
-      shouldSwitchHavePaperBill = true
     }
-
-    setRegistrationData((prev) => ({
-      ...prev,
-      nmi,
-      mirn,
-      billFileType: shouldSwitchHavePaperBill ? HAVE_PAPER_BILL : registrationData.billFileType,
-    }))
   }
 
   let uploadOptions = UPLOAD_BILL_TYPE_OPTIONS
   if (registrationData.energyType !== BOTH_VALUE) {
     uploadOptions = UPLOAD_BILL_TYPE_OPTIONS.filter((item) => {
       if (!registrationData.energyType) return false
-      return item.value.includes(registrationData.energyType)
+      return item.value.includes(registrationData.energyType) || item.value === HAVE_PAPER_BILL
     })
   }
 

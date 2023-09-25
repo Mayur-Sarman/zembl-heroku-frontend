@@ -25,7 +25,7 @@ const GoogleAddressInput = ({
   disabled,
   onSelectedCallback,
 }: GoogleAddressInputProps) => {
-  const [valueDisplay, setValueDisplay] = useState('')
+  const [valueDisplay, setValueDisplay] = useState<string|undefined>(undefined)
   const textLabelDisplay = textLabel ? (
     <Typography
       variant="small"
@@ -59,15 +59,16 @@ const GoogleAddressInput = ({
         rules={rules}
         render={({ field, fieldState }) => {
           const displayValue =
-            valueDisplay ||
-            ((field.value as GoogleMapExtractedComponents)?.fullAddress ?? '') ||
-            (field.value as string) ||
+            valueDisplay ??
+            ((field.value as GoogleMapExtractedComponents)?.fullAddress) ??
+            (field.value as string) ??
             ''
           return (
             <div className={`w-full ${containerClassName ?? ''}`}>
               {textLabelDisplay}
               <ReactGoogleAutocomplete
                 value={displayValue}
+                // defaultValue={displayValue}
                 name={field.name}
                 ref={field.ref}
                 onPlaceSelected={(e, ref) => onChangeHandler(e, field.onChange, ref as unknown as Record<string, unknown>)}

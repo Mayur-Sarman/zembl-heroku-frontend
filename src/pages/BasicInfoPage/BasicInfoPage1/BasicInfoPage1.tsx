@@ -20,6 +20,7 @@ import {
   YES_VALUE,
 } from '../../../constants'
 import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
+import { getJSONDateString } from '../../../helpers/formatter'
 
 const BasicInfoPage1 = () => {
   const { fireAlert } = useToast()
@@ -34,7 +35,7 @@ const BasicInfoPage1 = () => {
   const isMoving: unknown = watch<string>('isMoving', false)
 
   const onSubmit = (data: FieldValues) => {
-    const isBusiness = data.registrationType === REGISTRATION_TYPE_BUSINESS
+    const isBusiness = data?.registrationType === REGISTRATION_TYPE_BUSINESS
     const isCI =
       data.moreThanOne === YES_VALUE ||
       [MONTHLY_SPEND_MORE, QUARTERLY_SPEND_MORE].includes(data.billEnergySpend as string)
@@ -52,6 +53,7 @@ const BasicInfoPage1 = () => {
       gas: [GAS_VALUE, BOTH_VALUE].includes(data.energyType as string),
       recordType,
       id: data.leadId as string,
+      moveInDate: getJSONDateString(data?.moveInDate as Date),
       newConnection: data.isMoving === YES_VALUE,
       fullAddress: (data.address as GoogleMapExtractedComponents).fullAddress,
     }
@@ -75,7 +77,7 @@ const BasicInfoPage1 = () => {
     }
   }, [updateLeadMutation])
 
-  const isNonBusiness = registrationData.registrationType !== REGISTRATION_TYPE_BUSINESS
+  const isNonBusiness = registrationData?.registrationType !== REGISTRATION_TYPE_BUSINESS
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">

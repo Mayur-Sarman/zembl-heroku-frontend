@@ -7,8 +7,12 @@ export const postCreateSite = async (data: Site, token: string) => {
 }
 
 export interface SiteResponse {
-  siteRelationId: string
-  siteId: string
+  processSiteOutput?: ProcessSiteOutput
+}
+
+export interface ProcessSiteOutput {
+  siteRelationshipId?: string
+  siteId?: string
 }
 
 export interface Site {
@@ -24,14 +28,5 @@ export interface Site {
   lifeSupport?: string | null
   solar?: string | null
   solarConsideration?: string | null
-  preferences?: SitePreference | null
-}
-
-export interface SitePreference extends Preference {
-  greenOrCarbon: boolean
-  fixedPrice: boolean
-  australianOwned: boolean
-  lowestPrice: boolean
-  localCustomerService: boolean
-  noPreferences: boolean
+  preferences?: Preference
 }

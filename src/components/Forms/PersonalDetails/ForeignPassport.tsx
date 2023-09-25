@@ -14,20 +14,20 @@ const ForeignPassportForm = ({ control }: ForeignPassportFormProps) => {
         placeholder="Select..."
         control={control}
         options={COUNTRY_LIST_OPTIONS}
-        name={'foreignPassport.country'}
+        name={'proofOfIdentity.country'}
         rules={REQUIRED_VALIDATION}
       />
       <ControllerInput
         label="Passport Number"
         textLabel="Passport Number"
-        name="foreignPassport.passportNumber"
+        name="proofOfIdentity.passportNo"
         control={control}
         required
         rules={PASSPORT_VALIDATION}
       />
       <DateInput
         label="Expiry Date"
-        name="foreignPassport.expiryDate"
+        name="proofOfIdentity.expiryDate"
         control={control}
         datepickerClassNames={'top-auto'}
         options={{ minDate: new Date() }}

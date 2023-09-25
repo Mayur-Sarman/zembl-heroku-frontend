@@ -1,6 +1,5 @@
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import { Typography } from '@material-tailwind/react'
-import { useNavigate } from 'react-router-dom'
 
 import AccordionCard from '../../../components/AccordionCard'
 
@@ -13,6 +12,7 @@ import {
   GAS_VALUE,
   IDENTITY_TYPE_OPTIONS,
   MEDICARE_CARD_VALUE,
+  REGISTRATION_TYPE_BUSINESS,
 } from '../../../constants'
 import DriverLicenseForm from '../../../components/Forms/PersonalDetails/DriverLicenseForm'
 import AustralianPassportForm from '../../../components/Forms/PersonalDetails/AustralianPassportForm'
@@ -23,12 +23,17 @@ import BusinessDetailsForm from '../../../components/Forms/PersonalDetails/Busin
 import ConnectionDetailsForm from '../../../components/Forms/PersonalDetails/ConnectionDetailsForm'
 import PageNavigationActions from '../../../components/PageNavigationActions'
 import ControllerRadioGroupInput from '../../../components/Inputs/ControllerRadioGroupInput'
+import { useRegistration } from '../../../hooks/useRegistration'
+import { buildMainProfilePayload } from '../../../api/profile'
 // import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
 
 const PersonalDetailPage1 = () => {
+  const { registrationData, updateProfileMutation } = useRegistration()
   // On load page get data from context
-  const { handleSubmit, control, setValue, watch } = useForm()
-  const navigate = useNavigate()
+  const { handleSubmit, control, setValue, watch } = useForm({
+    defaultValues: registrationData as FieldValues,
+    mode: 'all',
+  })
 
   const identificationTypeWatcher: unknown = watch<string>('identificationType', '')
 
@@ -37,11 +42,8 @@ const PersonalDetailPage1 = () => {
 
     // Call API
     // Put data to context
-    navigate('/personal-detail-2')
+    updateProfileMutation.mutate(buildMainProfilePayload({ ...registrationData, ...data }))
   }
-
-  const electricPlanBrandName = 'Big Boss Electricity'
-  const gasPlanBrandName = 'Business Balance Plan 24'
 
   let identificationForm = null
   switch (identificationTypeWatcher) {
@@ -59,6 +61,28 @@ const PersonalDetailPage1 = () => {
       break
   }
 
+  const electricQuote = registrationData.electricityQuote
+  const gasQuote = registrationData.gasQuote
+  const energyType = registrationData.energyType
+
+  const electPlanCard =
+    energyType !== GAS_VALUE ? (
+      <MiniPlanCard
+        brandIcon={electricQuote?.retailerIconLink ?? ''}
+        energyType={ELECTRICITY_VALUE}
+        planName={electricQuote?.retailerName ?? ''}
+      />
+    ) : null
+
+  const gasPlanCard =
+    energyType !== ELECTRICITY_VALUE ? (
+      <MiniPlanCard
+        brandIcon={gasQuote?.retailerIconLink ?? ''}
+        energyType={ELECTRICITY_VALUE}
+        planName={gasQuote?.retailerName ?? ''}
+      />
+    ) : null
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <AccordionCard
@@ -67,12 +91,14 @@ const PersonalDetailPage1 = () => {
         title="Your Energy Plans"
         bodyClassName="w-full grid grid-cols-1 lg:grid-cols-2 gap-6"
       >
-        <MiniPlanCard brandIcon="/vite.svg" energyType={ELECTRICITY_VALUE} planName={electricPlanBrandName} />
-        <MiniPlanCard brandIcon="/vite.svg" energyType={GAS_VALUE} planName={gasPlanBrandName} />
+        {electPlanCard}
+        {gasPlanCard}
       </AccordionCard>
 
       <AccountDetailsForm control={control} />
-      <BusinessDetailsForm control={control} />
+      {registrationData.registrationType === REGISTRATION_TYPE_BUSINESS ? (
+        <BusinessDetailsForm control={control} />
+      ) : null}
       <ConnectionDetailsForm control={control} setValue={setValue} />
 
       <AccordionCard alwaysOpen open title="Proof of Identity" bodyClassName="w-full flex flex-col gap-3 text-left">

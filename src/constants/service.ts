@@ -6,3 +6,6 @@ export const SESSION_TOKEN_KEY = `${import.meta.env.VITE_SESSION_STORAGE_PREFIX}
 
 export const NO_RESPONSE_ERROR = 'No Response'
 export const CONFIG_ERROR = 'Config Error'
+
+export const MULESOFT_CLIENT_KEY = `${import.meta.env.VITE_MULESOFT_CLIENT_KEY}`
+export const MULESOFT_CLIENT_SECRET = `${import.meta.env.VITE_MULESOFT_CLIENT_SECRET}`

@@ -17,7 +17,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
         </Typography>
         <div className="w-full lg:w-1/2 flex flex-col gap-3">
           <ControllerInput
-            name="gasBillInfo.mirn"
+            name="mirn"
             rules={ABN_NMI_MIRN_VALIDATION}
             required
             control={control}
@@ -26,7 +26,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
           />
           <ControllerSelectInput
             control={control}
-            name="gasBillInfo.currentRetailer"
+            name="currentRetailerGas"
             textLabel="Current retailer"
             label="Retailer"
             placeholder="Select"
@@ -36,7 +36,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
         </div>
         <ControllerRadioGroupInput
             control={control}
-            name="gasBillInfo.currentUsage"
+            name="currentUsageGas"
             options={CURRENT_USAGE_OPTIONS}
             rules={REQUIRED_VALIDATION}
             label="What is current usage?"
@@ -52,7 +52,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
         </Typography>
         <div className="w-full lg:w-1/2 flex flex-col gap-3">
           <ControllerInput
-            name="electricityBillInfo.nmi"
+            name="nmi"
             rules={ABN_NMI_MIRN_VALIDATION}
             required
             control={control}
@@ -68,7 +68,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
               setValue('streetNumber', data?.street)
               setValue('streetName', data?.route)
               setValue('city', data?.suburb)
-              setValue('postcode', data?.postCode)
+              setValue('postCode', data?.postCode)
               setValue('state', data?.state)
             }}
             textLabel="Your Connection Address"
@@ -77,7 +77,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
           />
           <ControllerSelectInput
             control={control}
-            name="electricityBillInfo.currentRetailer"
+            name="currentRetailerElectric"
             textLabel="Current retailer"
             label="Retailer"
             placeholder="Select"
@@ -87,7 +87,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
         </div>
         <ControllerRadioGroupInput
           control={control}
-          name="electricityBillInfo.currentUsage"
+          name="currentUsageElectric"
           options={CURRENT_USAGE_OPTIONS}
           rules={REQUIRED_VALIDATION}
           label="What is current usage?"

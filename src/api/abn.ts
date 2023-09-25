@@ -45,7 +45,7 @@ interface BusinessEntity {
   ASICNumber: string | null
   entityType: EntityType
   goodsAndServicesTax: GoodsAndServicesTax | GoodsAndServicesTax[]
-  mainName: BusinessName | null
+  mainName: BusinessName | BusinessName[] | null
   mainBusinessPhysicalAddress: MainBusinessPhysicalAddress | MainBusinessPhysicalAddress[]
   businessName: BusinessName[]
 }

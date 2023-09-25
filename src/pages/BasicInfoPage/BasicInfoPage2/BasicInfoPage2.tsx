@@ -9,17 +9,10 @@ import BillAndMessageForm from '../../../components/Forms/BasicInfos/BillAndMess
 import { REQUIRED_VALIDATION } from '../../../constants/validation'
 import ControllerPreferencesSelector from '../../../components/Inputs/ControllerPreferencesSelector'
 import { useRegistration } from '../../../hooks/useRegistration'
-import {
-  AUSTRALIAN_OWNED,
-  FIXED_PRICE,
-  GREEN_OR_CARBON_NEUTRAL,
-  LEAD_STATUS_CONVERTED_WON,
-  LOCAL_CUSTOMER_SERVICE,
-  LOWEST_PRICE,
-  NO_PREFERENCE,
-} from '../../../constants'
+import { LEAD_STATUS_CONVERTED_WON } from '../../../constants'
 import { useToast } from '../../../hooks'
 import { Site } from '../../../api/site'
+import { convertPreference } from '../../../api/common'
 
 const BasicInfoPage2 = () => {
   const { fireAlert } = useToast()
@@ -41,7 +34,7 @@ const BasicInfoPage2 = () => {
       const leadConvertResult = await updateLeadMutation.mutateAsync(lead)
       const leadId = leadConvertResult?.processLeadOutput?.id ?? null
 
-      const selectedPreferences: string[] = (data?.preferences as string[]) ?? []
+      const selectedPreferences: string[] = (data?.preferenceList as string[]) ?? []
       const siteData: Site = {
         leadId: leadId,
         gas: !!data?.gas,
@@ -51,19 +44,18 @@ const BasicInfoPage2 = () => {
         lifeSupport: data?.lifeSupport as string,
         solar: data?.solar as string,
         solarConsideration: data?.solarConsideration as string,
-        preferences: {
-          greenOrCarbon: selectedPreferences.includes(GREEN_OR_CARBON_NEUTRAL),
-          fixedPrice: selectedPreferences.includes(FIXED_PRICE),
-          australianOwned: selectedPreferences.includes(AUSTRALIAN_OWNED),
-          lowestPrice: selectedPreferences.includes(LOWEST_PRICE),
-          localCustomerService: selectedPreferences.includes(LOCAL_CUSTOMER_SERVICE),
-          noPreferences: selectedPreferences.includes(NO_PREFERENCE),
-        },
+        preferences: convertPreference(selectedPreferences),
       }
       const createSiteResult = await createSiteMutation.mutateAsync(siteData)
 
       setRegistrationData((value) => {
-        const mergedValue = { ...value, ...data, ...createSiteResult, leadId: leadId }
+        const mergedValue = {
+          ...value,
+          ...siteData,
+          ...createSiteResult?.processSiteOutput,
+          preferenceList: selectedPreferences,
+          leadId: leadId,
+        }
         console.log(mergedValue)
         return mergedValue
       })
@@ -71,7 +63,6 @@ const BasicInfoPage2 = () => {
     } catch (error) {
       fireAlert({ children: 'Oops! Something has error!', type: 'error' })
       console.log('CATCH', error)
-      navigate('/bill-upload')
     } finally {
       updateLeadMutation.reset()
       createSiteMutation.reset()
@@ -119,7 +110,7 @@ const BasicInfoPage2 = () => {
       <BillAndMessageForm control={control} />
       <BasicLifeSupportForm control={control} />
       <SolarForm control={control} />
-      <ControllerPreferencesSelector name={'preferences'} control={control} rules={REQUIRED_VALIDATION} />
+      <ControllerPreferencesSelector name={'preferenceList'} control={control} rules={REQUIRED_VALIDATION} />
 
       <PageNavigationActions prevLink="/basic-info-1" />
     </form>
