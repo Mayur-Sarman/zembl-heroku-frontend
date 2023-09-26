@@ -132,8 +132,8 @@ const BillUploadPage = () => {
               rules={REQUIRED_VALIDATION}
               options={uploadOptions}
             />
-            {watchBillFileType === HAVE_PAPER_BILL && registrationData.energyType ? (
-              <PaperBillForm control={control} energyType={registrationData.energyType} setValue={setValue} />
+            {watchBillFileType === HAVE_PAPER_BILL ? (
+              <PaperBillForm control={control} energyType={registrationData.energyType ?? ''} setValue={setValue} />
             ) : null}
 
             {registrationData.energyType !== GAS_VALUE ? (
