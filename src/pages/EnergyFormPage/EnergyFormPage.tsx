@@ -74,7 +74,7 @@ const HomePage = () => {
 
   // SUCCESS
   useEffect(() => {
-    if (createLeadMutation.isSuccess) {
+    if (createLeadMutation?.isSuccess) {
       if (
         registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS &&
         registrationData?.businessRegisType === ZEMBL_ASSIST_VALUE
@@ -88,11 +88,11 @@ const HomePage = () => {
   }, [createLeadMutation, registrationData?.registrationType, registrationData?.businessRegisType, navigate])
 
   useEffect(() => {
-    setRegistrationData({} as RegistrationData)
+    setRegistrationData?.({} as RegistrationData)
   }, [setRegistrationData])
 
   return (
-    <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
+    <PageWrapper containerClassName="bg-zembl-s !bg-white" contentWrapperClassName="max-w-screen-lg">
       <EnergyFormPageTitle />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 md:w-1/2 ">
         <InputWithLabel
