@@ -40,7 +40,7 @@ const VerificationCodePage = () => {
           <VerificationCodeInput
             control={control}
             setValue={setValue}
-            phoneNumber={registrationData.phoneNumber}
+            phoneNumber={registrationData.phone ?? ''}
             onResendClicked={onResendClick}
           />
           <PageNavigationActions hidePrev nextDisabled={!formState.isValid} />

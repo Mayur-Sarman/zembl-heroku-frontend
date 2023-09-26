@@ -18,6 +18,7 @@ const ControllerInput = ({ name, control, rules, required, ...rest }: Controller
             required={required ?? !!computedRules?.required}
             fieldError={fieldState.error}
             {...field}
+            value={field.value as string ?? ''}
             ref={field.ref}
           />
         )

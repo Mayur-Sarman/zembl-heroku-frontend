@@ -21,7 +21,10 @@ const InputWithLabel = forwardRef(function InputWithLabel(
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const textLabelDisplay = textLabel ? (
-    <Typography variant="small" className={`mb-2 pl-1 ${required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''}`}>
+    <Typography
+      variant="small"
+      className={`mb-2 pl-1 ${required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''}`}
+    >
       {textLabel}
     </Typography>
   ) : null
@@ -63,9 +66,6 @@ const InputWithLabel = forwardRef(function InputWithLabel(
     </div>
   )
 })
-
-export const DEFAULT_INPUT_CLASS_NAME =
-  'peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] !border !border-blue-gray-200 focus:!border-gray-900 bg-white'
 
 export interface InputWithLabelProps extends InputProps {
   name: string

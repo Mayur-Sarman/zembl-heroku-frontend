@@ -3,14 +3,15 @@ import { GOOGLE_API_KEY } from '../../constants'
 
 import { Typography } from '@material-tailwind/react'
 import ReactGoogleAutocomplete from 'react-google-autocomplete'
-import { DEFAULT_INPUT_CLASS_NAME } from '.'
 import { GoogleMapExtractedComponents, extractAddressComponent } from '../../helpers/googleMap'
 import { ChangeEvent, ReactNode, useState } from 'react'
 import ErrorTextMessage from '../ErrorTextMessage'
+import { DEFAULT_INPUT_CLASS_NAME } from '../../constants/input'
 
 const GOOGLE_ADDRESS_OPTIONS = {
   types: [],
   fields: ['formatted_address', 'address_components', 'name'],
+  componentRestrictions: { country: ['au'] },
 }
 
 const GoogleAddressInput = ({
@@ -24,7 +25,7 @@ const GoogleAddressInput = ({
   disabled,
   onSelectedCallback,
 }: GoogleAddressInputProps) => {
-  const [valueDisplay, setValueDisplay] = useState('')
+  const [valueDisplay, setValueDisplay] = useState<string|undefined>(undefined)
   const textLabelDisplay = textLabel ? (
     <Typography
       variant="small"
@@ -34,8 +35,12 @@ const GoogleAddressInput = ({
     </Typography>
   ) : null
 
-  const onChangeHandler = (fieldValue: google.maps.places.PlaceResult, onChange: (event: unknown) => unknown) => {
-    const extractedAddress = extractAddressComponent(fieldValue)
+  const onChangeHandler = (
+    fieldValue: google.maps.places.PlaceResult,
+    onChange: (event: unknown) => unknown,
+    ref: Record<string, unknown>,
+  ) => {
+    const extractedAddress = extractAddressComponent(fieldValue, ref?.value as string)
     onChange(extractedAddress)
     if (displayAs) setValueDisplay(displayAs(extractedAddress) as string)
     if (onSelectedCallback) onSelectedCallback(extractedAddress)
@@ -53,14 +58,20 @@ const GoogleAddressInput = ({
         control={control}
         rules={rules}
         render={({ field, fieldState }) => {
+          const displayValue =
+            valueDisplay ??
+            ((field.value as GoogleMapExtractedComponents)?.fullAddress) ??
+            (field.value as string) ??
+            ''
           return (
             <div className={`w-full ${containerClassName ?? ''}`}>
               {textLabelDisplay}
               <ReactGoogleAutocomplete
-                value={valueDisplay}
+                value={displayValue}
+                // defaultValue={displayValue}
                 name={field.name}
                 ref={field.ref}
-                onPlaceSelected={(e) => onChangeHandler(e, field.onChange)}
+                onPlaceSelected={(e, ref) => onChangeHandler(e, field.onChange, ref as unknown as Record<string, unknown>)}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setValueDisplay(e.target.value)}
                 onBlur={(e: ChangeEvent<HTMLInputElement>) => onBlurHandler(e.target.value, field.onChange)}
                 apiKey={GOOGLE_API_KEY}

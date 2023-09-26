@@ -26,13 +26,13 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           control={control}
           required
           onSelectedCallback={(data) => {
-            setValue('unitNumber', data?.unitNumber)
-            setValue('unitType', data?.unitType)
-            setValue('streetNumber', data?.street)
-            setValue('streetName', data?.route)
-            setValue('city', data?.suburb)
-            setValue('postcode', data?.postalCode)
-            setValue('state', data?.state)
+            setValue('address.unitNumber', data?.unitNumber)
+            setValue('address.unitType', data?.unitType)
+            setValue('address.streetNumber', data?.street)
+            setValue('address.streetName', data?.route)
+            setValue('address.city', data?.suburb)
+            setValue('address.postCode', data?.postCode)
+            setValue('address.state', data?.state)
           }}
           textLabel="Your Connection Address"
           name="address"
@@ -45,21 +45,21 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
       </div>
       <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6`}>
         <ControllerInput
-          name="unitNumber"
+          name="address.unitNumber"
           control={control}
           label="Unit Number"
           textLabel="Unit Number (optional)"
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="unitType"
+          name="address.unitType"
           control={control}
           label="Unit Type"
           textLabel="Unit Type (optional)"
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="streetNumber"
+          name="address.streetNumber"
           control={control}
           required={isManualAddress}
           label="Street Number"
@@ -67,7 +67,7 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="streetName"
+          name="address.streetName"
           control={control}
           required={isManualAddress}
           label="Street Name"
@@ -75,7 +75,7 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="city"
+          name="address.city"
           control={control}
           required={isManualAddress}
           label="Suburb/City"
@@ -83,7 +83,7 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="postcode"
+          name="address.postCode"
           control={control}
           required={isManualAddress}
           label="Postcode"
@@ -91,7 +91,7 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           disabled={!isManualAddress}
         />
         <ControllerSelectInput
-          name="state"
+          name="address.state"
           control={control}
           textLabel="State"
           label="State"

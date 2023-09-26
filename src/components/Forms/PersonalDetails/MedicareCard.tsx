@@ -13,13 +13,13 @@ const MedicareCardForm = ({ control }: MedicareCardFormProps) => {
         label="Medicare Card Number"
         control={control}
         textLabel="Medicare Card Number"
-        name="medicareCard.cardNumber"
+        name="proofOfIdentity.medicareCardNo"
         required
         rules={getExactLengthValidation(10)}
       />
       <ControllerSelectInput
         control={control}
-        name="medicareCard.refNumber"
+        name="proofOfIdentity.referenceNo"
         options={MEDICARE_REF_NO_OPTIONS}
         label="Individual Reference Number"
         textLabel="Individual Reference Number"
@@ -28,7 +28,7 @@ const MedicareCardForm = ({ control }: MedicareCardFormProps) => {
       <div className="flex flex-col gap-y-3 col-span-1 lg:col-span-2">
         <ControllerRadioGroupInput
           control={control}
-          name="medicareCard.colour"
+          name="proofOfIdentity.cardColour"
           label="Card Colour"
           required
           options={MEDICARE_COLOUR_LIST_OPTIONS}
@@ -36,13 +36,12 @@ const MedicareCardForm = ({ control }: MedicareCardFormProps) => {
       </div>
       <DateInput
         label="Expiry Date"
-        name="medicareCard.expiryDate"
+        name="proofOfIdentity.expiryDate"
         control={control}
         datepickerClassNames={'top-auto'}
-        options={{ minDate: new Date() }}
-        required
-        rules={DATE_MUST_FUTURE}
         minDate={new Date()}
+        rules={DATE_MUST_FUTURE}
+        required
       />
     </div>
   )

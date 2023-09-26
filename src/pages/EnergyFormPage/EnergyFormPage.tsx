@@ -1,35 +1,38 @@
 import { useEffect } from 'react'
 
-import { useModal, useToast } from '../../hooks'
-import { Controller, FieldValues, useForm } from 'react-hook-form'
+import { useToast } from '../../hooks'
+import { useForm } from 'react-hook-form'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
 
-import { Button } from '@material-tailwind/react'
+import { Button, Typography } from '@material-tailwind/react'
 
 import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
 import PageWrapper from '../../components/PageWrapper'
 import InputWithLabel from '../../components/Inputs/InputWithLabel'
 
 import EnergyFormPageTitle from './EnergyFormPageTitle'
-// import { extractAddressComponent } from '../../helpers/googleMap'
-import RadioGroupInput from '../../components/Inputs/RadioGroupInput'
 import {
   BUSINESS_REGISTRATION_TYPE_OPTIONS,
   REGISTRATION_TYPE_BUSINESS,
   REGISTRATION_TYPE_OPTIONS,
   REGISTRATION_TYPE_RESIDENTIAL,
+  RegistrationData,
+  SME_VALUE,
+  ZEMBL_ASSIST_VALUE,
 } from '../../constants'
 import RadioCheckGroupInput from '../../components/Inputs/RadioCheckGroupInput'
 import { EMAIL_VALIDATION, STANDARD_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../constants/validation'
-
-const FORM_DEFAULT_VALUE: FieldValues = {
-  registrationType: null,
-}
+import { useRegistration } from '../../hooks/useRegistration'
+import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
 
 const HomePage = () => {
   const { fireAlert } = useToast()
-  const { openModal } = useModal()
+  const {
+    createLeadMutation,
+    // updateLeadMutation, registrationData,
+    setRegistrationData,
+  } = useRegistration()
   const {
     register,
     handleSubmit,
@@ -37,7 +40,6 @@ const HomePage = () => {
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: FORM_DEFAULT_VALUE,
     mode: 'all',
   })
   const { executeRecaptcha }: IGoogleReCaptchaConsumerProps = useGoogleReCaptcha()
@@ -46,23 +48,58 @@ const HomePage = () => {
   const typeWatcher: unknown = watch('registrationType', REGISTRATION_TYPE_BUSINESS)
 
   const onSubmit = async (data: Record<string, string>) => {
-    console.log(data)
-    // console.log(extractAddressComponent(data?.googleAddress as google.maps.places.PlaceResult))
-    // if (data) return
     if (!executeRecaptcha) return
 
-    const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
-    console.log(token)
+    const buildedData = {
+      ...data,
+      phone: `+${data.phone}`,
+      recordType: data?.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
+    }
 
-    navigate('/basic-info-1')
+    const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
+    console.log(token, buildedData)
+
+    // TODO: Validate Recaptcha with API
+    // if (!registrationData.token) {
+    //   createLeadMutation.mutate(buildedData)
+    // } else {
+    //   updateLeadMutation.mutate(buildedData)
+    // }
+
+    if (data?.registrationType === REGISTRATION_TYPE_BUSINESS && data?.businessRegisType === ZEMBL_ASSIST_VALUE) {
+      navigate('/zembl-assist-upload')
+    } else {
+      navigate('/basic-info-1')
+    }
   }
 
+  // TODO: ERROR HANDLING (EXTRACT DATA)
   useEffect(() => {
-    // fireAlert({ children: <Typography>Test</Typography>, type: 'error' })
-    // fireAlert({ children: <Typography>TestTEasdfasdf</Typography>, type: 'error', icon: <ExclamationCircleIcon width={25} height={25} /> })
-    // openModal({ open: true, content: <Typography>Test</Typography>, dismissible: true })
-    // throw new Error("Test");
-  }, [fireAlert, openModal])
+    if (createLeadMutation?.isError && createLeadMutation?.error) {
+      console.log(createLeadMutation.error)
+      fireAlert({ children: <Typography>Oops! Something has error!</Typography>, type: 'error' })
+      return
+    }
+  }, [createLeadMutation?.isError, createLeadMutation?.error, fireAlert])
+
+  // SUCCESS
+  // useEffect(() => {
+  //   if (createLeadMutation.isSuccess) {
+  //     if (
+  //       registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS &&
+  //       registrationData?.businessRegisType === ZEMBL_ASSIST_VALUE
+  //     ) {
+  //       navigate('/zembl-assist-upload')
+  //     } else {
+  //       navigate('/basic-info-1')
+  //     }
+  //     createLeadMutation.reset()
+  //   }
+  // }, [createLeadMutation, registrationData?.registrationType, registrationData?.businessRegisType, navigate])
+
+  useEffect(() => {
+    setRegistrationData({} as RegistrationData)
+  }, [setRegistrationData])
 
   return (
     <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
@@ -92,7 +129,7 @@ const HomePage = () => {
           })}
           errors={errors}
         />
-        <ZemblPhoneInput control={control} name="phone" required defaultCountry={'au'} />
+        <ZemblPhoneInput control={control} name="phone" defaultCountry={'au'} />
         <RadioCheckGroupInput
           register={register}
           required
@@ -100,26 +137,16 @@ const HomePage = () => {
           name="registrationType"
           errors={errors}
         />
-        <Controller
+        <ControllerRadioGroupInput
           control={control}
           name="businessRegisType"
-          rules={{ required: { value: true, message: 'Select a value' } }}
-          render={({ field, fieldState }) => {
-            if (typeWatcher === REGISTRATION_TYPE_RESIDENTIAL) return <></>
-            return (
-              <RadioGroupInput
-                {...field}
-                values={[field.value]}
-                error={fieldState.error}
-                options={BUSINESS_REGISTRATION_TYPE_OPTIONS}
-                optionsContainerClassName="md:flex-nowrap"
-                buttonContainerClassName="w-full md:w-1/2 bg-zembl-s1"
-              />
-            )
-          }}
+          hidden={typeWatcher !== REGISTRATION_TYPE_BUSINESS}
+          options={BUSINESS_REGISTRATION_TYPE_OPTIONS}
+          optionsContainerClassName="md:flex-nowrap"
+          buttonContainerClassName="w-full md:w-1/2 bg-zembl-s1"
         />
         <Button type="submit" className="!zembl-btn w-1/3 place-self-center flex-shrink-0">
-          Save
+          Next
         </Button>
       </form>
     </PageWrapper>

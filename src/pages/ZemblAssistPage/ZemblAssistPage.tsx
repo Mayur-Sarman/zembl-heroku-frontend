@@ -1,10 +1,12 @@
 import { Button, Typography } from '@material-tailwind/react'
 
 import zemblLogo from '../../assets/zembl-icon.svg'
-import { useNavigate } from 'react-router-dom'
+import { ZEMBL_WEBSITE_LINK } from '../../constants/misc'
 
 const ZemblAssistPage = () => {
-  const navigate = useNavigate()
+  const onBackClick = () => {
+    window.location.href = ZEMBL_WEBSITE_LINK
+  }
 
   return (
     <div className="flex flex-col text-center h-full justify-center">
@@ -18,7 +20,7 @@ const ZemblAssistPage = () => {
             We will be in contact shortly to assist.
           </Typography>
         </div>
-        <Button className="!zembl-btn" onClick={() => navigate('/')}>
+        <Button className="!zembl-btn" onClick={onBackClick}>
           Back to Zembl
         </Button>
       </div>

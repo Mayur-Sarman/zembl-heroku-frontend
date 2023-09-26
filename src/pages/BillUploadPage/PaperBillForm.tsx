@@ -1,13 +1,14 @@
 import { Typography } from '@material-tailwind/react'
 
-import { Control, UseFormReturn } from 'react-hook-form'
-import { CURRENT_USAGE_OPTIONS, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
+import { Control, FieldValues, UseFormReturn, UseFormSetValue } from 'react-hook-form'
+import { CURRENT_USAGE_OPTIONS, ELECTRICITY_VALUE, GAS_VALUE, RETAILER_OPTIONS } from '../../constants'
 import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
 import { REQUIRED_VALIDATION, ABN_NMI_MIRN_VALIDATION } from '../../constants/validation'
 import ControllerInput from '../../components/Inputs/ControllerInput'
 import ControllerSelectInput from '../../components/Inputs/ControllerSelectInput'
+import GoogleAddressInput from '../../components/Inputs/GoogleAddressInput'
 
-const PaperBillForm = ({ control, energyType }: PaperBillFormProps) => {
+const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) => {
   const gasForm =
     energyType !== ELECTRICITY_VALUE ? (
       <div className="flex flex-col gap-3">
@@ -25,21 +26,21 @@ const PaperBillForm = ({ control, energyType }: PaperBillFormProps) => {
           />
           <ControllerSelectInput
             control={control}
-            name="gasCurrentRetailer"
+            name="currentRetailerGas"
             textLabel="Current retailer"
             label="Retailer"
             placeholder="Select"
-            options={[{ value: 'test', label: 'test' }]}
+            options={RETAILER_OPTIONS}
             rules={REQUIRED_VALIDATION}
           />
-          <ControllerRadioGroupInput
+        </div>
+        <ControllerRadioGroupInput
             control={control}
-            name="gasCurrentUsage"
+            name="currentUsageGas"
             options={CURRENT_USAGE_OPTIONS}
             rules={REQUIRED_VALIDATION}
             label="What is current usage?"
           />
-        </div>
       </div>
     ) : null
 
@@ -58,19 +59,35 @@ const PaperBillForm = ({ control, energyType }: PaperBillFormProps) => {
             inputLabel="NMI"
             textLabel="Enter your NMI"
           />
+          <GoogleAddressInput
+            control={control}
+            required
+            onSelectedCallback={(data) => {
+              setValue('unitNumber', data?.unitNumber)
+              setValue('unitType', data?.unitType)
+              setValue('streetNumber', data?.street)
+              setValue('streetName', data?.route)
+              setValue('city', data?.suburb)
+              setValue('postCode', data?.postCode)
+              setValue('state', data?.state)
+            }}
+            textLabel="Your Connection Address"
+            name="address"
+            rules={REQUIRED_VALIDATION}
+          />
           <ControllerSelectInput
             control={control}
-            name="electricityCurrentRetailer"
+            name="currentRetailerElectric"
             textLabel="Current retailer"
             label="Retailer"
             placeholder="Select"
-            options={[{ value: 'test', label: 'test' }]}
+            options={RETAILER_OPTIONS}
             rules={REQUIRED_VALIDATION}
           />
         </div>
         <ControllerRadioGroupInput
           control={control}
-          name="electricityCurrentUsage"
+          name="currentUsageElectric"
           options={CURRENT_USAGE_OPTIONS}
           rules={REQUIRED_VALIDATION}
           label="What is current usage?"
@@ -89,6 +106,7 @@ const PaperBillForm = ({ control, energyType }: PaperBillFormProps) => {
 interface PaperBillFormProps extends Partial<UseFormReturn> {
   control: Control
   energyType: string
+  setValue: UseFormSetValue<FieldValues>
 }
 
 export default PaperBillForm

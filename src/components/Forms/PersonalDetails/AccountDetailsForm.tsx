@@ -84,7 +84,7 @@ const AccountDetailsForm = ({ control, readOnly }: AccountDetailsFormProps) => {
           control={control}
           required
           label="Mobile Number"
-          name="mobileNumber"
+          name="phone"
           defaultCountry={'au'}
           dropdownClass="bottom-8 !rounded-lg"
           readOnly={isFieldsReadOnly}
@@ -92,7 +92,7 @@ const AccountDetailsForm = ({ control, readOnly }: AccountDetailsFormProps) => {
         <ZemblPhoneInput
           control={control}
           label="Alternate Mobile (optional)"
-          name="aternativeMobile"
+          name="altPhone"
           defaultCountry={'au'}
           dropdownClass="bottom-8 !rounded-lg"
           readOnly={isFieldsReadOnly}

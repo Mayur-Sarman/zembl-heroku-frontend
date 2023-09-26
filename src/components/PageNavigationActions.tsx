@@ -13,6 +13,7 @@ const PageNavigationActions = ({
   prevLabel = 'Back',
   prevClass,
   prevLink,
+  prevExternal,
   hidePrev = false,
   containerClass,
 }: PageNavigationActionsProps) => {
@@ -22,7 +23,7 @@ const PageNavigationActions = ({
     <div className={`flex flex-col lg:flex-row gap-6 justify-center ${containerClass ?? ''}`}>
       <Button
         variant="outlined"
-        onClick={() => navigate(prevLink ?? '#')}
+        onClick={() => prevExternal && prevLink ? window.location.href = prevLink : navigate(prevLink ?? '#')}
         className={`${BACK_CLASS} ${hidePrev ? 'hidden' : ''} ${prevClass ?? ''}`}
       >
         {prevLabel}
@@ -50,6 +51,7 @@ interface PageNavigationActionsProps {
   hidePrev?: boolean
   containerClass?: string
   nextDisabled?: boolean
+  prevExternal?: boolean
 }
 
 export default PageNavigationActions

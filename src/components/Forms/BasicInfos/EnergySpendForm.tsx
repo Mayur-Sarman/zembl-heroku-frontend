@@ -3,7 +3,8 @@ import {
   BILLING_TYPE_MONTHLY,
   BILLING_TYPE_OPTIONS,
   BILLING_TYPE_QUARTERLY,
-  getPeriodSpendTypeOptions,
+  MONTHLY_SPEND_OPTIONS,
+  QUARTERLY_SPEND_OPTIONS,
 } from '../../../constants'
 import { REQUIRED_VALIDATION } from '../../../constants/validation'
 import AccordionCard from '../../AccordionCard'
@@ -15,7 +16,7 @@ const EnergySpendForm = ({ control, billingType }: EnergySpendFormProps) => {
       <div className="w-full flex flex-col gap-3 text-left">
         <ControllerRadioGroupInput
           control={control}
-          name="billingType"
+          name="billFrequency"
           options={BILLING_TYPE_OPTIONS}
           rules={REQUIRED_VALIDATION}
           label={'Do you receive your bills monthly or quarterly?'}
@@ -23,8 +24,8 @@ const EnergySpendForm = ({ control, billingType }: EnergySpendFormProps) => {
         {[BILLING_TYPE_MONTHLY, BILLING_TYPE_QUARTERLY].includes(billingType) ? (
           <ControllerRadioGroupInput
             control={control}
-            name="amountPerPeriod"
-            options={getPeriodSpendTypeOptions(billingType)}
+            name="billEnergySpend"
+            options={billingType === BILLING_TYPE_QUARTERLY ? QUARTERLY_SPEND_OPTIONS : MONTHLY_SPEND_OPTIONS}
             rules={REQUIRED_VALIDATION}
             label={'Roughly how much does your business spend on energy per month?'}
           />

@@ -1,80 +1,113 @@
 import { useContext } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
+// import { useNavigate } from 'react-router-dom'
 
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
 import SelectPlansPageTitle from './SelectPlansPageTitle'
-import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
+import { ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
 import PlanSelector from '../../components/PlanSelector'
 import RegistrationContext from '../../contexts/RegistrationContext'
-import { REQUIRED_VALIDATION } from '../../constants/validation'
+// import { REQUIRED_VALIDATION } from '../../constants/validation'
 import ControllerPreferencesSelector from '../../components/Inputs/ControllerPreferencesSelector'
 import PageNavigationActions from '../../components/PageNavigationActions'
-
-const mockupPlans = [
-  {
-    planId: 'test1',
-    planDescription:
-      'Thrifty Business is 28% less than the DMO Reference Price. This applies to a Small business customer with a flat rate tariff in the Ausgrid distribution area. We estimate an annual cost of $4981 for an average customer who uses 20000kWh per year. Depending on your usage, your annual cost could be different.',
-    planBenefits: ['No Exit Fees', '100% Australian Owned', 'Best Price'],
-    planType: ELECTRICITY_VALUE,
-    planLessThanCurrentPricePercent: 0.24,
-    planEstAnnualSaving: 10000,
-    planEstCostPerMonth: 240,
-    planEstCostPerYear: 2400,
-    brand: 'Big Boss Electicity',
-    logoURL: '/vite.svg',
-  },
-  {
-    planId: 'test2',
-    planDescription:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et tellus est. Nam nec urna quis lectus dignissim auctor eget sit amet augue. Nulla id metus et mauris ullamcorper faucibus. Praesent sit amet porttitor tortor, a pharetra orci. Nunc nec lobortis lacus, vel tempus justo. Praesent quis eros et quam volutpat sodales. Quisque nibh quam, congue a dolor in, dignissim commodo ligula. Donec ex tellus, mollis non maximus eu, varius nec lectus. Vivamus auctor cursus pretium. Nulla rhoncus blandit dui non bibendum. Cras convallis fringilla dolor, quis ullamcorper tellus tristique sed. Praesent nec magna et neque luctus pharetra at convallis ante. Nulla facilisi. Mauris volutpat dui quam, nec tincidunt elit lobortis ac. Maecenas laoreet mi non mollis scelerisque.Thrifty Business is 28% less than the DMO Reference Price. This applies to a Small business customer with a flat rate tariff in the Ausgrid distribution area. We estimate an annual cost of $4981 for an average customer who uses 20000kWh per year. Depending on your usage, your annual cost could be different.',
-    planBenefits: ['No Exit Fees', '100% Australian Owned', '100% Australian Owned', '100% Australian Owned'],
-    planType: GAS_VALUE,
-    planLessThanCurrentPricePercent: 0.1,
-    planEstAnnualSaving: 1400,
-    planEstCostPerMonth: 620,
-    planEstCostPerYear: 6000,
-    brand: 'Lorem ipsum',
-    logoURL: '/vite.svg',
-  },
-]
+import { useToast } from '../../hooks'
+import { useNavigate } from 'react-router-dom'
+import { convertPreference } from '../../api/common'
+import { REQUIRED_VALIDATION } from '../../constants/validation'
 
 const SelectPlansPage = () => {
-  const { registrationData } = useContext(RegistrationContext)
+  const { fireAlert } = useToast()
+  const navigate = useNavigate()
+  const { registrationData, createQuoteLineMutation, setRegistrationData, createQuoteMutation } =
+    useContext(RegistrationContext)
 
   // On load page get data from context
-  const { handleSubmit, control, formState } = useForm({
+  const { handleSubmit, control, formState, setValue } = useForm({
     mode: 'all',
+    defaultValues: registrationData as FieldValues,
   })
-  const navigate = useNavigate()
 
-  const onSubmit = (data: Record<string, string | string[]>) => {
+  const onSubmit = async (data: RegistrationData) => {
     console.log(data)
+
+    const a = await new Promise(resolve => resolve(1))
+    if (a === 1) {
+      return navigate('/personal-detail-1')
+    }
 
     // Call API
     // Put data to context
-    navigate('/personal-detail-1')
+    // return
+    try {
+      const electricityQuote = (registrationData.electricityQuote?.comparisons ?? []).find(
+        (item) => item.id === data?.electricPlanId,
+      )
+      const gasQuote = (registrationData.gasQuote?.comparisons ?? []).find((item) => item.id === data?.gasPlanId)
+
+      const createQuoteLineResults = await Promise.all([
+        electricityQuote ? createQuoteLineMutation.mutateAsync({ comparison: electricityQuote }) : null,
+        gasQuote ? createQuoteLineMutation.mutateAsync({ comparison: gasQuote }) : null,
+      ])
+
+      const electricityQuoteLineResponse = createQuoteLineResults[0]
+      const gasQuoteLineResponse = createQuoteLineResults[1]
+
+      const electricityQuoteData = {
+        ...data.electricityQuote,
+        ...electricityQuoteLineResponse?.comparison,
+        quoteLineId: electricityQuoteLineResponse?.quoteLineId,
+      }
+      const gasQuoteData = {
+        ...data.gasQuote,
+        ...gasQuoteLineResponse?.comparison,
+        quoteLineId: electricityQuoteLineResponse?.quoteLineId,
+      }
+
+      setRegistrationData((prev) => ({
+        ...prev,
+        ...data,
+        electricityQuote: electricityQuoteData,
+        gasQuote: gasQuoteData,
+      }))
+      navigate('/personal-detail-1')
+    } catch (e) {
+      fireAlert({ children: 'Something bad has occurred!', type: 'error' })
+    }
   }
 
-  const selectedEnergyType = registrationData?.energyType?.energyType
+  const onPreferenceSaved = (newPreferences: string[]) => {
+    const { opportunityId, accountDetails, businessDetails, categoryId, electricity, gas } = registrationData
+    createQuoteMutation.mutate({
+      opportunityId,
+      accountId: businessDetails?.accountId,
+      contactId: accountDetails?.contactId,
+      categoryId,
+      electricity,
+      gas,
+      preferences: convertPreference(newPreferences),
+    })
+
+    setValue('electricPlanId', null)
+    setValue('gasPlanId', null)
+  }
+
+  const selectedEnergyType = registrationData?.energyType
 
   return (
     <PageWrapper>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
         <RegistrationStep currentStep={1} />
         <hr className="hidden lg:block" />
-
         <ControllerPreferencesSelector
-          name={'preferences'}
+          name={'preferenceList'}
           control={control}
           rules={REQUIRED_VALIDATION}
           editable
           label=""
+          onChangeSaved={onPreferenceSaved}
         />
-        {/* <PreferenceSelector preferences={preferences} onChange={onPreferenceSelected} editable label="" /> */}
-        <SelectPlansPageTitle energyType={BOTH_VALUE} />
+        <SelectPlansPageTitle energyType={selectedEnergyType} />
         {selectedEnergyType !== GAS_VALUE ? (
           <Controller
             name="electricPlanId"
@@ -84,7 +117,8 @@ const SelectPlansPage = () => {
               return (
                 <PlanSelector
                   title="Electricity Plan"
-                  plans={mockupPlans}
+                  planType={ELECTRICITY_VALUE}
+                  plans={registrationData.electricityQuote?.comparisons ?? []}
                   selectedPlanId={field.value as string}
                   onPlanSelect={field.onChange}
                 />
@@ -92,7 +126,6 @@ const SelectPlansPage = () => {
             }}
           />
         ) : null}
-
         {selectedEnergyType !== ELECTRICITY_VALUE ? (
           <Controller
             name="gasPlanId"
@@ -102,7 +135,8 @@ const SelectPlansPage = () => {
               return (
                 <PlanSelector
                   title="Gas Plan"
-                  plans={mockupPlans}
+                  planType={GAS_VALUE}
+                  plans={registrationData.gasQuote?.comparisons ?? []}
                   selectedPlanId={field.value as string}
                   onPlanSelect={field.onChange}
                 />
@@ -110,7 +144,6 @@ const SelectPlansPage = () => {
             }}
           />
         ) : null}
-
         <PageNavigationActions prevLink="/bill-upload" nextDisabled={!formState.isValid} />
       </form>
     </PageWrapper>

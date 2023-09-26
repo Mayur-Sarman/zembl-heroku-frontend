@@ -9,7 +9,7 @@ const BillAndMessageForm = ({ control }: BillAndMessageFormProps) => {
     <AccordionCard alwaysOpen open title="Bill & Messages" bodyClassName="w-full flex flex-col gap-3 text-left">
       <ControllerRadioGroupInput
         control={control}
-        name="subscribeType"
+        name="billType"
         rules={REQUIRED_VALIDATION}
         label={
           'How would you like to receive your bills and other notices, like disconnection warnings and price change notifications?'

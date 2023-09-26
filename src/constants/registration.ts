@@ -1,11 +1,25 @@
 import { getNames } from 'country-list'
+import { Lead } from '../api/lead'
+import { ProcessSiteOutput, Site } from '../api/site'
+import { Account } from '../api/account'
+import { ProcessQuoteOutput } from '../api/quote'
 
 export const ELECTRICITY_VALUE = 'Electricity'
 export const GAS_VALUE = 'Gas'
 export const BOTH_VALUE = 'Both'
 
 export const YES_VALUE = 'Yes'
+export const YES_UNSURE = 'Yes / Unsure'
+
 export const NO_VALUE = 'No'
+export const NO_TRANSFER_NEW = 'No Transfer New'
+export const NO_RENEW = 'No Renew'
+
+export const CONNECTED = 'Connected'
+export const DISCONNECTED = 'Disconnected'
+
+export const ON_VALUE = 'On'
+export const OFF_VALUE = 'Off'
 
 export const MISS_VALUE = 'Miss'
 export const MS_VALUE = 'Ms'
@@ -35,8 +49,11 @@ export const MEDICARE_CARD_YELLOW = 'Yellow'
 
 export const BILLING_TYPE_MONTHLY = 'Monthly'
 export const BILLING_TYPE_QUARTERLY = 'Quarterly'
-export const PERIOD_SPEND_MORE = 'More'
-export const PERIOD_SPEND_LESS = 'Less'
+
+export const MONTHLY_SPEND_MORE = '> 2,500'
+export const MONTHLY_SPEND_LESS = '< 2,500'
+export const QUARTERLY_SPEND_MORE = '> 7,500'
+export const QUARTERLY_SPEND_LESS = '< 7,500'
 
 export const EMAIL_VALUE = 'Email'
 export const POST_VALUE = 'Post'
@@ -56,6 +73,58 @@ export const UPLOAD_GAS_BILL = 'Upload Gas Bill'
 export const REGISTRATION_TYPE_BUSINESS = 'Business'
 export const REGISTRATION_TYPE_RESIDENTIAL = 'Residential'
 
+export const SME_VALUE = 'SME'
+export const CAndI_VALUE = 'C_I'
+export const RESIDENTIAL_VALUE = 'Residential'
+
+export const LEAD_STATUS_CONVERTED_WON = 'Converted Won'
+
+export const ABN_ACTIVE = 'Active'
+
+export const GREEN_OR_CARBON_NEUTRAL = 'Green or Carbon Neutral'
+export const AUSTRALIAN_OWNED = 'Australian Owned'
+export const LOCAL_CUSTOMER_SERVICE = 'Local Customer Service'
+export const LOWEST_PRICE = 'Lowest Price'
+export const FIXED_PRICE = 'Fixed Price'
+export const NO_PREFERENCE = 'No Preference'
+
+export const ACTEW = 'Actew'
+export const AGL = 'AGL'
+export const ALINTA = 'Alinta'
+export const BLUE_NRG = 'Blue NRG'
+export const COVA_U = 'CovaU'
+export const ENERGY_AUSTRALIA = 'Energy Australia'
+export const ENERGY_LOCALS = 'Energy Locals'
+export const ENGIE = 'ENGIE'
+export const FLOW_POWER = 'Flow Power'
+export const LUMO = 'Lumo'
+export const MOMENTUM = 'Momentum'
+export const NECTR = 'Nectr'
+export const NEXT_BUSINESS_ENERGY = 'Next Business Energy'
+export const ORIGIN = 'Origin'
+export const OTHER = 'Other'
+export const POWERSHOP = 'Powershop'
+export const RED_ENERGY = 'Red Energy'
+export const SHELL = 'Shell'
+export const SIMPLY_ENERGY = 'Simply Energy'
+export const SMARTEST_ENERGY = 'Smartest Energy'
+export const SUMO = 'Sumo'
+export const TANGO = 'Tango'
+
+export const HEALTH_CARE_CARD = 'Health Care Card'
+export const PENSIONER_CARD = 'Pensioner Card'
+export const GOLD_WAR_WIDOW_WW = 'Gold War Widow (WW)'
+export const GOLD_TOTALLY_PERMANENTLY_INCAPACITATED_TPI = 'Gold Totally & Permanently Incapacitated (TPI)'
+export const QLD_GOVERNMENT_SENIORS_CARD = 'QLD Government Seniors Card'
+export const AUSTRALIAN_GOVERNMENT_IMMI_CARD_ASYLUM_SEEKER = 'Australian Government ImmiCard (Asylum Seeker)'
+export const GOLD_EXTREME_DISABLEMENT_ADJUSTMENT_EDA = 'Gold Extreme Disablement Adjustment (EDA)'
+
+export const INSTALLATION_TIME_MORNING = '8am - 1pm'
+export const INSTALLATION_TIME_AFTERNOON = '1pm - 6pm'
+
+export const BE_HOME = 'I will be home'
+export const PROVIDE_KEYS = 'Keys will be in the letter box'
+
 export const REGISTRATION_TYPE_OPTIONS = [
   { value: REGISTRATION_TYPE_BUSINESS, label: REGISTRATION_TYPE_BUSINESS },
   { value: REGISTRATION_TYPE_RESIDENTIAL, label: REGISTRATION_TYPE_RESIDENTIAL },
@@ -71,14 +140,48 @@ export const BUSINESS_REGISTRATION_TYPE_OPTIONS = [
   { value: SELF_SERVE_VALUE, label: SELF_SERVE_VALUE },
 ]
 
-export const getPeriodSpendTypeOptions = (billingType: string) => [
-  { value: PERIOD_SPEND_LESS, label: billingType === BILLING_TYPE_MONTHLY ? 'Less than $2,500' : 'Less than $7,500' },
-  { value: PERIOD_SPEND_MORE, label: billingType === BILLING_TYPE_MONTHLY ? 'More than $2,500' : 'More than $7,500' },
+export const QUARTERLY_SPEND_OPTIONS = [
+  { value: QUARTERLY_SPEND_LESS, label: 'Less than $7,500' },
+  { value: QUARTERLY_SPEND_MORE, label: 'More than $7,500' },
+]
+
+export const MONTHLY_SPEND_OPTIONS = [
+  { value: MONTHLY_SPEND_LESS, label: 'Less than $2,500' },
+  { value: MONTHLY_SPEND_MORE, label: 'More than $2,500' },
 ]
 
 export const YES_NO_OPTIONS = [
   { value: YES_VALUE, label: YES_VALUE },
   { value: NO_VALUE, label: NO_VALUE },
+]
+
+export const YES_UNSURE_OPTIONS = [
+  { value: YES_UNSURE, label: YES_UNSURE },
+  { value: NO_VALUE, label: NO_VALUE },
+]
+
+export const HAS_CONNECTION_OPTIONS = [
+  { value: CONNECTED, label: CONNECTED },
+  { value: DISCONNECTED, label: DISCONNECTED },
+]
+
+export const HOME_OR_PROVIDE_KEYS_OPTIONS = [
+  { value: BE_HOME, label: BE_HOME },
+  { value: PROVIDE_KEYS, label: PROVIDE_KEYS },
+]
+
+export const INSTALLLATION_TIMESLOT_OPTIONS = [
+  { value: INSTALLATION_TIME_MORNING, label: INSTALLATION_TIME_MORNING },
+  { value: INSTALLATION_TIME_AFTERNOON, label: INSTALLATION_TIME_AFTERNOON },
+]
+
+export const PERFERENCES_OPTIONS: SelectOption[] = [
+  { value: GREEN_OR_CARBON_NEUTRAL, label: GREEN_OR_CARBON_NEUTRAL },
+  { value: AUSTRALIAN_OWNED, label: AUSTRALIAN_OWNED },
+  { value: LOCAL_CUSTOMER_SERVICE, label: LOCAL_CUSTOMER_SERVICE },
+  { value: LOWEST_PRICE, label: LOWEST_PRICE },
+  { value: FIXED_PRICE, label: FIXED_PRICE },
+  { value: NO_PREFERENCE, label: NO_PREFERENCE },
 ]
 
 export const TITLE_LIST_OPTIONS = [MISS_VALUE, MS_VALUE, MR_VALUE, SIR_VALUE, MRS_VALUE, DR_VALUE, MX_VALUE].map(
@@ -119,7 +222,7 @@ export const MEDICARE_COLOUR_LIST_OPTIONS = [MEDICARE_CARD_GREEN, MEDICARE_CARD_
 export const ENERGY_TYPE_OPTIONS: SelectOption[] = [
   { value: ELECTRICITY_VALUE, label: ELECTRICITY_VALUE },
   { value: GAS_VALUE, label: GAS_VALUE },
-  { value: BOTH_VALUE, label: BOTH_VALUE },
+  { value: BOTH_VALUE, label: 'Electricity & Gas' },
 ]
 
 export const SUBSCRIBE_TYPE_OPTIONS: SelectOption[] = [
@@ -134,9 +237,9 @@ export const CURRENT_USAGE_OPTIONS: SelectOption[] = [
 ]
 
 export const UPLOAD_BILL_TYPE_OPTIONS: SelectOption[] = [
-  { value: HAVE_PAPER_BILL, label: HAVE_PAPER_BILL },
   { value: UPLOAD_ELECTRICITY_BILL, label: UPLOAD_ELECTRICITY_BILL },
   { value: UPLOAD_GAS_BILL, label: UPLOAD_GAS_BILL },
+  { value: HAVE_PAPER_BILL, label: HAVE_PAPER_BILL },
 ]
 
 export const MEDICARE_REF_NO_OPTIONS: SelectOption[] = ['1', '2', '3', '4'].map((item) => ({
@@ -144,10 +247,69 @@ export const MEDICARE_REF_NO_OPTIONS: SelectOption[] = ['1', '2', '3', '4'].map(
   label: item,
 }))
 
+export const RETAILER_OPTIONS: SelectOption[] = [
+  ACTEW,
+  AGL,
+  ALINTA,
+  BLUE_NRG,
+  COVA_U,
+  ENERGY_AUSTRALIA,
+  ENERGY_LOCALS,
+  ENGIE,
+  FLOW_POWER,
+  LUMO,
+  MOMENTUM,
+  NECTR,
+  NEXT_BUSINESS_ENERGY,
+  ORIGIN,
+  OTHER,
+  POWERSHOP,
+  RED_ENERGY,
+  SHELL,
+  SIMPLY_ENERGY,
+  SMARTEST_ENERGY,
+  SUMO,
+  TANGO,
+].map((i) => ({ value: i, label: i }))
+
+export const AGL_CONSESSION_CARD_TYPES = [
+  HEALTH_CARE_CARD,
+  PENSIONER_CARD,
+  GOLD_WAR_WIDOW_WW,
+  GOLD_TOTALLY_PERMANENTLY_INCAPACITATED_TPI,
+  QLD_GOVERNMENT_SENIORS_CARD,
+  AUSTRALIAN_GOVERNMENT_IMMI_CARD_ASYLUM_SEEKER,
+  HEALTH_CARE_CARD,
+  PENSIONER_CARD,
+  GOLD_EXTREME_DISABLEMENT_ADJUSTMENT_EDA,
+].map((item) => ({ value: item, label: item }))
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 export const COUNTRY_LIST_OPTIONS: SelectOption[] = getNames().map((item) => ({ label: item, value: item }))
 
 export interface SelectOption {
   value: string
   label: string
+}
+
+export interface RegistrationData
+  extends Lead,
+    Site,
+    ProcessSiteOutput,
+    Account,
+    ProcessQuoteOutput,
+    Record<string, unknown> {
+  leadId?: string | null
+  energyType?: string
+  registrationType?: string
+  businessRegisType?: string
+  gasBillInfo?: BillInfo
+  electricityBillInfo?: BillInfo
+  accountName?: string | null | undefined
+}
+
+interface BillInfo {
+  billFiles?: FileList
+  currentRetailer?: string
+  currentUsage?: string
 }

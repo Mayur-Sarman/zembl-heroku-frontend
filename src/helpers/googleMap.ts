@@ -5,9 +5,13 @@ export const getGooglePlaceName = (fieldValue: unknown) => {
   return `${placeResult?.formatted_address ?? ''}`
 }
 
-export const extractAddressComponent = (fieldValue: google.maps.places.PlaceResult | null | undefined) => {
+export const extractAddressComponent = (
+  fieldValue: google.maps.places.PlaceResult | null | undefined,
+  fullAddress?: string,
+) => {
   if (!fieldValue) return null
   if (!fieldValue?.address_components) return null
+  fullAddress = fullAddress ?? fieldValue.formatted_address
 
   const addressComponents: GoogleMapExtractedComponents = fieldValue.address_components.reduce((prev, component) => {
     const componentType = component.types[0]
@@ -26,10 +30,10 @@ export const extractAddressComponent = (fieldValue: google.maps.places.PlaceResu
         return { ...prev, route: component.long_name }
 
       case 'postal_code':
-        return { ...prev, postalCode: `${component.long_name}${prev.postalCode ?? ''}` }
+        return { ...prev, postCode: `${component.long_name}${prev.postCode ?? ''}` }
 
       case 'postal_code_suffix':
-        return { ...prev, postalCode: `${prev.postalCode ?? ''}-${component.long_name}` }
+        return { ...prev, postCode: `${prev.postCode ?? ''}-${component.long_name}` }
 
       case 'sublocality_level_1':
       case 'locality':
@@ -43,18 +47,19 @@ export const extractAddressComponent = (fieldValue: google.maps.places.PlaceResu
     }
 
     return prev
-  }, {} as GoogleMapExtractedComponents)
+  }, { fullAddress } as GoogleMapExtractedComponents)
 
   return addressComponents
 }
 
 export interface GoogleMapExtractedComponents {
+  fullAddress?: string | null
   unitNumber: string | null
   unitType: string | null
   street: string | null
   route: string | null
   suburb: string | null
   state: string | null
-  postalCode: string | null
+  postCode: string | null
   country: string | null
 }
