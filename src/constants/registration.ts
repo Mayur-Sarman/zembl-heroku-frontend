@@ -20,6 +20,7 @@ export const DISCONNECTED = 'Disconnected'
 
 export const ON_VALUE = 'On'
 export const OFF_VALUE = 'Off'
+export const UNSURE_VALUE = 'Unsure'
 
 export const MISS_VALUE = 'Miss'
 export const MS_VALUE = 'Ms'
@@ -124,6 +125,16 @@ export const INSTALLATION_TIME_AFTERNOON = '1pm - 6pm'
 
 export const BE_HOME = 'I will be home'
 export const PROVIDE_KEYS = 'Keys will be in the letter box'
+
+export const INSPECTION_METHOD_PERSON = 'Someone over the age of 18 will be at the property'
+export const INSPECTION_METHOD_KEYS_MAIL = 'Leave the keys in the mail box'
+export const INSPECTION_METHOD_KEYS_METER = 'Leave the keys in the meter box'
+
+export const INSPECTION_METHOD_OPTIONS = [
+  { value: INSPECTION_METHOD_PERSON, label: INSPECTION_METHOD_PERSON },
+  { value: INSPECTION_METHOD_KEYS_MAIL, label: INSPECTION_METHOD_KEYS_MAIL },
+  { value: INSPECTION_METHOD_KEYS_METER, label: INSPECTION_METHOD_KEYS_METER },
+]
 
 export const REGISTRATION_TYPE_OPTIONS = [
   { value: REGISTRATION_TYPE_BUSINESS, label: REGISTRATION_TYPE_BUSINESS },
@@ -272,15 +283,13 @@ export const RETAILER_OPTIONS: SelectOption[] = [
   TANGO,
 ].map((i) => ({ value: i, label: i }))
 
-export const AGL_CONSESSION_CARD_TYPES = [
+export const AGL_CONCESSION_CARD_TYPES = [
   HEALTH_CARE_CARD,
   PENSIONER_CARD,
   GOLD_WAR_WIDOW_WW,
   GOLD_TOTALLY_PERMANENTLY_INCAPACITATED_TPI,
   QLD_GOVERNMENT_SENIORS_CARD,
   AUSTRALIAN_GOVERNMENT_IMMI_CARD_ASYLUM_SEEKER,
-  HEALTH_CARE_CARD,
-  PENSIONER_CARD,
   GOLD_EXTREME_DISABLEMENT_ADJUSTMENT_EDA,
 ].map((item) => ({ value: item, label: item }))
 
