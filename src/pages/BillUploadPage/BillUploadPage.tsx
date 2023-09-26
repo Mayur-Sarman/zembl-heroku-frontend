@@ -23,6 +23,7 @@ import { useRegistration } from '../../hooks/useRegistration'
 import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
 import { useToast } from '../../hooks'
 import { buildCreateAccountPayload } from '../../api/account'
+import { useNavigate } from 'react-router-dom'
 
 const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
@@ -33,7 +34,7 @@ const BillUploadPage = () => {
     defaultValues: registrationData as FieldValues,
     mode: 'all',
   })
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const watchBillFileType: unknown = watch('billFileType', null)
 
@@ -47,15 +48,20 @@ const BillUploadPage = () => {
 
   const onSubmit = async (data: Partial<RegistrationData>) => {
     console.log(data)
+    
+    const a = await new Promise(resolve => resolve(1))
+    if (a === 1) {
+      return navigate('/plans')
+    }
 
     let nmi: string | undefined = data?.nmi
     let mirn: string | undefined = data?.mirn
     // let buildedData = data
 
     if (data.billFileType === HAVE_PAPER_BILL) {
-      const buildedData = buildCreateAccountPayload(data, nmi, mirn)
+      // const buildedData = buildCreateAccountPayload(data, nmi, mirn)
       setRegistrationData((prev) => ({ ...prev, ...data }))
-      return createAccountMutation.mutate(buildedData)
+      // return createAccountMutation.mutate(buildedData)
     }
 
     let shouldSwitchHavePaperBill = false
@@ -107,7 +113,7 @@ const BillUploadPage = () => {
   let uploadOptions = UPLOAD_BILL_TYPE_OPTIONS
   if (registrationData.energyType !== BOTH_VALUE) {
     uploadOptions = UPLOAD_BILL_TYPE_OPTIONS.filter((item) => {
-      if (!registrationData.energyType) return false
+      if (!registrationData.energyType) return true
       return item.value.includes(registrationData.energyType) || item.value === HAVE_PAPER_BILL
     })
   }

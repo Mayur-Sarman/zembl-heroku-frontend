@@ -9,7 +9,17 @@ export const GAS_VALUE = 'Gas'
 export const BOTH_VALUE = 'Both'
 
 export const YES_VALUE = 'Yes'
+export const YES_UNSURE = 'Yes / Unsure'
+
 export const NO_VALUE = 'No'
+export const NO_TRANSFER_NEW = 'No Transfer New'
+export const NO_RENEW = 'No Renew'
+
+export const CONNECTED = 'Connected'
+export const DISCONNECTED = 'Disconnected'
+
+export const ON_VALUE = 'On'
+export const OFF_VALUE = 'Off'
 
 export const MISS_VALUE = 'Miss'
 export const MS_VALUE = 'Ms'
@@ -101,6 +111,20 @@ export const SMARTEST_ENERGY = 'Smartest Energy'
 export const SUMO = 'Sumo'
 export const TANGO = 'Tango'
 
+export const HEALTH_CARE_CARD = 'Health Care Card'
+export const PENSIONER_CARD = 'Pensioner Card'
+export const GOLD_WAR_WIDOW_WW = 'Gold War Widow (WW)'
+export const GOLD_TOTALLY_PERMANENTLY_INCAPACITATED_TPI = 'Gold Totally & Permanently Incapacitated (TPI)'
+export const QLD_GOVERNMENT_SENIORS_CARD = 'QLD Government Seniors Card'
+export const AUSTRALIAN_GOVERNMENT_IMMI_CARD_ASYLUM_SEEKER = 'Australian Government ImmiCard (Asylum Seeker)'
+export const GOLD_EXTREME_DISABLEMENT_ADJUSTMENT_EDA = 'Gold Extreme Disablement Adjustment (EDA)'
+
+export const INSTALLATION_TIME_MORNING = '8am - 1pm'
+export const INSTALLATION_TIME_AFTERNOON = '1pm - 6pm'
+
+export const BE_HOME = 'I will be home'
+export const PROVIDE_KEYS = 'Keys will be in the letter box'
+
 export const REGISTRATION_TYPE_OPTIONS = [
   { value: REGISTRATION_TYPE_BUSINESS, label: REGISTRATION_TYPE_BUSINESS },
   { value: REGISTRATION_TYPE_RESIDENTIAL, label: REGISTRATION_TYPE_RESIDENTIAL },
@@ -129,6 +153,26 @@ export const MONTHLY_SPEND_OPTIONS = [
 export const YES_NO_OPTIONS = [
   { value: YES_VALUE, label: YES_VALUE },
   { value: NO_VALUE, label: NO_VALUE },
+]
+
+export const YES_UNSURE_OPTIONS = [
+  { value: YES_UNSURE, label: YES_UNSURE },
+  { value: NO_VALUE, label: NO_VALUE },
+]
+
+export const HAS_CONNECTION_OPTIONS = [
+  { value: CONNECTED, label: CONNECTED },
+  { value: DISCONNECTED, label: DISCONNECTED },
+]
+
+export const HOME_OR_PROVIDE_KEYS_OPTIONS = [
+  { value: BE_HOME, label: BE_HOME },
+  { value: PROVIDE_KEYS, label: PROVIDE_KEYS },
+]
+
+export const INSTALLLATION_TIMESLOT_OPTIONS = [
+  { value: INSTALLATION_TIME_MORNING, label: INSTALLATION_TIME_MORNING },
+  { value: INSTALLATION_TIME_AFTERNOON, label: INSTALLATION_TIME_AFTERNOON },
 ]
 
 export const PERFERENCES_OPTIONS: SelectOption[] = [
@@ -227,6 +271,18 @@ export const RETAILER_OPTIONS: SelectOption[] = [
   SUMO,
   TANGO,
 ].map((i) => ({ value: i, label: i }))
+
+export const AGL_CONSESSION_CARD_TYPES = [
+  HEALTH_CARE_CARD,
+  PENSIONER_CARD,
+  GOLD_WAR_WIDOW_WW,
+  GOLD_TOTALLY_PERMANENTLY_INCAPACITATED_TPI,
+  QLD_GOVERNMENT_SENIORS_CARD,
+  AUSTRALIAN_GOVERNMENT_IMMI_CARD_ASYLUM_SEEKER,
+  HEALTH_CARE_CARD,
+  PENSIONER_CARD,
+  GOLD_EXTREME_DISABLEMENT_ADJUSTMENT_EDA,
+].map((item) => ({ value: item, label: item }))
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 export const COUNTRY_LIST_OPTIONS: SelectOption[] = getNames().map((item) => ({ label: item, value: item }))

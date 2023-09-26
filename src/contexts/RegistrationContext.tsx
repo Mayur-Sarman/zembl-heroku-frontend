@@ -244,9 +244,10 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
   console.log('registrationData:', registrationData)
 
-  useEffect(() => {
-    if (!['/', '/energy'].includes(location.pathname) && !registrationToken) navigate('/')
-  }, [location.pathname, navigate, registrationToken])
+  // useEffect(() => {
+  //   if (!['/', '/energy'].includes(location.pathname) && !registrationToken) navigate('/')
+  // }, [location.pathname, navigate, registrationToken])
+  console.log(useEffect)
 
   const isLoading =
     createLeadMutation.isLoading ||

@@ -31,6 +31,11 @@ const SelectPlansPage = () => {
   const onSubmit = async (data: RegistrationData) => {
     console.log(data)
 
+    const a = await new Promise(resolve => resolve(1))
+    if (a === 1) {
+      return navigate('/personal-detail-1')
+    }
+
     // Call API
     // Put data to context
     // return

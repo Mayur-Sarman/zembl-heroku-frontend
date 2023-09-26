@@ -28,7 +28,11 @@ import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGr
 
 const HomePage = () => {
   const { fireAlert } = useToast()
-  const { createLeadMutation, updateLeadMutation, registrationData, setRegistrationData } = useRegistration()
+  const {
+    createLeadMutation,
+    // updateLeadMutation, registrationData,
+    setRegistrationData,
+  } = useRegistration()
   const {
     register,
     handleSubmit,
@@ -53,13 +57,19 @@ const HomePage = () => {
     }
 
     const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
-    console.log(token)
+    console.log(token, buildedData)
 
     // TODO: Validate Recaptcha with API
-    if (!registrationData.token) {
-      createLeadMutation.mutate(buildedData)
+    // if (!registrationData.token) {
+    //   createLeadMutation.mutate(buildedData)
+    // } else {
+    //   updateLeadMutation.mutate(buildedData)
+    // }
+
+    if (data?.registrationType === REGISTRATION_TYPE_BUSINESS && data?.businessRegisType === ZEMBL_ASSIST_VALUE) {
+      navigate('/zembl-assist-upload')
     } else {
-      updateLeadMutation.mutate(buildedData)
+      navigate('/basic-info-1')
     }
   }
 
@@ -73,19 +83,19 @@ const HomePage = () => {
   }, [createLeadMutation?.isError, createLeadMutation?.error, fireAlert])
 
   // SUCCESS
-  useEffect(() => {
-    if (createLeadMutation.isSuccess) {
-      if (
-        registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS &&
-        registrationData?.businessRegisType === ZEMBL_ASSIST_VALUE
-      ) {
-        navigate('/zembl-assist-upload')
-      } else {
-        navigate('/basic-info-1')
-      }
-      createLeadMutation.reset()
-    }
-  }, [createLeadMutation, registrationData?.registrationType, registrationData?.businessRegisType, navigate])
+  // useEffect(() => {
+  //   if (createLeadMutation.isSuccess) {
+  //     if (
+  //       registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS &&
+  //       registrationData?.businessRegisType === ZEMBL_ASSIST_VALUE
+  //     ) {
+  //       navigate('/zembl-assist-upload')
+  //     } else {
+  //       navigate('/basic-info-1')
+  //     }
+  //     createLeadMutation.reset()
+  //   }
+  // }, [createLeadMutation, registrationData?.registrationType, registrationData?.businessRegisType, navigate])
 
   useEffect(() => {
     setRegistrationData({} as RegistrationData)
