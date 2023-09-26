@@ -30,7 +30,7 @@ export const formatPercent = (
     : 'N/A'
 }
 
-export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM YYYY HH:mm') => {
+export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM YYYY') => {
   const dateValue = new Date(value)
   const luxonDate = DateTime.fromJSDate(dateValue)
   if (!luxonDate.isValid) return 'N/A'
