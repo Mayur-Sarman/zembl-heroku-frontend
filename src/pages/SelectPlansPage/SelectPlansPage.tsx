@@ -19,7 +19,7 @@ import { REQUIRED_VALIDATION } from '../../constants/validation'
 const SelectPlansPage = () => {
   const { fireAlert } = useToast()
   const navigate = useNavigate()
-  const { registrationData, createQuoteLineMutation, setRegistrationData, createQuoteMutation } =
+  const { registrationData, createQuoteLineMutation, setRegistrationData, createQuoteMutation, updateQuoteMutation } =
     useContext(RegistrationContext)
 
   // On load page get data from context
@@ -35,10 +35,10 @@ const SelectPlansPage = () => {
     // Put data to context
     // return
     try {
-      const electricityQuote = (registrationData.electricityQuote?.comparisons ?? []).find(
+      const electricityQuote = (registrationData?.electricityQuote?.comparisons ?? []).find(
         (item) => item.id === data?.electricPlanId,
       )
-      const gasQuote = (registrationData.gasQuote?.comparisons ?? []).find((item) => item.id === data?.gasPlanId)
+      const gasQuote = (registrationData?.gasQuote?.comparisons ?? []).find((item) => item.id === data?.gasPlanId)
 
       const createQuoteLineResults = await Promise.all([
         electricityQuote ? createQuoteLineMutation.mutateAsync({ comparison: electricityQuote }) : null,
@@ -87,6 +87,17 @@ const SelectPlansPage = () => {
     setValue('gasPlanId', null)
   }
 
+  const onRequestCallbackClicked = async () => {
+    try {
+      // UPDATE QUOTE MUTATION
+      await updateQuoteMutation.mutateAsync({ callbackRequested: true })
+      // await new Promise((resolve) => resolve(''))
+      navigate('/abn-error')
+    } catch (error) {
+      fireAlert({ children: 'Something bad has occurred!', type: 'error' })
+    }
+  }
+
   const selectedEnergyType = registrationData?.energyType
 
   return (
@@ -102,7 +113,7 @@ const SelectPlansPage = () => {
           label=""
           onChangeSaved={onPreferenceSaved}
         />
-        <SelectPlansPageTitle energyType={selectedEnergyType} />
+        <SelectPlansPageTitle energyType={selectedEnergyType} requestCallbackClick={onRequestCallbackClicked} />
         {selectedEnergyType !== GAS_VALUE ? (
           <Controller
             name="electricPlanId"
@@ -113,7 +124,7 @@ const SelectPlansPage = () => {
                 <PlanSelector
                   title="Electricity Plan"
                   planType={ELECTRICITY_VALUE}
-                  plans={registrationData.electricityQuote?.comparisons ?? []}
+                  plans={registrationData?.electricityQuote?.comparisons ?? []}
                   selectedPlanId={field.value as string}
                   onPlanSelect={field.onChange}
                 />
@@ -131,7 +142,7 @@ const SelectPlansPage = () => {
                 <PlanSelector
                   title="Gas Plan"
                   planType={GAS_VALUE}
-                  plans={registrationData.gasQuote?.comparisons ?? []}
+                  plans={registrationData?.gasQuote?.comparisons ?? []}
                   selectedPlanId={field.value as string}
                   onPlanSelect={field.onChange}
                 />
@@ -139,7 +150,7 @@ const SelectPlansPage = () => {
             }}
           />
         ) : null}
-        <PageNavigationActions prevLink="/bill-upload" nextDisabled={!formState.isValid} />
+        <PageNavigationActions hidePrev nextDisabled={!formState.isValid} />
       </form>
     </PageWrapper>
   )

@@ -59,7 +59,7 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="address.streetNumber"
+          name="address.street"
           control={control}
           required={isManualAddress}
           label="Street Number"
@@ -67,7 +67,7 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="address.streetName"
+          name="address.route"
           control={control}
           required={isManualAddress}
           label="Street Name"
@@ -75,7 +75,7 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="address.city"
+          name="address.suburb"
           control={control}
           required={isManualAddress}
           label="Suburb/City"

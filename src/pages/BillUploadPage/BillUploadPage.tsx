@@ -23,6 +23,7 @@ import { useRegistration } from '../../hooks/useRegistration'
 import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
 import { useToast } from '../../hooks'
 import { buildCreateAccountPayload } from '../../api/account'
+import { getPhoneNumber } from '../../helpers/formatter'
 
 const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
@@ -54,7 +55,12 @@ const BillUploadPage = () => {
 
     if (data.billFileType === HAVE_PAPER_BILL) {
       const buildedData = buildCreateAccountPayload(data, nmi, mirn)
-      setRegistrationData((prev) => ({ ...prev, ...data }))
+      setRegistrationData((prev) => ({
+        ...prev,
+        ...data,
+        phone: getPhoneNumber(data.phone),
+        mobile: getPhoneNumber(data.phone),
+      }))
       return createAccountMutation.mutate(buildedData)
     }
 
@@ -78,19 +84,26 @@ const BillUploadPage = () => {
       }
 
       shouldSwitchHavePaperBill =
-        (!nmi && registrationData.energyType !== GAS_VALUE) ||
-        (!mirn && registrationData.energyType !== ELECTRICITY_VALUE)
+        (!nmi && registrationData?.energyType !== GAS_VALUE) ||
+        (!mirn && registrationData?.energyType !== ELECTRICITY_VALUE)
     } catch (error) {
       shouldSwitchHavePaperBill = true
     }
 
-    console.log('registrationData.energyType:', registrationData.energyType)
+    console.log('registrationData?.energyType:', registrationData?.energyType)
     console.log('shouldSwitchHavePaperBill:', shouldSwitchHavePaperBill)
 
     // NMI/MIRN found
     if (!shouldSwitchHavePaperBill) {
       const buildedData = buildCreateAccountPayload(data, nmi, mirn)
-      setRegistrationData((prev) => ({ ...prev, ...data, nmi, mirn }))
+      setRegistrationData((prev) => ({
+        ...prev,
+        ...data,
+        nmi,
+        mirn,
+        phone: getPhoneNumber(data.phone),
+        mobile: getPhoneNumber(data.phone),
+      }))
       return createAccountMutation.mutate(buildedData)
     } else {
       setValue('billFileType', HAVE_PAPER_BILL)
@@ -105,10 +118,10 @@ const BillUploadPage = () => {
   }
 
   let uploadOptions = UPLOAD_BILL_TYPE_OPTIONS
-  if (registrationData.energyType !== BOTH_VALUE) {
+  if (registrationData?.energyType !== BOTH_VALUE) {
     uploadOptions = UPLOAD_BILL_TYPE_OPTIONS.filter((item) => {
-      if (!registrationData.energyType) return false
-      return item.value.includes(registrationData.energyType) || item.value === HAVE_PAPER_BILL
+      if (!registrationData?.energyType) return false
+      return item.value.includes(registrationData?.energyType) || item.value === HAVE_PAPER_BILL
     })
   }
 
@@ -126,11 +139,11 @@ const BillUploadPage = () => {
               rules={REQUIRED_VALIDATION}
               options={uploadOptions}
             />
-            {watchBillFileType === HAVE_PAPER_BILL && registrationData.energyType ? (
-              <PaperBillForm control={control} energyType={registrationData.energyType} setValue={setValue} />
+            {watchBillFileType === HAVE_PAPER_BILL && registrationData?.energyType ? (
+              <PaperBillForm control={control} energyType={registrationData?.energyType} setValue={setValue} />
             ) : null}
 
-            {registrationData.energyType !== GAS_VALUE ? (
+            {registrationData?.energyType !== GAS_VALUE ? (
               <Controller
                 name={`electricityBillInfo.billFiles`}
                 control={control}
@@ -155,7 +168,7 @@ const BillUploadPage = () => {
               />
             ) : null}
 
-            {registrationData.energyType !== ELECTRICITY_VALUE ? (
+            {registrationData?.energyType !== ELECTRICITY_VALUE ? (
               <Controller
                 name={`gasBillInfo.billFiles`}
                 control={control}

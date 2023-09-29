@@ -94,7 +94,7 @@ export const AGL = 'AGL'
 export const ALINTA = 'Alinta'
 export const BLUE_NRG = 'Blue NRG'
 export const COVA_U = 'CovaU'
-export const ENERGY_AUSTRALIA = 'Energy Australia'
+export const ENERGY_AU = 'Energy AU'
 export const ENERGY_LOCALS = 'Energy Locals'
 export const ENGIE = 'ENGIE'
 export const FLOW_POWER = 'Flow Power'
@@ -112,6 +112,22 @@ export const SMARTEST_ENERGY = 'Smartest Energy'
 export const SUMO = 'Sumo'
 export const TANGO = 'Tango'
 
+export const HCC = `HCC - Centrelink Healthcare Card`
+export const PCC = `PCC - Centrelink Pensioner Concession Card`
+export const DVPC = `DVPC - Dept of Veterans' Affairs Pensioner Concession Card`
+export const DVAGC = `DVAGC - Dept of Veterans' Affairs Gold Card`
+export const DVAGC_WW = `DVAGC_WW - Dept of Veterans' Affairs Gold Card War Widow`
+export const DVAGC_TPI = `DVAGC_TPI - Dept of Veterans' Affairs Gold Card TPI`
+export const QGSC = `QGSC - Queensland Government Seniors Card`
+export const CSHC = `CSHC - Commonwealth Senior Health Card`
+export const DVAGC_EDA = `DVAGC_EDA - DVA Gold Card (Disability pension only)`
+export const SAHCC = `SAHCC - Health Care Card Sickness Allowance [SA]`
+export const SPHCC = `SPHCC - Health Care Card Special Benefit [SP]`
+export const CDHCC = `CDHCC - Health Care Card Carer (Child Under 16) [CD]`
+export const NOCARD = `NOCARD - No Card (Used for One-Off Rebates)`
+export const NOCARD_LS = `NOCARD_LS - No Card with Life Support`
+export const ASYLUM_SEEKER = `Asylum seeker status (ImmiCard)`
+
 export const HEALTH_CARE_CARD = 'Health Care Card'
 export const PENSIONER_CARD = 'Pensioner Card'
 export const GOLD_WAR_WIDOW_WW = 'Gold War Widow (WW)'
@@ -119,6 +135,10 @@ export const GOLD_TOTALLY_PERMANENTLY_INCAPACITATED_TPI = 'Gold Totally & Perman
 export const QLD_GOVERNMENT_SENIORS_CARD = 'QLD Government Seniors Card'
 export const AUSTRALIAN_GOVERNMENT_IMMI_CARD_ASYLUM_SEEKER = 'Australian Government ImmiCard (Asylum Seeker)'
 export const GOLD_EXTREME_DISABLEMENT_ADJUSTMENT_EDA = 'Gold Extreme Disablement Adjustment (EDA)'
+
+export const GREEN_POWER_10_PERCENT = `10%`
+export const GREEN_POWER_25_PERCENT = `25%`
+export const GREEN_POWER_100_PERCENT = `100%`
 
 export const INSTALLATION_TIME_MORNING = '8am - 1pm'
 export const INSTALLATION_TIME_AFTERNOON = '1pm - 6pm'
@@ -129,6 +149,13 @@ export const PROVIDE_KEYS = 'Keys will be in the letter box'
 export const INSPECTION_METHOD_PERSON = 'Someone over the age of 18 will be at the property'
 export const INSPECTION_METHOD_KEYS_MAIL = 'Leave the keys in the mail box'
 export const INSPECTION_METHOD_KEYS_METER = 'Leave the keys in the meter box'
+
+export const OXYGEN_CONCENTRATOR = 'Oxygen concentrator'
+export const INTERMITTENT_PERITONEAL_DIALYSIS_MACHINES = 'Intermittent peritoneal dialysis machines'
+export const KIDNEY_DIALYSIS_MACHINE = 'Kidney dialysis machine'
+export const CHRONIC_POSITIVE_AIRWAYS_PRESSURE_RESPIRATORS_CPAP = 'Chronic positive airways pressure respirators (CPAP)'
+export const CRIGLER_NAJJAR_SYNDROME_PHOTOTHERAPY_EQUIPMENT = 'Crigler najjar syndrome phototherapy equipment'
+export const VENTILATORS_FOR_LIFE_SUPPORT = 'Ventilators for life support'
 
 export const INSPECTION_METHOD_OPTIONS = [
   { value: INSPECTION_METHOD_PERSON, label: INSPECTION_METHOD_PERSON },
@@ -264,7 +291,7 @@ export const RETAILER_OPTIONS: SelectOption[] = [
   ALINTA,
   BLUE_NRG,
   COVA_U,
-  ENERGY_AUSTRALIA,
+  ENERGY_AU,
   ENERGY_LOCALS,
   ENGIE,
   FLOW_POWER,
@@ -284,13 +311,44 @@ export const RETAILER_OPTIONS: SelectOption[] = [
 ].map((i) => ({ value: i, label: i }))
 
 export const AGL_CONCESSION_CARD_TYPES = [
-  HEALTH_CARE_CARD,
-  PENSIONER_CARD,
-  GOLD_WAR_WIDOW_WW,
-  GOLD_TOTALLY_PERMANENTLY_INCAPACITATED_TPI,
-  QLD_GOVERNMENT_SENIORS_CARD,
-  AUSTRALIAN_GOVERNMENT_IMMI_CARD_ASYLUM_SEEKER,
-  GOLD_EXTREME_DISABLEMENT_ADJUSTMENT_EDA,
+  // HEALTH_CARE_CARD,
+  // PENSIONER_CARD,
+  // GOLD_WAR_WIDOW_WW,
+  // GOLD_TOTALLY_PERMANENTLY_INCAPACITATED_TPI,
+  // QLD_GOVERNMENT_SENIORS_CARD,
+  // AUSTRALIAN_GOVERNMENT_IMMI_CARD_ASYLUM_SEEKER,
+  // GOLD_EXTREME_DISABLEMENT_ADJUSTMENT_EDA,
+  HCC,
+  PCC,
+  DVPC,
+  DVAGC,
+  DVAGC_WW,
+  DVAGC_TPI,
+  QGSC,
+  CSHC,
+  DVAGC_EDA,
+  SAHCC,
+  SPHCC,
+  CDHCC,
+  NOCARD,
+  NOCARD_LS,
+  ASYLUM_SEEKER,
+].map((item) => ({ value: item, label: item }))
+
+export const LIFE_SUPPORT_EQUIPMENT_OPTIONS = [
+  OXYGEN_CONCENTRATOR,
+  INTERMITTENT_PERITONEAL_DIALYSIS_MACHINES,
+  KIDNEY_DIALYSIS_MACHINE,
+  CHRONIC_POSITIVE_AIRWAYS_PRESSURE_RESPIRATORS_CPAP,
+  CRIGLER_NAJJAR_SYNDROME_PHOTOTHERAPY_EQUIPMENT,
+  VENTILATORS_FOR_LIFE_SUPPORT,
+].map((item) => ({ value: item, label: item }))
+
+export const GREEN_POWER_OPTIONS = [
+  GREEN_POWER_10_PERCENT,
+  GREEN_POWER_25_PERCENT,
+  GREEN_POWER_100_PERCENT,
+  NO_VALUE,
 ].map((item) => ({ value: item, label: item }))
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call

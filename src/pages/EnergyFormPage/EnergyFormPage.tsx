@@ -25,10 +25,11 @@ import RadioCheckGroupInput from '../../components/Inputs/RadioCheckGroupInput'
 import { EMAIL_VALIDATION, STANDARD_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../constants/validation'
 import { useRegistration } from '../../hooks/useRegistration'
 import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
+import { getPhoneNumber } from '../../helpers/formatter'
 
 const HomePage = () => {
   const { fireAlert } = useToast()
-  const { createLeadMutation, updateLeadMutation, registrationData, setRegistrationData } = useRegistration()
+  const { createLeadMutation, validateReCaptchaMutation, registrationData, setRegistrationData } = useRegistration()
   const {
     register,
     handleSubmit,
@@ -48,18 +49,17 @@ const HomePage = () => {
 
     const buildedData = {
       ...data,
-      phone: `+${data.phone}`,
+      phone: getPhoneNumber(data.phone),
       recordType: data?.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
     }
 
     const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
-    console.log(token)
+    const reCaptchaValidateResponse = await validateReCaptchaMutation.mutateAsync(token)
 
-    // TODO: Validate Recaptcha with API
-    if (!registrationData.token) {
+    if (reCaptchaValidateResponse?.success) {
       createLeadMutation.mutate(buildedData)
     } else {
-      updateLeadMutation.mutate(buildedData)
+      fireAlert({ children: 'Could not process your request right now. Please try again later.', type: 'error' })
     }
   }
 
@@ -92,7 +92,7 @@ const HomePage = () => {
   }, [setRegistrationData])
 
   return (
-    <PageWrapper containerClassName="bg-zembl-s !bg-white" contentWrapperClassName="max-w-screen-lg">
+    <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
       <EnergyFormPageTitle />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 md:w-1/2 ">
         <InputWithLabel

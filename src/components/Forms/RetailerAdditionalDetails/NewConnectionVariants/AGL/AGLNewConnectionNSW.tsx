@@ -1,5 +1,5 @@
 import { Control } from 'react-hook-form'
-import { YES_NO_OPTIONS } from '../../../../../constants'
+import { CONNECTED, DISCONNECTED, YES_NO_OPTIONS } from '../../../../../constants'
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
@@ -15,7 +15,7 @@ const AGLNewConnectionNSW = ({ control, hasPower, connectionPrice }: AGLNewConne
         options={YES_NO_OPTIONS}
       />
       {/* Case power connected */}
-      {hasPower ? (
+      {hasPower === CONNECTED ? (
         <TextNote>
           For your reading to occur there will need to be clear access to the meter and main switch between 7AM and
           10PM. (eg, no overgrown bushes, locked gate, locked meter, make sure your dog is locked away etc.) Please be
@@ -24,7 +24,7 @@ const AGLNewConnectionNSW = ({ control, hasPower, connectionPrice }: AGLNewConne
       ) : null}
 
       {/* Case power NOT connected */}
-      {!hasPower ? (
+      {hasPower === DISCONNECTED ? (
         <>
           <TextNote>
             If the power is disconnected, an adult must be on-site for the reconnection to occur. Please ensure your
@@ -48,7 +48,7 @@ const AGLNewConnectionNSW = ({ control, hasPower, connectionPrice }: AGLNewConne
 
 interface AGLNewConnectionNSWProps {
   control: Control
-  hasPower: boolean
+  hasPower: string
   connectionPrice: number | null
 }
 

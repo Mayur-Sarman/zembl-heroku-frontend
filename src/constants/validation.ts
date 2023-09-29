@@ -15,7 +15,7 @@ export const MAX_STD_NUMBER_FIELD_LENGTH = 18
 export const STD_EMAIL_PATTERN =
   /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
 
-export const STD_NUMBER_PATTERN = /\d+/
+export const STD_NUMBER_PATTERN = /\+?\d+/
 
 export const STANDARD_SF_TEXT_VALIDATION = {
   maxLength: {
@@ -36,7 +36,7 @@ export const REQUIRED_VALIDATION = {
 }
 
 export const CHECKBOX_REQUIRED_VALIDATION = {
-  required: { value: true, message: 'Select a value' }
+  required: { value: true, message: 'Select a value' },
 }
 
 export const EMAIL_VALIDATION = {
@@ -105,7 +105,14 @@ export const getExactLengthValidation = (length: number) => ({
 export const DATE_MUST_FUTURE = {
   min: {
     value: (value: Date) => value > new Date(),
-    message: 'tasdfasdfasdf'
+    message: 'Date must be in the future.',
+  },
+}
+
+export const DATE_MUST_PAST = {
+  min: {
+    value: (value: Date) => value <= new Date(),
+    message: 'Date must be in the past.',
   },
 }
 

@@ -2,7 +2,7 @@ import { Control } from 'react-hook-form'
 import ControllerInput from '../Inputs/ControllerInput'
 import ZemblPhoneInput from '../Inputs/PhoneInput'
 import DateInput from '../Inputs/DateInput'
-import { EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../constants/validation'
+import { DATE_MUST_PAST, EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../constants/validation'
 import { TITLE_LIST_OPTIONS } from '../../constants'
 import ControllerSelectInput from '../Inputs/ControllerSelectInput'
 
@@ -63,6 +63,8 @@ const SecondaryContactForm = ({ control }: SecondaryContactFormProps) => {
         name="secondaryHolder.dateOfBirth"
         datepickerClassNames={'top-auto'}
         required
+        rules={DATE_MUST_PAST}
+        maxDate={new Date()}
       />
     </div>
   )

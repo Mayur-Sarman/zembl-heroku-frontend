@@ -1,7 +1,8 @@
+import { SEARCH_ABN_ENDPOINT } from '../constants'
 import { performGetRequest } from '../helpers'
 
 export const getSearchABN = async (payload: ABNSearchRequestPayload, token: string) => {
-  const response = await performGetRequest('/searchABN', payload, token)
+  const response = await performGetRequest(SEARCH_ABN_ENDPOINT, payload, token)
   return response.data as ABNResponse
 }
 

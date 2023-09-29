@@ -1,5 +1,5 @@
 import { Control } from 'react-hook-form'
-import { HAS_CONNECTION_OPTIONS, YES_UNSURE_OPTIONS } from '../../../../../constants'
+import { CONNECTED, DISCONNECTED, HAS_CONNECTION_OPTIONS, NO_VALUE, YES_UNSURE_OPTIONS } from '../../../../../constants'
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
@@ -15,7 +15,7 @@ const AGLNewConnectionVIC = ({ control, hasPower, hasAnyWorkCompleted, connectio
         options={HAS_CONNECTION_OPTIONS}
       />
       {/* Case power connected */}
-      {hasPower ? (
+      {hasPower === CONNECTED ? (
         <TextNote>
           For your reading to occur there will need to be clear access to the meter and main switch between 7AM and
           10PM. (eg, no overgrown bushes, locked gate, locked meter, make sure your dog is locked away etc.) Please be
@@ -24,7 +24,7 @@ const AGLNewConnectionVIC = ({ control, hasPower, hasAnyWorkCompleted, connectio
       ) : null}
 
       {/* Case power NOT connected */}
-      {!hasPower ? (
+      {hasPower === DISCONNECTED ? (
         <>
           <ControllerRadioGroupInput
             label="Has there or will there be any work completed at the property that may lead to contact with the wires since the power was disconnected?"
@@ -32,7 +32,7 @@ const AGLNewConnectionVIC = ({ control, hasPower, hasAnyWorkCompleted, connectio
             name="hasAnyWorkCompleted"
             options={YES_UNSURE_OPTIONS}
           />
-          {hasAnyWorkCompleted ? (
+          {hasAnyWorkCompleted === NO_VALUE ? (
             <TextNote>
               Please be aware that your reconnection may occur remotely and that the main switch will need to be off
               between 7am and 10pm.
@@ -49,8 +49,8 @@ const AGLNewConnectionVIC = ({ control, hasPower, hasAnyWorkCompleted, connectio
 
 interface AGLNewConnectionVICProps {
   control: Control
-  hasPower: boolean
-  hasAnyWorkCompleted: boolean
+  hasPower: string
+  hasAnyWorkCompleted: string
   connectionPrice: number | null
 }
 

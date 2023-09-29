@@ -40,7 +40,7 @@ const ZemblPhoneInput = ({
               disabled={disabled}
               inputProps={{
                 ref: ref,
-                required: true,
+                required: required,
                 disabled: disabled,
                 readOnly: readOnly,
               }}

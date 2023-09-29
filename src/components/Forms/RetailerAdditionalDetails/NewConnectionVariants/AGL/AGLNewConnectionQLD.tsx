@@ -1,5 +1,11 @@
 import { Control } from 'react-hook-form'
-import { HOME_OR_PROVIDE_KEYS_OPTIONS, INSTALLLATION_TIMESLOT_OPTIONS, YES_NO_OPTIONS } from '../../../../../constants'
+import {
+  CONNECTED,
+  DISCONNECTED,
+  HOME_OR_PROVIDE_KEYS_OPTIONS,
+  INSTALLLATION_TIMESLOT_OPTIONS,
+  YES_NO_OPTIONS,
+} from '../../../../../constants'
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
@@ -15,7 +21,7 @@ const AGLNewConnectionQLD = ({ control, hasPower, connectionPrice }: AGLNewConne
         options={YES_NO_OPTIONS}
       />
       {/* Case power connected */}
-      {hasPower ? (
+      {hasPower === CONNECTED ? (
         <>
           <TextNote>
             For your reading to occur there will need to be clear access to the meter and main switch between 7AM and
@@ -43,7 +49,7 @@ const AGLNewConnectionQLD = ({ control, hasPower, connectionPrice }: AGLNewConne
       ) : null}
 
       {/* Case power NOT connected */}
-      {!hasPower ? (
+      {hasPower === DISCONNECTED ? (
         <>
           <TextNote>
             On the date of connection, you will need to ensure you make the necessary arrangements for the Main Power
@@ -66,7 +72,7 @@ const AGLNewConnectionQLD = ({ control, hasPower, connectionPrice }: AGLNewConne
 
 interface AGLNewConnectionQLDProps {
   control: Control
-  hasPower: boolean
+  hasPower: string
   connectionPrice: number | null
 }
 

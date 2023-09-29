@@ -1,12 +1,13 @@
+import { CREATE_LEAD_ENDPOINT, UPDATE_LEAD_ENDPOINT } from '../constants'
 import { performPatchRequest, performPostRequest } from '../helpers'
 
 export const postCreateLead = async (data: Lead, token: string) => {
-  const response = await performPostRequest('/public/createLead', data, token)
+  const response = await performPostRequest(CREATE_LEAD_ENDPOINT, data, token)
   return response.data as LeadResponse
 }
 
 export const patchUpdateLead = async (data: Lead, token: string) => {
-  const response = await performPatchRequest('/updateLead', data, token)
+  const response = await performPatchRequest(UPDATE_LEAD_ENDPOINT, data, token)
   return response.data as LeadResponse
 }
 

@@ -61,6 +61,10 @@ export interface CommonSFError {
   message?: string // 'System.LimitException: Apex CPU time limit exceeded\n\n(System Code)\nClass.SkieLeadResource.processLead: line 10, column 1'
 }
 
+export interface SimpleResponse {
+  message?: string
+}
+
 // export interface MulesoftError {
 //   suppressedErrors: []
 //   errorType: {

@@ -4,12 +4,12 @@ import { YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
-const EnergyLocalsPreference = ({ control }: EnergyLocalsPreferenceProps) => {
+const EnergyLocalsPreference = ({ control, prefix }: EnergyLocalsPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="Energy Locals  Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
         control={control}
-        name="isConsentBureauCreditCheck"
+        name={`${prefix}.creditCheckConsent`}
         label={`As part of our signup process, we will be conducting a credit check with our credit bureau. Do you consent to a credit check?`}
         options={YES_NO_OPTIONS}
         required
@@ -25,6 +25,7 @@ const EnergyLocalsPreference = ({ control }: EnergyLocalsPreferenceProps) => {
 
 interface EnergyLocalsPreferenceProps {
   control: Control
+  prefix: string
 }
 
 export default EnergyLocalsPreference

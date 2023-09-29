@@ -1,8 +1,15 @@
-import { Typography } from '@material-tailwind/react'
+import { Button, Typography } from '@material-tailwind/react'
 import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 
-const SelectPlansPageTitle = ({ energyType }: { energyType: string | undefined }) => {
-  let titleName = null
+const SelectPlansPageTitle = ({
+  energyType,
+  requestCallbackClick,
+}: {
+  energyType: string | undefined
+  requestCallbackClick: () => unknown
+}) => {
+  let titleName = 'Electricity & Gas'
 
   switch (energyType) {
     case ELECTRICITY_VALUE:
@@ -17,13 +24,21 @@ const SelectPlansPageTitle = ({ energyType }: { energyType: string | undefined }
   }
   return (
     <div className="flex flex-col gap-6 w-full items-center">
-      <div className="flex flex-col gap-3 w-full px-2 my-2 items-center lg:items-baseline lg:my-4 lg:flex-row">
-        <Typography className="text-zembl-p w-full font-normal text-3xl lg:font-medium md:text-5xl lg:w-auto">
-          {titleName ?? null}
-        </Typography>
-        <Typography className="text-zembl-p text-sm font-light lg:font-normal lg:text-xl max-w-lg">
-          Here are the plans relevant to your selections
-        </Typography>
+      <div className="flex flex-col gap-3 w-full my-2 items-center lg:my-4 lg:flex-row justify-between">
+        <div className="text-center lg:text-left">
+          <Typography className="text-zembl-p w-full font-normal text-3xl lg:font-medium md:text-5xl lg:w-auto whitespace-nowrap">
+            {titleName ?? null}
+          </Typography>
+          <Typography className="text-zembl-p text-sm font-light lg:font-normal lg:text-xl max-w-lg">
+            Here are the plans relevant to your selections
+          </Typography>
+        </div>
+        <Button className="!zembl-btn" onClick={requestCallbackClick}>
+          Want a more accurate quote?
+          <Typography className="text-xs !font-extrabold flex justify-center gap-1">
+            Request a callback <InformationCircleIcon className="w-4 h-4" />
+          </Typography>
+        </Button>
       </div>
     </div>
   )

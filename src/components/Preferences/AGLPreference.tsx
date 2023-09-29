@@ -1,13 +1,13 @@
 import AccordionCard from '../AccordionCard'
 import { Control } from 'react-hook-form'
-import { YES_NO_OPTIONS } from '../../constants'
+import { LIFE_SUPPORT_EQUIPMENT_OPTIONS, YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import { Typography } from '@material-tailwind/react'
 import ControllerSelectInput from '../Inputs/ControllerSelectInput'
 import { REQUIRED_VALIDATION } from '../../constants/validation'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
-const AGLPreference = ({ control }: AGLPreferenceProps) => {
+const AGLPreference = ({ control, prefix }: AGLPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="AGL Preferences" bodyClassName="flex-col text-left gap-y-6">
       <TextNote>You have indicated that someone in the property has life support equipment.</TextNote>
@@ -18,8 +18,8 @@ const AGLPreference = ({ control }: AGLPreferenceProps) => {
             label="What type of life support equipment?"
             textLabel="What type of life support equipment?"
             placeholder="Select..."
-            options={[]}
-            name="lifeSupportEquipmentType"
+            options={LIFE_SUPPORT_EQUIPMENT_OPTIONS}
+            name={`${prefix}.lifeSupportEquipment`}
             rules={REQUIRED_VALIDATION}
           />
         </div>
@@ -35,14 +35,14 @@ const AGLPreference = ({ control }: AGLPreferenceProps) => {
       </Typography>
       <ControllerRadioGroupInput
         control={control}
-        name="isConsentCreditCheck"
+        name={`${prefix}.creditCheckConsent`}
         required
         label={'Do you consent to a credit check?'}
         options={YES_NO_OPTIONS}
       />
       <ControllerRadioGroupInput
         control={control}
-        name="isCarbonNeutralOptIn"
+        name={`${prefix}.carbonNeutral`}
         required
         label={
           "You now have the option to choose to go Carbon Neutral on AGL's Small Business electricity plans for $4 per week. Would you like to opt into that now?"
@@ -55,6 +55,7 @@ const AGLPreference = ({ control }: AGLPreferenceProps) => {
 
 interface AGLPreferenceProps {
   control: Control
+  prefix: string
 }
 
 export default AGLPreference

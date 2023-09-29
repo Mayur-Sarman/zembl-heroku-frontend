@@ -6,7 +6,8 @@ import TextNote from '../../../TextNote'
 import ConcessionForm from '../../ConcessionForm'
 import { ReactNode } from 'react'
 
-const AGLConcession = ({ control, state, cardHolder, concessionConsent, isBusiness }: AGLConcessionProps) => {
+const AGLConcession = ({ control, state, cardHolder, concessionConsent }: AGLConcessionProps) => {
+  const concessionNote = getConcessionNote(`${state}`)
   return (
     <AccordionCard alwaysOpen open title="Concession" bodyClassName="w-full flex flex-col gap-6 text-left">
       <ControllerRadioGroupInput
@@ -18,7 +19,7 @@ const AGLConcession = ({ control, state, cardHolder, concessionConsent, isBusine
       {cardHolder === YES_VALUE ? (
         <>
           {state !== 'SA' ? <ConcessionForm control={control} /> : null}
-          {!isBusiness ? <TextNote>{getConcessionNote(`${state}`)}</TextNote> : null}
+          {concessionNote ? <TextNote>{concessionNote}</TextNote> : null}
 
           <ControllerRadioGroupInput
             label="You understand and consent to your Energy Retailer accessing your information held by Services Australia / Department of Veteran Affairs?"
@@ -46,7 +47,6 @@ interface AGLConcessionProps {
   newConnection?: boolean
   cardHolder?: string
   concessionConsent?: string
-  isBusiness?: boolean
 }
 
 const getConcessionNote = (state = ''): ReactNode | null => {

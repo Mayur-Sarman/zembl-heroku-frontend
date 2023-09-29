@@ -6,7 +6,23 @@ import RichText from '../RichText'
 import { Checkbox, Typography } from '@material-tailwind/react'
 import { FieldValues, UseFormRegister } from 'react-hook-form'
 
-const ReZemblTermForm = ({ zemblTerms, register }: ReZemblTermFormProps) => {
+const ReZemblTermForm = ({
+  zemblElectricTerms = '<div>Test Electric</div>',
+  zemblGasTerms = '<div>Test Gas</div>',
+  register,
+}: ReZemblTermFormProps) => {
+  const electricTermDisplay = zemblElectricTerms ? (
+    <TextNote>
+      <RichText htmlString={zemblElectricTerms} />
+    </TextNote>
+  ) : null
+
+  const gasTermDisplay = zemblGasTerms ? (
+    <TextNote>
+      <RichText htmlString={zemblGasTerms} />
+    </TextNote>
+  ) : null
+
   return (
     <AccordionCard open alwaysOpen title="Your Acknowledge and Acceptance">
       <div className="grid grid-cols-1 gap-6 text-left">
@@ -16,14 +32,20 @@ const ReZemblTermForm = ({ zemblTerms, register }: ReZemblTermFormProps) => {
             Re-Zembl
           </Typography>
         </div>
-        <TextNote>
-          <RichText htmlString={zemblTerms} />
-        </TextNote>
+        {electricTermDisplay}
         <Checkbox
           label={`By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms`}
           labelProps={{ className: `font-semibold after:content-['*'] after:text-red-500 after:ml-1` }}
           required
-          {...register('acceptReZemblTerms')}
+          {...register('acceptElectricReZemblTerm')}
+          crossOrigin={''}
+        />
+        {gasTermDisplay}
+        <Checkbox
+          label={`By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms`}
+          labelProps={{ className: `font-semibold after:content-['*'] after:text-red-500 after:ml-1` }}
+          required
+          {...register('acceptGasReZemblTerm')}
           crossOrigin={''}
         />
       </div>
@@ -32,7 +54,8 @@ const ReZemblTermForm = ({ zemblTerms, register }: ReZemblTermFormProps) => {
 }
 
 interface ReZemblTermFormProps {
-  zemblTerms: string
+  zemblElectricTerms?: string | null
+  zemblGasTerms?: string | null
   register: UseFormRegister<FieldValues>
 }
 

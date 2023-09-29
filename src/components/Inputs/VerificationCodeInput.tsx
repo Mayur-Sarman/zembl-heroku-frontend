@@ -3,6 +3,7 @@ import { toNumber } from 'lodash'
 import {
   ChangeEvent,
   ChangeEventHandler,
+  ClipboardEvent,
   ClipboardEventHandler,
   KeyboardEvent,
   MouseEventHandler,
@@ -15,7 +16,14 @@ const CODE_DIGITS = 4
 const INPUT_CLASS =
   'peer bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 border-t-transparent focus:border-t-transparent px-3 py-2.5 rounded-[7px] !border !border-blue-gray-200 focus:!border-gray-900 w-12 h-12 lg:w-20 lg:h-20 text-lg lg:text-3xl text-center'
 
-const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber }: VerificationCodeInputProps) => {
+const VerificationCodeInput = ({
+  control,
+  onResendClicked,
+  setValue,
+  name,
+  phoneNumber,
+  digits = CODE_DIGITS,
+}: VerificationCodeInputProps) => {
   const onVerificationDigitInput = (
     e: ChangeEvent,
     callback: ChangeEventHandler<Element>,
@@ -40,7 +48,7 @@ const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber
 
       target.value = newValue
 
-      if (toNumber(newValue) < 0 || newValue.length > CODE_DIGITS) {
+      if (toNumber(newValue) < 0 || newValue.length > digits) {
         return
       }
 
@@ -81,7 +89,7 @@ const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber
     }
   }
 
-  const onCodePasted: ClipboardEventHandler<HTMLInputElement> = (e) => {
+  const onCodePasted: ClipboardEventHandler<HTMLInputElement> = (e: ClipboardEvent<HTMLInputElement>) => {
     const dataTransfer: DataTransfer = e.clipboardData
     const code: string = dataTransfer.getData('Text')
 
@@ -90,7 +98,7 @@ const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber
       return
     }
 
-    setValue('verificationCode', code.slice(0, CODE_DIGITS))
+    setValue(name, code.slice(0, digits), { shouldDirty: true, shouldTouch: true, shouldValidate: true })
   }
 
   const onWheel: WheelEventHandler<HTMLInputElement> = (e) => {
@@ -104,15 +112,15 @@ const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber
       <Typography className="text-sm lg:text-base font-normal text-zembl-p">
         A text message with a verification code was sent to {phoneNumber}
       </Typography>
-      {/* <div className="flex relative px-0 py-6 md:p-6 justify-center"> */}
-      <div className="flex relative p-6 justify-center">
+      <div className="flex relative px-0 py-6 md:p-6 justify-center">
+        {/* <div className="flex relative p-6 justify-center"> */}
         <Controller
-          name="verificationCode"
+          name={name}
           control={control}
-          rules={{ ...REQUIRED_VALIDATION, ...getExactLengthValidation(CODE_DIGITS) }}
+          rules={{ ...REQUIRED_VALIDATION, ...getExactLengthValidation(digits) }}
           render={({ field }) => {
             const fieldValue: string = (field.value as string) ?? ''
-            const inputDigits = Array.from(new Array(CODE_DIGITS)).map((_, index) => (
+            const inputDigits = Array.from(new Array(digits)).map((_, index) => (
               <input
                 key={index}
                 type="number"
@@ -125,11 +133,19 @@ const VerificationCodeInput = ({ control, onResendClicked, setValue, phoneNumber
                 onPaste={onCodePasted}
               />
             ))
-            // return <div className="grid grid-cols-4 md:flex-nowrap gap-1 md:gap-2 lg:gap-3 justify-center z-[1]">{inputDigits}</div>
-            return <div className="flex gap-2 lg:gap-3 justify-center z-[1]">{inputDigits}</div>
+            return (
+              <div
+                className={`grid grid-cols-${
+                  digits > 4 ? Math.floor(digits / 2) : digits
+                } md:grid-cols-${digits} gap-1 md:gap-2 lg:gap-3 justify-center z-[1]`}
+              >
+                {inputDigits}
+              </div>
+            )
+            // return <div className="flex flex-wrap md:flex-nowrap gap-2 lg:gap-3 justify-center z-[1]">{inputDigits}</div>
           }}
         />
-        <hr className={`border-b border-zembl-p absolute w-48 lg:w-72 top-1/2`} />
+        {/* <hr className={`border-b border-zembl-p absolute w-48 lg:w-72 top-1/2`} /> */}
       </div>
       <Typography
         onClick={onResendClicked}
@@ -147,6 +163,8 @@ interface VerificationCodeInputProps {
   onResendClicked: MouseEventHandler
   setValue: UseFormSetValue<FieldValues>
   phoneNumber: string
+  name: string
+  digits: number
 }
 
 export default VerificationCodeInput

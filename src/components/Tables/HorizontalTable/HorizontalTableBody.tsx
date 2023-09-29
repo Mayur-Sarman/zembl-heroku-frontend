@@ -6,12 +6,14 @@ import { TableBodyProps } from '../types'
 const HorizontalTableBody = ({ data, columns, striped }: TableBodyProps) => {
   const bodyDisplay = columns.map((col) => {
     const dataCells = data.map((data, index) => {
-      const value = formatData(data[col.key], col.type, {
+      const ob = data as Record<string, unknown>
+      if (!ob) return null
+      const value = formatData(ob[col.key], col.type, {
         dateFormat: col.dateFormat,
         numberFormatOptions: col.numberFormatOptions,
       })
 
-      return <TableCell key={`${col.key}_${(data.id as string) ?? index}`}>{value}</TableCell>
+      return <TableCell key={`${col.key}_${(ob?.id as string) ?? index}`}>{value}</TableCell>
     })
 
     return (

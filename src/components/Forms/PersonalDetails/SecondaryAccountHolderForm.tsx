@@ -7,7 +7,7 @@ import { TITLE_LIST_OPTIONS, YES_NO_OPTIONS } from '../../../constants'
 import ControllerRadioGroupInput from '../../Inputs/ControllerRadioGroupInput'
 import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
 import ControllerInput from '../../Inputs/ControllerInput'
-import { EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../../constants/validation'
+import { DATE_MUST_PAST, EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../../constants/validation'
 
 const SecondaryAccountHolderForm = ({ control, hasSecondaryAccountHolder }: SecondaryAccountHolderFormProps) => {
   return (
@@ -88,6 +88,8 @@ const SecondaryAccountHolderForm = ({ control, hasSecondaryAccountHolder }: Seco
             name="dateOfBirth"
             datepickerClassNames={'top-auto'}
             required={hasSecondaryAccountHolder}
+            rules={DATE_MUST_PAST}
+            maxDate={new Date()}
           />
         </div>
       ) : null}

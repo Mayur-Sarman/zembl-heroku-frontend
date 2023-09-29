@@ -61,9 +61,9 @@ const PersonalDetailPage1 = () => {
       break
   }
 
-  const electricQuote = registrationData.electricityQuote
-  const gasQuote = registrationData.gasQuote
-  const energyType = registrationData.energyType
+  const electricQuote = registrationData?.electricityQuote
+  const gasQuote = registrationData?.gasQuote
+  const energyType = registrationData?.energyType
 
   const electPlanCard =
     energyType !== GAS_VALUE ? (
@@ -96,7 +96,7 @@ const PersonalDetailPage1 = () => {
       </AccordionCard>
 
       <AccountDetailsForm control={control} />
-      {registrationData.registrationType === REGISTRATION_TYPE_BUSINESS ? (
+      {registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS ? (
         <BusinessDetailsForm control={control} />
       ) : null}
       <ConnectionDetailsForm control={control} setValue={setValue} />

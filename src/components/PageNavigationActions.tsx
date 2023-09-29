@@ -23,15 +23,15 @@ const PageNavigationActions = ({
     <div className={`flex flex-col lg:flex-row gap-6 justify-center ${containerClass ?? ''}`}>
       <Button
         variant="outlined"
-        onClick={() => prevExternal && prevLink ? window.location.href = prevLink : navigate(prevLink ?? '#')}
+        onClick={() => (prevExternal && prevLink ? (window.location.href = prevLink) : navigate(prevLink ?? '#'))}
         className={`${BACK_CLASS} ${hidePrev ? 'hidden' : ''} ${prevClass ?? ''}`}
       >
         {prevLabel}
       </Button>
       <Button
-        type="submit"
+        type={nextLink ? 'button' : 'submit'}
         disabled={nextDisabled}
-        onClick={() => navigate(nextLink ?? '#')}
+        onClick={nextLink ? () => navigate(nextLink) : undefined}
         className={`${NEXT_CLASS} ${hideNext ? 'hidden' : ''} ${nextClass ?? ''}`}
       >
         {nextLabel}
