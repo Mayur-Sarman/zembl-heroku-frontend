@@ -21,13 +21,11 @@ import {
 } from '../../../constants'
 import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
 import { getJSONDateString } from '../../../helpers/formatter'
-import { useNavigate } from 'react-router-dom'
 
 const BasicInfoPage1 = () => {
   const { fireAlert } = useToast()
-  const navigate = useNavigate()
   // On load page get data from context
-  const { updateLeadMutation, registrationData, setRegistrationData } = useRegistration()
+  const { updateLeadMutation, registrationData } = useRegistration()
   const { handleSubmit, control, watch, formState } = useForm({
     mode: 'all',
     defaultValues: registrationData as FieldValues,
@@ -59,10 +57,9 @@ const BasicInfoPage1 = () => {
       newConnection: data.isMoving === YES_VALUE,
       fullAddress: (data.address as GoogleMapExtractedComponents).fullAddress,
     }
-    console.log(buildedData)
-    setRegistrationData((prev) => ({ ...prev, buildedData }))
 
     updateLeadMutation.mutate(buildedData)
+
   }
 
   // ERROR HANDLING

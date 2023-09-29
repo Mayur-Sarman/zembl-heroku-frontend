@@ -25,18 +25,13 @@ const BasicInfoPage2 = () => {
 
   const onSubmit = async (data: FieldValues) => {
     console.log(data)
-    const a = await new Promise(resolve => resolve(1))
-    if (a === 1) {
-      return navigate('/bill-upload')
-    }
 
     // Call API
     const lead = { id: (data?.leadId as string) ?? '', status: LEAD_STATUS_CONVERTED_WON }
-    // setSubmitData(data)
 
     try {
       const leadConvertResult = await updateLeadMutation.mutateAsync(lead)
-      const leadId = leadConvertResult?.processLeadOutput?.id ?? null
+      const leadId = leadConvertResult?.processLeadOutput?.id ?? null 
 
       const selectedPreferences: string[] = (data?.preferenceList as string[]) ?? []
       const siteData: Site = {
@@ -50,7 +45,6 @@ const BasicInfoPage2 = () => {
         solarConsideration: data?.solarConsideration as string,
         preferences: convertPreference(selectedPreferences),
       }
-
       const createSiteResult = await createSiteMutation.mutateAsync(siteData)
 
       setRegistrationData((value) => {
