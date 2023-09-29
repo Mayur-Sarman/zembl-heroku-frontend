@@ -12,7 +12,7 @@ export interface ColumnDefinition {
 }
 
 export interface TableProps {
-  data: Record<string, unknown>[]
+  data: Record<string, unknown>[] | unknown[]
   columns: ColumnDefinition[]
   containerClassName?: string
   className?: string
@@ -21,7 +21,7 @@ export interface TableProps {
 }
 
 export interface TableBodyProps {
-  data: Record<string, unknown>[]
+  data: Record<string, unknown>[] | unknown[]
   columns: ColumnDefinition[]
   striped?: boolean
 }

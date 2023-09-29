@@ -1,10 +1,11 @@
-import { RegistrationData } from '../constants'
+import { CREATE_ACCOUNT_ENDPOINT, RegistrationData } from '../constants'
 import { performPostRequest } from '../helpers'
+import { getPhoneNumber } from '../helpers/formatter'
 import { Preference } from './common'
 import { QuoteResponse } from './quote'
 
 export const postCreateAccount = async (data: Account, token: string) => {
-  const response = await performPostRequest('/account', data, token)
+  const response = await performPostRequest(CREATE_ACCOUNT_ENDPOINT, data, token)
   return response.data as QuoteResponse
 }
 
@@ -24,6 +25,10 @@ export const buildCreateAccountPayload = (data: RegistrationData, nmi?: string, 
     siteId,
     preferences,
     accountName,
+    currentRetailerElectric,
+    currentRetailerGas,
+    currentUsageElectric,
+    currentUsageGas,
   } = data
 
   const buildedData = {
@@ -35,7 +40,8 @@ export const buildCreateAccountPayload = (data: RegistrationData, nmi?: string, 
     legalName: accountName,
     fullAddress,
     accountType: registrationType,
-    phone,
+    phone: getPhoneNumber(phone),
+    mobile: getPhoneNumber(phone),
     firstName,
     lastName,
     email: email,
@@ -44,6 +50,10 @@ export const buildCreateAccountPayload = (data: RegistrationData, nmi?: string, 
     siteRelationshipId,
     siteId,
     preferences,
+    currentRetailerElectric,
+    currentRetailerGas,
+    currentUsageElectric,
+    currentUsageGas,
   }
 
   return buildedData

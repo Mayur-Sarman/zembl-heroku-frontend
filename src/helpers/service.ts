@@ -13,7 +13,7 @@ export const setSessionToken = (token: string | undefined | null) =>
 export const getSessionToken = (): string | null => sessionStorage.getItem(SESSION_TOKEN_KEY)
 export const deleteSessionToken = () => sessionStorage.removeItem(SESSION_TOKEN_KEY)
 
-export const getAxiosInstance = (token: string) => {
+export const getAxiosInstance = (token?: string | null) => {
   const instance: Axios = axios.create({
     baseURL: REQUEST_BASE_URL,
     timeout: 5 * 60 * 1000,
@@ -22,7 +22,7 @@ export const getAxiosInstance = (token: string) => {
     timeoutErrorMessage: 'Request Timeout',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: token ? `Bearer ${token}` : null,
     },
   })
 
@@ -40,34 +40,64 @@ export const getAxiosInstance = (token: string) => {
   return instance
 }
 
-export const performGetRequest = async (path: string, params: object, token: string, headers?: AxiosHeaders) => {
+export const performGetRequest = async (
+  path: string,
+  params?: object,
+  token?: string | null,
+  headers?: AxiosHeaders,
+  options?: Record<string, unknown>,
+) => {
   const axios = getAxiosInstance(token)
 
-  return await axios.get(path, { params, headers })
+  return await axios.get(path, { params, headers, ...options })
 }
 
-export const performPostRequest = async (path: string, data: object, token: string, headers?: AxiosHeaders) => {
+export const performPostRequest = async (
+  path: string,
+  data?: object | null,
+  token?: string | null,
+  headers?: AxiosHeaders,
+  options?: Record<string, unknown>,
+) => {
   const axios = getAxiosInstance(token)
 
-  return await axios.post(path, data, { headers })
+  return await axios.post(path, data, { headers, ...options })
 }
 
-export const performPutRequest = async (path: string, data: object, token: string, headers?: AxiosHeaders) => {
+export const performPutRequest = async (
+  path: string,
+  data?: object | null,
+  token?: string | null,
+  headers?: AxiosHeaders,
+  options?: Record<string, unknown>,
+) => {
   const axios = getAxiosInstance(token)
 
-  return await axios.put(path, data, { headers })
+  return await axios.put(path, data, { headers, ...options })
 }
 
-export const performPatchRequest = async (path: string, data: object, token: string, headers?: AxiosHeaders) => {
+export const performPatchRequest = async (
+  path: string,
+  data?: object | null,
+  token?: string | null,
+  headers?: AxiosHeaders,
+  options?: Record<string, unknown>,
+) => {
   const axios = getAxiosInstance(token)
 
-  return await axios.patch(path, data, { headers })
+  return await axios.patch(path, data, { headers, ...options })
 }
 
-export const performDeleteRequest = async (path: string, params: object, token: string, headers?: AxiosHeaders) => {
+export const performDeleteRequest = async (
+  path: string,
+  params: object,
+  token?: string | null,
+  headers?: AxiosHeaders,
+  options?: Record<string, unknown>,
+) => {
   const axios = getAxiosInstance(token)
 
-  return await axios.delete(path, { params, headers })
+  return await axios.delete(path, { params, headers, ...options })
 }
 
 // TBD: Implement this

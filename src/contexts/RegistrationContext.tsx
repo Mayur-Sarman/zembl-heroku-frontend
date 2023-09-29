@@ -11,7 +11,7 @@ import {
 import { UseMutationResult, UseQueryResult, useMutation, useQuery } from 'react-query'
 import { Lead, LeadResponse, patchUpdateLead, postCreateLead } from '../api/lead'
 import { SFFile, postUploadAttachment } from '../api/file'
-import { CommonResponse } from '../api/common'
+import { CommonResponse, SimpleResponse } from '../api/common'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ABNResponse, getSearchABN } from '../api/abn'
 import { Site, SiteResponse, postCreateSite } from '../api/site'
@@ -21,16 +21,19 @@ import { Account, postCreateAccount } from '../api/account'
 import {
   CreateQuoteLinePayload,
   CreateQuoteLineResponse,
-  GenerateQuoteToken,
   PostCreateQuotePayload,
+  Quote,
   QuoteResponse,
+  buildConfirmQuotePayload,
+  patchUpdateQuote,
+  postConfirmQuote,
   postCreateQuote,
   postCreateQuoteLine,
-  postGenerateQuoteToken,
 } from '../api/quote'
 import { isArray } from 'lodash'
 import { MainProfile, UpdateProfileResponse, patchUpdateProfile } from '../api/profile'
 import { GoogleMapExtractedComponents } from '../helpers/googleMap'
+import { ReCaptchaValidateResponse, postValidateReCaptcha } from '../api/reCapcha'
 
 export const RegistrationContext = createContext({} as RegistrationActions)
 export const RegistrationContextProvider = ({ children }: PropsWithChildren) => {
@@ -43,9 +46,9 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
   // TODO: *** INVALIDATE SESSION IF ALL API STATUS CODE = 401 ***
 
   const searchABNQuery = useQuery({
-    queryKey: ['searchABN', { abn: registrationData.abn, includeHistoricalDetails: 'N' }],
+    queryKey: ['searchABN', { abn: registrationData?.abn, includeHistoricalDetails: 'N' }],
     queryFn: () =>
-      getSearchABN({ abn: registrationData.abn ?? '', includeHistoricalDetails: 'N' }, registrationToken ?? ''),
+      getSearchABN({ abn: registrationData?.abn ?? '', includeHistoricalDetails: 'N' }, registrationToken ?? ''),
     enabled: enableABNFetching,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -77,6 +80,10 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     },
   })
 
+  const validateReCaptchaMutation = useMutation({
+    mutationFn: (token: string) => postValidateReCaptcha(token, registrationToken ?? ''),
+  })
+
   const createLeadMutation = useMutation({
     mutationFn: (lead: Lead) => postCreateLead(lead, registrationToken ?? ''),
     onError: (error) => console.log('CREATE_LEAD_MUTATION_ERROR:', error),
@@ -85,7 +92,12 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       const responseLead = data?.processLeadOutput
       const accessToken = data?.accessToken
       setRegistrationToken(accessToken)
-      setRegistrationData((prev) => ({ ...prev, ...responseLead, ...lead, leadId: responseLead?.id }))
+      setRegistrationData((prev) => ({
+        ...prev,
+        ...responseLead,
+        ...lead,
+        leadId: responseLead?.id,
+      }))
     },
   })
 
@@ -140,49 +152,6 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
   const ocrFileMutation = useMutation({
     mutationFn: ({ file }: OCRMutationPayload) => postUploadOCR(file, registrationToken ?? ''),
-    // onSuccess: (data, req) => {
-    //   const type = req.type ?? null
-    //   console.log('OCR TYPE:', type)
-    //   const extractedKeyPair = extractKeyPair(data)
-    //   console.log('OCR KEYPAIR:', extractedKeyPair)
-
-    //   let mirn: string | undefined = registrationData.mirn as string
-    //   if (type === GAS_VALUE) {
-    //     mirn = extractMIRNByKeypair(extractedKeyPair)
-
-    //     if (!mirn) {
-    //       const possibleMIRN = extractMIRNByText(data.document.text)
-    //       console.log('POSSIBLE MIRN', possibleMIRN)
-    //       mirn = possibleMIRN?.match(CODE_PATTERN)?.[0]
-    //     }
-
-    //     console.log('RESULT MIRN:', mirn)
-    //   }
-
-    //   let nmi: string | undefined = registrationData.nmi as string
-    //   if (type === ELECTRICITY_VALUE) {
-    //     nmi = extractNMIByKeypair(extractedKeyPair)
-
-    //     if (!nmi) {
-    //       const possibleNMI = extractNMIByText(data.document.text)
-    //       console.log('POSSIBLE NMI', possibleNMI)
-    //       nmi = possibleNMI?.match(CODE_PATTERN)?.[0]
-    //     }
-
-    //     console.log('RESULT NMI:', nmi)
-    //   }
-
-    //   const shouldSwitchHavePaperBill =
-    //     (!nmi && registrationData.energyType !== GAS_VALUE) ||
-    //     (!mirn && registrationData.energyType !== ELECTRICITY_VALUE)
-
-    //   setRegistrationData((prev) => ({
-    //     ...prev,
-    //     nmi,
-    //     mirn,
-    //     billFileType: shouldSwitchHavePaperBill ? HAVE_PAPER_BILL : registrationData.billFileType,
-    //   }))
-    // },
     onError: (error, req) => console.log('OCR_FILE_MUTATION_ERROR:', error, 'REQ:', req),
   })
 
@@ -194,6 +163,8 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         ...prev,
         ...quoteData,
         connectionDetails: { ...(prev.address as GoogleMapExtractedComponents), ...quoteData?.connectionDetails },
+        phone: prev?.phone?.replace('+', ''),
+        mobile: (prev?.mobile ?? prev?.phone)?.replace('+', ''),
       }))
       // createQuoteTokenMutation.mutate('a0I0T000001ZA8TUAW')
       setRegistrationToken(data?.accessToken ?? '')
@@ -205,14 +176,12 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     },
   })
 
-  // TODO: REMOVE THIS
-  const createQuoteTokenMutation = useMutation({
-    mutationFn: (quoteId: string) => postGenerateQuoteToken(quoteId, registrationToken ?? ''),
-    onSuccess: (data: GenerateQuoteToken) => {
-      setRegistrationToken(data.access_token)
-      navigate('/plans')
-    },
-    onError: (error, req) => console.log('POST_GENERATE_TOKEN:', error, 'REQ:', req),
+  const updateQuoteMutation = useMutation({
+    mutationFn: (data: Partial<Quote>) => patchUpdateQuote(data, registrationToken ?? ''),
+    // onSuccess: (data: Partial<Quote>, quoteData: Partial<Quote>) => {
+    //   setRegistrationData((prev) => ({ ...prev, ...quoteData, ...data }))
+    // },
+    onError: (error, req) => console.log('CREATE_ACCOUNT_MUTATION_ERROR:', error, 'REQ:', req),
   })
 
   const createQuoteMutation = useMutation({
@@ -230,7 +199,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     // onSuccess: (data: CreateQuoteLineResponse) => {
     //   setRegistrationData((prev) => ({ ...prev, gasQuoteLineId: data.quoteLineId }))
     // },
-    onError: (error, req) => console.log('POST_CREATE_QUOTE_LINE:', error, 'REQ:', req),
+    onError: (error, req) => console.log('POST_CREATE_QUOTE_LINE_ERROR:', error, 'REQ:', req),
   })
 
   const updateProfileMutation = useMutation({
@@ -239,27 +208,33 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       setRegistrationData((prev) => ({ ...prev, ...profileData }))
       navigate('/personal-detail-2')
     },
-    onError: (error, req) => console.log('POST_CREATE_QUOTE_LINE:', error, 'REQ:', req),
+    onError: (error, req) => console.log('POST_CREATE_QUOTE_LINE_ERROR:', error, 'REQ:', req),
+  })
+
+  const sendQuoteEmailMutation = useMutation({
+    mutationFn: () => postConfirmQuote(buildConfirmQuotePayload(registrationData), registrationToken ?? ''),
+    // onSuccess: (_: UpdateProfileResponse, profileData: MainProfile) => {},
+    onError: (error, req) => console.log('POST_CONFIRM_QUOTE_ERROR:', error, 'REQ:', req),
   })
 
   console.log('registrationData:', registrationData)
 
-  // useEffect(() => {
-  //   if (!['/', '/energy'].includes(location.pathname) && !registrationToken) navigate('/')
-  // }, [location.pathname, navigate, registrationToken])
-  console.log(useEffect)
+  useEffect(() => {
+    if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
+  }, [location.pathname, navigate, registrationToken])
 
   const isLoading =
+    validateReCaptchaMutation.isLoading ||
     createLeadMutation.isLoading ||
     updateLeadMutation.isLoading ||
     searchABNQuery.isLoading ||
     createSiteMutation.isLoading ||
     ocrFileMutation.isLoading ||
     createAccountMutation.isLoading ||
-    createQuoteTokenMutation.isLoading ||
     createQuoteMutation.isLoading ||
     createQuoteLineMutation.isLoading ||
-    updateProfileMutation.isLoading
+    updateProfileMutation.isLoading ||
+    sendQuoteEmailMutation.isLoading
 
   return (
     <RegistrationContext.Provider
@@ -267,6 +242,8 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         registrationData,
         registrationToken,
         setRegistrationData,
+        setRegistrationToken,
+        validateReCaptchaMutation,
         createLeadMutation,
         updateLeadMutation,
         uploadFileMutation,
@@ -274,9 +251,11 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         createSiteMutation,
         ocrFileMutation,
         createAccountMutation,
+        updateQuoteMutation,
         createQuoteMutation,
         createQuoteLineMutation,
         updateProfileMutation,
+        sendQuoteEmailMutation,
         isLoading,
       }}
     >
@@ -287,8 +266,10 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
 interface RegistrationActions {
   setRegistrationData: Dispatch<SetStateAction<RegistrationData>>
+  setRegistrationToken: Dispatch<SetStateAction<string | null | undefined>>
   registrationData: RegistrationData
   registrationToken: string | null | undefined
+  validateReCaptchaMutation: UseMutationResult<ReCaptchaValidateResponse, unknown, string>
   createLeadMutation: UseMutationResult<LeadResponse, unknown, Lead>
   updateLeadMutation: UseMutationResult<LeadResponse, unknown, Lead>
   uploadFileMutation: UseMutationResult<CommonResponse, unknown, SFFile>
@@ -296,9 +277,11 @@ interface RegistrationActions {
   createSiteMutation: UseMutationResult<SiteResponse, unknown, Site>
   ocrFileMutation: UseMutationResult<OCRFileResult, unknown, OCRMutationPayload>
   createAccountMutation: UseMutationResult<QuoteResponse, unknown, Account>
+  updateQuoteMutation: UseMutationResult<Quote, unknown, Quote>
   createQuoteMutation: UseMutationResult<QuoteResponse, unknown, PostCreateQuotePayload>
   createQuoteLineMutation: UseMutationResult<CreateQuoteLineResponse, unknown, CreateQuoteLinePayload>
   updateProfileMutation: UseMutationResult<UpdateProfileResponse, unknown, MainProfile>
+  sendQuoteEmailMutation: UseMutationResult<SimpleResponse, unknown, void>
   isLoading: boolean
 }
 

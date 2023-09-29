@@ -36,7 +36,7 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
     return (
       <div key={option.value} className={className}>
         <StatefulButton
-          className="h-12"
+          className="min-h-12 h-full"
           checked={values?.includes?.(option?.value as never) ?? false}
           onChange={onChange}
           disabled={disabled}

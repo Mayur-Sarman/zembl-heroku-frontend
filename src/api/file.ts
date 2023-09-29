@@ -1,3 +1,4 @@
+import { UPLOAD_FILE_ENDPOINT } from '../constants'
 import { performPostRequest } from '../helpers'
 import { extractPureBase64, toBase64 } from '../helpers/file'
 import { CommonResponse } from './common'
@@ -5,7 +6,7 @@ import { CommonResponse } from './common'
 export const postUploadAttachment = async (file: SFFile, token: string) => {
   // const formData = new FormData()
   // formData.append('')
-  const response = await performPostRequest('/uploadFile', file, token)
+  const response = await performPostRequest(UPLOAD_FILE_ENDPOINT, file, token)
   return response.data as CommonResponse
 }
 

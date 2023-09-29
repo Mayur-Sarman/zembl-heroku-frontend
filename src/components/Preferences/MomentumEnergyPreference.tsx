@@ -4,12 +4,12 @@ import { YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
-const MomentumEnergyPreference = ({ control }: MomentumEnergyPreferenceProps) => {
+const MomentumEnergyPreference = ({ control, prefix }: MomentumEnergyPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="Momentum Energy Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
         control={control}
-        name="isConsentMomentumCreditCheck"
+        name={`${prefix}.creditCheckConsent`}
         label={`Do you consent to Momentum performing a credit check on you? Do you understand that if you don’t meet Momentum’s credit requirements, your application may be rejected?`}
         options={YES_NO_OPTIONS}
         required
@@ -22,7 +22,7 @@ const MomentumEnergyPreference = ({ control }: MomentumEnergyPreferenceProps) =>
 
       <ControllerRadioGroupInput
         control={control}
-        name="isAcceptMonthlyBilling"
+        name={`${prefix}.consentMonthlyBilling`}
         label={`For your electricity, would you like to receive monthly billing?`}
         options={YES_NO_OPTIONS}
         required
@@ -33,6 +33,7 @@ const MomentumEnergyPreference = ({ control }: MomentumEnergyPreferenceProps) =>
 
 interface MomentumEnergyPreferenceProps {
   control: Control
+  prefix: string
 }
 
 export default MomentumEnergyPreference

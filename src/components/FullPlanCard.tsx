@@ -3,28 +3,39 @@ import MiniPlanCard from './MiniPlanCard'
 import { Control } from 'react-hook-form'
 import RichText from './RichText'
 import ControllerCheckBox from './Inputs/ControllerCheckBox'
+import { TermAndCondition } from '../api/quote'
+import { ELECTRICITY_VALUE } from '../constants'
 
-const FullPlanCard = ({ planName, brandIconSrc, energyType, termAndConditions, control }: FullPlanCardProps) => {
+const FullPlanCard = ({
+  planName,
+  brandIconSrc,
+  energyType,
+  termAndConditionContent,
+  termAndConditionItems = [],
+  control,
+}: FullPlanCardProps) => {
+  const prefix = energyType === ELECTRICITY_VALUE ? 'electricityQuote' : 'gasQuote'
+  const termChecksDisplay = termAndConditionItems.map((item, index) => (
+    <ControllerCheckBox
+      key={item.id}
+      name={`${prefix}.[${index}].accepted`}
+      control={control}
+      required
+      label={item.label}
+    />
+  ))
   return (
     <div className="grid grid-cols-1 gap-3">
       <div className="p-2 md:p-6">
         <MiniPlanCard brandIcon={brandIconSrc} energyType={energyType} planName={planName} />
       </div>
-      <TextNote>
-        <RichText htmlString={termAndConditions} />
-      </TextNote>
-      <ControllerCheckBox
-        name={`accept${energyType}TC1`}
-        control={control}
-        required
-        label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-      />
-      <ControllerCheckBox
-        name={`accept${energyType}TC1`}
-        control={control}
-        required
-        label="By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms"
-      />
+      {termAndConditionContent ? (
+        <TextNote>
+          <RichText htmlString={termAndConditionContent} />
+        </TextNote>
+      ) : null}
+
+      {termChecksDisplay}
     </div>
   )
 }
@@ -33,7 +44,8 @@ interface FullPlanCardProps {
   planName: string
   brandIconSrc: string
   energyType: string
-  termAndConditions: string
+  termAndConditionContent?: string | null
+  termAndConditionItems?: TermAndCondition[]
   control: Control
 }
 

@@ -1,39 +1,82 @@
 import { useNavigate } from 'react-router-dom'
 import PageWrapper from '../../components/PageWrapper'
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import RegistrationStep from '../../components/RegistrationStep'
 import PageNavigationActions from '../../components/PageNavigationActions'
-import BasicPreference from '../../components/Preferences/BasicPreference'
-import AGLPreference from '../../components/Preferences/AGLPreference'
-import BlueNRGPreference from '../../components/Preferences/BlueNRGPreference'
-import SimplyEnergyPreference from '../../components/Preferences/SimplyEnergyPreference'
-import EnergyAUPreference from '../../components/Preferences/EnergyAUPreference'
-import EnergyLocalsPreference from '../../components/Preferences/EnergyLocalsPreference'
-import MomentumEnergyPreference from '../../components/Preferences/MomentumEnergyPreference'
-import NextBusinessEnergyPreference from '../../components/Preferences/NextBusinessEnergyPreference'
+import { useRegistration } from '../../hooks/useRegistration'
+import RetailerPreferenceForm from '../../components/Forms/RetailerPreferenceForm'
+import { AGL, BLUE_NRG, RegistrationData } from '../../constants'
+// import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
+// import { useToast } from '../../hooks'
+import { Quote } from '../../api/quote'
+import { useEffect } from 'react'
 
 const RetailerPreferencePage = () => {
-  const { handleSubmit, control } = useForm()
+  const { registrationData, setRegistrationData } = useRegistration()
+  const { handleSubmit, control } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
   const navigate = useNavigate()
 
-  const onSubmit = (data: Record<string, string>) => {
-    console.log(data)
+  const onSubmit = (data: RegistrationData) => {
+    const commonPreferences = (data?.commonQuote as Quote)?.quotePreferences
+    const updatedData = commonPreferences
+      ? {
+          ...data,
+          electricityQuote: { ...data.electricityQuote, quotePreferences: commonPreferences },
+          gasQuote: { ...data.gasQuote, quotePreferences: commonPreferences },
+        }
+      : data
+    console.log(updatedData)
+    setRegistrationData((prev) => ({ ...prev, ...updatedData }))
     navigate('/review-terms')
   }
+
+  useEffect(() => {
+    setRegistrationData((prev) => ({
+      ...prev,
+      electricityQuote: {
+        ...prev.electricityQuote,
+        retailerName: AGL,
+      },
+      gasQuote: {
+        ...prev.gasQuote,
+        retailerName: BLUE_NRG,
+      },
+    }))
+  }, [setRegistrationData])
+
+  const showSingle = registrationData?.electricityQuote?.retailerName === registrationData?.gasQuote?.retailerName
   return (
     <PageWrapper>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
         <RegistrationStep currentStep={3} />
         <hr className="hidden lg:block" />
 
-        <BasicPreference control={control} />
-        <AGLPreference control={control} />
-        <BlueNRGPreference control={control} />
-        <SimplyEnergyPreference />
-        <EnergyAUPreference siteAddress="asdfsadfkajsdf" control={control} />
-        <EnergyLocalsPreference control={control} />
-        <MomentumEnergyPreference control={control} />
-        <NextBusinessEnergyPreference control={control} />
+        {!showSingle && registrationData?.electricityQuote ? (
+          <RetailerPreferenceForm
+            control={control}
+            prefix="electricityQuote.quotePreferences"
+            retailerName={registrationData?.electricityQuote?.retailerName ?? ''}
+            siteAddress={registrationData?.electricityQuote?.address ?? ''}
+          />
+        ) : null}
+
+        {!showSingle && registrationData?.gasQuote ? (
+          <RetailerPreferenceForm
+            control={control}
+            prefix="gasQuote.quotePreferences"
+            retailerName={registrationData?.gasQuote?.retailerName ?? ''}
+            siteAddress={registrationData?.gasQuote?.address ?? ''}
+          />
+        ) : null}
+
+        {showSingle ? (
+          <RetailerPreferenceForm
+            control={control}
+            prefix="commonQuote.quotePreferences"
+            retailerName={registrationData?.electricityQuote?.retailerName ?? ''}
+            siteAddress={registrationData?.electricityQuote?.address ?? ''}
+          />
+        ) : null}
 
         <PageNavigationActions prevLink="/review-plan" />
       </form>

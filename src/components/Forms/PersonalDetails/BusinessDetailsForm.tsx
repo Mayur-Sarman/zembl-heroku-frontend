@@ -7,12 +7,12 @@ import {
   ABN_NMI_MIRN_VALIDATION,
 } from '../../../constants/validation'
 
-const BusinessDetailsForm = ({ control, readOnly, compactForm }: BusinessDetailsFormProps) => {
+const BusinessDetailsForm = ({ control, readOnly, compactForm, prefix }: BusinessDetailsFormProps) => {
   return (
     <AccordionCard alwaysOpen open title="Business Details" bodyClassName="w-full flex flex-col gap-3 text-left">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
         <ControllerInput
-          name="legalName"
+          name={`${prefix ? prefix + '.' : ''}legalName`}
           control={control}
           label="Legal Name"
           textLabel="Legal Name"
@@ -20,7 +20,7 @@ const BusinessDetailsForm = ({ control, readOnly, compactForm }: BusinessDetails
           readOnly={readOnly}
         />
         <ControllerInput
-          name="abn"
+          name={`${prefix ? prefix + '.' : ''}abn`}
           control={control}
           label="ABN Number"
           textLabel="ABN Number"
@@ -29,7 +29,7 @@ const BusinessDetailsForm = ({ control, readOnly, compactForm }: BusinessDetails
         />
         {compactForm ? null : (
           <ControllerInput
-            name={'position'}
+            name={`${prefix ? prefix + '.' : ''}position`}
             label="Position"
             control={control}
             textLabel="Position"
@@ -46,6 +46,7 @@ interface BusinessDetailsFormProps {
   control: Control
   readOnly?: boolean
   compactForm?: boolean
+  prefix?: string
 }
 
 export default BusinessDetailsForm

@@ -76,10 +76,10 @@ interface PlanSummaryCardProps {
   planLogoURL: string
   planBenefits: string[]
   planDescription: string
-  planLessThanCurrentPricePercent: number
-  planEstAnnualSaving: number
-  planEstCostPerMonth: number
-  planEstCostPerYear: number
+  planLessThanCurrentPricePercent?: number
+  planEstAnnualSaving?: number
+  planEstCostPerMonth?: number
+  planEstCostPerYear?: number
 }
 
 export default PlanSummaryCard

@@ -30,7 +30,7 @@ export const formatPercent = (
     : 'N/A'
 }
 
-export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM YYYY') => {
+export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM yyyy') => {
   const dateValue = new Date(value)
   const luxonDate = DateTime.fromJSDate(dateValue)
   if (!luxonDate.isValid) return 'N/A'
@@ -38,7 +38,8 @@ export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM YY
   return luxonDate.toFormat(preferredFormat)
 }
 
-export const getJSONDateString = (value: string | Date, preferredFormat = 'yyyy-MM-dd') => {
+export const getJSONDateString = (value: string | Date | null | undefined, preferredFormat = 'yyyy-MM-dd') => {
+  if (!value) return null
   const dateValue = new Date(value)
   const luxonDate = DateTime.fromJSDate(dateValue)
   if (!luxonDate.isValid) return null
@@ -71,6 +72,11 @@ export const formatData: FormatDataFunction = (value, dataType, formatOptions) =
   }
 
   return formattedValue
+}
+
+export const getPhoneNumber = (phoneNumber?: string) => {
+  if (!phoneNumber) return phoneNumber
+  return `+${phoneNumber.trim().replace('+', '')}`
 }
 
 export type FormatDataFunction = (
