@@ -25,9 +25,11 @@ import PageNavigationActions from '../../../components/PageNavigationActions'
 import ControllerRadioGroupInput from '../../../components/Inputs/ControllerRadioGroupInput'
 import { useRegistration } from '../../../hooks/useRegistration'
 import { buildMainProfilePayload } from '../../../api/profile'
+import { useNavigate } from 'react-router-dom'
 // import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
 
 const PersonalDetailPage1 = () => {
+  const navigate = useNavigate()
   const { registrationData, updateProfileMutation } = useRegistration()
   // On load page get data from context
   const { handleSubmit, control, setValue, watch } = useForm({
@@ -37,8 +39,12 @@ const PersonalDetailPage1 = () => {
 
   const identificationTypeWatcher: unknown = watch<string>('identificationType', '')
 
-  const onSubmit = (data: Record<string, string>) => {
+  const onSubmit = async (data: Record<string, string>) => {
     console.log(data)
+    const a = await new Promise(resolve => resolve(1))
+    if (a === 1) {
+      return navigate('/personal-detail-2')
+    }
 
     // Call API
     // Put data to context
