@@ -2,7 +2,6 @@ import { Controller, FieldValues, useForm } from 'react-hook-form'
 import AccordionCard from '../../components/AccordionCard'
 import PaperBillForm from './PaperBillForm'
 import FileUploadInput from '../../components/Inputs/FileUploadInput'
-// import { useNavigate } from 'react-router-dom'
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
 import {
