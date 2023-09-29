@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useModal, useToast } from '../../hooks'
 import BasicInfoPageTitle from './BasicInfoPageTitle'
+import PageWrapper from '../../components/PageWrapper'
 import BasicInfoPage1 from './BasicInfoPage1/BasicInfoPage1'
 import BasicInfoPage2 from './BasicInfoPage2/BasicInfoPage2'
-import PageWrapper from '../../components/PageWrapper'
 
 const BasicInfoPage = ({ pageNo }: { pageNo: number }) => {
   const { fireAlert } = useToast()

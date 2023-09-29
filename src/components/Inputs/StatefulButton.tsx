@@ -6,7 +6,7 @@ const StatefulButton = forwardRef(function StatefulButton(
   ref: ForwardedRef<HTMLButtonElement>,
 ) {
   const className = `w-full ${props.className} ${
-    props.checked ? 'bg-zembl-action-primary' : 'active:bg-zembl-action-primary'
+    props.checked ? '!zembl-btn' : 'active:bg-zembl-action-primary'
   }`
   return <Button {...props} ref={ref} variant="outlined" className={className} onClick={props.onChange} />
 })

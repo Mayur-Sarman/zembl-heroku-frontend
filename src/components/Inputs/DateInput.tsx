@@ -1,37 +1,100 @@
+import { Typography } from '@material-tailwind/react'
 import { ReactNode, useState } from 'react'
+import { Control, Controller } from 'react-hook-form'
 import Datepicker from 'tailwind-datepicker-react'
+import { REQUIRED_VALIDATION, ValidationObject } from '../../constants/validation'
+import ErrorTextMessage from '../ErrorTextMessage'
 
-const DateInput = ({ alwaysOpen, onChange, datepickerClassNames, defaultDate }: DateInputProps) => {
+const DateInput = ({
+  name,
+  alwaysOpen,
+  datepickerClassNames,
+  defaultDate,
+  label,
+  control,
+  disabled,
+  readOnly,
+  containerClassName,
+  required,
+  rules,
+  minDate,
+  ...rest
+}: DateInputProps) => {
   const [movingDateOpen, setMovingDateOpen] = useState<boolean>(alwaysOpen ?? false)
 
+  const labelDisplay = label ? (
+    <Typography
+      variant="small"
+      className={`mb-2 pl-1 ${required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''}`}
+    >
+      {label}
+    </Typography>
+  ) : null
+
   return (
-    <Datepicker
-      show={movingDateOpen}
-      setShow={(prev) => setMovingDateOpen(alwaysOpen ?? prev)}
-      onChange={onChange}
-      options={{
-        defaultDate: defaultDate,
-        datepickerClassNames: datepickerClassNames,
-        theme: {
-          background: 'bg-white dark:bg-zembl-p',
-          todayBtn: 'bg-zembl-action-primary text-zembl-p',
-          clearBtn: '',
-          icons: '',
-          text: '',
-          disabledText: 'bg-grey-500',
-          input: 'bg-white dark:bg-zembl-p',
-          inputIcon: '',
-          selected: '',
-        },
-      }}
-    />
+    <div className={`w-full ${!!disabled || !!readOnly ? 'pointer-events-none' : ''} ${containerClassName ?? ''}`}>
+      {labelDisplay}
+      <Controller
+        name={name}
+        control={control}
+        rules={required ? { ...rules, ...REQUIRED_VALIDATION } : {}}
+        render={({ field, fieldState }) => {
+          return (
+            <>
+              <Datepicker
+                onChange={field.onChange}
+                show={movingDateOpen}
+                {...rest}
+                setShow={(prev) => setMovingDateOpen(alwaysOpen ?? prev)}
+                options={{
+                  minDate: minDate,
+                  clearBtn: false,
+                  defaultDate: field.value
+                    ? new Date(field.value as Date)
+                    : defaultDate ?? (null as unknown as undefined),
+                  datepickerClassNames: `left-0 ${datepickerClassNames} lg:left-auto`,
+                  theme: {
+                    background: 'bg-white dark:bg-zembl-p',
+                    todayBtn: '!zembl-btn focus:ring-0',
+                    clearBtn: 'focus:ring-0',
+                    icons: '',
+                    text: '',
+                    disabledText: 'bg-grey-500',
+                    input: `bg-white dark:bg-zembl-p border-blue-gray-200 focus:border-gray-900 ${
+                      disabled ? 'pointer-events-none !bg-blue-gray-50 !border' : ''
+                    }
+                  ${readOnly ? 'pointer-events-none' : ''} ${fieldState.error ? '!border-red-500' : ''}`,
+                    inputIcon: '',
+                    selected: '',
+                  },
+                }}
+              />
+              {fieldState.error ? (
+                <div className="mt-1 px-1 text-left">
+                  <ErrorTextMessage>{fieldState.error?.message ?? ''}</ErrorTextMessage>
+                </div>
+              ) : null}
+            </>
+          )
+        }}
+      />
+    </div>
   )
 }
 
-interface DateInputProps extends IDatePickerProps {
+interface DateInputProps extends Partial<IDatePickerProps> {
+  containerClassName?: string
   alwaysOpen?: boolean
   datepickerClassNames?: string
-  defaultDate?: Date | undefined
+  defaultDate?: Date | null | undefined
+  label?: ReactNode
+  name: string
+  control: Control
+  disabled?: boolean
+  readOnly?: boolean
+  required?: boolean
+  rules?: Record<string, ValidationObject>
+  minDate?: Date
 }
 
 interface IDatePickerProps {

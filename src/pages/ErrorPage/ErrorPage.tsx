@@ -7,7 +7,7 @@ import Footer from '../../components/Footer'
 import zemblLogo from '../../assets/zembl-icon.svg'
 
 const ErrorPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   // const routerError: unknown & { statusText: string; message: string } = useRouteError()
   const error = useRouteError()
   let errorMessage: string
@@ -27,7 +27,7 @@ const ErrorPage = () => {
   return (
     <div className="flex flex-col justify-between h-screen">
       <Header />
-      <div id="error-page" className="flex text-black flex-col gap-8 justify-center items-center py-8 px-6 sm:px-0">
+      <div className="flex text-black flex-col gap-8 justify-center items-center py-8 px-6 sm:px-0">
         <img src={zemblLogo} alt="Zembl"></img>
         <Typography variant="h6" color="black" className="text-center">
           Opps! An unexpected error has occurred.
@@ -35,7 +35,9 @@ const ErrorPage = () => {
         <Typography variant="h6" className="text-slate-400">
           <i>{errorMessage}</i>
         </Typography>
-        <Button className='bg-zembl-action-primary text-zembl-p' onClick={() => navigate('..')}>Back to Zembl</Button>
+        <Button className="!zembl-btn" onClick={() => navigate('..')}>
+          Back to Zembl
+        </Button>
       </div>
       <Footer />
     </div>

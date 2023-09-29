@@ -1,0 +1,5 @@
+export const DATA_TYPE_TEXT = 'TEXT'
+export const DATA_TYPE_DATE = 'DATE'
+export const DATA_TYPE_NUMBER = 'NUMBER'
+export const DATA_TYPE_CURRENCY = 'CURRENCY'
+export const DATA_TYPE_PERCENT = 'PERCENT'

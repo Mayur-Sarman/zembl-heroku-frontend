@@ -1,84 +1,152 @@
 import { useEffect } from 'react'
 
-import { useModal, useToast } from '../../hooks'
+import { useToast } from '../../hooks'
 import { useForm } from 'react-hook-form'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
 
-import { Button, Radio } from '@material-tailwind/react'
-import { CheckIcon } from '@heroicons/react/20/solid'
+import { Button, Typography } from '@material-tailwind/react'
 
 import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
 import PageWrapper from '../../components/PageWrapper'
 import InputWithLabel from '../../components/Inputs/InputWithLabel'
 
 import EnergyFormPageTitle from './EnergyFormPageTitle'
+import {
+  BUSINESS_REGISTRATION_TYPE_OPTIONS,
+  REGISTRATION_TYPE_BUSINESS,
+  REGISTRATION_TYPE_OPTIONS,
+  REGISTRATION_TYPE_RESIDENTIAL,
+  RegistrationData,
+  SME_VALUE,
+  ZEMBL_ASSIST_VALUE,
+} from '../../constants'
+import RadioCheckGroupInput from '../../components/Inputs/RadioCheckGroupInput'
+import { EMAIL_VALIDATION, STANDARD_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../constants/validation'
+import { useRegistration } from '../../hooks/useRegistration'
+import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
 
 const HomePage = () => {
   const { fireAlert } = useToast()
-  const { openModal } = useModal()
-  const { register, handleSubmit, control, watch } = useForm()
+  const {
+    createLeadMutation,
+    // updateLeadMutation, registrationData,
+    setRegistrationData,
+  } = useRegistration()
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
+  })
   const { executeRecaptcha }: IGoogleReCaptchaConsumerProps = useGoogleReCaptcha()
   const navigate = useNavigate()
 
-  const typeWatcher: unknown = watch('type', 'business')
+  const typeWatcher: unknown = watch('registrationType', REGISTRATION_TYPE_BUSINESS)
 
   const onSubmit = async (data: Record<string, string>) => {
-    console.log(data)
     if (!executeRecaptcha) return
 
+    const buildedData = {
+      ...data,
+      phone: `+${data.phone}`,
+      recordType: data?.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
+    }
+
     const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
-    console.log(token)
+    console.log(token, buildedData)
+
+    // TODO: Validate Recaptcha with API
+    // if (!registrationData.token) {
+    //   createLeadMutation.mutate(buildedData)
+    // } else {
+    //   updateLeadMutation.mutate(buildedData)
+    // }
+
+    if (data?.registrationType === REGISTRATION_TYPE_BUSINESS && data?.businessRegisType === ZEMBL_ASSIST_VALUE) {
+      navigate('/zembl-assist-upload')
+    } else {
+      navigate('/basic-info-1')
+    }
   }
 
+  // TODO: ERROR HANDLING (EXTRACT DATA)
   useEffect(() => {
-    // fireAlert({ children: <Typography>Test</Typography>, type: 'error' })
-    // fireAlert({ children: <Typography>TestTEasdfasdf</Typography>, type: 'error', icon: <ExclamationCircleIcon width={25} height={25} /> })
-    // openModal({ open: true, content: <Typography>Test</Typography>, dismissible: true })
-    // throw new Error("Test");
-  }, [fireAlert, openModal])
+    if (createLeadMutation?.isError && createLeadMutation?.error) {
+      console.log(createLeadMutation.error)
+      fireAlert({ children: <Typography>Oops! Something has error!</Typography>, type: 'error' })
+      return
+    }
+  }, [createLeadMutation?.isError, createLeadMutation?.error, fireAlert])
+
+  // SUCCESS
+  // useEffect(() => {
+  //   if (createLeadMutation.isSuccess) {
+  //     if (
+  //       registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS &&
+  //       registrationData?.businessRegisType === ZEMBL_ASSIST_VALUE
+  //     ) {
+  //       navigate('/zembl-assist-upload')
+  //     } else {
+  //       navigate('/basic-info-1')
+  //     }
+  //     createLeadMutation.reset()
+  //   }
+  // }, [createLeadMutation, registrationData?.registrationType, registrationData?.businessRegisType, navigate])
+
+  useEffect(() => {
+    setRegistrationData({} as RegistrationData)
+  }, [setRegistrationData])
 
   return (
     <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
       <EnergyFormPageTitle />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 md:w-1/2 ">
-        <InputWithLabel className="bg-white" inputLabel="First Name" {...register('firstName')} />
-        <InputWithLabel className="bg-white" inputLabel="Last Name" {...register('lastName')} />
-        <InputWithLabel className="bg-white" inputLabel="Email" {...register('email')} />
-        <ZemblPhoneInput control={control} label="Phone Number" name="phone" required defaultCountry={'au'} />
-        <div className="flex gap-3 justify-center">
-          <Radio
-            label="Business"
-            labelProps={{ className: 'text-sm' }}
-            defaultChecked
-            value="business"
-            {...register('type')}
-            crossOrigin={undefined}
-            icon={<CheckIcon height={12} width={12} />}
-          />
-          <Radio
-            label="Residential"
-            value="residential"
-            {...register('type')}
-            labelProps={{ className: 'text-sm' }}
-            crossOrigin={undefined}
-            icon={<CheckIcon height={12} width={12} />}
-          />
-        </div>
-        <div className={`flex gap-3 ${typeWatcher !== 'residential' ? '' : 'hidden'}`}>
-          <Button variant="outlined" className="w-1/2 bg-zembl-s1">
-            Talk to an expert
-          </Button>
-          <Button variant="outlined" className="w-1/2 bg-zembl-s1">
-            Compare online
-          </Button>
-        </div>
-        <Button
-          type="submit"
-          onClick={() => navigate('/basic-info-1')}
-          className="bg-zembl-action-primary text-zembl-p w-1/3 place-self-center"
-        >
-          Save
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 md:w-1/2 ">
+        <InputWithLabel
+          inputLabel="First Name"
+          {...register('firstName', {
+            ...REQUIRED_VALIDATION,
+            ...STANDARD_SF_TEXT_VALIDATION,
+          })}
+          errors={errors}
+        />
+        <InputWithLabel
+          inputLabel="Last Name"
+          {...register('lastName', {
+            ...REQUIRED_VALIDATION,
+            ...STANDARD_SF_TEXT_VALIDATION,
+          })}
+          errors={errors}
+        />
+        <InputWithLabel
+          inputLabel="Email"
+          {...register('email', {
+            ...REQUIRED_VALIDATION,
+            ...EMAIL_VALIDATION,
+          })}
+          errors={errors}
+        />
+        <ZemblPhoneInput control={control} name="phone" defaultCountry={'au'} />
+        <RadioCheckGroupInput
+          register={register}
+          required
+          options={REGISTRATION_TYPE_OPTIONS}
+          name="registrationType"
+          errors={errors}
+        />
+        <ControllerRadioGroupInput
+          control={control}
+          name="businessRegisType"
+          hidden={typeWatcher !== REGISTRATION_TYPE_BUSINESS}
+          options={BUSINESS_REGISTRATION_TYPE_OPTIONS}
+          optionsContainerClassName="md:flex-nowrap"
+          buttonContainerClassName="w-full md:w-1/2 bg-zembl-s1"
+        />
+        <Button type="submit" className="!zembl-btn w-1/3 place-self-center flex-shrink-0">
+          Next
         </Button>
       </form>
     </PageWrapper>

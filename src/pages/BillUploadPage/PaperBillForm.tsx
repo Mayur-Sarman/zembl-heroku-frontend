@@ -1,18 +1,14 @@
 import { Typography } from '@material-tailwind/react'
 
-import InputWithLabel from '../../components/Inputs/InputWithLabel'
-import SelectInput from '../../components/Inputs/SelectInput'
-import RadioGroupInput, { InputOptions } from '../../components/Inputs/RadioGroupInput'
-import { Controller, FieldValues, UseFormRegister, UseFormReturn, UseFormSetValue } from 'react-hook-form'
-import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
+import { Control, FieldValues, UseFormReturn, UseFormSetValue } from 'react-hook-form'
+import { CURRENT_USAGE_OPTIONS, ELECTRICITY_VALUE, GAS_VALUE, RETAILER_OPTIONS } from '../../constants'
+import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
+import { REQUIRED_VALIDATION, ABN_NMI_MIRN_VALIDATION } from '../../constants/validation'
+import ControllerInput from '../../components/Inputs/ControllerInput'
+import ControllerSelectInput from '../../components/Inputs/ControllerSelectInput'
+import GoogleAddressInput from '../../components/Inputs/GoogleAddressInput'
 
-const CURRENT_USAGE_OPTIONS: InputOptions[] = [
-  { value: 'Low', label: 'Low' },
-  { value: 'Medium', label: 'Medium' },
-  { value: 'High', label: 'High' },
-]
-
-const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFormProps) => {
+const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) => {
   const gasForm =
     energyType !== ELECTRICITY_VALUE ? (
       <div className="flex flex-col gap-3">
@@ -20,16 +16,31 @@ const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFor
           Gas
         </Typography>
         <div className="w-full lg:w-1/2 flex flex-col gap-3">
-          <InputWithLabel inputLabel="MIRN" textLabel="Enter your MIRN" {...register('mirn')} />
-          <SelectInput
+          <ControllerInput
+            name="mirn"
+            rules={ABN_NMI_MIRN_VALIDATION}
+            required
+            control={control}
+            inputLabel="MIRN"
+            textLabel="Enter your MIRN"
+          />
+          <ControllerSelectInput
+            control={control}
+            name="currentRetailerGas"
             textLabel="Current retailer"
             label="Retailer"
             placeholder="Select"
-            options={[{ value: 'test', label: 'test' }]}
-            {...register('gasCurrentRetailer')}
-            onChange={(e) => setValue('gasCurrentRetailer', e)}
+            options={RETAILER_OPTIONS}
+            rules={REQUIRED_VALIDATION}
           />
         </div>
+        <ControllerRadioGroupInput
+            control={control}
+            name="currentUsageGas"
+            options={CURRENT_USAGE_OPTIONS}
+            rules={REQUIRED_VALIDATION}
+            label="What is current usage?"
+          />
       </div>
     ) : null
 
@@ -40,33 +51,46 @@ const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFor
           Electricity
         </Typography>
         <div className="w-full lg:w-1/2 flex flex-col gap-3">
-          <InputWithLabel inputLabel="NMI" textLabel="Enter your NMI" {...register('nmi')} />
-          <SelectInput
+          <ControllerInput
+            name="nmi"
+            rules={ABN_NMI_MIRN_VALIDATION}
+            required
+            control={control}
+            inputLabel="NMI"
+            textLabel="Enter your NMI"
+          />
+          <GoogleAddressInput
+            control={control}
+            required
+            onSelectedCallback={(data) => {
+              setValue('unitNumber', data?.unitNumber)
+              setValue('unitType', data?.unitType)
+              setValue('streetNumber', data?.street)
+              setValue('streetName', data?.route)
+              setValue('city', data?.suburb)
+              setValue('postCode', data?.postCode)
+              setValue('state', data?.state)
+            }}
+            textLabel="Your Connection Address"
+            name="address"
+            rules={REQUIRED_VALIDATION}
+          />
+          <ControllerSelectInput
+            control={control}
+            name="currentRetailerElectric"
             textLabel="Current retailer"
             label="Retailer"
             placeholder="Select"
-            options={[{ value: 'test', label: 'test' }]}
-            {...register('electricityCurrentRetailer')}
-            onChange={(e) => setValue('electricityCurrentRetailer', e)}
+            options={RETAILER_OPTIONS}
+            rules={REQUIRED_VALIDATION}
           />
         </div>
-        <Controller
+        <ControllerRadioGroupInput
           control={control}
-          name="currentUsage"
-          render={({ field }) => (
-            <RadioGroupInput
-              {...field}
-              label={
-                <div>
-                  <Typography variant="small">What is current usage?</Typography>
-                </div>
-              }
-              values={[field.value]}
-              options={CURRENT_USAGE_OPTIONS}
-              buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-              optionsContainerClassName="flex flex-wrap w-full"
-            />
-          )}
+          name="currentUsageElectric"
+          options={CURRENT_USAGE_OPTIONS}
+          rules={REQUIRED_VALIDATION}
+          label="What is current usage?"
         />
       </div>
     ) : null
@@ -80,9 +104,9 @@ const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFor
 }
 
 interface PaperBillFormProps extends Partial<UseFormReturn> {
+  control: Control
+  energyType: string
   setValue: UseFormSetValue<FieldValues>
-  register: UseFormRegister<FieldValues>
-  energyType: GAS_VALUE | ELECTRICITY_VALUE | BOTH_VALUE
 }
 
 export default PaperBillForm

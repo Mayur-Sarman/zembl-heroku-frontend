@@ -1,142 +1,123 @@
-import { Controller, useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 
-import { Button } from '@material-tailwind/react'
-import AccordionCard from '../../../components/AccordionCard'
 import RegistrationStep from '../../../components/RegistrationStep'
-import { YES_NO_OPTIONS } from '../../../constants'
-import RadioGroupInput, { InputOptions } from '../../../components/Inputs/RadioGroupInput'
-import { ChangeEvent, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PreferenceSelector from '../../../components/PreferenceSelector'
-
-const SUBSCRIBE_TYPE_OPTIONS: InputOptions[] = [
-  { value: 'Email', label: 'Email' },
-  { value: 'Post', label: 'Post' },
-]
-
-const LIFE_SUPPORT_OPTIONS: InputOptions[] = YES_NO_OPTIONS
-const SOLAR_OPTIONS: InputOptions[] = YES_NO_OPTIONS
-const SOLAR_CONSIDERATION_OPTIONS: InputOptions[] = YES_NO_OPTIONS
+import PageNavigationActions from '../../../components/PageNavigationActions'
+import SolarForm from '../../../components/Forms/BasicInfos/SolarForm'
+import BasicLifeSupportForm from '../../../components/Forms/BasicInfos/BasicLifeSupportForm'
+import BillAndMessageForm from '../../../components/Forms/BasicInfos/BillAndMessageForm'
+import { REQUIRED_VALIDATION } from '../../../constants/validation'
+import ControllerPreferencesSelector from '../../../components/Inputs/ControllerPreferencesSelector'
+import { useRegistration } from '../../../hooks/useRegistration'
+import { LEAD_STATUS_CONVERTED_WON } from '../../../constants'
+import { useToast } from '../../../hooks'
+import { Site } from '../../../api/site'
+import { convertPreference } from '../../../api/common'
 
 const BasicInfoPage2 = () => {
-  const [preferences, setPreferences] = useState<string[]>([])
+  const { fireAlert } = useToast()
+  const { registrationData, updateLeadMutation, createSiteMutation, setRegistrationData } = useRegistration()
   // On load page get data from context
-  const { handleSubmit, control, setValue } = useForm({
-    defaultValues: { preferences: [], subscribeType: '', lifeSupport: '', solar: '', solarConsideration: '' },
-  })
+  const { handleSubmit, control } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
   const navigate = useNavigate()
 
-  const onPreferenceSelected = useCallback(
-    (event: ChangeEvent<HTMLButtonElement>) => {
-      const value = event.target.value
-      setPreferences((prev) => {
-        const isSelected = prev.includes(value)
-        const values = isSelected ? prev.filter((i) => i != value) : [...prev, value]
+  // const [submitData, setSubmitData] = useState(null as unknown)
 
-        setValue('preferences', values as never)
-        return values
-      })
-    },
-    [setValue],
-  )
-
-  const onSubmit = (data: Record<string, string | string[]>) => {
+  const onSubmit = async (data: FieldValues) => {
     console.log(data)
+    const a = await new Promise(resolve => resolve(1))
+    if (a === 1) {
+      return navigate('/bill-upload')
+    }
 
     // Call API
-    // Put data to context
+    const lead = { id: (data?.leadId as string) ?? '', status: LEAD_STATUS_CONVERTED_WON }
+    // setSubmitData(data)
+
+    try {
+      const leadConvertResult = await updateLeadMutation.mutateAsync(lead)
+      const leadId = leadConvertResult?.processLeadOutput?.id ?? null
+
+      const selectedPreferences: string[] = (data?.preferenceList as string[]) ?? []
+      const siteData: Site = {
+        leadId: leadId,
+        gas: !!data?.gas,
+        electricity: !!data?.electricity,
+        siteType: data?.recordType as string,
+        billType: data?.billType as string,
+        lifeSupport: data?.lifeSupport as string,
+        solar: data?.solar as string,
+        solarConsideration: data?.solarConsideration as string,
+        preferences: convertPreference(selectedPreferences),
+      }
+
+      const createSiteResult = await createSiteMutation.mutateAsync(siteData)
+
+      setRegistrationData((value) => {
+        const mergedValue = {
+          ...value,
+          ...siteData,
+          ...createSiteResult?.processSiteOutput,
+          preferenceList: selectedPreferences,
+          leadId: leadId,
+        }
+        console.log(mergedValue)
+        return mergedValue
+      })
+      navigate('/bill-upload')
+    } catch (error) {
+      fireAlert({ children: 'Oops! Something has error!', type: 'error' })
+      console.log('CATCH', error)
+    } finally {
+      updateLeadMutation.reset()
+      createSiteMutation.reset()
+    }
   }
+
+  // // ERROR HANDLING
+  // useEffect(() => {
+  //   if (updateLeadMutation.isError && updateLeadMutation.error) {
+  //     console.log(updateLeadMutation.error)
+  //     fireAlert({ children: 'Oops! Something has error!', type: 'error' })
+  //     return
+  //   }
+  // }, [updateLeadMutation.isError, updateLeadMutation.error, fireAlert])
+
+  // useEffect(() => {
+  //   if (createSiteMutation.isError && createSiteMutation.error) {
+  //     console.log('MUTATION EFFECT', createSiteMutation.error)
+  //     fireAlert({ children: 'Oops! Something has error!', type: 'error' })
+  //     createSiteMutation.reset()
+  //     return
+  //   }
+  // }, [createSiteMutation, fireAlert])
+
+  // // SUCCESS
+  // useEffect(() => {
+  //   if (updateLeadMutation.isSuccess && submitData) {
+  //     createSiteMutation.mutate(submitData)
+  //     updateLeadMutation.reset()
+  //   }
+  // }, [updateLeadMutation, createSiteMutation, submitData])
+
+  // useEffect(() => {
+  //   if (createSiteMutation.isSuccess) {
+  //     navigate('/bill-upload')
+  //     createSiteMutation.reset()
+  //   }
+  // }, [createSiteMutation, navigate])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
-      <div className="lg:h-32 lg:py-3 lg:px-14 lg:mt-6">
-        <div className="hidden lg:block">
-          <RegistrationStep currentStep={0} />
-        </div>
-      </div>
+      <RegistrationStep currentStep={0} />
       <hr className="hidden lg:block" />
 
-      <AccordionCard alwaysOpen open title="Bill & Messages">
-        <div className="w-full flex flex-col gap-3 text-left">
-          <Controller
-            control={control}
-            name="subscribeType"
-            render={({ field }) => (
-              <RadioGroupInput
-                {...field}
-                label="How would you like to receive your bills and other notices, like disconnection warnings and price change notifications?"
-                values={[field.value]}
-                options={SUBSCRIBE_TYPE_OPTIONS}
-              />
-            )}
-          />
-        </div>
-      </AccordionCard>
+      <BillAndMessageForm control={control} />
+      <BasicLifeSupportForm control={control} />
+      <SolarForm control={control} />
+      <ControllerPreferencesSelector name={'preferenceList'} control={control} rules={REQUIRED_VALIDATION} />
 
-      <AccordionCard alwaysOpen open title="Life Support">
-        <div className="w-full flex flex-col gap-3 text-left">
-          <Controller
-            control={control}
-            name="lifeSupport"
-            render={({ field }) => (
-              <RadioGroupInput
-                {...field}
-                label="Is there Life Support at the property?"
-                values={[field.value]}
-                options={LIFE_SUPPORT_OPTIONS}
-              />
-            )}
-          />
-        </div>
-      </AccordionCard>
-
-      <AccordionCard alwaysOpen open title="Solar">
-        <div className="w-full flex flex-col gap-3 text-left">
-          <Controller
-            control={control}
-            name="solar"
-            render={({ field }) => (
-              <RadioGroupInput
-                {...field}
-                label="Do you have Solar at the property?"
-                values={[field.value]}
-                options={SOLAR_OPTIONS}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="solarConsideration"
-            render={({ field }) => (
-              <RadioGroupInput
-                {...field}
-                label="Will you be considering solar panels in the next 12 months?"
-                values={[field.value]}
-                options={SOLAR_CONSIDERATION_OPTIONS}
-              />
-            )}
-          />
-        </div>
-      </AccordionCard>
-
-      <PreferenceSelector onChange={onPreferenceSelected} preferences={preferences} title="Preferences" />
-
-      <div className="flex flex-col lg:flex-row gap-6 justify-center">
-        <Button
-          variant="outlined"
-          onClick={() => navigate('/basic-info-1')}
-          className="text-zembl-p w-full lg:w-1/3 place-self-center"
-        >
-          Back
-        </Button>
-        <Button
-          type="submit"
-          onClick={() => navigate('/bill-upload')}
-          className="bg-zembl-action-primary text-zembl-p w-full lg:w-1/3 place-self-center"
-        >
-          Next
-        </Button>
-      </div>
+      <PageNavigationActions prevLink="/basic-info-1" />
     </form>
   )
 }
