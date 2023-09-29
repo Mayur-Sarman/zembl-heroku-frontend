@@ -62,8 +62,7 @@ const BasicInfoPage1 = () => {
     console.log(buildedData)
     setRegistrationData((prev) => ({ ...prev, buildedData }))
 
-    // updateLeadMutation.mutate(buildedData)
-    navigate('/basic-info-2')
+    updateLeadMutation.mutate(buildedData)
   }
 
   // ERROR HANDLING
