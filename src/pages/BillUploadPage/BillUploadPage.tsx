@@ -34,7 +34,6 @@ const BillUploadPage = () => {
     defaultValues: registrationData as FieldValues,
     mode: 'all',
   })
-  // const navigate = useNavigate()
 
   const watchBillFileType: unknown = watch('billFileType', null)
 
@@ -51,7 +50,6 @@ const BillUploadPage = () => {
 
     let nmi: string | undefined = data?.nmi
     let mirn: string | undefined = data?.mirn
-    // let buildedData = data
 
     if (data.billFileType === HAVE_PAPER_BILL) {
       const buildedData = buildCreateAccountPayload(data, nmi, mirn)

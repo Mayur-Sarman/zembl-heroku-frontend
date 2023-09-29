@@ -28,11 +28,10 @@ const BasicInfoPage2 = () => {
 
     // Call API
     const lead = { id: (data?.leadId as string) ?? '', status: LEAD_STATUS_CONVERTED_WON }
-    // setSubmitData(data)
 
     try {
       const leadConvertResult = await updateLeadMutation.mutateAsync(lead)
-      const leadId = leadConvertResult?.processLeadOutput?.id ?? null
+      const leadId = leadConvertResult?.processLeadOutput?.id ?? null 
 
       const selectedPreferences: string[] = (data?.preferenceList as string[]) ?? []
       const siteData: Site = {
