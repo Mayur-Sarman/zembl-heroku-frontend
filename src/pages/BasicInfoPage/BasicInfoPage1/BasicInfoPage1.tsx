@@ -59,6 +59,7 @@ const BasicInfoPage1 = () => {
     }
 
     updateLeadMutation.mutate(buildedData)
+
   }
 
   // ERROR HANDLING
