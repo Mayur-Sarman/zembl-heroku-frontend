@@ -8,7 +8,7 @@ import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
 import { useReZemblQuery } from '../../hooks/useReZemblQuery'
 import { CustomerDetails, ReZemblData, ReZemblRequestPayload } from '../../api/reZembl'
-import { useToast } from '../../hooks'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const SUPPLY_POINT_DETAIL_COLUMNS: ColumnDefinition[] = [
   { key: 'fuelType', type: DATA_TYPE_TEXT, label: 'Fuel Type' },
@@ -27,8 +27,7 @@ const CUSTOMER_DETAIL_COLUMNS: ColumnDefinition[] = [
 ]
 
 const ReZemblDetailPage = () => {
-  const { fireAlert } = useToast()
-  const { registrationData, setRegistrationData, registrationToken } = useRegistration()
+  const { registrationData, setRegistrationData, registrationToken, handleErrorResponse } = useRegistration()
 
   const quoteData: ReZemblRequestPayload = {
     electricityQuoteId: registrationData?.electricityQuote?.quoteId,
@@ -38,8 +37,9 @@ const ReZemblDetailPage = () => {
     onSuccess: (reZemblData: ReZemblData) => {
       setRegistrationData((prev) => ({ ...prev, ...reZemblData }))
     },
-    onError: () => {
-      fireAlert({ children: 'Unfortunately, we cannot get your quote.', type: 'error' })
+    onError: (error) => {
+      if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
+      handleErrorResponse(error, yourCat, 'Unfortunately, we cannot find your quote.')
     },
   })
   const customerFullName = (registrationData?.customerDetails as CustomerDetails)?.contactPerson ?? ''

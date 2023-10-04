@@ -28,7 +28,7 @@ const NBENewConnection = ({ connectionPrice, control, powerAware }: NBENewConnec
       <ControllerRadioGroupInput
         label="Are you aware if the power is on or off at the property?"
         control={control}
-        name="powerAware"
+        name="newConnection.powerAware"
         options={OPTIONS}
       />
       {/* Case power connected */}
@@ -38,7 +38,7 @@ const NBENewConnection = ({ connectionPrice, control, powerAware }: NBENewConnec
 }
 
 interface NBENewConnectionProps {
-  connectionPrice: number
+  connectionPrice?: number | null
   control: Control
   powerAware: string
 }

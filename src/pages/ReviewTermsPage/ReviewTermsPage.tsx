@@ -1,21 +1,18 @@
 import { useNavigate } from 'react-router-dom'
 import PageWrapper from '../../components/PageWrapper'
 import { FieldValues, useForm } from 'react-hook-form'
-// import RegistrationContext from '../../contexts/RegistrationContext'
-// import { useContext } from 'react'
 import { Typography } from '@material-tailwind/react'
 import RegistrationStep from '../../components/RegistrationStep'
 import SelectedPlans from '../../components/SelectedPlans'
 import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
 import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
-import { useToast } from '../../hooks'
 import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
 import { getJSONDateString } from '../../helpers/formatter'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const ReviewTermsPage = () => {
-  const { fireAlert } = useToast()
-  const { registrationData, setRegistrationData, registrationToken } = useRegistration()
+  const { registrationData, setRegistrationData, registrationToken, handleErrorResponse } = useRegistration()
   const navigate = useNavigate()
 
   // On load page get data from context
@@ -27,8 +24,9 @@ const ReviewTermsPage = () => {
       setRegistrationData((prev) => ({ ...prev, ...data.planData }))
       navigate('/thank-you')
     },
-    onError: () => {
-      fireAlert({ children: 'Unfortunately, we cannot update your quote.', type: 'error' })
+    onError: (error) => {
+      if (ZEMBL_DEBUG_MODE) console.log('REVIEW_TERMS_PAGE', error)
+      handleErrorResponse(error)
     },
   })
 

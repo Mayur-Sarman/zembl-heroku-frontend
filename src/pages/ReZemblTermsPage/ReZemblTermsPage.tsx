@@ -1,4 +1,4 @@
-import { FieldValues, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import ReZemblTermForm from '../../components/Forms/ReZemblTermForm'
 import PageWrapper from '../../components/PageWrapper'
 import { useNavigate } from 'react-router-dom'
@@ -7,11 +7,10 @@ import { Typography } from '@material-tailwind/react'
 import { useRegistration } from '../../hooks/useRegistration'
 import { UpdateReZemblTermsConsentPayload } from '../../api/reZembl'
 import { useReZemblTermsMutation } from '../../hooks/useReZemblTermsMutation'
-import { useToast } from '../../hooks'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const ReZemblTermsPage = () => {
-  const { fireAlert } = useToast()
-  const { registrationData, registrationToken } = useRegistration()
+  const { registrationData, registrationToken, handleErrorResponse } = useRegistration()
   const navigate = useNavigate()
 
   // On load page get data from context
@@ -19,13 +18,13 @@ const ReZemblTermsPage = () => {
 
   const consentReZemblTerm = useReZemblTermsMutation(registrationToken ?? '', {
     onSuccess: () => navigate('/rezembl-thank-you'),
-    onError: () => {
-      fireAlert({ children: 'Could not update consent, please try again.', type: 'error' })
+    onError: (error) => {
+      if (ZEMBL_DEBUG_MODE) console.log('REVIEW_RE_ZEMBL_MID_PAGE', error)
+      handleErrorResponse(error)
     },
   })
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data)
+  const onSubmit = () => {
     const rezemblConsentPayload: UpdateReZemblTermsConsentPayload = {
       electricityQuoteId: registrationData?.electricityQuote?.quoteId,
       gasQuoteId: registrationData?.gasQuote?.quoteId,

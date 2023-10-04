@@ -1,13 +1,10 @@
 import { Button, Typography } from '@material-tailwind/react'
 import PageWrapper from '../../components/PageWrapper'
 import { useRegistration } from '../../hooks/useRegistration'
-import { useEffect } from 'react'
-import { useToast } from '../../hooks'
 import { ZEMBL_PHONE_NUMBER } from '../../constants/misc'
 
 const PlanConfirmationPage = () => {
-  const { fireAlert } = useToast()
-  const { sendQuoteEmailMutation, registrationData } = useRegistration()
+  const { registrationData, sendQuoteEmailMutation } = useRegistration()
 
   const performVerify = () => {
     sendQuoteEmailMutation.mutate()
@@ -16,9 +13,10 @@ const PlanConfirmationPage = () => {
   const sendEmailMessageDisplay = sendQuoteEmailMutation?.isSuccess ? (
     <>
       <Typography color="green">
-        The code has been sent to your {registrationData?.billType ?? ''}! Please check your email for verification link.
+        The code has been sent to your {registrationData?.billType ?? ''}! Please check your email for verification
+        link.
       </Typography>
-      <div className='flex gap-1'>
+      <div className="flex gap-1">
         <Typography
           onClick={performVerify}
           variant="small"
@@ -36,12 +34,6 @@ const PlanConfirmationPage = () => {
       Continue
     </Button>
   )
-
-  useEffect(() => {
-    if (sendQuoteEmailMutation?.isError) {
-      fireAlert({ children: 'We could not process your request at the moment, please try again later.', type: 'error' })
-    }
-  }, [sendQuoteEmailMutation?.isError, fireAlert])
 
   return (
     <PageWrapper>

@@ -10,28 +10,23 @@ import { REQUIRED_VALIDATION } from '../../../constants/validation'
 import ControllerPreferencesSelector from '../../../components/Inputs/ControllerPreferencesSelector'
 import { useRegistration } from '../../../hooks/useRegistration'
 import { LEAD_STATUS_CONVERTED_WON } from '../../../constants'
-import { useToast } from '../../../hooks'
 import { Site } from '../../../api/site'
 import { convertPreference } from '../../../api/common'
+import { ZEMBL_DEBUG_MODE } from '../../../constants/misc'
 
 const BasicInfoPage2 = () => {
-  const { fireAlert } = useToast()
   const { registrationData, updateLeadMutation, createSiteMutation, setRegistrationData } = useRegistration()
   // On load page get data from context
   const { handleSubmit, control } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
   const navigate = useNavigate()
 
-  // const [submitData, setSubmitData] = useState(null as unknown)
-
   const onSubmit = async (data: FieldValues) => {
-    console.log(data)
-
     // Call API
     const lead = { id: (data?.leadId as string) ?? '', status: LEAD_STATUS_CONVERTED_WON }
 
     try {
       const leadConvertResult = await updateLeadMutation.mutateAsync(lead)
-      const leadId = leadConvertResult?.processLeadOutput?.id ?? null 
+      const leadId = leadConvertResult?.processLeadOutput?.id ?? null
 
       const selectedPreferences: string[] = (data?.preferenceList as string[]) ?? []
       const siteData: Site = {
@@ -55,51 +50,17 @@ const BasicInfoPage2 = () => {
           preferenceList: selectedPreferences,
           leadId: leadId,
         }
-        console.log(mergedValue)
+
         return mergedValue
       })
       navigate('/bill-upload')
     } catch (error) {
-      fireAlert({ children: 'Oops! Something has error!', type: 'error' })
-      console.log('CATCH', error)
+      if (ZEMBL_DEBUG_MODE) console.log('BASIC_INFO_2_SUBMIT_ERROR:', error)
     } finally {
       updateLeadMutation.reset()
       createSiteMutation.reset()
     }
   }
-
-  // // ERROR HANDLING
-  // useEffect(() => {
-  //   if (updateLeadMutation.isError && updateLeadMutation.error) {
-  //     console.log(updateLeadMutation.error)
-  //     fireAlert({ children: 'Oops! Something has error!', type: 'error' })
-  //     return
-  //   }
-  // }, [updateLeadMutation.isError, updateLeadMutation.error, fireAlert])
-
-  // useEffect(() => {
-  //   if (createSiteMutation.isError && createSiteMutation.error) {
-  //     console.log('MUTATION EFFECT', createSiteMutation.error)
-  //     fireAlert({ children: 'Oops! Something has error!', type: 'error' })
-  //     createSiteMutation.reset()
-  //     return
-  //   }
-  // }, [createSiteMutation, fireAlert])
-
-  // // SUCCESS
-  // useEffect(() => {
-  //   if (updateLeadMutation.isSuccess && submitData) {
-  //     createSiteMutation.mutate(submitData)
-  //     updateLeadMutation.reset()
-  //   }
-  // }, [updateLeadMutation, createSiteMutation, submitData])
-
-  // useEffect(() => {
-  //   if (createSiteMutation.isSuccess) {
-  //     navigate('/bill-upload')
-  //     createSiteMutation.reset()
-  //   }
-  // }, [createSiteMutation, navigate])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">

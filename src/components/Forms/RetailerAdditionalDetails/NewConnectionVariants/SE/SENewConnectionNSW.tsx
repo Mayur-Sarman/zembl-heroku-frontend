@@ -1,6 +1,5 @@
 import { Control } from 'react-hook-form'
 import { OFF_VALUE, ON_VALUE } from '../../../../../constants'
-import { formatCurrency } from '../../../../../helpers/formatter'
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
@@ -10,11 +9,7 @@ const OPTIONS = [
   { value: OFF_VALUE, label: OFF_VALUE },
 ]
 
-const SENewConnectionNSW = ({ electricPrice, gasPrice, control, powerAware }: SENewConnectionNSWProps) => {
-  const priceText = `${electricPrice ? `${formatCurrency(electricPrice)} for electricity` : ''} ${
-    electricPrice && gasPrice ? 'and' : ''
-  } ${gasPrice ? `${formatCurrency(gasPrice)} for gas` : ''}`
-
+const SENewConnectionNSW = ({ priceText, control, powerAware }: SENewConnectionNSWProps) => {
   const powerNote =
     powerAware === OFF_VALUE
       ? 'If the electricity is off, you must ensure the main switch is in the off position prior to the connection date.'
@@ -25,10 +20,10 @@ const SENewConnectionNSW = ({ electricPrice, gasPrice, control, powerAware }: SE
       <ControllerRadioGroupInput
         label="Are you aware if the power is on or off at the property?"
         control={control}
-        name="powerAware"
+        name="newConnection.powerAware"
         options={OPTIONS}
       />
-      {/* Case power connected */}
+
       {powerAware ? (
         <TextNote>
           Please note that if a site visit is required, clear and safe access to the meter will be required on the date
@@ -41,8 +36,7 @@ const SENewConnectionNSW = ({ electricPrice, gasPrice, control, powerAware }: SE
 }
 
 interface SENewConnectionNSWProps {
-  electricPrice: number
-  gasPrice: number
+  priceText: string
   control: Control
   powerAware: string
 }

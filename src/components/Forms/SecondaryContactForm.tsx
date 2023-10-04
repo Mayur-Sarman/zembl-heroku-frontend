@@ -15,7 +15,7 @@ const SecondaryContactForm = ({ control }: SecondaryContactFormProps) => {
     <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6`}>
       <div className="w-full lg:col-span-2 lg:w-1/2">
         <ControllerSelectInput
-          name="secondaryHolder.title"
+          name="secondaryContact.title"
           control={control}
           label="Title"
           textLabel="Title"
@@ -26,7 +26,7 @@ const SecondaryContactForm = ({ control }: SecondaryContactFormProps) => {
       </div>
       <ControllerInput
         control={control}
-        name="secondaryHolder.firstName"
+        name="secondaryContact.firstName"
         label="First Name"
         textLabel="First Name (As per ID)"
         required
@@ -34,7 +34,7 @@ const SecondaryContactForm = ({ control }: SecondaryContactFormProps) => {
       />
       <ControllerInput
         control={control}
-        name="secondaryHolder.lastName"
+        name="secondaryContact.lastName"
         label="Last Name"
         textLabel="Last Name"
         required
@@ -42,7 +42,7 @@ const SecondaryContactForm = ({ control }: SecondaryContactFormProps) => {
       />
       <ControllerInput
         control={control}
-        name="secondaryHolder.email"
+        name="secondaryContact.email"
         label="Email"
         textLabel="Email"
         type="email"
@@ -52,7 +52,7 @@ const SecondaryContactForm = ({ control }: SecondaryContactFormProps) => {
       <ZemblPhoneInput
         control={control}
         label="Mobile Number"
-        name="secondaryHolder.mobileNumber"
+        name="secondaryContact.mobile"
         defaultCountry={'au'}
         dropdownClass="bottom-8 !rounded-lg"
         required
@@ -60,7 +60,7 @@ const SecondaryContactForm = ({ control }: SecondaryContactFormProps) => {
       <DateInput
         label="Date of Birth"
         control={control}
-        name="secondaryHolder.dateOfBirth"
+        name="secondaryContact.dateOfBirth"
         datepickerClassNames={'top-auto'}
         required
         rules={DATE_MUST_PAST}

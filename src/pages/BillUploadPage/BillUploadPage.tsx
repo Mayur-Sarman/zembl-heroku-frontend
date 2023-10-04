@@ -23,6 +23,7 @@ import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
 import { useToast } from '../../hooks'
 import { buildCreateAccountPayload } from '../../api/account'
 import { getPhoneNumber } from '../../helpers/formatter'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
@@ -45,8 +46,6 @@ const BillUploadPage = () => {
   }
 
   const onSubmit = async (data: Partial<RegistrationData>) => {
-    console.log(data)
-
     let nmi: string | undefined = data?.nmi
     let mirn: string | undefined = data?.mirn
 
@@ -87,8 +86,10 @@ const BillUploadPage = () => {
       shouldSwitchHavePaperBill = true
     }
 
-    console.log('registrationData?.energyType:', registrationData?.energyType)
-    console.log('shouldSwitchHavePaperBill:', shouldSwitchHavePaperBill)
+    if (ZEMBL_DEBUG_MODE) {
+      console.log('registrationData?.energyType:', registrationData?.energyType)
+      console.log('shouldSwitchHavePaperBill:', shouldSwitchHavePaperBill)
+    }
 
     // NMI/MIRN found
     if (!shouldSwitchHavePaperBill) {
@@ -110,8 +111,10 @@ const BillUploadPage = () => {
       fireAlert({
         children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
         type: 'info',
+        duration: 5,
       })
     }
+    ocrFileMutation.reset()
   }
 
   let uploadOptions = UPLOAD_BILL_TYPE_OPTIONS

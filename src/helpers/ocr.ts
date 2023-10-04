@@ -1,7 +1,11 @@
 import { OCRFile, OCRFileResult } from '../api/ocr'
 import { extractPureBase64, toBase64 } from './file'
 
-export const CODE_PATTERN = /\d{11}/
+export const NMI_VALUE_PATTERN =
+  /((N(AAA|BBB|CCC|DDD|EEE|FFF|GGG|TTT)|Q(AAA|(B\d{2})|CCC|DDD|EEE|FFF|GGG)|S(AAA)|V(AAA|BBB|CCC|DDD|EEE)|W(AAA)|N(KKK))([A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{6}))|((T|V|Q|S)[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{6})|(NJJJNR[A-HJ-NP-Z\d]{5})|(8590[23]\d{6})|(T000000(([0-4]\d{3})|(500[01])))\d|(460810[0-8]|4708109)\d{4}|(320200|SASMPL|210200|650900)\d{5}|(30|31)\d{9}|(431|250|801)\d{8}|((7001|4001|4508|4204|4407|(410[234])|(200[12])|(8000)|(610[23])|(630[56])|(620[34])|(6001)|(640[78])|(800[1-9])|(8020)|(8021)|(7102)|(880[1-5]))\d{7})|(9\d{10})/
+
+export const MIRN_VALUE_PATTERN = /(5[2-7]\d{8})/
+
 export const NMI_REGEX = /(national\s(metering|meter)\sid(entifier)?)|((\W|\s)?nmi(\W|\s)?)/g
 export const MIRN_REGEX =
   /(meter)\s(identification|installation)\s(registration|reference)\s(number)|((\W|\s)?mirn(\W|\s)?)/g
@@ -23,8 +27,10 @@ export const extractKeyPair = (ocrFileResult: OCRFileResult): Record<string, str
   return mappedObject
 }
 
+const replaceInvalidCodeToken = (value: string | null | undefined) =>
+  value?.replace(/[Oo]/g, '0')?.replace(/[Ii]/g, '1')
+
 export const extractNMI = (ocrFileResult: OCRFileResult): string | undefined => {
-  console.log('PERF OVERALL NMI START:', performance.now())
   const keyPairs = extractKeyPair(ocrFileResult)
   console.log('ELECTRIC OCR KEYPAIR:', keyPairs)
   let nmi: string | undefined = extractNMIByKeypair(keyPairs)
@@ -32,44 +38,36 @@ export const extractNMI = (ocrFileResult: OCRFileResult): string | undefined => 
   if (!nmi) {
     const possibleNMI = extractNMIByText(ocrFileResult.document.text)
     console.log('POSSIBLE NMI', possibleNMI)
-    nmi = possibleNMI?.match(CODE_PATTERN)?.[0]
+    nmi = replaceInvalidCodeToken(possibleNMI)?.match(NMI_VALUE_PATTERN)?.[0]
   }
 
   console.log('RESULT NMI:', nmi)
 
-  console.log('PERF OVERALL NMI END:', performance.now())
   return nmi
 }
 
 export const extractNMIByKeypair = (keyPairs: Record<string, string>): string | undefined => {
-  console.log('PERF NMI BY KP START:', performance.now())
   const regex = NMI_REGEX
   const keyPair = Object.entries(keyPairs).find(
-    ([key, value]) => regex.test(key.toLowerCase()) && value?.match(CODE_PATTERN)?.[0],
+    ([key, value]) => regex.test(key.toLowerCase()) && replaceInvalidCodeToken(value)?.match(NMI_VALUE_PATTERN)?.[0],
   )
   console.log('NMI MATCHING KEY PAIR:', keyPair)
-  console.log('PERF NMI BY KP END:', performance.now())
   return keyPair?.[1]
 }
 
 export const extractNMIByText = (text: string) => {
-  console.log('PERF NMI BY TEXT START:', performance.now())
   const splitted: string[] = text.split('\n')
-    console.log(splitted)
   const filtered = splitted.reduce((prev, item, index, rest) => {
     const normalized = item.toLowerCase()
     return NMI_REGEX.test(normalized) ? [...prev, item, rest[index + 1] ?? '', rest[index - 1] ?? ''] : prev
   }, [] as string[])
 
-  const result = filtered.find((item) => matchCodePattern(item))
-  console.log(filtered, result)
+  const result = filtered.find((item) => matchNMICodePattern(item))
 
-  console.log('PERF NMI BY TEXT END:', performance.now())
   return result
 }
 
 export const extractMIRN = (ocrFileResult: OCRFileResult): string | undefined => {
-  console.log('PERF OVERALL MIRN START:', performance.now())
   const keyPairs = extractKeyPair(ocrFileResult)
   console.log('GAS OCR KEYPAIR:', keyPairs)
   let mirn: string | undefined = extractMIRNByKeypair(keyPairs)
@@ -77,47 +75,43 @@ export const extractMIRN = (ocrFileResult: OCRFileResult): string | undefined =>
   if (!mirn) {
     const possibleMIRN = extractMIRNByText(ocrFileResult.document.text)
     console.log('POSSIBLE MIRN', possibleMIRN)
-    mirn = possibleMIRN?.match(CODE_PATTERN)?.[0]
+    mirn = replaceInvalidCodeToken(possibleMIRN ?? '')?.match(MIRN_VALUE_PATTERN)?.[0]
   }
 
   console.log('RESULT MIRN:', mirn)
-  console.log('PERF OVERALL MIRN END:', performance.now())
 
   return mirn
 }
 
 export const extractMIRNByKeypair = (keyPairs: Record<string, string>): string | undefined => {
-  console.log('PERF MIRN BY KP START:', performance.now())
   const regex = MIRN_REGEX
   const keyPair = Object.entries(keyPairs).find(
-    ([key, value]) => regex.test(key.toLowerCase()) && value?.match(CODE_PATTERN)?.[0],
+    ([key, value]) => regex.test(key.toLowerCase()) && replaceInvalidCodeToken(value)?.match(MIRN_VALUE_PATTERN)?.[0],
   )
   console.log('MIRN MATCHING KEY PAIR:', keyPair)
-  console.log('PERF MIRN BY KP END:', performance.now())
   return keyPair?.[1]
 }
 
 export const extractMIRNByText = (text: string) => {
-  console.log('PERF MIRN BY TEXT START:', performance.now())
-
   const splitted: string[] = text.split('\n')
-  console.log(splitted)
   const filtered = splitted.reduce((prev, item, index, rest) => {
     const normalized = item.toLowerCase()
-    return MIRN_REGEX.test(normalized) ? [...prev, item, rest[index + 1] ?? '', rest[index - 1] ?? ''] : prev
+    return MIRN_REGEX.test(normalized ?? '') ? [...prev, item, rest[index + 1] ?? '', rest[index - 1] ?? ''] : prev
   }, [] as string[])
 
   const result = filtered.find((item) => {
-    return matchCodePattern(item)
+    return matchMIRNCodePattern(item)
   })
-  console.log(filtered, result)
 
-  console.log('PERF MIRN BY TEXT END:', performance.now())
   return result
 }
 
-const matchCodePattern = (code: string) => {
-  return CODE_PATTERN.test(code)
+const matchNMICodePattern = (code: string) => {
+  return NMI_VALUE_PATTERN.test(replaceInvalidCodeToken(code) ?? '')
+}
+
+const matchMIRNCodePattern = (code: string) => {
+  return MIRN_VALUE_PATTERN.test(replaceInvalidCodeToken(code) ?? '')
 }
 
 export const transformToOCRFile = async (file: File, mimeType = 'application/pdf') => {

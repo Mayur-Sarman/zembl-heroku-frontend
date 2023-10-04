@@ -1,25 +1,26 @@
 import { Control } from 'react-hook-form'
-import { YES_NO_OPTIONS } from '../../../../constants'
+import { YES_NO_OPTIONS, YES_VALUE } from '../../../../constants'
 import AccordionCard from '../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../TextNote'
 import ConcessionForm from '../../ConcessionForm'
-import { Typography } from '@material-tailwind/react'
 
 const SEConcessionNotSA = ({
   control,
   state,
-  isCardHolder,
-  isOnlyResidence,
-  isConsent,
-  isBusiness,
+  onlyResidence,
   siteAddress,
+  concessionCardHolder,
+  concessionConsent,
 }: SEConcessionNotSAProps) => {
-  if (isBusiness) return null
+  const isCardHolder = concessionCardHolder === YES_VALUE
+  const isOnlyResidence = onlyResidence === YES_VALUE
+  const isConsent = concessionConsent === YES_VALUE
+
   return (
     <AccordionCard alwaysOpen open title="Concession" bodyClassName="w-full flex flex-col gap-6 text-left">
       <ControllerRadioGroupInput
-        name="concessionCardHolder"
+        name="concession.concessionCardHolder"
         label="Do you currently receive a government concession or rebate that can be added to your account?"
         control={control}
         options={YES_NO_OPTIONS}
@@ -28,37 +29,38 @@ const SEConcessionNotSA = ({
         <>
           <ConcessionForm control={control} />
 
-          {isCardHolder ? (
-            <ControllerRadioGroupInput
-              label={`Is ${siteAddress} your principal place of residence and the only residence in the state for which the rebate is claimed?`}
-              name="isOnlyResidence"
-              control={control}
-              options={YES_NO_OPTIONS}
-            />
-          ) : null}
+          <ControllerRadioGroupInput
+            label={`Is ${siteAddress} your principal place of residence and the only residence in the state for which the rebate is claimed?`}
+            name="concession.onlyStateRebateResidence"
+            control={control}
+            options={YES_NO_OPTIONS}
+          />
 
-          {isOnlyResidence ? (
-            <ControllerRadioGroupInput
-              label={
-                <div className="flex flex-col gap-6 text-sm">
-                  <TextNote>
-                    Just to let you know, Simply Energy will confirm your name, postcode, payment, concession details
-                    and eligibility with the Department of Human Services, Department of Veterans’ Affairs, and other
-                    government authorities, as required. Upon confirming your eligibility, any energy concessions that
-                    you are entitled to receive will be applied to your account’s. It is important that you let Simply
-                    Energy and your card issuer know of any changes in your circumstances which may affect your
-                    eligibility for a concession. This consent is valid while you are a customer of Simply Energy. At
-                    any point you can withdraw your consent, but please be aware that you may no longer be entitled to
-                    receive an energy concession. If you don’t want your information shared in this way, or withdraw
-                    consent, you must get proof of your details directly from the department.
-                  </TextNote>
-                  <Typography variant="small">Do you consent to Simply Energy performing this check?</Typography>
-                </div>
-              }
-              name="concessionConsent"
-              control={control}
-              options={YES_NO_OPTIONS}
-            />
+          {onlyResidence && isOnlyResidence ? (
+            <>
+              <TextNote>
+                Just to let you know, Simply Energy will confirm your name, postcode, payment, concession details and
+                eligibility with the Department of Human Services, Department of Veterans’ Affairs, and other government
+                authorities, as required. Upon confirming your eligibility, any energy concessions that you are entitled
+                to receive will be applied to your account’s.
+                <br />
+                <br />
+                It is important that you let Simply Energy and your card issuer know of any changes in your
+                circumstances which may affect your eligibility for a concession. This consent is valid while you are a
+                customer of Simply Energy. At any point you can withdraw your consent, but please be aware that you may
+                no longer be entitled to receive an energy concession.
+                <br />
+                <br />
+                If you don’t want your information shared in this way, or withdraw consent, you must get proof of your
+                details directly from the department.
+              </TextNote>
+              <ControllerRadioGroupInput
+                label={'Do you consent to Simply Energy performing this check?'}
+                name="concession.concessionConsent"
+                control={control}
+                options={YES_NO_OPTIONS}
+              />
+            </>
           ) : (
             <TextNote>
               The site address must be your principal place of residence to claim a concession rebate. Please call Zembl
@@ -66,7 +68,7 @@ const SEConcessionNotSA = ({
             </TextNote>
           )}
 
-          {['VIC', 'QLD'].includes(state ?? '') && !isConsent ? (
+          {['VIC', 'QLD'].includes(state ?? '') && !isConsent && concessionConsent ? (
             <TextNote>
               Without this consent we can not validate your concession eligiblity. Update your preference or please call
               Zembl on 1300 957 721 for assistance.
@@ -82,12 +84,9 @@ export default SEConcessionNotSA
 
 interface SEConcessionNotSAProps {
   control: Control
-  state?: string | null
-  energyType?: string | null
-  newConnection?: boolean
-  isCardHolder?: boolean
-  isConsent?: boolean
-  isOnlyResidence?: boolean
-  isBusiness?: boolean
+  state: string
+  onlyResidence: string
   siteAddress: string
+  concessionCardHolder: string
+  concessionConsent: string
 }
