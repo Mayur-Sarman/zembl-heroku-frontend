@@ -6,22 +6,22 @@ import TextNote from '../../../../TextNote'
 import { formatCurrency } from '../../../../../helpers/formatter'
 import ControllerTextArea from '../../../../Inputs/ControllerTextArea'
 
-const EnergyLocalNewConnection = ({ control, hasAnyWorkCompleted, connectionPrice }: EnergyLocalNewConnectionProps) => {
+const EnergyLocalNewConnection = ({ control, electricalRenovationWork, connectionPrice }: EnergyLocalNewConnectionProps) => {
   return (
     <AccordionCard open alwaysOpen title="New Connection" bodyClassName="w-full flex flex-col gap-6 text-left">
       <ControllerRadioGroupInput
         label="Has there or will there be any work completed at the property that may lead to contact with the wires since the power was disconnected?"
         control={control}
-        name="hasAnyWorkCompleted"
+        name="newConnection.electricalRenovationWork"
         options={YES_NO_OPTIONS}
       />
       {/* Case power connected */}
-      {hasAnyWorkCompleted === YES_VALUE ? (
+      {electricalRenovationWork === YES_VALUE ? (
         <ControllerTextArea
-          name="workAtPremiseDescription"
+          name="newConnection.ongoingWork"
           control={control}
           label="Please describe the works being completed at the premises."
-          required={hasAnyWorkCompleted === YES_VALUE}
+          required={electricalRenovationWork === YES_VALUE}
         />
       ) : null}
 
@@ -35,7 +35,7 @@ const EnergyLocalNewConnection = ({ control, hasAnyWorkCompleted, connectionPric
 
 interface EnergyLocalNewConnectionProps {
   control: Control
-  hasAnyWorkCompleted: string
+  electricalRenovationWork: string
   connectionPrice: number | null
 }
 

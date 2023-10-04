@@ -1,9 +1,10 @@
 import { UseQueryOptions, useQuery } from 'react-query'
 import { ProcessQuoteOutput, getFetchQuotePlanData } from '../api/quote'
+import { AxiosError } from 'axios'
 
 export const useFetchQuoteDataQuery = (
   { token, quoteToken }: FetchQuoteDataQueryPayload,
-  { onSuccess, onError }: UseQueryOptions<ProcessQuoteOutput, unknown>,
+  { onSuccess, onError }: UseQueryOptions<ProcessQuoteOutput, AxiosError>,
 ) =>
   useQuery({
     queryKey: ['fetchQuoteData', token, quoteToken],

@@ -53,7 +53,7 @@ const MomentumNewConnectionVIC = ({ connectionPrice, control, powerAware }: Mome
       <ControllerRadioGroupInput
         label="Are you aware if the power is on or off at the property?"
         control={control}
-        name="powerAware"
+        name="newConnection.powerAware"
         options={OPTIONS}
       />
       {/* Case power connected */}
@@ -61,17 +61,17 @@ const MomentumNewConnectionVIC = ({ connectionPrice, control, powerAware }: Mome
         <ControllerRadioGroupInput
           label={powerNote}
           control={control}
-          name="hasWorkAtPremise"
+          name="newConnection.workAtPremises"
           options={YES_NO_OPTIONS}
         />
       )}
-      <TextNote className="text-green-500">{priceText}</TextNote>
+      <TextNote>{priceText}</TextNote>
     </AccordionCard>
   )
 }
 
 interface MomentumNewConnectionVICProps {
-  connectionPrice: number
+  connectionPrice?: number | null
   control: Control
   powerAware: string
 }

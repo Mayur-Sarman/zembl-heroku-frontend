@@ -1,6 +1,5 @@
 import { Control } from 'react-hook-form'
 import { OFF_VALUE, ON_VALUE } from '../../../../../constants'
-import { formatCurrency } from '../../../../../helpers/formatter'
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
@@ -10,11 +9,7 @@ const OPTIONS = [
   { value: OFF_VALUE, label: OFF_VALUE },
 ]
 
-const SENewConnectionSA = ({ electricPrice, gasPrice, control, powerAware }: SENewConnectionSAProps) => {
-  const priceText = `${electricPrice ? `${formatCurrency(electricPrice)} for electricity` : ''} ${
-    electricPrice && gasPrice ? 'and' : ''
-  } ${gasPrice ? `${formatCurrency(gasPrice)} for gas` : ''}`
-
+const SENewConnectionSA = ({ priceText, control, powerAware }: SENewConnectionSAProps) => {
   const powerNote =
     powerAware === OFF_VALUE
       ? 'If the electricity is off, you must ensure the main switch is in the off position prior to the connection date.'
@@ -25,7 +20,7 @@ const SENewConnectionSA = ({ electricPrice, gasPrice, control, powerAware }: SEN
       <ControllerRadioGroupInput
         label="Are you aware if the power is on or off at the property?"
         control={control}
-        name="powerAware"
+        name="newConnection.powerAware"
         options={OPTIONS}
       />
       {/* Case power connected */}
@@ -41,8 +36,7 @@ const SENewConnectionSA = ({ electricPrice, gasPrice, control, powerAware }: SEN
 }
 
 interface SENewConnectionSAProps {
-  electricPrice: number
-  gasPrice: number
+  priceText: string
   control: Control
   powerAware: string
 }

@@ -1,5 +1,10 @@
-import { RegistrationData, UPDATE_MAIN_PROFILE_ENDPOINT } from '../constants'
-import { performPatchRequest } from '../helpers'
+import {
+  ADD_ADDITIONAL_PROFILE_DETAIL_ENDPOINT,
+  RegistrationData,
+  UPDATE_MAIN_PROFILE_ENDPOINT,
+  YES_VALUE,
+} from '../constants'
+import { performPatchRequest, performPostRequest } from '../helpers'
 import { getJSONDateString, getPhoneNumber } from '../helpers/formatter'
 import { GoogleMapExtractedComponents } from '../helpers/googleMap'
 import { AccountDetail, BusinessDetail } from './quote'
@@ -41,6 +46,43 @@ export const buildMainProfilePayload = (data: RegistrationData) => {
   return buildedData
 }
 
+export const postCreateRetailerAdditionalDetail = async (data: RetailerAdditionalDetail, token: string) => {
+  const response = await performPostRequest(ADD_ADDITIONAL_PROFILE_DETAIL_ENDPOINT, data, token)
+  return response.data as RetailerAdditionalDetailResponse
+}
+
+export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknown>) => {
+  const concessionInput = data?.concession as Record<string, string>
+  const isConcessionHolder = concessionInput?.concessionCardHolder === YES_VALUE
+  const isConcessionConsent = concessionInput?.concessionConsent === YES_VALUE
+  const concession: Concession = {
+    ...concessionInput,
+    concessionHolder: concessionInput?.concessionCardHolder ?? '',
+    concessionCardStartDate: getJSONDateString(concessionInput?.concessionCardStartDate),
+    concessionCardEndDate: getJSONDateString(concessionInput?.concessionCardEndDate),
+  }
+
+  const secondaryContactInput = data?.secondaryContact as Record<string, string>
+  const shouldAddSecondaryContact = secondaryContactInput?.hasSecondaryContact === YES_VALUE
+  const secondaryContact = {
+    ...secondaryContactInput,
+    dateOfBirth: getJSONDateString(secondaryContactInput?.dateOfBirth),
+    type: data?.registrationType as string,
+    accountId: (data?.accountDetails as AccountDetail)?.accountId,
+  }
+
+  const newConnectionInput = data?.newConnection as Record<string, string>
+  const newConnection = { ...newConnectionInput }
+
+  const buildedData: RetailerAdditionalDetail = {
+    concession: !isConcessionHolder || !isConcessionConsent ? null : concession,
+    secondaryContact: !shouldAddSecondaryContact ? null : secondaryContact,
+    newConnection,
+  }
+
+  return buildedData
+}
+
 export interface MainProfile {
   opportunityId?: string // '0060T0000060TF8QAM'
   accountDetails?: AccountDetail
@@ -76,4 +118,48 @@ export interface ConnectionDetail {
 
 export interface UpdateProfileResponse {
   message: string
+}
+
+export interface RetailerAdditionalDetailResponse {
+  contactId: string
+}
+
+export interface RetailerAdditionalDetail {
+  concession?: Concession | null
+  secondaryContact?: SecondaryContact | null
+  newConnection?: NewConnection | null
+}
+
+interface Concession {
+  concessionHolder: string
+  concessionCardType?: string //Concession Type Values
+  concessionCardNumber?: string
+  concessionCardStartDate?: string | null
+  concessionCardEndDate?: string | null
+  onlyStateRebateResidence?: string //Unknow SF mapping
+  currentlyReceiveRebate?: string //Unknow SF mapping
+}
+
+interface SecondaryContact {
+  title?: string
+  firstName?: string
+  lastName?: string
+  dateOfBirth?: string | null
+  email?: string
+  mobile?: string
+  altPhone?: string
+  type?: string
+  accountId?: string
+}
+
+interface NewConnection {
+  powerConnected?: string
+  anyWorkCompletedSinceDisconnected?: string //Unknow SF mapping
+  inspectionTimeslot?: string // '8AM - 1PM' | '1PM - 6PM'
+  propertyAccessMethod?: string //'I will be home or Keys will be in the letter box' | 'Someone over the age of 18 will be at the property'
+  sitePowerAware?: string // 'On' | 'Off' | 'Unsure'
+  hasWorkAtPremises?: string
+  siteGasConnected?: string //'On' | 'Off' | 'Unsure'
+  anyElectricalOrRenovationWork?: string
+  onGoingWorkDescription?: string
 }

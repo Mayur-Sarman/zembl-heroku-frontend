@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 
-import { useToast } from '../../hooks'
 import { useForm } from 'react-hook-form'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
 
-import { Button, Typography } from '@material-tailwind/react'
+import { Button } from '@material-tailwind/react'
 
 import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
 import PageWrapper from '../../components/PageWrapper'
@@ -28,7 +27,6 @@ import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGr
 import { getPhoneNumber } from '../../helpers/formatter'
 
 const HomePage = () => {
-  const { fireAlert } = useToast()
   const { createLeadMutation, validateReCaptchaMutation, registrationData, setRegistrationData } = useRegistration()
   const {
     register,
@@ -58,19 +56,16 @@ const HomePage = () => {
 
     if (reCaptchaValidateResponse?.success) {
       createLeadMutation.mutate(buildedData)
-    } else {
-      fireAlert({ children: 'Could not process your request right now. Please try again later.', type: 'error' })
     }
   }
 
   // TODO: ERROR HANDLING (EXTRACT DATA)
   useEffect(() => {
     if (createLeadMutation?.isError && createLeadMutation?.error) {
-      console.log(createLeadMutation.error)
-      fireAlert({ children: <Typography>Oops! Something has error!</Typography>, type: 'error' })
+      createLeadMutation.reset()
       return
     }
-  }, [createLeadMutation?.isError, createLeadMutation?.error, fireAlert])
+  }, [createLeadMutation])
 
   // SUCCESS
   useEffect(() => {

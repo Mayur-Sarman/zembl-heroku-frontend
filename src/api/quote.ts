@@ -1,8 +1,4 @@
-import { AxiosHeaders } from 'axios'
-
 import {
-  MULESOFT_CLIENT_KEY,
-  MULESOFT_CLIENT_SECRET,
   GET_QUOTE_ENDPOINT,
   RegistrationData,
   CREATE_QUOTE_LINE_ENDPOINT,
@@ -12,18 +8,19 @@ import {
   VALIDATE_LINK_ENDPOINT,
   RESEND_OTP_ENDPOINT,
   VALIDATE_OTP_ENDPOINT,
+  UPDATE_QUOTE_CALLBACK_ENDPOINT,
 } from '../constants'
 import { performGetRequest, performPatchRequest, performPostRequest } from '../helpers'
 import { Preference, SimpleResponse } from './common'
 
-export const postGenerateQuoteToken = async (quoteId: string, token: string) => {
-  const headers = new AxiosHeaders()
-  headers.set('client_id', MULESOFT_CLIENT_KEY)
-  headers.set('client_secret', MULESOFT_CLIENT_SECRET)
+// export const postGenerateQuoteToken = async (quoteId: string, token: string) => {
+//   const headers = new AxiosHeaders()
+//   headers.set('client_id', MULESOFT_CLIENT_KEY)
+//   headers.set('client_secret', MULESOFT_CLIENT_SECRET)
 
-  const response = await performPostRequest('/auth/token', { recordId: quoteId }, token, headers)
-  return response.data as GenerateQuoteToken
-}
+//   const response = await performPostRequest('/auth/token', { recordId: quoteId }, token, headers)
+//   return response.data as GenerateQuoteToken
+// }
 
 export const postCreateQuoteLine = async (payload: CreateQuoteLinePayload, token: string) => {
   const response = await performPostRequest(CREATE_QUOTE_LINE_ENDPOINT, payload, token ?? '')
@@ -38,6 +35,11 @@ export const postCreateQuote = async (payload: PostCreateQuotePayload, quoteToke
 export const patchUpdateQuote = async (payload: Partial<Quote>, quoteToken: string) => {
   const response = await performPatchRequest(UPDATE_QUOTE_ENDPOINT, payload, quoteToken ?? '')
   return response.data as Quote
+}
+
+export const patchQuoteCallback = async (payload: CallbackRequestPayload, quoteToken: string) => {
+  const response = await performPatchRequest(UPDATE_QUOTE_CALLBACK_ENDPOINT, payload, quoteToken ?? '')
+  return response.data as SimpleResponse
 }
 
 export const postConfirmQuote = async (payload: ConfirmQuotePayload, quoteToken: string) => {
@@ -124,10 +126,6 @@ export interface CreateQuoteLineResponse {
   comparison?: QuoteComparison
 }
 
-export interface GenerateQuoteToken {
-  access_token: string
-}
-
 export interface QuoteResponse {
   processQuoteOutput?: ProcessQuoteOutput
   accessToken?: string
@@ -160,6 +158,7 @@ export interface AccountDetail {
   mobile?: string
   phone?: string
   altPhone?: string
+  accountId?: string
 }
 
 export interface ConnectionDetail {
@@ -172,26 +171,27 @@ export interface ConnectionDetail {
   unitType?: string | null
 }
 
-export interface Quote {
+export interface CallbackRequestPayload {
+  callbackRequested?: boolean | null
+  electricQuoteId?: string | null
+  gasQuoteId?: string | null
+}
+
+export interface Quote extends QuoteComparison {
   quoteId?: string
   comparisons?: QuoteComparison[]
-  annualSavingIncGST?: number | null
   fuelType?: string | null
   preferenceId?: string | null
-  productId?: string | null
-  productName?: string | null
   quoteLineId?: string | null
-  retailerId?: string | null
-  retailerName?: string | null
-  retailerIconLink?: string | null
+
   termAndConditionContent?: string | null
   termAndConditions?: TermAndCondition[]
-  callbackRequested?: boolean | null
 
   address?: string | null
   nmi?: string | null
   mirn?: string | null
   quotePreferences?: Record<string, unknown>
+  connectionPrice?: number | null
 }
 
 export interface TermAndCondition {
@@ -205,19 +205,22 @@ export interface QuoteComparison {
   quoteId?: string
   retailerId?: string
   retailerName?: string
-  retailerIconLink?: string
+  retailerLogo?: string
   productId?: string
   productName?: string
 
-  bpidLink?: string
+  linkBPID?: string
   detailLink?: string
 
+  exitPenalty?: string
+  australianOwned?: boolean
+  contractLength?: string
+
   billSize?: number
+  annualBillSize?: number
+  percentDifference?: number
   annualSavingIncGST?: number
   mandatoryInformation?: string
 
-  planBenefits?: string[]
-  planEstCostPerMonth?: number
-  planEstCostPerYear?: number
   planType?: string
 }

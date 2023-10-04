@@ -11,10 +11,11 @@ const AGLConcession = ({ control, state, cardHolder, concessionConsent }: AGLCon
   return (
     <AccordionCard alwaysOpen open title="Concession" bodyClassName="w-full flex flex-col gap-6 text-left">
       <ControllerRadioGroupInput
-        name="concessionCardHolder"
+        name="concession.concessionCardHolder"
         label="Are you a concession card holder?"
         control={control}
         options={YES_NO_OPTIONS}
+        required
       />
       {cardHolder === YES_VALUE ? (
         <>
@@ -23,9 +24,10 @@ const AGLConcession = ({ control, state, cardHolder, concessionConsent }: AGLCon
 
           <ControllerRadioGroupInput
             label="You understand and consent to your Energy Retailer accessing your information held by Services Australia / Department of Veteran Affairs?"
-            name="concessionConsent"
+            name="concession.concessionConsent"
             control={control}
             options={YES_NO_OPTIONS}
+            required
           />
           {['NSW', 'VIC', 'QLD'].includes(state ?? '') && concessionConsent === NO_VALUE ? (
             <TextNote className="text-blue-700">

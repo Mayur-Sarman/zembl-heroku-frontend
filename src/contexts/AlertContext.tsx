@@ -44,9 +44,7 @@ export const AlertContextProvider = ({ children }: PropsWithChildren) => {
 
       if (newAlert?.duration) {
         const duration = newAlert.duration === 'default' ? ALERT_DEFAULT_DURATION : newAlert.duration
-        setTimeout(() => {
-          onAlertClosedHandler(id)
-        }, duration)
+        setTimeout(() => onAlertClosedHandler(id), duration)
       }
 
       return id

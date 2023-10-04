@@ -11,11 +11,11 @@ const OPTIONS = [
   { value: UNSURE_VALUE, label: UNSURE_VALUE },
 ]
 
-const MomentumNewConnectionGas = ({ connectionPrice, control, isGasOn }: MomentumNewConnectionGasProps) => {
+const MomentumNewConnectionGas = ({ connectionPrice, control, powerAware }: MomentumNewConnectionGasProps) => {
   const priceText = `The standard new connection fee is up to ${formatCurrency(connectionPrice)} including GST`
 
   let powerNote = null
-  switch (isGasOn) {
+  switch (powerAware) {
     case ON_VALUE:
       powerNote = `Your network may read your meter up to 2 business days before or on the requested move in date. Momentum starts billing from this read date. Make sure there’s clear and safe access to your meter or it could mean extra fees and/or a delay to your connection or transfer.`
       break
@@ -32,20 +32,20 @@ const MomentumNewConnectionGas = ({ connectionPrice, control, isGasOn }: Momentu
       <ControllerRadioGroupInput
         label="Is the gas on at the property?"
         control={control}
-        name="isGasOn"
+        name="newConnection.gasConnected"
         options={OPTIONS}
       />
       {/* Case power connected */}
-      {isGasOn && powerNote && <TextNote>{powerNote}</TextNote>}
-      <TextNote className="text-green-500">{priceText}</TextNote>
+      {powerAware && powerNote && <TextNote>{powerNote}</TextNote>}
+      <TextNote>{priceText}</TextNote>
     </AccordionCard>
   )
 }
 
 interface MomentumNewConnectionGasProps {
-  connectionPrice: number
+  connectionPrice?: number | null
   control: Control
-  isGasOn: string
+  powerAware: string
 }
 
 export default MomentumNewConnectionGas

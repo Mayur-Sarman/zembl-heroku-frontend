@@ -5,7 +5,9 @@ import {
   LOCAL_CUSTOMER_SERVICE,
   LOWEST_PRICE,
   NO_PREFERENCE,
+  SAVE_ERROR_LOG_ENDPOINT,
 } from '../constants'
+import { performPostRequest } from '../helpers'
 
 export const convertPreference = (prefList: string[]) => {
   const preferences = {
@@ -17,6 +19,19 @@ export const convertPreference = (prefList: string[]) => {
     noPreferences: prefList.includes(NO_PREFERENCE),
   }
   return preferences
+}
+
+export const saveLog = async (logData: ErrorLog, token: string) => {
+  const response = await performPostRequest(SAVE_ERROR_LOG_ENDPOINT, logData, token ?? '')
+  return response?.data as SimpleResponse
+}
+
+export interface ErrorLog {
+  errorMessage: string
+  response: string
+  source: string // "Web" || "Mulesoft" || "Internal"
+  status: string
+  endpoint: string
 }
 
 export interface Preference {

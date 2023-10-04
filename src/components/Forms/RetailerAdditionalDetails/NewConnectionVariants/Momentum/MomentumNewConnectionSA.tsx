@@ -32,18 +32,18 @@ const MomentumNewConnectionSA = ({ connectionPrice, control, powerAware }: Momen
       <ControllerRadioGroupInput
         label="Are you aware if the power is on or off at the property?"
         control={control}
-        name="powerAware"
+        name="newConnection.powerAware"
         options={OPTIONS}
       />
       {/* Case power connected */}
       {powerAware && <TextNote>{powerNote}</TextNote>}
-      <TextNote className="text-green-500">{priceText}</TextNote>
+      <TextNote>{priceText}</TextNote>
     </AccordionCard>
   )
 }
 
 interface MomentumNewConnectionSAProps {
-  connectionPrice: number
+  connectionPrice?: number | null
   control: Control
   powerAware: string
 }

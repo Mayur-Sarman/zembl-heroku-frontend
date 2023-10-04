@@ -34,16 +34,35 @@ import { isArray } from 'lodash'
 import { MainProfile, UpdateProfileResponse, patchUpdateProfile } from '../api/profile'
 import { GoogleMapExtractedComponents } from '../helpers/googleMap'
 import { ReCaptchaValidateResponse, postValidateReCaptcha } from '../api/reCapcha'
+import { AxiosError } from 'axios'
+import { useToast } from '../hooks'
+import { ZEMBL_DEBUG_MODE } from '../constants/misc'
 
 export const RegistrationContext = createContext({} as RegistrationActions)
 export const RegistrationContextProvider = ({ children }: PropsWithChildren) => {
+  const { fireAlert } = useToast()
   const location = useLocation()
   const navigate = useNavigate()
   const [registrationData, setRegistrationData] = useState<RegistrationData>({} as RegistrationData)
   const [registrationToken, setRegistrationToken] = useState<string | null | undefined>(null)
   const [enableABNFetching, setEnableABNFetching] = useState<boolean>(false)
 
-  // TODO: *** INVALIDATE SESSION IF ALL API STATUS CODE = 401 ***
+  const handleErrorResponse = (
+    error: AxiosError,
+    message = `Unfortunately, we couldn't process your request at this time. Please try again later.`,
+  ) => {
+    let errorMessage = message
+    switch (error.status) {
+      case 401:
+        errorMessage = 'Your session has expired. Please submit a new registration.'
+        setRegistrationToken(null)
+        setRegistrationData({})
+        setEnableABNFetching(false)
+        navigate('/')
+        return
+    }
+    fireAlert({ children: errorMessage, type: 'error', duration: 5 })
+  }
 
   const searchABNQuery = useQuery({
     queryKey: ['searchABN', { abn: registrationData?.abn, includeHistoricalDetails: 'N' }],
@@ -54,9 +73,11 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     refetchOnMount: false,
     refetchOnReconnect: false,
     retryOnMount: false,
-    onError: (error) => console.log('SEARCH_ABN_QUERY_ERROR', error),
+    onError: (error: AxiosError) => {
+      if (ZEMBL_DEBUG_MODE) console.log('SEARCH_ABN_QUERY_ERROR', error, 'REQ:')
+      handleErrorResponse(error)
+    },
     onSuccess: (data: ABNResponse) => {
-      console.log('ABN RES:', data)
       const hasException = !!data?.ABRPayloadSearchResults?.response?.exception
       const responseABN = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.ABN?.identifierValue
       const entityStatusCode =
@@ -82,13 +103,19 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
   const validateReCaptchaMutation = useMutation({
     mutationFn: (token: string) => postValidateReCaptcha(token, registrationToken ?? ''),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('VALIDATE_RECAPTCHA_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
   })
 
   const createLeadMutation = useMutation({
     mutationFn: (lead: Lead) => postCreateLead(lead, registrationToken ?? ''),
-    onError: (error) => console.log('CREATE_LEAD_MUTATION_ERROR:', error),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('CREATE_LEAD_MUTATION_ERROR:', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
     onSuccess: (data, lead) => {
-      console.log('CREATE_LEAD_MUTATION_DATA:', data)
       const responseLead = data?.processLeadOutput
       const accessToken = data?.accessToken
       setRegistrationToken(accessToken)
@@ -103,9 +130,11 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
   const updateLeadMutation = useMutation({
     mutationFn: (lead: Lead) => patchUpdateLead(lead, registrationToken ?? ''),
-    onError: (error) => console.log('UPDATE_LEAD_MUTATION_ERROR:', error),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('UPDATE_LEAD_MUTATION_ERROR:', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
     onSuccess: (data, lead) => {
-      console.log('UPDATE_LEAD_MUTATION_DATA:', data)
       const responseLead = data?.processLeadOutput
       // return
       if (location.pathname !== '/basic-info-2') {
@@ -130,10 +159,12 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
   const createSiteMutation = useMutation({
     mutationFn: (site: Site) => postCreateSite(site, registrationToken ?? ''),
-    onError: (error) => console.log('CREATE_SITE_MUTATION_ERROR:', error),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('CREATE_SITE_MUTATION_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
     onSuccess: (data: SiteResponse, site) => {
       setEnableABNFetching(false)
-      console.log('CREATE_SITE_MUTATION_DATA:', data, site)
       setRegistrationData((prev) => {
         return {
           ...prev,
@@ -147,12 +178,18 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
   const uploadFileMutation = useMutation({
     mutationFn: (file: SFFile) => postUploadAttachment(file, registrationToken ?? ''),
-    onError: (error) => console.log('UPLOAD_FILE_MUTATION_ERROR:', error),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('UPLOAD_FILE_MUTATION_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
   })
 
   const ocrFileMutation = useMutation({
     mutationFn: ({ file }: OCRMutationPayload) => postUploadOCR(file, registrationToken ?? ''),
-    onError: (error, req) => console.log('OCR_FILE_MUTATION_ERROR:', error, 'REQ:', req),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('OCR_FILE_MUTATION_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
   })
 
   const createAccountMutation = useMutation({
@@ -166,40 +203,41 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         phone: prev?.phone?.replace('+', ''),
         mobile: (prev?.mobile ?? prev?.phone)?.replace('+', ''),
       }))
-      // createQuoteTokenMutation.mutate('a0I0T000001ZA8TUAW')
       setRegistrationToken(data?.accessToken ?? '')
       navigate('/plans')
     },
-    onError: (error, req) => {
-      console.log('CREATE_ACCOUNT_MUTATION_ERROR:', error, 'REQ:', req)
-      // createQuoteTokenMutation.mutate('a0I0T000001ZAjKUAW')
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('CREATE_ACCOUNT_MUTATION_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
     },
   })
 
   const updateQuoteMutation = useMutation({
     mutationFn: (data: Partial<Quote>) => patchUpdateQuote(data, registrationToken ?? ''),
-    // onSuccess: (data: Partial<Quote>, quoteData: Partial<Quote>) => {
-    //   setRegistrationData((prev) => ({ ...prev, ...quoteData, ...data }))
-    // },
-    onError: (error, req) => console.log('CREATE_ACCOUNT_MUTATION_ERROR:', error, 'REQ:', req),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('UPDATE_QUOTE_MUTATION_ERROR:', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
   })
 
   const createQuoteMutation = useMutation({
     mutationFn: (data: PostCreateQuotePayload) => postCreateQuote(data, registrationToken ?? ''),
     onSuccess: (data: QuoteResponse, quoteData: PostCreateQuotePayload) => {
       setRegistrationData((prev) => ({ ...prev, ...quoteData, ...data?.processQuoteOutput }))
-      // createQuoteTokenMutation.mutate('a0I0T000001ZA8TUAW')
       setRegistrationToken(data?.accessToken ?? '')
     },
-    onError: (error, req) => console.log('CREATE_ACCOUNT_MUTATION_ERROR:', error, 'REQ:', req),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('CREATE_QUOTE_MUTATION_ERROR:', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
   })
 
   const createQuoteLineMutation = useMutation({
     mutationFn: (payload: CreateQuoteLinePayload) => postCreateQuoteLine(payload, registrationToken ?? ''),
-    // onSuccess: (data: CreateQuoteLineResponse) => {
-    //   setRegistrationData((prev) => ({ ...prev, gasQuoteLineId: data.quoteLineId }))
-    // },
-    onError: (error, req) => console.log('POST_CREATE_QUOTE_LINE_ERROR:', error, 'REQ:', req),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('POST_CREATE_QUOTE_LINE_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
   })
 
   const updateProfileMutation = useMutation({
@@ -208,16 +246,19 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       setRegistrationData((prev) => ({ ...prev, ...profileData }))
       navigate('/personal-detail-2')
     },
-    onError: (error, req) => console.log('POST_CREATE_QUOTE_LINE_ERROR:', error, 'REQ:', req),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('PATCH_UPDATE_PROFILE_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
   })
 
   const sendQuoteEmailMutation = useMutation({
     mutationFn: () => postConfirmQuote(buildConfirmQuotePayload(registrationData), registrationToken ?? ''),
-    // onSuccess: (_: UpdateProfileResponse, profileData: MainProfile) => {},
-    onError: (error, req) => console.log('POST_CONFIRM_QUOTE_ERROR:', error, 'REQ:', req),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('POST_CONFIRM_QUOTE_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
   })
-
-  console.log('registrationData:', registrationData)
 
   useEffect(() => {
     if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
@@ -256,6 +297,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         createQuoteLineMutation,
         updateProfileMutation,
         sendQuoteEmailMutation,
+        handleErrorResponse,
         isLoading,
       }}
     >
@@ -269,19 +311,20 @@ interface RegistrationActions {
   setRegistrationToken: Dispatch<SetStateAction<string | null | undefined>>
   registrationData: RegistrationData
   registrationToken: string | null | undefined
-  validateReCaptchaMutation: UseMutationResult<ReCaptchaValidateResponse, unknown, string>
-  createLeadMutation: UseMutationResult<LeadResponse, unknown, Lead>
-  updateLeadMutation: UseMutationResult<LeadResponse, unknown, Lead>
-  uploadFileMutation: UseMutationResult<CommonResponse, unknown, SFFile>
-  searchABNQuery: UseQueryResult<ABNResponse, unknown>
-  createSiteMutation: UseMutationResult<SiteResponse, unknown, Site>
-  ocrFileMutation: UseMutationResult<OCRFileResult, unknown, OCRMutationPayload>
-  createAccountMutation: UseMutationResult<QuoteResponse, unknown, Account>
-  updateQuoteMutation: UseMutationResult<Quote, unknown, Quote>
-  createQuoteMutation: UseMutationResult<QuoteResponse, unknown, PostCreateQuotePayload>
-  createQuoteLineMutation: UseMutationResult<CreateQuoteLineResponse, unknown, CreateQuoteLinePayload>
-  updateProfileMutation: UseMutationResult<UpdateProfileResponse, unknown, MainProfile>
-  sendQuoteEmailMutation: UseMutationResult<SimpleResponse, unknown, void>
+  validateReCaptchaMutation: UseMutationResult<ReCaptchaValidateResponse, AxiosError, string>
+  createLeadMutation: UseMutationResult<LeadResponse, AxiosError, Lead>
+  updateLeadMutation: UseMutationResult<LeadResponse, AxiosError, Lead>
+  uploadFileMutation: UseMutationResult<CommonResponse, AxiosError, SFFile>
+  searchABNQuery: UseQueryResult<ABNResponse, AxiosError>
+  createSiteMutation: UseMutationResult<SiteResponse, AxiosError, Site>
+  ocrFileMutation: UseMutationResult<OCRFileResult, AxiosError, OCRMutationPayload>
+  createAccountMutation: UseMutationResult<QuoteResponse, AxiosError, Account>
+  updateQuoteMutation: UseMutationResult<Quote, AxiosError, Quote>
+  createQuoteMutation: UseMutationResult<QuoteResponse, AxiosError, PostCreateQuotePayload>
+  createQuoteLineMutation: UseMutationResult<CreateQuoteLineResponse, AxiosError, CreateQuoteLinePayload>
+  updateProfileMutation: UseMutationResult<UpdateProfileResponse, AxiosError, MainProfile>
+  sendQuoteEmailMutation: UseMutationResult<SimpleResponse, AxiosError, void>
+  handleErrorResponse: (error: AxiosError, message?: string) => void
   isLoading: boolean
 }
 

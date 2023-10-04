@@ -3,7 +3,7 @@ import { AGL_CONCESSION_CARD_TYPES } from '../../constants'
 import ControllerInput from '../Inputs/ControllerInput'
 import DateInput from '../Inputs/DateInput'
 import { Control } from 'react-hook-form'
-import { DATE_MUST_FUTURE, DATE_MUST_PAST } from '../../constants/validation'
+import { DATE_MUST_FUTURE, DATE_MUST_PAST, getExactLengthValidation } from '../../constants/validation'
 
 const ConcessionForm = ({ control }: ConcessionFormProps) => {
   return (
@@ -11,7 +11,7 @@ const ConcessionForm = ({ control }: ConcessionFormProps) => {
       <ControllerSelectInput
         label="Concession Card Type"
         textLabel="Concession Card Type"
-        name="concessionCardType"
+        name="concession.concessionCardType"
         control={control}
         options={AGL_CONCESSION_CARD_TYPES}
         required
@@ -19,13 +19,14 @@ const ConcessionForm = ({ control }: ConcessionFormProps) => {
       <ControllerInput
         textLabel="Concession Number"
         inputLabel="Concession Number"
-        name="concessionCardNo"
+        name="concession.concessionCardNumber"
+        rules={getExactLengthValidation(10)}
         control={control}
         required
       />
       <DateInput
         label="Concession Start Date"
-        name="concessionDate"
+        name="concession.concessionCardStartDate"
         control={control}
         required
         rules={DATE_MUST_PAST}
@@ -33,7 +34,7 @@ const ConcessionForm = ({ control }: ConcessionFormProps) => {
       />
       <DateInput
         label="Concession Expiry Date"
-        name="concessionExpiryDate"
+        name="concession.concessionCardEndDate"
         control={control}
         required
         rules={DATE_MUST_FUTURE}

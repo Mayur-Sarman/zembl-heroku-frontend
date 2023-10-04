@@ -1,15 +1,9 @@
 import AccordionCard from '../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../Inputs/ControllerRadioGroupInput'
-import { NO_RENEW, NO_TRANSFER_NEW, YES_VALUE } from '../../../../constants'
+import { YES_NO_OPTIONS, YES_VALUE } from '../../../../constants'
 import { Control } from 'react-hook-form'
 import TextNote from '../../../TextNote'
 import SecondaryContactForm from '../../SecondaryContactForm'
-
-const ADD_SECONDARY_OPTIONS = [
-  { label: YES_VALUE, value: YES_VALUE },
-  { label: NO_TRANSFER_NEW, value: NO_TRANSFER_NEW },
-  { label: NO_RENEW, value: NO_RENEW },
-]
 
 const SESecondaryContactForm = ({
   control,
@@ -27,10 +21,10 @@ const SESecondaryContactForm = ({
     >
       <div className="flex flex-col gap-y-3">
         <ControllerRadioGroupInput
-          name="hasSecondaryContact"
+          name="secondaryContact.hasSecondaryContact"
           control={control}
           label="Would you like to add anyone else to the account?"
-          options={ADD_SECONDARY_OPTIONS}
+          options={YES_NO_OPTIONS}
           required
         />
       </div>
@@ -45,7 +39,7 @@ const SESecondaryContactForm = ({
         </TextNote>
       ) : null}
 
-      {isSecondary ? (
+      {/* {isSecondary ? (
         <ControllerRadioGroupInput
           name="isAuthorize"
           control={control}
@@ -53,7 +47,7 @@ const SESecondaryContactForm = ({
           options={ADD_SECONDARY_OPTIONS}
           required
         />
-      ) : null}
+      ) : null} */}
 
       <TextNote className={`${isAuthorize ? '' : 'hidden'}`}>
         Simply Energy can add a signatory to your account, which means they will be able to make changes. You can do

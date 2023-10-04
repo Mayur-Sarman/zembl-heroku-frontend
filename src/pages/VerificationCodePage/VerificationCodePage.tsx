@@ -8,16 +8,17 @@ import { FieldValues, useForm } from 'react-hook-form'
 import VerificationCodeInput from '../../components/Inputs/VerificationCodeInput'
 import PageNavigationActions from '../../components/PageNavigationActions'
 import { ValidateTokenResponse } from '../../api/quote'
-import { useToast } from '../../hooks'
+
 import { useValidateTokenQuery } from '../../hooks/useValidateTokenQuery'
 import { useValidateOTPMutation } from '../../hooks/useValidateOTPMutation'
 import { useResendOTPMutation } from '../../hooks/useResendOTPMutation'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const VerificationCodePage = () => {
-  const { registrationData, setRegistrationToken, setRegistrationData } = useContext(RegistrationContext)
+  const { registrationData, setRegistrationToken, setRegistrationData, handleErrorResponse } =
+    useContext(RegistrationContext)
   const navigate = useNavigate()
 
-  const { fireAlert } = useToast()
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token') ?? ''
 
@@ -28,15 +29,15 @@ const VerificationCodePage = () => {
       setOtpDigits(data.otpDigit ?? 4)
       setRegistrationData((prev) => ({ ...prev, quoteToken: token }))
     },
-    onError: () => {
-      fireAlert({ children: 'The link is invalid or expired.', type: 'error' })
-      navigate('/')
+    onError: (error) => {
+      if (ZEMBL_DEBUG_MODE) console.log('VERIFICATION_CODE_PAGE', error)
+      handleErrorResponse(error, 'The link is invalid or expired.')
     },
   })
 
   const resendOTP = useResendOTPMutation(token, {
-    onError: () => {
-      fireAlert({ children: 'Could not send an OTP code, please try again later', type: 'error' })
+    onError: (error) => {
+      handleErrorResponse(error, 'Could not send an OTP code, please try again later')
     },
   })
 
@@ -45,8 +46,8 @@ const VerificationCodePage = () => {
       setRegistrationToken(data.accessToken)
       navigate('/review-plan')
     },
-    onError: () => {
-      fireAlert({ children: 'OTP code is invalid or expired.', type: 'error' })
+    onError: (error) => {
+      handleErrorResponse(error, 'OTP code is invalid or expired.')
     },
   })
 

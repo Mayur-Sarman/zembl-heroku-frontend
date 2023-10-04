@@ -12,6 +12,7 @@ import {
   GAS_VALUE,
   IDENTITY_TYPE_OPTIONS,
   MEDICARE_CARD_VALUE,
+  NEXT_BUSINESS_ENERGY,
   REGISTRATION_TYPE_BUSINESS,
 } from '../../../constants'
 import DriverLicenseForm from '../../../components/Forms/PersonalDetails/DriverLicenseForm'
@@ -65,6 +66,9 @@ const PersonalDetailPage1 = () => {
   const gasQuote = registrationData?.gasQuote
   const energyType = registrationData?.energyType
 
+  const selectedElecRetailer = electricQuote?.retailerName ?? null
+  const selectedGasRetailer = gasQuote?.retailerName ?? null
+
   const electPlanCard =
     energyType !== GAS_VALUE ? (
       <MiniPlanCard
@@ -107,7 +111,11 @@ const PersonalDetailPage1 = () => {
             label="Identification Type"
             control={control}
             name="identificationType"
-            options={IDENTITY_TYPE_OPTIONS}
+            options={IDENTITY_TYPE_OPTIONS.filter((item) =>
+              selectedElecRetailer === NEXT_BUSINESS_ENERGY && selectedGasRetailer === NEXT_BUSINESS_ENERGY
+                ? item.value !== MEDICARE_CARD_VALUE
+                : true,
+            )}
             required
           />
         </div>

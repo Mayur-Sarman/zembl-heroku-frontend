@@ -1,9 +1,10 @@
 import { UseQueryOptions, useQuery } from 'react-query'
 import { ValidateTokenResponse, postValidateToken } from '../api/quote'
+import { AxiosError } from 'axios'
 
 export const useValidateTokenQuery = (
   token: string,
-  { onSuccess, onError }: UseQueryOptions<ValidateTokenResponse, unknown>,
+  { onSuccess, onError }: UseQueryOptions<ValidateTokenResponse, AxiosError>,
 ) =>
   useQuery({
     queryKey: ['validateToken', token],

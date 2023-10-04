@@ -11,21 +11,21 @@ import BusinessDetailsForm from '../../components/Forms/PersonalDetails/Business
 import PageNavigationActions from '../../components/PageNavigationActions'
 import ControllerCheckBox from '../../components/Inputs/ControllerCheckBox'
 import { useFetchQuoteDataQuery } from '../../hooks/useQueryPlanData'
-import { useToast } from '../../hooks'
 import { AccountDetail, ProcessQuoteOutput } from '../../api/quote'
 import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
 import { getJSONDateString } from '../../helpers/formatter'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const ReviewPlanPage = () => {
   const navigate = useNavigate()
-  const { registrationData, registrationToken, setRegistrationData } = useContext(RegistrationContext)
+  const { registrationData, registrationToken, setRegistrationData, handleErrorResponse } =
+    useContext(RegistrationContext)
 
   // On load page get data from context
   const { handleSubmit, control, setValue, watch, getValues, trigger, formState } = useForm({
     mode: 'all',
     defaultValues: registrationData as FieldValues,
   })
-  const { fireAlert } = useToast()
 
   const businessDetails: unknown = watch('businessDetails')
 
@@ -37,20 +37,20 @@ const ReviewPlanPage = () => {
         setValue('businessDetails', data.businessDetails)
         setValue('accountDetails', data.accountDetails)
       },
-      onError: () => {
-        fireAlert({ children: 'Unfortunately, we cannot find your quote.', type: 'error' })
-        // navigate('/')
+      onError: (error) => {
+        if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
+        handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
       },
     },
   )
 
   const updatePlanData = useUpdateQuoteMutation({
     onSuccess: (_, data) => {
-      console.log(data)
       setRegistrationData((prev) => ({ ...prev, ...data.planData }))
     },
-    onError: () => {
-      fireAlert({ children: 'Unfortunately, we cannot find your quote.', type: 'error' })
+    onError: (error) => {
+      if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
+      handleErrorResponse(error, 'We cannot process your request to update the plan data now.')
     },
   })
 

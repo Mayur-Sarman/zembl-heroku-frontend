@@ -1,11 +1,9 @@
 import { Control } from 'react-hook-form'
-import { NSW_VALUE, QLD_VALUE, REGISTRATION_TYPE_BUSINESS, SA_VALUE, VIC_VALUE } from '../../../constants'
+import { REGISTRATION_TYPE_BUSINESS } from '../../../constants'
 import AGLConcession from './ConcessionVariants/AGLConcession'
 import AGLSecondaryContactForm from './SecondaryContactVariants/AGLSecondaryContactForm'
-import AGLNewConnectionVIC from './NewConnectionVariants/AGL/AGLNewConnectionVIC'
-import AGLNewConnectionNSW from './NewConnectionVariants/AGL/AGLNewConnectionNSW'
-import AGLNewConnectionSA from './NewConnectionVariants/AGL/AGLNewConnectionSA'
-import AGLNewConnectionQLD from './NewConnectionVariants/AGL/AGLNewConnectionQLD'
+import AGLNewConnection from './NewConnectionVariants/AGL/AGLNewConnection'
+import SecondaryAccountHolderForm from '../PersonalDetails/SecondaryAccountHolderForm'
 
 const AGLPersonalDetailsForm = ({
   control,
@@ -20,6 +18,7 @@ const AGLPersonalDetailsForm = ({
   hasPower,
   hasWorkCompleted,
   connectionPrice,
+  isTransfer,
 }: AGLPersonalDetailsFormProps) => {
   const isBusiness = registrationType === REGISTRATION_TYPE_BUSINESS
   const concessionDisplay = !isBusiness && (
@@ -32,50 +31,30 @@ const AGLPersonalDetailsForm = ({
     />
   )
 
-  const secondaryContactDisplay = !isBusiness && (
+  const secondaryContactDisplay = !isBusiness ? (
     <AGLSecondaryContactForm
       control={control}
       hasSecondaryContact={hasSecondaryContact}
       contactName={secondaryContactName}
+      isTransfer={isTransfer}
     />
+  ) : (
+    <SecondaryAccountHolderForm control={control} hasSecondaryContact={hasSecondaryContact} />
   )
 
-  let newConnectionDisplay = null
-  if (isNewConnection && electric) {
-    switch (state) {
-      case VIC_VALUE.shortName:
-        newConnectionDisplay = (
-          <AGLNewConnectionVIC
-            control={control}
-            connectionPrice={connectionPrice}
-            hasAnyWorkCompleted={hasWorkCompleted}
-            hasPower={hasPower}
-          />
-        )
-        break
-      case NSW_VALUE.shortName:
-        newConnectionDisplay = (
-          <AGLNewConnectionNSW control={control} connectionPrice={connectionPrice} hasPower={hasPower} />
-        )
-        break
-      case SA_VALUE.shortName:
-        newConnectionDisplay = (
-          <AGLNewConnectionSA control={control} connectionPrice={connectionPrice} hasPower={hasPower} />
-        )
-        break
-      case QLD_VALUE.shortName:
-        newConnectionDisplay = (
-          <AGLNewConnectionQLD control={control} connectionPrice={connectionPrice} hasPower={hasPower} />
-        )
-        break
-    }
-  }
-
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       {concessionDisplay}
       {secondaryContactDisplay}
-      {newConnectionDisplay}
+      {isNewConnection && electric ? (
+        <AGLNewConnection
+          control={control}
+          connectionPrice={connectionPrice}
+          hasAnyWorkCompleted={hasWorkCompleted}
+          hasPower={hasPower}
+          state={state}
+        />
+      ) : null}
     </div>
   )
 }
@@ -93,7 +72,8 @@ interface AGLPersonalDetailsFormProps {
   secondaryContactName: string
   hasPower: string
   hasWorkCompleted: string
-  connectionPrice: number
+  connectionPrice?: number | null
+  isTransfer?: boolean
 }
 
 export default AGLPersonalDetailsForm
