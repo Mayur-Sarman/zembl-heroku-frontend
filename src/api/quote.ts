@@ -13,15 +13,6 @@ import {
 import { performGetRequest, performPatchRequest, performPostRequest } from '../helpers'
 import { Preference, SimpleResponse } from './common'
 
-// export const postGenerateQuoteToken = async (quoteId: string, token: string) => {
-//   const headers = new AxiosHeaders()
-//   headers.set('client_id', MULESOFT_CLIENT_KEY)
-//   headers.set('client_secret', MULESOFT_CLIENT_SECRET)
-
-//   const response = await performPostRequest('/auth/token', { recordId: quoteId }, token, headers)
-//   return response.data as GenerateQuoteToken
-// }
-
 export const postCreateQuoteLine = async (payload: CreateQuoteLinePayload, token: string) => {
   const response = await performPostRequest(CREATE_QUOTE_LINE_ENDPOINT, payload, token ?? '')
   return response.data as CreateQuoteLineResponse
@@ -81,7 +72,6 @@ export const postValidateOTP = async (otp: string, token: string) => {
 }
 
 export const getFetchQuotePlanData = async (quoteToken: string, token: string) => {
-  // const encodedToken = encodeURIComponent(token)
   const encodedToken = encodeURIComponent(quoteToken)
   const response = await performGetRequest(`${GET_QUOTE_ENDPOINT}?token=${encodedToken}`, undefined, token)
   return response.data as ProcessQuoteOutput

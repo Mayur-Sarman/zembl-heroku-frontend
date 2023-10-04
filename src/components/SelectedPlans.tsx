@@ -5,8 +5,6 @@ import { Control } from 'react-hook-form'
 import DuoPlanCard from './DuoPlanCard'
 import { Quote } from '../api/quote'
 
-// const ICON_CLASS_NAME = 'w-4 h-4'
-
 const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }: SelectedPlansProps) => {
   const individualPlanDisplay = (
     <>
@@ -14,7 +12,7 @@ const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }:
         <FullPlanCard
           energyType={ELECTRICITY_VALUE}
           planName={electricityPlan?.productName ?? ''}
-          brandIconSrc={electricityPlan?.retailerIconLink ?? ''}
+          brandIconSrc={electricityPlan?.retailerLogo ?? ''}
           termAndConditionContent={electricityPlan?.termAndConditionContent}
           termAndConditionItems={electricityPlan?.termAndConditions}
           control={control}
@@ -25,7 +23,7 @@ const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }:
           energyType={GAS_VALUE}
           control={control}
           planName={gasPlan?.productName ?? ''}
-          brandIconSrc={gasPlan?.retailerIconLink ?? ''}
+          brandIconSrc={gasPlan?.retailerLogo ?? ''}
           termAndConditionContent={gasPlan?.termAndConditionContent}
           termAndConditionItems={gasPlan?.termAndConditions}
         />
@@ -46,18 +44,10 @@ const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }:
 
 interface SelectedPlansProps {
   title: string
-  // onEditClick: MouseEventHandler
   control: Control
   energyType: string | null
   electricityPlan?: Quote | null
   gasPlan?: Quote | null
 }
-
-// export interface PlanData {
-//   brandIconSrc: string
-//   planName: string
-//   brand: string
-//   termAndConditions: string
-// }
 
 export default SelectedPlans

@@ -6,8 +6,6 @@ import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
 import RetailerPreferenceForm from '../../components/Forms/RetailerPreferenceForm'
 import { AGL, BLUE_NRG, RegistrationData } from '../../constants'
-// import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
-// import { useToast } from '../../hooks'
 import { Quote } from '../../api/quote'
 import { useEffect } from 'react'
 

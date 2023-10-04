@@ -83,19 +83,8 @@ const ReviewPlanPage = () => {
   }
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data)
     try {
       setRegistrationData((prev) => ({ ...prev, ...data }))
-      // await updatePlanData.mutateAsync({
-      //   planData: {
-      //     ...data,
-      //     accountDetails: {
-      //       ...data.accountDetails,
-      //       dateOfBirth: getJSONDateString(data.dateOfBirth as Date),
-      //     } as AccountDetail,
-      //   },
-      //   token: registrationToken ?? '',
-      // })
       navigate('/preferences')
     } catch (error) {
       console.log(error)
@@ -107,13 +96,15 @@ const ReviewPlanPage = () => {
       planId={registrationData?.electricityQuote.quoteId ?? ''}
       planType={ELECTRICITY_VALUE}
       planBrand={registrationData?.electricityQuote.productName ?? ''}
-      planLogoURL="/vite.svg"
-      planBenefits={['No Exit Fees', '100% Australian Owned']}
-      planDescription="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eleifend sagittis tortor nec fermentum. Pellentesque id nulla vel dui pretium aliquam. Fusce auctor varius orci, eu rhoncus lorem. Suspendisse sollicitudin metus sed est vulputate, vitae commodo elit dapibus. Vivamus eleifend neque quam. Duis vel condimentum orci. Maecenas quis aliquet turpis. Proin feugiat magna mi, nec pharetra eros imperdiet sed. Ut eleifend dictum quam ac auctor. Morbi convallis tempus arcu, ac rutrum ligula."
+      planLogoURL={registrationData?.electricityQuote.retailerLogo ?? ''}
+      exitPenalty={registrationData?.electricityQuote?.exitPenalty}
+      australianOwned={registrationData?.electricityQuote?.australianOwned}
+      contractLength={registrationData?.electricityQuote?.contractLength}
+      planDescription={registrationData?.electricityQuote?.mandatoryInformation ?? ''}
       planEstAnnualSaving={registrationData?.electricityQuote?.annualSavingIncGST ?? NaN}
-      planLessThanCurrentPricePercent={0.25}
-      planEstCostPerMonth={500}
-      planEstCostPerYear={469}
+      planLessThanCurrentPricePercent={registrationData?.electricityQuote?.percentDifference}
+      planEstCostPerMonth={registrationData?.electricityQuote?.billSize}
+      planEstCostPerYear={registrationData?.electricityQuote?.annualBillSize}
       fullAddress={registrationData?.electricityQuote?.address ?? ''}
       gasOrEnergyCode={registrationData?.electricityQuote?.nmi ?? ''}
     />
@@ -124,13 +115,15 @@ const ReviewPlanPage = () => {
       planId={registrationData?.gasQuote.quoteId ?? ''}
       planType={GAS_VALUE}
       planBrand={registrationData?.gasQuote.productName ?? ''}
-      planLogoURL="/vite.svg"
-      planBenefits={['No Exit Fees', '100% Australian Owned']}
-      planDescription="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eleifend sagittis tortor nec fermentum. Pellentesque id nulla vel dui pretium aliquam. Fusce auctor varius orci, eu rhoncus lorem. Suspendisse sollicitudin metus sed est vulputate, vitae commodo elit dapibus. Vivamus eleifend neque quam. Duis vel condimentum orci. Maecenas quis aliquet turpis. Proin feugiat magna mi, nec pharetra eros imperdiet sed. Ut eleifend dictum quam ac auctor. Morbi convallis tempus arcu, ac rutrum ligula."
+      planLogoURL={registrationData?.gasQuote.retailerLogo ?? ''}
+      exitPenalty={registrationData?.gasQuote?.exitPenalty}
+      australianOwned={registrationData?.gasQuote?.australianOwned}
+      contractLength={registrationData?.gasQuote?.contractLength}
+      planDescription={registrationData?.gasQuote?.mandatoryInformation ?? ''}
       planEstAnnualSaving={registrationData?.gasQuote?.annualSavingIncGST ?? NaN}
-      planLessThanCurrentPricePercent={0.25}
-      planEstCostPerMonth={500}
-      planEstCostPerYear={469}
+      planLessThanCurrentPricePercent={registrationData?.gasQuote?.percentDifference}
+      planEstCostPerMonth={registrationData?.gasQuote?.billSize}
+      planEstCostPerYear={registrationData?.gasQuote?.annualBillSize}
       fullAddress={registrationData?.gasQuote?.address ?? ''}
       gasOrEnergyCode={registrationData?.gasQuote?.mirn ?? ''}
     />

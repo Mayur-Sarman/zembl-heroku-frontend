@@ -1,10 +1,11 @@
 import { UseQueryOptions, useQuery } from 'react-query'
 import { ReZemblData, ReZemblRequestPayload, getReZemblData } from '../api/reZembl'
+import { AxiosError } from 'axios'
 
 export const useReZemblQuery = (
   quoteData: ReZemblRequestPayload,
   token: string,
-  { onSuccess, onError }: UseQueryOptions<ReZemblData, unknown>,
+  { onSuccess, onError }: UseQueryOptions<ReZemblData, AxiosError>,
 ) =>
   useQuery({
     queryKey: ['getReZembl', token, quoteData],

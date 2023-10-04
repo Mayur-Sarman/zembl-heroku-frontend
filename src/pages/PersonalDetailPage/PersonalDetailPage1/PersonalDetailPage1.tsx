@@ -72,7 +72,7 @@ const PersonalDetailPage1 = () => {
   const electPlanCard =
     energyType !== GAS_VALUE ? (
       <MiniPlanCard
-        brandIcon={electricQuote?.retailerIconLink ?? ''}
+        brandIcon={electricQuote?.retailerLogo ?? ''}
         energyType={ELECTRICITY_VALUE}
         planName={electricQuote?.retailerName ?? ''}
       />
@@ -81,7 +81,7 @@ const PersonalDetailPage1 = () => {
   const gasPlanCard =
     energyType !== ELECTRICITY_VALUE ? (
       <MiniPlanCard
-        brandIcon={gasQuote?.retailerIconLink ?? ''}
+        brandIcon={gasQuote?.retailerLogo ?? ''}
         energyType={ELECTRICITY_VALUE}
         planName={gasQuote?.retailerName ?? ''}
       />
