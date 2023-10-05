@@ -45,12 +45,12 @@ const DuoPlanCard = ({ electricityPlan, gasPlan, control }: DuoPlanCardProps) =>
     <div className="grid grid-cols-1 gap-3">
       <div className="grid p-2 md:p-6 grid-cols-1 gap-y-3 lg:grid-cols-2">
         <MiniPlanCard
-          brandIcon={electricityPlan?.retailerIconLink ?? ''}
+          brandIcon={electricityPlan?.retailerLogo ?? ''}
           energyType={ELECTRICITY_VALUE}
           planName={electricityPlan?.productName ?? ''}
         />
         <MiniPlanCard
-          brandIcon={gasPlan?.retailerIconLink ?? ''}
+          brandIcon={gasPlan?.retailerLogo ?? ''}
           energyType={GAS_VALUE}
           planName={gasPlan?.productName ?? ''}
         />

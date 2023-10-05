@@ -14,7 +14,9 @@ const PlanSummaryCard = ({
   gasOrEnergyCode,
   planBrand,
   planLogoURL,
-  planBenefits,
+  exitPenalty,
+  australianOwned,
+  contractLength,
   planDescription,
   planLessThanCurrentPricePercent,
   planEstAnnualSaving,
@@ -55,7 +57,9 @@ const PlanSummaryCard = ({
         planType={planType}
         brand={planBrand}
         logoURL={planLogoURL}
-        planBenefits={planBenefits}
+        exitPenalty={exitPenalty}
+        australianOwned={australianOwned}
+        contractLength={contractLength}
         planDescription={planDescription}
         planLessThanCurrentPricePercent={planLessThanCurrentPricePercent}
         planEstAnnualSaving={planEstAnnualSaving}
@@ -74,7 +78,9 @@ interface PlanSummaryCardProps {
   gasOrEnergyCode: string
   planBrand: string
   planLogoURL: string
-  planBenefits: string[]
+  exitPenalty?: string
+  australianOwned?: boolean
+  contractLength?: string
   planDescription: string
   planLessThanCurrentPricePercent?: number
   planEstAnnualSaving?: number

@@ -1,12 +1,6 @@
-import axios, { Axios, AxiosError, AxiosHeaders } from 'axios'
-import { isArray } from 'lodash'
-import { CONFIG_ERROR, NO_RESPONSE_ERROR, REQUEST_BASE_URL, SESSION_TOKEN_KEY } from '../constants'
+import axios, { Axios, AxiosHeaders } from 'axios'
 
-interface ErrorInfo {
-  statusCode: number | null
-  message: string
-  error: string
-}
+import { REQUEST_BASE_URL, SESSION_TOKEN_KEY } from '../constants'
 
 export const setSessionToken = (token: string | undefined | null) =>
   token ? sessionStorage.setItem(SESSION_TOKEN_KEY, token) : null
@@ -25,17 +19,6 @@ export const getAxiosInstance = (token?: string | null) => {
       Authorization: token ? `Bearer ${token}` : null,
     },
   })
-
-  instance.interceptors.response.use(
-    (response) => response,
-    (error: AxiosError) => {
-      const errorResponse = error.response
-      if (errorResponse?.status === 401) {
-        deleteSessionToken()
-      }
-      return Promise.reject(error)
-    },
-  )
 
   return instance
 }
@@ -98,45 +81,4 @@ export const performDeleteRequest = async (
   const axios = getAxiosInstance(token)
 
   return await axios.delete(path, { params, headers, ...options })
-}
-
-// TBD: Implement this
-const buildAPIError = (type: string, message: string): ErrorInfo => ({
-  statusCode: null,
-  message,
-  error: type,
-})
-
-export const getAPIRequestError = (error: AxiosError) => {
-  // console.log(error)
-  // console.log('Error Data', { ...error })
-
-  if (error.response) {
-    // The request was made and the server responded with a status code
-    // that falls out of the range of 2xx
-    console.error('Request error with response')
-
-    if (isArray(error.response.data)) {
-      const message =
-        'Error with following message: ' +
-        error.response.data.reduce((message: string, errorInfo: ErrorInfo) => message + `${errorInfo.message} `, '')
-      return { message, statusCode: error.response.status }
-    }
-
-    return error.response.data
-  } else if (error.request) {
-    // The request was made but no response was received
-    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-    // http.ClientRequest in node.js
-    console.error('Request error without response')
-
-    return buildAPIError(NO_RESPONSE_ERROR, 'No response from server')
-  } else {
-    // Something happened in setting up the request that triggered an Error
-    const errorMessage = `Request error before request: ${error.message}`
-    console.error(errorMessage)
-
-    return buildAPIError(CONFIG_ERROR, errorMessage)
-  }
-  // console.log(error.config)
 }

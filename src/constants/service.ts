@@ -7,9 +7,6 @@ export const SESSION_TOKEN_KEY = `${import.meta.env.VITE_SESSION_STORAGE_PREFIX}
 export const NO_RESPONSE_ERROR = 'No Response'
 export const CONFIG_ERROR = 'Config Error'
 
-export const MULESOFT_CLIENT_KEY = `${import.meta.env.VITE_MULESOFT_CLIENT_KEY}`
-export const MULESOFT_CLIENT_SECRET = `${import.meta.env.VITE_MULESOFT_CLIENT_SECRET}`
-
 export const CREATE_LEAD_ENDPOINT = `${import.meta.env.VITE_SERVICE_CREATE_LEAD_ENDPOINT ?? '/api/public/crm/lead'}`
 export const UPDATE_LEAD_ENDPOINT = `${import.meta.env.VITE_SERVICE_UPDATE_LEAD_ENDPOINT ?? '/api/crm/lead'}`
 export const UPLOAD_FILE_ENDPOINT = `${import.meta.env.VITE_SERVICE_UPLOAD_FILE_ENDPOINT ?? '/api/file/upload'}`

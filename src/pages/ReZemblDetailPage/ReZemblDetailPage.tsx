@@ -9,6 +9,7 @@ import { useRegistration } from '../../hooks/useRegistration'
 import { useReZemblQuery } from '../../hooks/useReZemblQuery'
 import { CustomerDetails, ReZemblData, ReZemblRequestPayload } from '../../api/reZembl'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
+import { AxiosError } from 'axios'
 
 const SUPPLY_POINT_DETAIL_COLUMNS: ColumnDefinition[] = [
   { key: 'fuelType', type: DATA_TYPE_TEXT, label: 'Fuel Type' },
@@ -37,9 +38,9 @@ const ReZemblDetailPage = () => {
     onSuccess: (reZemblData: ReZemblData) => {
       setRegistrationData((prev) => ({ ...prev, ...reZemblData }))
     },
-    onError: (error) => {
+    onError: (error: AxiosError) => {
       if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
-      handleErrorResponse(error, yourCat, 'Unfortunately, we cannot find your quote.')
+      handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
     },
   })
   const customerFullName = (registrationData?.customerDetails as CustomerDetails)?.contactPerson ?? ''

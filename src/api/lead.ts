@@ -17,8 +17,8 @@ import { performPatchRequest, performPostRequest } from '../helpers'
 import { getJSONDateString } from '../helpers/formatter'
 import { GoogleMapExtractedComponents } from '../helpers/googleMap'
 
-export const postCreateLead = async (data: Lead, token: string) => {
-  const response = await performPostRequest(CREATE_LEAD_ENDPOINT, data, token)
+export const postCreateLead = async (data: Lead) => {
+  const response = await performPostRequest(CREATE_LEAD_ENDPOINT, data)
   return response.data as LeadResponse
 }
 
@@ -30,7 +30,7 @@ export const patchUpdateLead = async (data: Lead, token: string) => {
 export const buildLeadPayload = (data: RegistrationData) => {
   const isBusiness = data?.registrationType === REGISTRATION_TYPE_BUSINESS
   const isCI =
-    data.moreThanOne === YES_VALUE || [MONTHLY_SPEND_MORE, QUARTERLY_SPEND_MORE].includes(data?.billEnergySpend || '')
+    data.moreThanOne === YES_VALUE || [MONTHLY_SPEND_MORE, QUARTERLY_SPEND_MORE].includes(data?.billEnergySpend ?? '')
 
   let recordType = SME_VALUE
   if (!isBusiness) {

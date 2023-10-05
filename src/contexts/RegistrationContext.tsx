@@ -58,7 +58,6 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         setRegistrationToken(null)
         setRegistrationData({})
         setEnableABNFetching(false)
-        navigate('/')
         return
     }
     fireAlert({ children: errorMessage, type: 'error', duration: 5 })
@@ -110,7 +109,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
   })
 
   const createLeadMutation = useMutation({
-    mutationFn: (lead: Lead) => postCreateLead(lead, registrationToken ?? ''),
+    mutationFn: (lead: Lead) => postCreateLead(lead),
     onError: (error: AxiosError, req) => {
       if (ZEMBL_DEBUG_MODE) console.log('CREATE_LEAD_MUTATION_ERROR:', error, 'REQ:', req)
       handleErrorResponse(error)
