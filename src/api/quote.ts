@@ -42,7 +42,7 @@ export const buildConfirmQuotePayload = (data: RegistrationData) => {
   const buildedData: ConfirmQuotePayload = {
     electricQuoteId: data.electricityQuote?.quoteId,
     gasQuoteId: data.gasQuote?.quoteId,
-    accountId: data.businessDetails?.accountId,
+    accountId: data.accountDetails?.accountId,
     opportunityId: data.opportunityId,
   }
   return buildedData
