@@ -20,7 +20,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
       setIsEditing((prev) => {
         const current = !prev
         if (!current && onSave) onSave()
-        return saveDisabled ? prev : current
+        return prev && saveDisabled ? prev : current
       })
     },
     [onSave, saveDisabled],
@@ -91,7 +91,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
         <ZemblPhoneInput
           control={control}
           label="Mobile Number"
-          name={`${prefix ? prefix + '.' : ''}phone`}
+          name={`${prefix ? prefix + '.mobile' : 'phone'}`}
           defaultCountry={'au'}
           dropdownClass="bottom-8 !rounded-lg"
           readOnly={isFieldsReadOnly}
