@@ -1,5 +1,6 @@
 import {
   ADD_ADDITIONAL_PROFILE_DETAIL_ENDPOINT,
+  RESIDENTIAL_VALUE,
   RegistrationData,
   UPDATE_MAIN_PROFILE_ENDPOINT,
   YES_VALUE,
@@ -27,6 +28,7 @@ export const buildMainProfilePayload = (data: RegistrationData) => {
   const proofOfIdentity = data.proofOfIdentity as ProofOfIdentity
   const accountDetails = data.accountDetails
   const buildedData: MainProfile = {
+    businessDetails: data?.recordType !== RESIDENTIAL_VALUE ? data?.businessDetails : undefined,
     opportunityId: data.opportunityId,
     accountDetails: {
       ...accountDetails,
