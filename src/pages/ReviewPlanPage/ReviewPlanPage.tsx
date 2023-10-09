@@ -65,7 +65,7 @@ const ReviewPlanPage = () => {
           'accountDetails.lastName',
           'accountDetails.dateOfBirth',
           'accountDetails.email',
-          'accountDetails.phone',
+          'accountDetails.mobile',
           'accountDetails.altPhone',
         ],
         { shouldFocus: true },

@@ -70,27 +70,13 @@ const PersonalDetailPage2 = () => {
   ]) as string[]
 
   const onSubmit = (data: Record<string, unknown>) => {
-    console.log(data)
-
-    // Call API
-    // Put data to context
-    // navigate('/plan-confirmation')
 
     retailerAdditionalDetailsMutation.mutate(buildRetailerAdditionalDetailPayload(data))
   }
 
   const contactName = `${firstName ?? ''} ${lastName ?? ''}`.trim()
-  const selectedElecRetailer = registrationData?.electricityQuote?.retailerName ?? SIMPLY_ENERGY
-  const selectedGasRetailer = registrationData?.gasQuote?.retailerName ?? SIMPLY_ENERGY
-
-  registrationData.connectionDetails = { state: 'QLD' }
-  registrationData.electricity = true
-  registrationData.gas = true
-  registrationData.registrationType = 'Residential'
-  registrationData.currentRetailerElectric = BLUE_NRG
-  registrationData.currentRetailerGas = BLUE_NRG
-  registrationData.newConnection = true
-
+  const selectedElecRetailer = registrationData?.electricityQuote?.retailerName
+  const selectedGasRetailer = registrationData?.gasQuote?.retailerName
   const isElectricTransfer = selectedElecRetailer !== registrationData?.currentRetailerElectric
   const isGasTransfer = selectedGasRetailer !== registrationData?.currentRetailerGas
 
@@ -191,8 +177,8 @@ const PersonalDetailPage2 = () => {
           hasSecondaryContact={hasSecondaryContact}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
-          gas={registrationData.gas}
-          electricity={registrationData.electricity}
+          gas={!!registrationData.gas}
+          electricity={!!registrationData.electricity}
         />
       ) : null}
 

@@ -35,7 +35,7 @@ const ReZemblTermsPage = () => {
   }
 
   return (
-    <PageWrapper>
+    <PageWrapper showLoading={consentReZemblTerm?.isLoading}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
         <ReZemblTermForm
           register={register}
