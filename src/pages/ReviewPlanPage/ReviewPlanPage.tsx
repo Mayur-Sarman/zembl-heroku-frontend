@@ -33,9 +33,18 @@ const ReviewPlanPage = () => {
     { quoteToken: registrationData?.quoteToken as string, token: registrationToken ?? '' },
     {
       onSuccess: (data: ProcessQuoteOutput) => {
-        setRegistrationData((prev) => ({ ...prev, ...(data as Partial<RegistrationData>) }))
+        const updatedAccountDetail = {
+          ...data?.accountDetails,
+          mobile: data?.accountDetails?.mobile?.replace('+', '') ?? undefined,
+          altPhone: data?.accountDetails?.altPhone?.replace('+', '') ?? undefined,
+        }
+        setRegistrationData((prev) => ({
+          ...prev,
+          ...(data as Partial<RegistrationData>),
+          accountDetails: updatedAccountDetail,
+        }))
         setValue('businessDetails', data.businessDetails)
-        setValue('accountDetails', data.accountDetails)
+        setValue('accountDetails', updatedAccountDetail)
       },
       onError: (error) => {
         if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
