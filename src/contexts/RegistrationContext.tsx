@@ -1,4 +1,4 @@
-import { Dispatch, PropsWithChildren, SetStateAction, createContext, useEffect, useState } from 'react'
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   ABN_ACTIVE,
@@ -47,21 +47,26 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
   const [registrationToken, setRegistrationToken] = useState<string | null | undefined>(null)
   const [enableABNFetching, setEnableABNFetching] = useState<boolean>(false)
 
-  const handleErrorResponse = (
-    error: AxiosError,
-    message = `Unfortunately, we couldn't process your request at this time. Please try again later.`,
-  ) => {
-    let errorMessage = message
-    switch (error.status) {
-      case 401:
-        errorMessage = 'Your session has expired. Please submit a new registration.'
-        setRegistrationToken(null)
-        setRegistrationData({})
-        setEnableABNFetching(false)
-        return
-    }
-    fireAlert({ children: errorMessage, type: 'error', duration: 5 })
-  }
+  const handleErrorResponse = useCallback(
+    (
+      error: AxiosError,
+      message = `Unfortunately, we couldn't process your request at this time. Please try again later.`,
+    ) => {
+      let errorMessage = message
+      switch (error.response?.status) {
+        case 401: {
+          errorMessage = 'Your session has expired. Please submit a new registration.'
+          setRegistrationToken(null)
+          setRegistrationData({})
+          setEnableABNFetching(false)
+          fireAlert({ children: errorMessage, type: 'error', duration: 5000 })
+          return
+        }
+      }
+      fireAlert({ children: errorMessage, type: 'error', duration: 5000 })
+    },
+    [fireAlert],
+  )
 
   const searchABNQuery = useQuery({
     queryKey: ['searchABN', { abn: registrationData?.abn, includeHistoricalDetails: 'N' }],

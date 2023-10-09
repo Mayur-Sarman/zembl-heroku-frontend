@@ -111,7 +111,7 @@ const BillUploadPage = () => {
       fireAlert({
         children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
         type: 'info',
-        duration: 5,
+        duration: 5000,
       })
     }
     ocrFileMutation.reset()
