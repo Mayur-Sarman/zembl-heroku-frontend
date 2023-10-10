@@ -8,8 +8,8 @@ import { FieldValues, UseFormRegister } from 'react-hook-form'
 import { Quote } from '../../api/quote'
 
 const ReZemblTermForm = ({
-  zemblElectric ,
-  zemblGas ,
+  zemblElectric,
+  zemblGas,
   register,
 }: ReZemblTermFormProps) => {
   const electricTermDisplay = zemblElectric?.termAndConditionContent ? (

@@ -92,29 +92,29 @@ const BillUploadPage = () => {
       }
       setValue('mirn', mirn)
     }
-    const nmiData: unknown = watch('nmi', null)
-    const mirnData: unknown = watch('mirn', null)
+    // const nmiData: unknown = watch('nmi', null)
+    // const mirnData: unknown = watch('mirn', null)
 
-    const nmi: string = nmiData as string;
-    const mirn: string =mirnData as string;
+    // const nmi: string = nmiData as string;
+    // const mirn: string =mirnData as string;
 
-    if (ZEMBL_DEBUG_MODE) {
-      console.log('registrationData?.energyType:', registrationData?.energyType)
-      console.log('NMI, MIRN:', nmi, ',', mirn)
-    }
+    // if (ZEMBL_DEBUG_MODE) {
+    //   console.log('registrationData?.energyType:', registrationData?.energyType)
+    //   console.log('NMI, MIRN:', nmi, ',', mirn)
+    // }
     
 
-    if (registrationData?.energyType === BOTH_VALUE && nmiData != null && mirnData != null) {
-      const buildedData = buildCreateAccountPayload(registrationData, nmi, mirn)
-      setRegistrationData((prev) => ({
-        ...prev,
-        nmiData,
-        mirnData,
-        phone: getPhoneNumber(registrationData?.phone),
-        mobile: getPhoneNumber(registrationData?.phone),
-      }))
-      return createAccountMutation.mutate(buildedData)
-    }
+    // if (registrationData?.energyType === BOTH_VALUE && nmiData != null && mirnData != null) {
+    //   const buildedData = buildCreateAccountPayload(registrationData, nmi, mirn)
+    //   setRegistrationData((prev) => ({
+    //     ...prev,
+    //     nmiData,
+    //     mirnData,
+    //     phone: getPhoneNumber(registrationData?.phone),
+    //     mobile: getPhoneNumber(registrationData?.phone),
+    //   }))
+    //   return createAccountMutation.mutate(buildedData)
+    // }
   }
 
   const onSubmit = (data: Partial<RegistrationData>) => {
