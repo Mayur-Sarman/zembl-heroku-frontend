@@ -23,7 +23,6 @@ import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
 import { useToast } from '../../hooks'
 import { buildCreateAccountPayload } from '../../api/account'
 import { getPhoneNumber } from '../../helpers/formatter'
-import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
