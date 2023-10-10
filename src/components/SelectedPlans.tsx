@@ -8,7 +8,7 @@ import { Quote } from '../api/quote'
 const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }: SelectedPlansProps) => {
   const individualPlanDisplay = (
     <>
-      {energyType !== GAS_VALUE ? (
+      {energyType !== GAS_VALUE && electricityPlan != null ? (
         <FullPlanCard
           energyType={ELECTRICITY_VALUE}
           planName={electricityPlan?.productName ?? ''}
@@ -18,7 +18,7 @@ const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }:
           control={control}
         />
       ) : null}
-      {energyType !== ELECTRICITY_VALUE ? (
+      {energyType !== ELECTRICITY_VALUE && gasPlan != null ? (
         <FullPlanCard
           energyType={GAS_VALUE}
           control={control}

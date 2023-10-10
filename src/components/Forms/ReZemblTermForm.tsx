@@ -5,21 +5,22 @@ import TextNote from '../TextNote'
 import RichText from '../RichText'
 import { Checkbox, Typography } from '@material-tailwind/react'
 import { FieldValues, UseFormRegister } from 'react-hook-form'
+import { Quote } from '../../api/quote'
 
 const ReZemblTermForm = ({
-  zemblElectricTerms = '<div>Test Electric</div>',
-  zemblGasTerms = '<div>Test Gas</div>',
+  zemblElectric ,
+  zemblGas ,
   register,
 }: ReZemblTermFormProps) => {
-  const electricTermDisplay = zemblElectricTerms ? (
+  const electricTermDisplay = zemblElectric?.termAndConditionContent ? (
     <TextNote>
-      <RichText htmlString={zemblElectricTerms} />
+      <RichText htmlString={zemblElectric.termAndConditionContent} />
     </TextNote>
   ) : null
 
-  const gasTermDisplay = zemblGasTerms ? (
+  const gasTermDisplay = zemblGas?.termAndConditionContent ? (
     <TextNote>
-      <RichText htmlString={zemblGasTerms} />
+      <RichText htmlString={zemblGas.termAndConditionContent} />
     </TextNote>
   ) : null
 
@@ -32,30 +33,38 @@ const ReZemblTermForm = ({
             Re-Zembl
           </Typography>
         </div>
-        {electricTermDisplay}
-        <Checkbox
-          label={`By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms`}
-          labelProps={{ className: `font-semibold after:content-['*'] after:text-red-500 after:ml-1` }}
-          required
-          {...register('acceptElectricReZemblTerm')}
-          crossOrigin={''}
-        />
-        {gasTermDisplay}
-        <Checkbox
-          label={`By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms`}
-          labelProps={{ className: `font-semibold after:content-['*'] after:text-red-500 after:ml-1` }}
-          required
-          {...register('acceptGasReZemblTerm')}
-          crossOrigin={''}
-        />
+        { zemblElectric != null ? 
+          <>
+            {electricTermDisplay}
+            <Checkbox
+              label={`By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms`}
+              labelProps={{ className: `font-semibold after:content-['*'] after:text-red-500 after:ml-1` }}
+              required
+              {...register('acceptElectricReZemblTerm')}
+              crossOrigin={''}/> 
+          </>
+        : null}
+        
+        {zemblGas != null ? 
+          <>
+            {gasTermDisplay}
+            <Checkbox
+              label={`By checking this box I agree this is my ‘Digital Signature’ and acceptance of all terms`}
+              labelProps={{ className: `font-semibold after:content-['*'] after:text-red-500 after:ml-1` }}
+              required
+              {...register('acceptGasReZemblTerm')}
+              crossOrigin={''}
+            />
+          </>
+        : null}
       </div>
     </AccordionCard>
   )
 }
 
 interface ReZemblTermFormProps {
-  zemblElectricTerms?: string | null
-  zemblGasTerms?: string | null
+  zemblElectric?: Quote | null
+  zemblGas?: Quote | null
   register: UseFormRegister<FieldValues>
 }
 
