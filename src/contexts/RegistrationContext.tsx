@@ -264,9 +264,9 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     },
   })
 
-  useEffect(() => {
-    if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
-  }, [location.pathname, navigate, registrationToken])
+  // useEffect(() => {
+  //   if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
+  // }, [location.pathname, navigate, registrationToken])
 
   const isLoading =
     validateReCaptchaMutation.isLoading ||

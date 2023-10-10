@@ -12,7 +12,7 @@ import {
   RegistrationData,
   UPLOAD_BILL_TYPE_OPTIONS,
   UPLOAD_ELECTRICITY_BILL,
-  UPLOAD_GAS_BILL,
+  UPLOAD_GAS_BILL
 } from '../../constants'
 import PageNavigationActions from '../../components/PageNavigationActions'
 import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
@@ -45,9 +45,81 @@ const BillUploadPage = () => {
     return true
   }
 
-  const onSubmit = async (data: Partial<RegistrationData>) => {
-    let nmi: string | undefined = data?.nmi
-    let mirn: string | undefined = data?.mirn
+  const onFileChange = async (files: FileList | null , energyType: string) => {
+    if (!files) {
+      return;
+    }
+
+    const file = files[0]
+
+    if( energyType === ELECTRICITY_VALUE) {
+      const electricOCRFile = await transformToOCRFile(file)
+        const electricOCRResponse = await ocrFileMutation.mutateAsync({
+          file: electricOCRFile,
+          type: ELECTRICITY_VALUE,
+        })
+
+      const nmi = extractNMI(electricOCRResponse)
+
+      if (!nmi) {
+        setValue('billFileType', HAVE_PAPER_BILL)
+        fireAlert({
+          children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+          type: 'info',
+          duration: 5000,
+        })
+        return
+      }
+      setValue('nmi', nmi)
+
+    } else if (energyType === GAS_VALUE) {
+      const gasOCRFile = await transformToOCRFile(file)
+        const electricOCRResponse = await ocrFileMutation.mutateAsync({
+          file: gasOCRFile,
+          type: ELECTRICITY_VALUE,
+        })
+        
+      const mirn = extractMIRN(electricOCRResponse)
+      
+      if(!mirn) {
+        setValue('billFileType', HAVE_PAPER_BILL)
+        fireAlert({
+          children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+          type: 'info',
+          duration: 5000,
+        })
+        return
+      }
+      setValue('mirn', mirn)
+    }
+    const nmiData: unknown = watch('nmi', null)
+    const mirnData: unknown = watch('mirn', null)
+
+    const nmi: string = nmiData as string;
+    const mirn: string =mirnData as string;
+
+    if (ZEMBL_DEBUG_MODE) {
+      console.log('registrationData?.energyType:', registrationData?.energyType)
+      console.log('NMI, MIRN:', nmi, ',', mirn)
+    }
+    
+
+    if (registrationData?.energyType === BOTH_VALUE && nmiData != null && mirnData != null) {
+      const buildedData = buildCreateAccountPayload(registrationData, nmi, mirn)
+      setRegistrationData((prev) => ({
+        ...prev,
+        nmiData,
+        mirnData,
+        phone: getPhoneNumber(registrationData?.phone),
+        mobile: getPhoneNumber(registrationData?.phone),
+      }))
+      return createAccountMutation.mutate(buildedData)
+    }
+  }
+
+  const onSubmit = (data: Partial<RegistrationData>) => {
+    const nmi: string | undefined = data?.nmi
+    const mirn: string | undefined = data?.mirn
 
     if (data.billFileType === HAVE_PAPER_BILL) {
       const buildedData = buildCreateAccountPayload(data, nmi, mirn)
@@ -58,41 +130,7 @@ const BillUploadPage = () => {
         mobile: getPhoneNumber(data.phone),
       }))
       return createAccountMutation.mutate(buildedData)
-    }
-
-    let shouldSwitchHavePaperBill = false
-    try {
-      if (data.electricityBillInfo?.billFiles?.length) {
-        const electricOCRFile = await transformToOCRFile(data.electricityBillInfo.billFiles[0])
-        const electricOCRResponse = await ocrFileMutation.mutateAsync({
-          file: electricOCRFile,
-          type: ELECTRICITY_VALUE,
-        })
-
-        nmi = extractNMI(electricOCRResponse)
-      }
-
-      if (data.gasBillInfo?.billFiles?.length) {
-        const gasOCRFile = await transformToOCRFile(data.gasBillInfo.billFiles[0])
-        const gasOCRResponse = await ocrFileMutation.mutateAsync({ file: gasOCRFile, type: GAS_VALUE })
-
-        mirn = extractMIRN(gasOCRResponse)
-      }
-
-      shouldSwitchHavePaperBill =
-        (!nmi && registrationData?.energyType !== GAS_VALUE) ||
-        (!mirn && registrationData?.energyType !== ELECTRICITY_VALUE)
-    } catch (error) {
-      shouldSwitchHavePaperBill = true
-    }
-
-    if (ZEMBL_DEBUG_MODE) {
-      console.log('registrationData?.energyType:', registrationData?.energyType)
-      console.log('shouldSwitchHavePaperBill:', shouldSwitchHavePaperBill)
-    }
-
-    // NMI/MIRN found
-    if (!shouldSwitchHavePaperBill) {
+    } else {
       const buildedData = buildCreateAccountPayload(data, nmi, mirn)
       setRegistrationData((prev) => ({
         ...prev,
@@ -103,18 +141,7 @@ const BillUploadPage = () => {
         mobile: getPhoneNumber(data.phone),
       }))
       return createAccountMutation.mutate(buildedData)
-    } else {
-      setValue('billFileType', HAVE_PAPER_BILL)
-      setValue('nmi', nmi)
-      setValue('mirn', mirn)
-
-      fireAlert({
-        children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
-        type: 'info',
-        duration: 5000,
-      })
     }
-    ocrFileMutation.reset()
   }
 
   let uploadOptions = UPLOAD_BILL_TYPE_OPTIONS
@@ -161,7 +188,10 @@ const BillUploadPage = () => {
                       accept={PDF_FILE_TYPE}
                       {...field}
                       error={fieldState.error}
-                      onChange={(files: FileList | null) => field.onChange(files)}
+                      onChange={(files: FileList | null) => {
+                        field.onChange(files)
+                       void onFileChange(files, ELECTRICITY_VALUE)
+                      }}
                     />
                   )
                 }}
@@ -186,7 +216,10 @@ const BillUploadPage = () => {
                       accept={PDF_FILE_TYPE}
                       {...field}
                       error={fieldState.error}
-                      onChange={(files: FileList | null) => field.onChange(files)}
+                      onChange={(files: FileList | null) => {
+                        field.onChange(files)
+                        void onFileChange(files, GAS_VALUE)
+                      }}
                     />
                   )
                 }}
