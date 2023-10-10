@@ -39,8 +39,8 @@ const ReZemblTermsPage = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
         <ReZemblTermForm
           register={register}
-          zemblElectricTerms={registrationData?.electricityQuote?.termAndConditionContent ?? ''}
-          zemblGasTerms={registrationData?.gasQuote?.termAndConditionContent ?? ''}
+          zemblElectric={registrationData?.electricityQuote}
+          zemblGas={registrationData?.gasQuote}
         />
         <PageNavigationActions hidePrev nextLabel="Submit application" />
         <Typography className="text-xs text-zembl-p">

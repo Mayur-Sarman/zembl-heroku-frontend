@@ -8,7 +8,7 @@ import { Quote } from '../api/quote'
 const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }: SelectedPlansProps) => {
   const individualPlanDisplay = (
     <>
-      {energyType !== GAS_VALUE ? (
+      {energyType !== GAS_VALUE && electricityPlan?.quoteId != null ? (
         <FullPlanCard
           energyType={ELECTRICITY_VALUE}
           planName={electricityPlan?.productName ?? ''}
@@ -18,7 +18,7 @@ const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }:
           control={control}
         />
       ) : null}
-      {energyType !== ELECTRICITY_VALUE ? (
+      {energyType !== ELECTRICITY_VALUE && gasPlan?.quoteId != null ? (
         <FullPlanCard
           energyType={GAS_VALUE}
           control={control}
@@ -36,7 +36,7 @@ const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }:
   return (
     <AccordionCard open alwaysOpen title={title}>
       <div className="grid grid-cols-1 gap-6 text-left">
-        {electricityPlan?.retailerName !== gasPlan?.retailerName ? individualPlanDisplay : duoPlanDisplay}
+        {(electricityPlan?.retailerName !== gasPlan?.retailerName) ? individualPlanDisplay : duoPlanDisplay}
       </div>
     </AccordionCard>
   )
