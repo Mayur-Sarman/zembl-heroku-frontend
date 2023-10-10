@@ -60,7 +60,7 @@ const BillUploadPage = () => {
 
       const nmi = extractNMI(electricOCRResponse)
 
-      if (!nmi) {
+      if (!nmi && registrationData?.energyType !== BOTH_VALUE) {
         setValue('billFileType', HAVE_PAPER_BILL)
         fireAlert({
           children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
@@ -80,7 +80,7 @@ const BillUploadPage = () => {
         
       const mirn = extractMIRN(electricOCRResponse)
       
-      if(!mirn) {
+      if(!mirn && registrationData?.energyType !== BOTH_VALUE) {
         setValue('billFileType', HAVE_PAPER_BILL)
         fireAlert({
           children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
@@ -119,6 +119,17 @@ const BillUploadPage = () => {
   const onSubmit = (data: Partial<RegistrationData>) => {
     const nmi: string | undefined = data?.nmi
     const mirn: string | undefined = data?.mirn
+    console.log('nmi, mirn', nmi, mirn)
+    if((registrationData?.energyType === BOTH_VALUE && (!nmi || !mirn)) || (!nmi && !mirn)) {
+      setValue('billFileType', HAVE_PAPER_BILL)
+      fireAlert({
+        children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+        type: 'info',
+        duration: 5000,
+      })
+      ocrFileMutation.reset()
+      return
+    }
 
     if (data.billFileType === HAVE_PAPER_BILL) {
       const buildedData = buildCreateAccountPayload(data, nmi, mirn)
