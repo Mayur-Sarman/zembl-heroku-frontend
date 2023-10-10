@@ -8,9 +8,12 @@ const PlanCard = ({
   planId,
   brand,
   logoURL = '',
+  logoImageHTML,
   bpidLink = '#',
   detailLink = '#',
-  planBenefits = [],
+  exitPenalty,
+  australianOwned,
+  contractLength,
   planDescription,
   planLessThanCurrentPricePercent,
   planEstAnnualSaving,
@@ -29,32 +32,45 @@ const PlanCard = ({
       <CardBody className="flex flex-col gap-y-6">
         <div className="flex flex-wrap flex-shrink-0 lg:flex-nowrap gap-4 lg:gap-6">
           <div className="border rounded-2xl p-4 bg-gray-50 w-[calc(50%-0.5rem)] md:w-[calc(33.33%-0.5rem] lg:w-1/5">
-            <img src={logoURL} alt="Brand Logo" className="w-16 h-full m-auto" />
+            {logoURL ? <img src={logoURL} alt="Brand Logo" className="h-full m-auto" /> : null}
+            {logoImageHTML ? (
+              <div
+                className="flex items-center justify-center  grow-0 h-full"
+                dangerouslySetInnerHTML={{ __html: logoImageHTML }}
+              />
+            ) : null}
           </div>
           <div className="text-left flex flex-col w-[calc(50%-0.5rem)] gap-y-3 md:w-[calc(33.33%-0.5rem] lg:w-1/5">
             <Typography variant="h6" className="mb-1">
               {brand}
             </Typography>
-            <div role="button" onKeyDown={undefined} tabIndex={0} onClick={(a) => console.log(a)}>
+            <div role="button" onKeyDown={undefined} tabIndex={0}>
               <a href={bpidLink} target="_blank" rel="noreferrer">
                 <Typography className="text-xs underline">Basic Plan Information Document</Typography>
               </a>
             </div>
-            <div role="button" onKeyDown={undefined} tabIndex={0} onClick={(a) => console.log(a)}>
+            <div role="button" onKeyDown={undefined} tabIndex={0}>
               <a href={detailLink} target="_blank" rel="noreferrer">
                 <Typography className="text-xs underline">View Details</Typography>
               </a>
             </div>
           </div>
           <div className="flex flex-col gap-1 w-full md:w-[calc(33.33%-0.5rem] lg:w-1/5">
-            {planBenefits?.map((item, index) => (
-              <div
-                key={item + index}
-                className="border border-zembl-p text-zembl-p font-normal rounded-md p-2 text-xs overflow-hidden text-ellipsis whitespace-nowrap"
-              >
-                {item}
+            {exitPenalty ? (
+              <div className="border border-zembl-p text-zembl-p font-normal rounded-md p-2 text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                {exitPenalty}
               </div>
-            )) ?? null}
+            ) : null}
+            {australianOwned ? (
+              <div className="border border-zembl-p text-zembl-p font-normal rounded-md p-2 text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                100% Australian Owned
+              </div>
+            ) : null}
+            {contractLength ? (
+              <div className="border border-zembl-p text-zembl-p font-normal rounded-md p-2 text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                {contractLength}
+              </div>
+            ) : null}
           </div>
           <div className="grid grid-cols-2 gap-3 w-full lg:w-2/5 auto-rows-max">
             <PlanHilight
@@ -82,7 +98,7 @@ const PlanCard = ({
               <Typography className="text-xs font-normal">Estimated Cost</Typography>
               <div className="flex items-baseline justify-center gap-1 ">
                 <Typography variant="h6" className="text-lg">
-                  {planEstCostPerMonth ? formatCurrency(planEstCostPerMonth) : 'N/A'}
+                  {formatCurrency(planEstCostPerMonth)}
                 </Typography>
                 <Typography className="text-xs font-normal">/month</Typography>
               </div>
@@ -92,7 +108,7 @@ const PlanCard = ({
               <Typography className="text-xs font-normal">Estimated Cost</Typography>
               <div className="flex items-baseline justify-center gap-1 ">
                 <Typography variant="h6" className="text-lg">
-                  {planEstCostPerYear ? formatCurrency(planEstCostPerYear) : 'N/A'}
+                  {formatCurrency(planEstCostPerYear)}
                 </Typography>
                 <Typography className="text-xs font-normal">/year</Typography>
               </div>
@@ -137,9 +153,12 @@ export interface PlanCardProps {
   planId: string
   brand?: string
   logoURL?: string
+  logoImageHTML?: string
   bpidLink?: string
   detailLink?: string
-  planBenefits?: string[]
+  exitPenalty?: string
+  australianOwned?: boolean
+  contractLength?: string
   planDescription?: string
   planLessThanCurrentPricePercent?: number
   planEstAnnualSaving?: number

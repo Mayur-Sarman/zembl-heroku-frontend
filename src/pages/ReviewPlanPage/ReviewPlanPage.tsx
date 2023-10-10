@@ -1,69 +1,145 @@
 import { useNavigate } from 'react-router-dom'
 import PageWrapper from '../../components/PageWrapper'
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import RegistrationContext from '../../contexts/RegistrationContext'
 import { useContext } from 'react'
 import { Typography } from '@material-tailwind/react'
-import { ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
+import { ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
 import PlanSummaryCard from '../../components/PlanSummaryCard'
 import AccountDetailsForm from '../../components/Forms/PersonalDetails/AccountDetailsForm'
 import BusinessDetailsForm from '../../components/Forms/PersonalDetails/BusinessDetailsForm'
 import PageNavigationActions from '../../components/PageNavigationActions'
 import ControllerCheckBox from '../../components/Inputs/ControllerCheckBox'
+import { useFetchQuoteDataQuery } from '../../hooks/useQueryPlanData'
+import { AccountDetail, ProcessQuoteOutput } from '../../api/quote'
+import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
+import { getJSONDateString } from '../../helpers/formatter'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const ReviewPlanPage = () => {
-  const { registrationData } = useContext(RegistrationContext)
   const navigate = useNavigate()
+  const { registrationData, registrationToken, setRegistrationData, handleErrorResponse } =
+    useContext(RegistrationContext)
 
   // On load page get data from context
-  const { handleSubmit, control } = useForm()
+  const { handleSubmit, control, setValue, watch, getValues, trigger, formState } = useForm({
+    mode: 'all',
+    defaultValues: registrationData as FieldValues,
+  })
 
-  const onSubmit = (data: Record<string, string | string[]>) => {
-    console.log(data)
+  const businessDetails: unknown = watch('businessDetails')
 
-    navigate('/preferences')
-    // Call API
-    // Put data to context
+  const getPlanData = useFetchQuoteDataQuery(
+    { quoteToken: registrationData?.quoteToken as string, token: registrationToken ?? '' },
+    {
+      onSuccess: (data: ProcessQuoteOutput) => {
+        const updatedAccountDetail = {
+          ...data?.accountDetails,
+          mobile: data?.accountDetails?.mobile?.replace('+', '') ?? undefined,
+          altPhone: data?.accountDetails?.altPhone?.replace('+', '') ?? undefined,
+        }
+        setRegistrationData((prev) => ({
+          ...prev,
+          ...(data as Partial<RegistrationData>),
+          accountDetails: updatedAccountDetail,
+        }))
+        setValue('businessDetails', data.businessDetails)
+        setValue('accountDetails', updatedAccountDetail)
+      },
+      onError: (error) => {
+        if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
+        handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
+      },
+    },
+  )
+
+  const updatePlanData = useUpdateQuoteMutation({
+    onSuccess: (_, data) => {
+      setRegistrationData((prev) => ({ ...prev, ...data.planData }))
+    },
+    onError: (error) => {
+      if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
+      handleErrorResponse(error, 'We cannot process your request to update the plan data now.')
+    },
+  })
+
+  const onFormSaved = () => {
+    let updatedAccount = getValues('accountDetails') as AccountDetail
+
+    if (formState.errors?.accountDetails)
+      return trigger(
+        [
+          'accountDetails.title',
+          'accountDetails.firstName',
+          'accountDetails.lastName',
+          'accountDetails.dateOfBirth',
+          'accountDetails.email',
+          'accountDetails.mobile',
+          'accountDetails.altPhone',
+        ],
+        { shouldFocus: true },
+      )
+
+    if (updatedAccount) {
+      updatedAccount = {
+        ...registrationData?.accountDetails,
+        ...updatedAccount,
+        dateOfBirth: getJSONDateString(updatedAccount.dateOfBirth),
+      }
+      const updatedPlanData = { ...registrationData, accountDetails: updatedAccount }
+      updatePlanData.mutate({ planData: updatedPlanData, token: registrationToken ?? '' })
+    }
   }
 
-  const electricityPlanSummary =
-    registrationData.energyType !== GAS_VALUE ? (
-      <PlanSummaryCard
-        planId="test"
-        planType={ELECTRICITY_VALUE}
-        planBrand="Big Boss Electicity"
-        planLogoURL="/vite.svg"
-        planBenefits={['No Exit Fees', '100% Australian Owned']}
-        planDescription="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eleifend sagittis tortor nec fermentum. Pellentesque id nulla vel dui pretium aliquam. Fusce auctor varius orci, eu rhoncus lorem. Suspendisse sollicitudin metus sed est vulputate, vitae commodo elit dapibus. Vivamus eleifend neque quam. Duis vel condimentum orci. Maecenas quis aliquet turpis. Proin feugiat magna mi, nec pharetra eros imperdiet sed. Ut eleifend dictum quam ac auctor. Morbi convallis tempus arcu, ac rutrum ligula."
-        planEstAnnualSaving={0.5}
-        planLessThanCurrentPricePercent={0.25}
-        planEstCostPerMonth={500}
-        planEstCostPerYear={469}
-        fullAddress="5/100 William Street, Woolloomooloo NSW 2011"
-        gasOrEnergyCode="41234512834"
-      />
-    ) : null
+  const onSubmit = (data: FieldValues) => {
+    try {
+      setRegistrationData((prev) => ({ ...prev, ...data }))
+      navigate('/preferences')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-  const gasPlanSummary =
-    registrationData.energyType !== ELECTRICITY_VALUE ? (
-      <PlanSummaryCard
-        planId="test"
-        planType={GAS_VALUE}
-        planBrand="Big Boss Electicity"
-        planLogoURL="/vite.svg"
-        planBenefits={['No Exit Fees', '100% Australian Owned']}
-        planDescription="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eleifend sagittis tortor nec fermentum. Pellentesque id nulla vel dui pretium aliquam. Fusce auctor varius orci, eu rhoncus lorem. Suspendisse sollicitudin metus sed est vulputate, vitae commodo elit dapibus. Vivamus eleifend neque quam. Duis vel condimentum orci. Maecenas quis aliquet turpis. Proin feugiat magna mi, nec pharetra eros imperdiet sed. Ut eleifend dictum quam ac auctor. Morbi convallis tempus arcu, ac rutrum ligula."
-        planEstAnnualSaving={0.5}
-        planLessThanCurrentPricePercent={0.25}
-        planEstCostPerMonth={500}
-        planEstCostPerYear={469}
-        fullAddress="5/100 William Street, Woolloomooloo NSW 2011"
-        gasOrEnergyCode="41234512834"
-      />
-    ) : null
+  const electricityPlanSummary = registrationData?.electricityQuote ? (
+    <PlanSummaryCard
+      planId={registrationData?.electricityQuote.quoteId ?? ''}
+      planType={ELECTRICITY_VALUE}
+      planBrand={registrationData?.electricityQuote.productName ?? ''}
+      planLogoURL={registrationData?.electricityQuote.retailerLogo ?? ''}
+      exitPenalty={registrationData?.electricityQuote?.exitPenalty}
+      australianOwned={registrationData?.electricityQuote?.australianOwned}
+      contractLength={registrationData?.electricityQuote?.contractLength}
+      planDescription={registrationData?.electricityQuote?.mandatoryInformation ?? ''}
+      planEstAnnualSaving={registrationData?.electricityQuote?.annualSavingIncGST ?? NaN}
+      planLessThanCurrentPricePercent={registrationData?.electricityQuote?.percentDifference}
+      planEstCostPerMonth={registrationData?.electricityQuote?.billSize}
+      planEstCostPerYear={registrationData?.electricityQuote?.annualBillSize}
+      fullAddress={registrationData?.electricityQuote?.address ?? ''}
+      gasOrEnergyCode={registrationData?.electricityQuote?.nmi ?? ''}
+    />
+  ) : null
+
+  const gasPlanSummary = registrationData?.gasQuote ? (
+    <PlanSummaryCard
+      planId={registrationData?.gasQuote.quoteId ?? ''}
+      planType={GAS_VALUE}
+      planBrand={registrationData?.gasQuote.productName ?? ''}
+      planLogoURL={registrationData?.gasQuote.retailerLogo ?? ''}
+      exitPenalty={registrationData?.gasQuote?.exitPenalty}
+      australianOwned={registrationData?.gasQuote?.australianOwned}
+      contractLength={registrationData?.gasQuote?.contractLength}
+      planDescription={registrationData?.gasQuote?.mandatoryInformation ?? ''}
+      planEstAnnualSaving={registrationData?.gasQuote?.annualSavingIncGST ?? NaN}
+      planLessThanCurrentPricePercent={registrationData?.gasQuote?.percentDifference}
+      planEstCostPerMonth={registrationData?.gasQuote?.billSize}
+      planEstCostPerYear={registrationData?.gasQuote?.annualBillSize}
+      fullAddress={registrationData?.gasQuote?.address ?? ''}
+      gasOrEnergyCode={registrationData?.gasQuote?.mirn ?? ''}
+    />
+  ) : null
 
   return (
-    <PageWrapper>
+    <PageWrapper showLoading={getPlanData.isLoading || updatePlanData.isLoading}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12 items-center">
         <Typography variant="h1" className="text-center text-zembl-p text-3xl lg:text-5xl">
           Energy Plan Confirmation
@@ -73,8 +149,16 @@ const ReviewPlanPage = () => {
         </Typography>
         {electricityPlanSummary}
         {gasPlanSummary}
-        <AccountDetailsForm control={control} readOnly />
-        <BusinessDetailsForm control={control} readOnly compactForm />
+        <AccountDetailsForm
+          control={control}
+          readOnly
+          prefix="accountDetails"
+          onSave={onFormSaved}
+          saveDisabled={!!formState.errors?.accountDetails}
+        />
+        {businessDetails ? (
+          <BusinessDetailsForm control={control} readOnly compactForm prefix="businessDetails" />
+        ) : null}
         <ControllerCheckBox
           label="I have checked this is my correct personal and or business information"
           control={control}

@@ -1,6 +1,5 @@
 import { useContext } from 'react'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
-// import { useNavigate } from 'react-router-dom'
 
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
@@ -8,19 +7,31 @@ import SelectPlansPageTitle from './SelectPlansPageTitle'
 import { ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
 import PlanSelector from '../../components/PlanSelector'
 import RegistrationContext from '../../contexts/RegistrationContext'
-// import { REQUIRED_VALIDATION } from '../../constants/validation'
 import ControllerPreferencesSelector from '../../components/Inputs/ControllerPreferencesSelector'
 import PageNavigationActions from '../../components/PageNavigationActions'
-import { useToast } from '../../hooks'
 import { useNavigate } from 'react-router-dom'
 import { convertPreference } from '../../api/common'
 import { REQUIRED_VALIDATION } from '../../constants/validation'
+import { useQuoteCallbackMutation } from '../../hooks/useQuoteCallbackMutation'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
+import { AxiosError } from 'axios'
 
 const SelectPlansPage = () => {
-  const { fireAlert } = useToast()
   const navigate = useNavigate()
-  const { registrationData, createQuoteLineMutation, setRegistrationData, createQuoteMutation } =
-    useContext(RegistrationContext)
+  const {
+    registrationData,
+    registrationToken,
+    createQuoteLineMutation,
+    setRegistrationData,
+    createQuoteMutation,
+    handleErrorResponse,
+  } = useContext(RegistrationContext)
+  const quoteCallbackMutation = useQuoteCallbackMutation(registrationToken ?? '', {
+    onSuccess: () => navigate('/abn-error'),
+    onError: (error: AxiosError) => {
+      handleErrorResponse(error)
+    },
+  })
 
   // On load page get data from context
   const { handleSubmit, control, formState, setValue } = useForm({
@@ -29,21 +40,13 @@ const SelectPlansPage = () => {
   })
 
   const onSubmit = async (data: RegistrationData) => {
-    console.log(data)
-
-    const a = await new Promise(resolve => resolve(1))
-    if (a === 1) {
-      return navigate('/personal-detail-1')
-    }
-
     // Call API
     // Put data to context
-    // return
     try {
-      const electricityQuote = (registrationData.electricityQuote?.comparisons ?? []).find(
+      const electricityQuote = (registrationData?.electricityQuote?.comparisons ?? []).find(
         (item) => item.id === data?.electricPlanId,
       )
-      const gasQuote = (registrationData.gasQuote?.comparisons ?? []).find((item) => item.id === data?.gasPlanId)
+      const gasQuote = (registrationData?.gasQuote?.comparisons ?? []).find((item) => item.id === data?.gasPlanId)
 
       const createQuoteLineResults = await Promise.all([
         electricityQuote ? createQuoteLineMutation.mutateAsync({ comparison: electricityQuote }) : null,
@@ -72,7 +75,7 @@ const SelectPlansPage = () => {
       }))
       navigate('/personal-detail-1')
     } catch (e) {
-      fireAlert({ children: 'Something bad has occurred!', type: 'error' })
+      if (ZEMBL_DEBUG_MODE) console.log('SELECT_PLAN_PAGE', e)
     }
   }
 
@@ -92,6 +95,19 @@ const SelectPlansPage = () => {
     setValue('gasPlanId', null)
   }
 
+  const onRequestCallbackClicked = () => {
+    try {
+      // QUOTE CALLBACK MUTATION
+      quoteCallbackMutation.mutate({
+        callbackRequested: true,
+        electricQuoteId: registrationData?.electricityQuote?.quoteId,
+        gasQuoteId: registrationData?.gasQuote?.quoteId,
+      })
+    } catch (error) {
+      if (ZEMBL_DEBUG_MODE) console.log('SELECT_PLAN_PAGE', error)
+    }
+  }
+
   const selectedEnergyType = registrationData?.energyType
 
   return (
@@ -107,7 +123,7 @@ const SelectPlansPage = () => {
           label=""
           onChangeSaved={onPreferenceSaved}
         />
-        <SelectPlansPageTitle energyType={selectedEnergyType} />
+        <SelectPlansPageTitle energyType={selectedEnergyType} requestCallbackClick={onRequestCallbackClicked} />
         {selectedEnergyType !== GAS_VALUE ? (
           <Controller
             name="electricPlanId"
@@ -118,7 +134,7 @@ const SelectPlansPage = () => {
                 <PlanSelector
                   title="Electricity Plan"
                   planType={ELECTRICITY_VALUE}
-                  plans={registrationData.electricityQuote?.comparisons ?? []}
+                  plans={registrationData?.electricityQuote?.comparisons ?? []}
                   selectedPlanId={field.value as string}
                   onPlanSelect={field.onChange}
                 />
@@ -136,7 +152,7 @@ const SelectPlansPage = () => {
                 <PlanSelector
                   title="Gas Plan"
                   planType={GAS_VALUE}
-                  plans={registrationData.gasQuote?.comparisons ?? []}
+                  plans={registrationData?.gasQuote?.comparisons ?? []}
                   selectedPlanId={field.value as string}
                   onPlanSelect={field.onChange}
                 />
@@ -144,7 +160,7 @@ const SelectPlansPage = () => {
             }}
           />
         ) : null}
-        <PageNavigationActions prevLink="/bill-upload" nextDisabled={!formState.isValid} />
+        <PageNavigationActions hidePrev nextDisabled={!formState.isValid} />
       </form>
     </PageWrapper>
   )

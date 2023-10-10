@@ -20,7 +20,7 @@ const SelectInput = forwardRef(function SelectInput(
     <div className="w-full">
       <Typography
         variant="small"
-        className={`mb-2 pl-1 md:text-base ${required ? `after:content-['*'] after:text-red-500 after:ml-1` : ''}`}
+        className={`mb-2 pl-1 md:text-sm ${required ? `after:content-['*'] after:text-red-500 after:ml-1` : ''}`}
       >
         {textLabel}
       </Typography>

@@ -1,13 +1,13 @@
 import { DateTime } from 'luxon'
 import { DATA_TYPE_CURRENCY, DATA_TYPE_DATE, DATA_TYPE_NUMBER, DATA_TYPE_PERCENT, DATA_TYPE_TEXT } from '../constants'
-import { isDate, toNumber } from 'lodash'
+import { isDate, isNumber, toNumber } from 'lodash'
 import { ReactNode } from 'react'
 
 export const formatCurrency = (
   number: number | null | undefined,
   options: DecimalOptions = { maxDecimal: 0, minDecimal: 0 },
 ): string =>
-  number
+  isNumber(number)
     ? new Intl.NumberFormat('en-AU', {
         style: 'currency',
         currency: 'AUD',
@@ -20,17 +20,17 @@ export const formatPercent = (
   number: number | null | undefined,
   options: DecimalOptions = { maxDecimal: 0, minDecimal: 0 },
 ): string => {
-  return number
+  return isNumber(number)
     ? new Intl.NumberFormat('en-AU', {
         style: 'percent',
         currency: 'AUD',
         maximumFractionDigits: options.maxDecimal,
         minimumFractionDigits: options.minDecimal,
-      }).format(number)
+      }).format(number / 100)
     : 'N/A'
 }
 
-export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM YYYY') => {
+export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM yyyy') => {
   const dateValue = new Date(value)
   const luxonDate = DateTime.fromJSDate(dateValue)
   if (!luxonDate.isValid) return 'N/A'
@@ -38,7 +38,8 @@ export const formatDateTime = (value: string | Date, preferredFormat = 'dd MM YY
   return luxonDate.toFormat(preferredFormat)
 }
 
-export const getJSONDateString = (value: string | Date, preferredFormat = 'yyyy-MM-dd') => {
+export const getJSONDateString = (value: string | Date | null | undefined, preferredFormat = 'yyyy-MM-dd') => {
+  if (!value) return null
   const dateValue = new Date(value)
   const luxonDate = DateTime.fromJSDate(dateValue)
   if (!luxonDate.isValid) return null
@@ -71,6 +72,11 @@ export const formatData: FormatDataFunction = (value, dataType, formatOptions) =
   }
 
   return formattedValue
+}
+
+export const getPhoneNumber = (phoneNumber?: string) => {
+  if (!phoneNumber) return phoneNumber
+  return `+${phoneNumber.trim().replace('+', '')}`
 }
 
 export type FormatDataFunction = (

@@ -2,7 +2,6 @@ import { Controller, FieldValues, useForm } from 'react-hook-form'
 import AccordionCard from '../../components/AccordionCard'
 import PaperBillForm from './PaperBillForm'
 import FileUploadInput from '../../components/Inputs/FileUploadInput'
-// import { useNavigate } from 'react-router-dom'
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
 import {
@@ -13,7 +12,7 @@ import {
   RegistrationData,
   UPLOAD_BILL_TYPE_OPTIONS,
   UPLOAD_ELECTRICITY_BILL,
-  UPLOAD_GAS_BILL,
+  UPLOAD_GAS_BILL
 } from '../../constants'
 import PageNavigationActions from '../../components/PageNavigationActions'
 import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
@@ -23,7 +22,7 @@ import { useRegistration } from '../../hooks/useRegistration'
 import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
 import { useToast } from '../../hooks'
 import { buildCreateAccountPayload } from '../../api/account'
-import { useNavigate } from 'react-router-dom'
+import { getPhoneNumber } from '../../helpers/formatter'
 
 const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
@@ -34,7 +33,6 @@ const BillUploadPage = () => {
     defaultValues: registrationData as FieldValues,
     mode: 'all',
   })
-  const navigate = useNavigate()
 
   const watchBillFileType: unknown = watch('billFileType', null)
 
@@ -46,75 +44,121 @@ const BillUploadPage = () => {
     return true
   }
 
-  const onSubmit = async (data: Partial<RegistrationData>) => {
-    console.log(data)
-    
-    const a = await new Promise(resolve => resolve(1))
-    if (a === 1) {
-      return navigate('/plans')
+  const onFileChange = async (files: FileList | null , energyType: string) => {
+    if (!files) {
+      return;
     }
 
-    let nmi: string | undefined = data?.nmi
-    let mirn: string | undefined = data?.mirn
-    // let buildedData = data
+    const file = files[0]
 
-    if (data.billFileType === HAVE_PAPER_BILL) {
-      // const buildedData = buildCreateAccountPayload(data, nmi, mirn)
-      setRegistrationData((prev) => ({ ...prev, ...data }))
-      // return createAccountMutation.mutate(buildedData)
-    }
-
-    let shouldSwitchHavePaperBill = false
-    try {
-      if (data.electricityBillInfo?.billFiles?.length) {
-        const electricOCRFile = await transformToOCRFile(data.electricityBillInfo.billFiles[0])
+    if( energyType === ELECTRICITY_VALUE) {
+      const electricOCRFile = await transformToOCRFile(file)
         const electricOCRResponse = await ocrFileMutation.mutateAsync({
           file: electricOCRFile,
           type: ELECTRICITY_VALUE,
         })
 
-        nmi = extractNMI(electricOCRResponse)
+      const nmi = extractNMI(electricOCRResponse)
+
+      if (!nmi && registrationData?.energyType !== BOTH_VALUE) {
+        setValue('billFileType', HAVE_PAPER_BILL)
+        fireAlert({
+          children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+          type: 'info',
+          duration: 5000,
+        })
+        return
       }
-
-      if (data.gasBillInfo?.billFiles?.length) {
-        const gasOCRFile = await transformToOCRFile(data.gasBillInfo.billFiles[0])
-        const gasOCRResponse = await ocrFileMutation.mutateAsync({ file: gasOCRFile, type: GAS_VALUE })
-
-        mirn = extractMIRN(gasOCRResponse)
-      }
-
-      shouldSwitchHavePaperBill =
-        (!nmi && registrationData.energyType !== GAS_VALUE) ||
-        (!mirn && registrationData.energyType !== ELECTRICITY_VALUE)
-    } catch (error) {
-      shouldSwitchHavePaperBill = true
-    }
-
-    console.log('registrationData.energyType:', registrationData.energyType)
-    console.log('shouldSwitchHavePaperBill:', shouldSwitchHavePaperBill)
-
-    // NMI/MIRN found
-    if (!shouldSwitchHavePaperBill) {
-      const buildedData = buildCreateAccountPayload(data, nmi, mirn)
-      setRegistrationData((prev) => ({ ...prev, ...data, nmi, mirn }))
-      return createAccountMutation.mutate(buildedData)
-    } else {
-      setValue('billFileType', HAVE_PAPER_BILL)
       setValue('nmi', nmi)
-      setValue('mirn', mirn)
 
+    } else if (energyType === GAS_VALUE) {
+      const gasOCRFile = await transformToOCRFile(file)
+        const electricOCRResponse = await ocrFileMutation.mutateAsync({
+          file: gasOCRFile,
+          type: ELECTRICITY_VALUE,
+        })
+        
+      const mirn = extractMIRN(electricOCRResponse)
+      
+      if(!mirn && registrationData?.energyType !== BOTH_VALUE) {
+        setValue('billFileType', HAVE_PAPER_BILL)
+        fireAlert({
+          children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+          type: 'info',
+          duration: 5000,
+        })
+        return
+      }
+      setValue('mirn', mirn)
+    }
+    // const nmiData: unknown = watch('nmi', null)
+    // const mirnData: unknown = watch('mirn', null)
+
+    // const nmi: string = nmiData as string;
+    // const mirn: string =mirnData as string;
+
+    // if (ZEMBL_DEBUG_MODE) {
+    //   console.log('registrationData?.energyType:', registrationData?.energyType)
+    //   console.log('NMI, MIRN:', nmi, ',', mirn)
+    // }
+    
+
+    // if (registrationData?.energyType === BOTH_VALUE && nmiData != null && mirnData != null) {
+    //   const buildedData = buildCreateAccountPayload(registrationData, nmi, mirn)
+    //   setRegistrationData((prev) => ({
+    //     ...prev,
+    //     nmiData,
+    //     mirnData,
+    //     phone: getPhoneNumber(registrationData?.phone),
+    //     mobile: getPhoneNumber(registrationData?.phone),
+    //   }))
+    //   return createAccountMutation.mutate(buildedData)
+    // }
+  }
+
+  const onSubmit = (data: Partial<RegistrationData>) => {
+    const nmi: string | undefined = data?.nmi
+    const mirn: string | undefined = data?.mirn
+    console.log('nmi, mirn', nmi, mirn)
+    if((registrationData?.energyType === BOTH_VALUE && (!nmi || !mirn)) || (!nmi && !mirn)) {
+      setValue('billFileType', HAVE_PAPER_BILL)
       fireAlert({
         children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
         type: 'info',
+        duration: 5000,
       })
+      ocrFileMutation.reset()
+      return
+    }
+
+    if (data.billFileType === HAVE_PAPER_BILL) {
+      const buildedData = buildCreateAccountPayload(data, nmi, mirn)
+      setRegistrationData((prev) => ({
+        ...prev,
+        ...data,
+        phone: getPhoneNumber(data.phone),
+        mobile: getPhoneNumber(data.phone),
+      }))
+      return createAccountMutation.mutate(buildedData)
+    } else {
+      const buildedData = buildCreateAccountPayload(data, nmi, mirn)
+      setRegistrationData((prev) => ({
+        ...prev,
+        ...data,
+        nmi,
+        mirn,
+        phone: getPhoneNumber(data.phone),
+        mobile: getPhoneNumber(data.phone),
+      }))
+      return createAccountMutation.mutate(buildedData)
     }
   }
 
   let uploadOptions = UPLOAD_BILL_TYPE_OPTIONS
-  if (registrationData.energyType !== BOTH_VALUE) {
+  if (registrationData?.energyType !== BOTH_VALUE) {
     uploadOptions = UPLOAD_BILL_TYPE_OPTIONS.filter((item) => {
-      if (!registrationData.energyType) return true
-      return item.value.includes(registrationData.energyType) || item.value === HAVE_PAPER_BILL
+      if (!registrationData?.energyType) return false
+      return item.value.includes(registrationData?.energyType) || item.value === HAVE_PAPER_BILL
     })
   }
 
@@ -132,11 +176,11 @@ const BillUploadPage = () => {
               rules={REQUIRED_VALIDATION}
               options={uploadOptions}
             />
-            {watchBillFileType === HAVE_PAPER_BILL ? (
-              <PaperBillForm control={control} energyType={registrationData.energyType ?? ''} setValue={setValue} />
+            {watchBillFileType === HAVE_PAPER_BILL && registrationData?.energyType ? (
+              <PaperBillForm control={control} energyType={registrationData?.energyType} setValue={setValue} />
             ) : null}
 
-            {registrationData.energyType !== GAS_VALUE ? (
+            {registrationData?.energyType !== GAS_VALUE ? (
               <Controller
                 name={`electricityBillInfo.billFiles`}
                 control={control}
@@ -154,14 +198,17 @@ const BillUploadPage = () => {
                       accept={PDF_FILE_TYPE}
                       {...field}
                       error={fieldState.error}
-                      onChange={(files: FileList | null) => field.onChange(files)}
+                      onChange={(files: FileList | null) => {
+                        field.onChange(files)
+                       void onFileChange(files, ELECTRICITY_VALUE)
+                      }}
                     />
                   )
                 }}
               />
             ) : null}
 
-            {registrationData.energyType !== ELECTRICITY_VALUE ? (
+            {registrationData?.energyType !== ELECTRICITY_VALUE ? (
               <Controller
                 name={`gasBillInfo.billFiles`}
                 control={control}
@@ -179,7 +226,10 @@ const BillUploadPage = () => {
                       accept={PDF_FILE_TYPE}
                       {...field}
                       error={fieldState.error}
-                      onChange={(files: FileList | null) => field.onChange(files)}
+                      onChange={(files: FileList | null) => {
+                        field.onChange(files)
+                        void onFileChange(files, GAS_VALUE)
+                      }}
                     />
                   )
                 }}

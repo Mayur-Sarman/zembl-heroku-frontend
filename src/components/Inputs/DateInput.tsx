@@ -18,6 +18,7 @@ const DateInput = ({
   required,
   rules,
   minDate,
+  maxDate,
   ...rest
 }: DateInputProps) => {
   const [movingDateOpen, setMovingDateOpen] = useState<boolean>(alwaysOpen ?? false)
@@ -48,10 +49,9 @@ const DateInput = ({
                 setShow={(prev) => setMovingDateOpen(alwaysOpen ?? prev)}
                 options={{
                   minDate: minDate,
+                  maxDate: maxDate,
                   clearBtn: false,
-                  defaultDate: field.value
-                    ? new Date(field.value as Date)
-                    : defaultDate ?? (null as unknown as undefined),
+                  defaultDate: field.value ? new Date(field.value as string) : defaultDate ?? undefined,
                   datepickerClassNames: `left-0 ${datepickerClassNames} lg:left-auto`,
                   theme: {
                     background: 'bg-white dark:bg-zembl-p',
@@ -95,6 +95,7 @@ interface DateInputProps extends Partial<IDatePickerProps> {
   required?: boolean
   rules?: Record<string, ValidationObject>
   minDate?: Date
+  maxDate?: Date
 }
 
 interface IDatePickerProps {

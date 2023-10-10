@@ -1,7 +1,8 @@
+import { PROCESS_OCR_ENDPOINT } from '../constants'
 import { performPostRequest } from '../helpers'
 
 export const postUploadOCR = async (ocrFile: OCRFile, token: string) => {
-  const response = await performPostRequest('/ocr', ocrFile, token)
+  const response = await performPostRequest(PROCESS_OCR_ENDPOINT, ocrFile, token)
   return response.data as OCRFileResult
 }
 

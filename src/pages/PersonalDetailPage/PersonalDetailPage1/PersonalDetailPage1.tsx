@@ -12,6 +12,7 @@ import {
   GAS_VALUE,
   IDENTITY_TYPE_OPTIONS,
   MEDICARE_CARD_VALUE,
+  NEXT_BUSINESS_ENERGY,
   REGISTRATION_TYPE_BUSINESS,
 } from '../../../constants'
 import DriverLicenseForm from '../../../components/Forms/PersonalDetails/DriverLicenseForm'
@@ -25,11 +26,9 @@ import PageNavigationActions from '../../../components/PageNavigationActions'
 import ControllerRadioGroupInput from '../../../components/Inputs/ControllerRadioGroupInput'
 import { useRegistration } from '../../../hooks/useRegistration'
 import { buildMainProfilePayload } from '../../../api/profile'
-import { useNavigate } from 'react-router-dom'
 // import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
 
 const PersonalDetailPage1 = () => {
-  const navigate = useNavigate()
   const { registrationData, updateProfileMutation } = useRegistration()
   // On load page get data from context
   const { handleSubmit, control, setValue, watch } = useForm({
@@ -39,12 +38,8 @@ const PersonalDetailPage1 = () => {
 
   const identificationTypeWatcher: unknown = watch<string>('identificationType', '')
 
-  const onSubmit = async (data: Record<string, string>) => {
+  const onSubmit = (data: Record<string, string>) => {
     console.log(data)
-    const a = await new Promise(resolve => resolve(1))
-    if (a === 1) {
-      return navigate('/personal-detail-2')
-    }
 
     // Call API
     // Put data to context
@@ -67,14 +62,17 @@ const PersonalDetailPage1 = () => {
       break
   }
 
-  const electricQuote = registrationData.electricityQuote
-  const gasQuote = registrationData.gasQuote
-  const energyType = registrationData.energyType
+  const electricQuote = registrationData?.electricityQuote
+  const gasQuote = registrationData?.gasQuote
+  const energyType = registrationData?.energyType
+
+  const selectedElecRetailer = electricQuote?.retailerName ?? null
+  const selectedGasRetailer = gasQuote?.retailerName ?? null
 
   const electPlanCard =
     energyType !== GAS_VALUE ? (
       <MiniPlanCard
-        brandIcon={electricQuote?.retailerIconLink ?? ''}
+        brandIcon={electricQuote?.retailerLogo ?? ''}
         energyType={ELECTRICITY_VALUE}
         planName={electricQuote?.retailerName ?? ''}
       />
@@ -83,7 +81,7 @@ const PersonalDetailPage1 = () => {
   const gasPlanCard =
     energyType !== ELECTRICITY_VALUE ? (
       <MiniPlanCard
-        brandIcon={gasQuote?.retailerIconLink ?? ''}
+        brandIcon={gasQuote?.retailerLogo ?? ''}
         energyType={ELECTRICITY_VALUE}
         planName={gasQuote?.retailerName ?? ''}
       />
@@ -102,7 +100,7 @@ const PersonalDetailPage1 = () => {
       </AccordionCard>
 
       <AccountDetailsForm control={control} />
-      {registrationData.registrationType === REGISTRATION_TYPE_BUSINESS ? (
+      {registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS ? (
         <BusinessDetailsForm control={control} />
       ) : null}
       <ConnectionDetailsForm control={control} setValue={setValue} />
@@ -113,7 +111,11 @@ const PersonalDetailPage1 = () => {
             label="Identification Type"
             control={control}
             name="identificationType"
-            options={IDENTITY_TYPE_OPTIONS}
+            options={IDENTITY_TYPE_OPTIONS.filter((item) =>
+              selectedElecRetailer === NEXT_BUSINESS_ENERGY && selectedGasRetailer === NEXT_BUSINESS_ENERGY
+                ? item.value !== MEDICARE_CARD_VALUE
+                : true,
+            )}
             required
           />
         </div>

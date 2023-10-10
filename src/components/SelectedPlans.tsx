@@ -3,39 +3,31 @@ import FullPlanCard from './FullPlanCard'
 import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
 import { Control } from 'react-hook-form'
 import DuoPlanCard from './DuoPlanCard'
+import { Quote } from '../api/quote'
 
-// const ICON_CLASS_NAME = 'w-4 h-4'
-
-const SelectedPlans = ({
-  title,
-  // onEditClick,
-  control,
-  energyType,
-  electricityPlan,
-  gasPlan,
-}: SelectedPlansProps) => {
-  // const titleDisplay = (
-  //   <div className="flex items-center w-full justify-between">
-  //     <Typography variant="h6">{title}</Typography>
-  //     <div
-  //       tabIndex={0}
-  //       onKeyDown={undefined}
-  //       role="button"
-  //       onClick={onEditClick}
-  //       className="flex items-center gap-2 bg-transparent border-transparent shadow-none text-zembl-p pointer-events-auto"
-  //     >
-  //       <PencilSquareIcon className={ICON_CLASS_NAME} />
-  //       <Typography className="text-sm">Edit</Typography>
-  //     </div>
-  //   </div>
-  // )
-
+const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }: SelectedPlansProps) => {
   const individualPlanDisplay = (
     <>
-      {energyType !== GAS_VALUE ? (
-        <FullPlanCard energyType={ELECTRICITY_VALUE} {...electricityPlan} control={control} />
+      {energyType !== GAS_VALUE && electricityPlan?.quoteId != null ? (
+        <FullPlanCard
+          energyType={ELECTRICITY_VALUE}
+          planName={electricityPlan?.productName ?? ''}
+          brandIconSrc={electricityPlan?.retailerLogo ?? ''}
+          termAndConditionContent={electricityPlan?.termAndConditionContent}
+          termAndConditionItems={electricityPlan?.termAndConditions}
+          control={control}
+        />
       ) : null}
-      {energyType !== ELECTRICITY_VALUE ? <FullPlanCard energyType={GAS_VALUE} {...gasPlan} control={control} /> : null}
+      {energyType !== ELECTRICITY_VALUE && gasPlan?.quoteId != null ? (
+        <FullPlanCard
+          energyType={GAS_VALUE}
+          control={control}
+          planName={gasPlan?.productName ?? ''}
+          brandIconSrc={gasPlan?.retailerLogo ?? ''}
+          termAndConditionContent={gasPlan?.termAndConditionContent}
+          termAndConditionItems={gasPlan?.termAndConditions}
+        />
+      ) : null}
     </>
   )
 
@@ -44,7 +36,7 @@ const SelectedPlans = ({
   return (
     <AccordionCard open alwaysOpen title={title}>
       <div className="grid grid-cols-1 gap-6 text-left">
-        {electricityPlan.brand !== gasPlan.brand ? individualPlanDisplay : duoPlanDisplay}
+        {(electricityPlan?.retailerName !== gasPlan?.retailerName) ? individualPlanDisplay : duoPlanDisplay}
       </div>
     </AccordionCard>
   )
@@ -52,18 +44,10 @@ const SelectedPlans = ({
 
 interface SelectedPlansProps {
   title: string
-  // onEditClick: MouseEventHandler
   control: Control
-  energyType: string
-  electricityPlan: PlanData
-  gasPlan: PlanData
-}
-
-export interface PlanData {
-  brandIconSrc: string
-  planName: string
-  brand: string
-  termAndConditions: string
+  energyType: string | null
+  electricityPlan?: Quote | null
+  gasPlan?: Quote | null
 }
 
 export default SelectedPlans

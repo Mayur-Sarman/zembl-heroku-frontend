@@ -5,28 +5,48 @@ import { DATA_TYPE_DATE, DATA_TYPE_TEXT } from '../../constants'
 import { ColumnDefinition } from '../../components/Tables/types'
 import HorizontalTable from '../../components/Tables/HorizontalTable/HorizontalTable'
 import PageNavigationActions from '../../components/PageNavigationActions'
+import { useRegistration } from '../../hooks/useRegistration'
+import { useReZemblQuery } from '../../hooks/useReZemblQuery'
+import { CustomerDetails, ReZemblData, ReZemblRequestPayload } from '../../api/reZembl'
+import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
+import { AxiosError } from 'axios'
 
 const SUPPLY_POINT_DETAIL_COLUMNS: ColumnDefinition[] = [
   { key: 'fuelType', type: DATA_TYPE_TEXT, label: 'Fuel Type' },
-  { key: 'supplyPointNumber', type: DATA_TYPE_TEXT, label: 'Supply Point number (NMI/MIRN)' },
-  { key: 'supplyPointAddress', type: DATA_TYPE_TEXT, label: 'Supply Point address' },
+  { key: 'nmi', type: DATA_TYPE_TEXT, label: 'Supply Point number (NMI/MIRN)' },
+  { key: 'address', type: DATA_TYPE_TEXT, label: 'Supply Point address' },
   { key: 'nextReZemblDate', type: DATA_TYPE_DATE, label: 'Next Re-Zembl Date', dateFormat: 'dd MMMM yyyy' },
 ]
 
 const CUSTOMER_DETAIL_COLUMNS: ColumnDefinition[] = [
-  { key: 'fullName', type: DATA_TYPE_TEXT, label: 'Contact person', headerClassName: 'w-1/2' },
-  { key: 'legalName', type: DATA_TYPE_TEXT, label: 'Company name', headerClassName: 'w-1/2' },
+  { key: 'contactPerson', type: DATA_TYPE_TEXT, label: 'Contact person', headerClassName: 'w-1/2' },
+  { key: 'companyName', type: DATA_TYPE_TEXT, label: 'Company name', headerClassName: 'w-1/2' },
   { key: 'abn', type: DATA_TYPE_TEXT, label: 'ABN', headerClassName: 'w-1/2' },
   { key: 'position', type: DATA_TYPE_TEXT, label: 'Position of contact person', headerClassName: 'w-1/2' },
-  { key: 'mobileNumber', type: DATA_TYPE_TEXT, label: 'Telephone', headerClassName: 'w-1/2' },
-  { key: 'email', type: DATA_TYPE_TEXT, label: 'Designated email address', headerClassName: 'w-1/2' },
+  { key: 'telephone', type: DATA_TYPE_TEXT, label: 'Telephone', headerClassName: 'w-1/2' },
+  { key: 'designatedEmail', type: DATA_TYPE_TEXT, label: 'Designated email address', headerClassName: 'w-1/2' },
 ]
 
 const ReZemblDetailPage = () => {
-  const customerFullName = 'James Test'
+  const { registrationData, setRegistrationData, registrationToken, handleErrorResponse } = useRegistration()
+
+  const quoteData: ReZemblRequestPayload = {
+    electricityQuoteId: registrationData?.electricityQuote?.quoteId,
+    gasQuoteId: registrationData?.gasQuote?.quoteId,
+  }
+  const reZemblDataQuery = useReZemblQuery(quoteData, registrationToken ?? '', {
+    onSuccess: (reZemblData: ReZemblData) => {
+      setRegistrationData((prev) => ({ ...prev, ...reZemblData }))
+    },
+    onError: (error: AxiosError) => {
+      if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
+      handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
+    },
+  })
+  const customerFullName = (registrationData?.customerDetails as CustomerDetails)?.contactPerson ?? ''
 
   return (
-    <PageWrapper>
+    <PageWrapper showLoading={reZemblDataQuery.isLoading}>
       <div className="flex flex-col gap-6 w-full">
         <div className="flex flex-col gap-y-1">
           <Typography variant="h4" className="text-zembl-p">
@@ -39,16 +59,7 @@ const ReZemblDetailPage = () => {
         <hr />
 
         <HorizontalTable
-          data={[
-            {
-              fullName: 'James Test',
-              legalName: 'Zembl Pty Ltd',
-              abn: '29138847757',
-              position: 'Managing Director',
-              mobileNumber: '040000000',
-              email: 'james@zembl.com.au',
-            },
-          ]}
+          data={registrationData?.customerDetails ? [registrationData.customerDetails] : []}
           columns={CUSTOMER_DETAIL_COLUMNS}
           striped
           className="text-center"
@@ -59,14 +70,7 @@ const ReZemblDetailPage = () => {
         </Typography>
 
         <SimpleTable
-          data={[
-            {
-              fuelType: 'Electricity',
-              supplyPointNumber: '70010185884',
-              supplyPointAddress: '5/100 William Street',
-              nextReZemblDate: new Date(),
-            },
-          ]}
+          data={registrationData?.electricityQuote ? [registrationData.electricityQuote] : []}
           columns={SUPPLY_POINT_DETAIL_COLUMNS}
           className="text-center h-15"
           stickyHeader

@@ -1,8 +1,9 @@
+import { CREATE_SITE_ENDPOINT } from '../constants'
 import { performPostRequest } from '../helpers'
 import { Preference } from './common'
 
 export const postCreateSite = async (data: Site, token: string) => {
-  const response = await performPostRequest('/site', data, token)
+  const response = await performPostRequest(CREATE_SITE_ENDPOINT, data, token)
   return response.data as SiteResponse
 }
 

@@ -5,12 +5,12 @@ import TextNote from '../TextNote'
 import { Typography } from '@material-tailwind/react'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
-const BlueNRGPreference = ({ control }: BlueNRGPreferenceProps) => {
+const BlueNRGPreference = ({ control, prefix }: BlueNRGPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="Blue NRG Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
         control={control}
-        name="isConsentMonthlyNGLBills"
+        name={`${prefix}.consentMonthlyBilling`}
         required
         label={'Do you consent to receive your energy bills from Blue NRG on a monthly basis?'}
         options={YES_NO_OPTIONS}
@@ -30,7 +30,7 @@ const BlueNRGPreference = ({ control }: BlueNRGPreferenceProps) => {
 
       <ControllerRadioGroupInput
         control={control}
-        name="isAcceptBlueNGLTerms"
+        name={`${prefix}.doYouUnderstandAndAcceptTheTerms`}
         required
         label={'Do you understand and accept these terms?”'}
         options={YES_NO_OPTIONS}
@@ -43,7 +43,7 @@ const BlueNRGPreference = ({ control }: BlueNRGPreferenceProps) => {
 
       <ControllerRadioGroupInput
         control={control}
-        name="isSmallBuinessAgreed"
+        name={`${prefix}.smallBusinessCustomerConsent`}
         required
         label={
           'The electricity at the supply address must be used predominantly for business purposes and must be a business premises. Blue NRG does not provide electricity for residential purposes. Do you agree that you are a small business customer for the purposes of this agreement?” '
@@ -61,6 +61,7 @@ const BlueNRGPreference = ({ control }: BlueNRGPreferenceProps) => {
 
 interface BlueNRGPreferenceProps {
   control: Control
+  prefix: string
 }
 
 export default BlueNRGPreference

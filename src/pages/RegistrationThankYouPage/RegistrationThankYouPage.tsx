@@ -3,21 +3,20 @@ import { Button, Typography } from '@material-tailwind/react'
 import zemblLogo from '../../assets/zembl-icon.svg'
 import { useNavigate } from 'react-router-dom'
 import ReZemblForm from '../../components/Forms/PersonalDetails/ReZemblForm'
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import PageWrapper from '../../components/PageWrapper'
+import { YES_VALUE } from '../../constants'
 
 const RegistrationThankYouPage = () => {
   const navigate = useNavigate()
-
-  // On load page get data from context
   const { handleSubmit, control } = useForm()
 
-  const onSubmit = (data: Record<string, string | string[]>) => {
-    console.log(data)
-
-    navigate('/rezembl-details')
-    // Call API
-    // Put data to context
+  const onSubmit = (data: FieldValues) => {
+    if (data.reZembl === YES_VALUE) {
+      navigate('/rezembl-details')
+    } else {
+      navigate('/rezembl-no-thank-you')
+    }
   }
 
   return (

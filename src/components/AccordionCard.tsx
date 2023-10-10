@@ -26,7 +26,7 @@ const AccordionCard = ({
   ) : null
 
   return (
-    <Accordion open={_open} className={`border border-blue-gray-100 rounded-lg ${containerClassName ?? ''}`}>
+    <Accordion open={_open} className={`border border-blue-gray-100 rounded-lg ${containerClassName ?? ''} [&>div]:!overflow-visible`} >
       {titleDisplay}
       <AccordionBody className={`p-6 flex ${bodyClassName ?? ''}`}>{children}</AccordionBody>
     </Accordion>

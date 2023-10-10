@@ -17,7 +17,7 @@ const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE, PNG_FILE_TYPE, JPEG_FILE_TYPE, DOC_
 const ZemblUploadPage = () => {
   const navigate = useNavigate()
   const { fireAlert } = useToast()
-  const { registrationData, uploadFileMutation } = useRegistration()
+  const { registrationData, uploadFileMutation, handleErrorResponse } = useRegistration()
   const { control, handleSubmit, formState } = useForm({ mode: 'all' })
 
   const onSubmit = async (data: FieldValues) => {
@@ -33,7 +33,8 @@ const ZemblUploadPage = () => {
     const file = value?.[0] ?? null
     if (!file) return true
     if (file.size > MAX_FILE_SIZE) return 'File size must be less than 15MB.'
-    if (!file?.type || !SUPPORTED_FILE_TYPES.includes(file.type)) return 'File type must be one of supported type (PDF, DOC, DOCX, JPG, PNG)'
+    if (!file?.type || !SUPPORTED_FILE_TYPES.includes(file.type))
+      return 'File type must be one of supported type (PDF, DOC, DOCX, JPG, PNG)'
     return true
   }
 
@@ -45,14 +46,12 @@ const ZemblUploadPage = () => {
     }
   }, [uploadFileMutation, fireAlert, navigate])
 
-  // TODO: ERROR HANDLING (EXTRACT DATA)
   useEffect(() => {
     if (uploadFileMutation.isError && uploadFileMutation.error) {
-      console.log(uploadFileMutation.error)
-      fireAlert({ children: <Typography>Oops! Something has error!</Typography>, type: 'error' })
+      handleErrorResponse(uploadFileMutation.error, 'OTP code is invalid or expired.')
       return
     }
-  }, [uploadFileMutation.isError, uploadFileMutation.error, fireAlert])
+  }, [uploadFileMutation.isError, uploadFileMutation.error, handleErrorResponse])
 
   const backdrop = uploadFileMutation.isLoading ? (
     <div className="w-full h-full absolute z-50 top-0 left-0 backdrop-blur-sm flex items-center justify-center">

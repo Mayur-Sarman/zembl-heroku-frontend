@@ -23,11 +23,16 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const hasError = !!error
-  const labelDisplay = label ? (
-    <Typography className={`mb-2 pl-1 font-light text-sm ${required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''} ${labelClassName ?? ''}`}>
-      {label}
-    </Typography>
-  ) : null
+  const labelDisplay =
+    label && typeof label === 'string' ? (
+      <Typography
+        className={`mb-2 pl-1 font-light text-sm ${
+          required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
+        } ${labelClassName ?? ''}`}
+      >
+        {label}
+      </Typography>
+    ) : label
 
   const optionsDisplay: ReactNode[] = options.map((option) => {
     const className =
@@ -36,7 +41,7 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
     return (
       <div key={option.value} className={className}>
         <StatefulButton
-          className="h-12"
+          className="min-h-12 h-full"
           checked={values?.includes?.(option?.value as never) ?? false}
           onChange={onChange}
           disabled={disabled}
