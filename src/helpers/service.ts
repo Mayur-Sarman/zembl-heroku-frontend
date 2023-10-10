@@ -44,7 +44,28 @@ export const performPostRequest = async (
 ) => {
   const axios = getAxiosInstance(token)
 
-  return await axios.post(path, data, { headers, ...options })
+  return await axios.post(path, data, { headers, ...options,
+    // onUploadProgress: (progressEvent) => {
+    //   const { loaded, total } = progressEvent
+    //   const totals: number | undefined = total
+    //   if(totals != null) {
+    //     const percentage: number = Math.floor((loaded * 100) / totals)
+    //     console.log('uploaded loaded:', loaded, ', totals:', totals, ', time:', new Date().toISOString());
+    //     console.log('percentage: ', percentage);
+    //   }
+    // },
+    // onDownloadProgress: (progressEvent) => {
+    //   const { loaded, total } = progressEvent
+    //   const totals: number | undefined = total
+    //   console.log(progressEvent)
+    //   if(totals != null) {
+    //     const percentCompleted: number = Math.floor(loaded / totals * 100)
+    //     console.log('download loaded:', loaded, ', total:', total, ', time:', new Date().toISOString());
+    //     console.log('completed: ', percentCompleted)
+    //   }
+      
+    // }
+  })
 }
 
 export const performPutRequest = async (
