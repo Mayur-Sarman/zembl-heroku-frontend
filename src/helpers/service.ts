@@ -1,6 +1,7 @@
 import axios, { Axios, AxiosHeaders } from 'axios'
 
 import { REQUEST_BASE_URL, SESSION_TOKEN_KEY } from '../constants'
+import { AxiosRequestConfig } from '../api/ocr'
 
 export const setSessionToken = (token: string | undefined | null) =>
   token ? sessionStorage.setItem(SESSION_TOKEN_KEY, token) : null
@@ -43,29 +44,7 @@ export const performPostRequest = async (
   options?: Record<string, unknown>,
 ) => {
   const axios = getAxiosInstance(token)
-
-  return await axios.post(path, data, { headers, ...options,
-    // onUploadProgress: (progressEvent) => {
-    //   const { loaded, total } = progressEvent
-    //   const totals: number | undefined = total
-    //   if(totals != null) {
-    //     const percentage: number = Math.floor((loaded * 100) / totals)
-    //     console.log('uploaded loaded:', loaded, ', totals:', totals, ', time:', new Date().toISOString());
-    //     console.log('percentage: ', percentage);
-    //   }
-    // },
-    // onDownloadProgress: (progressEvent) => {
-    //   const { loaded, total } = progressEvent
-    //   const totals: number | undefined = total
-    //   console.log(progressEvent)
-    //   if(totals != null) {
-    //     const percentCompleted: number = Math.floor(loaded / totals * 100)
-    //     console.log('download loaded:', loaded, ', total:', total, ', time:', new Date().toISOString());
-    //     console.log('completed: ', percentCompleted)
-    //   }
-      
-    // }
-  })
+  return await axios.post(path, data, { headers, ...options})
 }
 
 export const performPutRequest = async (

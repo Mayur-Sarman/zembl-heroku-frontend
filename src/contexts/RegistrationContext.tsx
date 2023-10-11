@@ -46,6 +46,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
   const [registrationData, setRegistrationData] = useState<RegistrationData>({} as RegistrationData)
   const [registrationToken, setRegistrationToken] = useState<string | null | undefined>(null)
   const [enableABNFetching, setEnableABNFetching] = useState<boolean>(false)
+  const [percentLoading, setPercentLoading] = useState<number | null>(null)
 
   const handleErrorResponse = useCallback(
     (
@@ -188,12 +189,27 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     },
   })
 
+  const config = {
+    onUploadProgress: (progressEvent : ProgressEvent) => {
+      const { loaded, total } = progressEvent
+      const totals: number | undefined = total
+      if(totals != null) {
+        const percentage: number = Math.floor((loaded * 100) / totals)
+        setPercentLoading(percentage)
+      }
+    }
+  }
+
   const ocrFileMutation = useMutation({
-    mutationFn: ({ file }: OCRMutationPayload) => postUploadOCR(file, registrationToken ?? ''),
+    mutationFn: ({ file }: OCRMutationPayload) => postUploadOCR(file, registrationToken ?? '', config),
     onError: (error: AxiosError, req) => {
       if (ZEMBL_DEBUG_MODE) console.log('OCR_FILE_MUTATION_ERROR', error, 'REQ:', req)
       handleErrorResponse(error)
+      setPercentLoading(null)
     },
+    onSuccess: () => {
+      setPercentLoading(null)
+    }
   })
 
   const createAccountMutation = useMutation({
@@ -288,6 +304,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         registrationToken,
         setRegistrationData,
         setRegistrationToken,
+        setPercentLoading,
         validateReCaptchaMutation,
         createLeadMutation,
         updateLeadMutation,
@@ -303,6 +320,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         sendQuoteEmailMutation,
         handleErrorResponse,
         isLoading,
+        percentLoading
       }}
     >
       {children}
@@ -313,6 +331,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 interface RegistrationActions {
   setRegistrationData: Dispatch<SetStateAction<RegistrationData>>
   setRegistrationToken: Dispatch<SetStateAction<string | null | undefined>>
+  setPercentLoading: Dispatch<SetStateAction<number | null>>
   registrationData: RegistrationData
   registrationToken: string | null | undefined
   validateReCaptchaMutation: UseMutationResult<ReCaptchaValidateResponse, AxiosError, string>
@@ -330,6 +349,7 @@ interface RegistrationActions {
   sendQuoteEmailMutation: UseMutationResult<SimpleResponse, AxiosError, void>
   handleErrorResponse: (error: AxiosError, message?: string) => void
   isLoading: boolean
+  percentLoading: number | null
 }
 
 RegistrationContextProvider.propTypes = {

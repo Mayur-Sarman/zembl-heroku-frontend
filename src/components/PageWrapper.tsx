@@ -3,13 +3,13 @@ import { PropsWithChildren } from 'react'
 import { useRegistration } from '../hooks/useRegistration'
 
 const PageWrapper = ({ children, containerClassName, contentWrapperClassName, showLoading }: PageWrapperProps) => {
-  const { isLoading } = useRegistration()
+  const { isLoading, percentLoading } = useRegistration()
   const backdrop = !!showLoading || isLoading ? (
     <div className="w-full h-full absolute z-50 top-0 left-0 backdrop-blur-sm flex items-center justify-center">
       <Spinner className="h-16 w-16 m-auto absolute opacity-100" />
+      {percentLoading ? <p className="text-black">{percentLoading}%</p> : null}
     </div>
   ) : null
-
   return (
     <>
       {backdrop}

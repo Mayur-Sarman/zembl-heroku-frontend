@@ -53,13 +53,13 @@ const BillUploadPage = () => {
 
     if( energyType === ELECTRICITY_VALUE) {
       const electricOCRFile = await transformToOCRFile(file)
-        const electricOCRResponse = await ocrFileMutation.mutateAsync({
-          file: electricOCRFile,
-          type: ELECTRICITY_VALUE,
-        })
+      const electricOCRResponse = await ocrFileMutation.mutateAsync({
+        file: electricOCRFile,
+        type: ELECTRICITY_VALUE,
+      })
 
       const nmi = extractNMI(electricOCRResponse)
-
+      setValue('nmiProcessed', true)
       if (!nmi && registrationData?.energyType !== BOTH_VALUE) {
         setValue('billFileType', HAVE_PAPER_BILL)
         fireAlert({
@@ -73,13 +73,13 @@ const BillUploadPage = () => {
 
     } else if (energyType === GAS_VALUE) {
       const gasOCRFile = await transformToOCRFile(file)
-        const electricOCRResponse = await ocrFileMutation.mutateAsync({
-          file: gasOCRFile,
-          type: ELECTRICITY_VALUE,
-        })
+      const electricOCRResponse = await ocrFileMutation.mutateAsync({
+        file: gasOCRFile,
+        type: ELECTRICITY_VALUE,
+      })
         
       const mirn = extractMIRN(electricOCRResponse)
-      
+      setValue('mirnProcessed', true)
       if(!mirn && registrationData?.energyType !== BOTH_VALUE) {
         setValue('billFileType', HAVE_PAPER_BILL)
         fireAlert({
@@ -90,6 +90,21 @@ const BillUploadPage = () => {
         return
       }
       setValue('mirn', mirn)
+    }
+
+    const watchNmiProcessed: unknown = watch('nmiProcessed', false)
+    const watchMirnProcessed: unknown = watch('mirnProcessed', false)
+    const watchNmi: unknown = watch('nmi', null)
+    const watchMirn: unknown = watch('mirn', null)
+    console.log(watchNmiProcessed, watchMirnProcessed, watchNmi, watchMirn)
+    if((watchNmiProcessed && watchMirnProcessed) && (!watchNmi || !watchMirn)) {
+      setValue('billFileType', HAVE_PAPER_BILL)
+        fireAlert({
+          children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+          type: 'info',
+          duration: 5000,
+        })
+        return
     }
     // const nmiData: unknown = watch('nmi', null)
     // const mirnData: unknown = watch('mirn', null)
