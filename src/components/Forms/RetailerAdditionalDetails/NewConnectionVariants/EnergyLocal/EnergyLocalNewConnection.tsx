@@ -35,7 +35,7 @@ const EnergyLocalNewConnection = ({ control, electricalRenovationWork, connectio
 
 interface EnergyLocalNewConnectionProps {
   control: Control
-  electricalRenovationWork: string
+  electricalRenovationWork?: string
   connectionPrice: number | null
 }
 

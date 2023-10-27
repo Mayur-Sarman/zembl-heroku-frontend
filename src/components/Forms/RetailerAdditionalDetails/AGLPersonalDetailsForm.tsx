@@ -63,15 +63,15 @@ interface AGLPersonalDetailsFormProps {
   control: Control
   registrationType: string
   isNewConnection: boolean
-  state: string
+  state?: string
   gas: boolean
   electric: boolean
   concessionHolder: string
   concessionConsent: string
   hasSecondaryContact: string
   secondaryContactName: string
-  hasPower: string
-  hasWorkCompleted: string
+  hasPower?: string
+  hasWorkCompleted?: string
   connectionPrice?: number | null
   isTransfer?: boolean
 }

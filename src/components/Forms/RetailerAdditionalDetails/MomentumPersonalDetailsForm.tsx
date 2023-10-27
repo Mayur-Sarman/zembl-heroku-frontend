@@ -9,6 +9,7 @@ const MomentumPersonalDetailsForm = ({
   isNewConnection,
   state,
   hasSecondaryContact,
+  gasConnected,
   powerAware,
   registrationType,
   concessionCardHolder,
@@ -33,6 +34,7 @@ const MomentumPersonalDetailsForm = ({
         <MomentumNewConnection
           control={control}
           powerAware={powerAware}
+          gasConnected={gasConnected}
           state={state}
           electricityConnectionPrice={electricityConnectionPrice}
           gasConnectionPrice={gasConnectionPrice}
@@ -52,7 +54,7 @@ interface MomentumPersonalDetailsFormProps {
   powerAware: string
   electricityConnectionPrice?: number | null
   gasConnectionPrice?: number | null
-
+  gasConnected?: string
   registrationType: string
   concessionCardHolder: string
   concessionConsent: string

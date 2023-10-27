@@ -1,7 +1,7 @@
 import { Control } from 'react-hook-form'
 import SESecondaryContactForm from './SecondaryContactVariants/SESecondaryContactForm'
 import SEConcessionSA from './ConcessionVariants/SEConcessionSA'
-import { QLD_VALUE, RESIDENTIAL_VALUE, SA_VALUE, VIC_VALUE } from '../../../constants'
+import { NSW_VALUE, RESIDENTIAL_VALUE, SA_VALUE, VIC_VALUE } from '../../../constants'
 import SEConcessionNotSA from './ConcessionVariants/SEConcessionNotSA'
 import SENewConnection from './NewConnectionVariants/SE/SENewConnection'
 
@@ -24,10 +24,10 @@ const SEPersonalDetailsForm = ({
   const showConcessionForm =
     registrationType === RESIDENTIAL_VALUE &&
     electric &&
-    [QLD_VALUE.shortName, VIC_VALUE.shortName, SA_VALUE.shortName].includes(state)
+    [NSW_VALUE.shortName, VIC_VALUE.shortName, SA_VALUE.shortName].includes(state)
 
   let concessionForm = null
-  if (showConcessionForm && [QLD_VALUE.shortName, VIC_VALUE.shortName].includes(state)) {
+  if (showConcessionForm && [NSW_VALUE.shortName, VIC_VALUE.shortName].includes(state)) {
     concessionForm = (
       <SEConcessionNotSA
         control={control}

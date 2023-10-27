@@ -1,7 +1,6 @@
 import axios, { Axios, AxiosHeaders } from 'axios'
 
 import { REQUEST_BASE_URL, SESSION_TOKEN_KEY } from '../constants'
-import { AxiosRequestConfig } from '../api/ocr'
 
 export const setSessionToken = (token: string | undefined | null) =>
   token ? sessionStorage.setItem(SESSION_TOKEN_KEY, token) : null

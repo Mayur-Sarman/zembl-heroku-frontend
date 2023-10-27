@@ -1,5 +1,6 @@
 import PersonalDetailPage1 from './PersonalDetailPage1/PersonalDetailPage1'
 import PersonalDetailPage2 from './PersonalDetailPage2/PersonalDetailPage2'
+import PersonalDetailPage3 from './PersonalDetailPage3/PersonalDetailPage3'
 import PageWrapper from '../../components/PageWrapper'
 import RegistrationStep from '../../components/RegistrationStep'
 
@@ -13,6 +14,8 @@ const PersonalDetailPage = ({ pageNo }: { pageNo: number }) => {
     case 2:
       content = <PersonalDetailPage2 />
       break
+    case 3:
+      content = <PersonalDetailPage3 />
   }
 
   return (

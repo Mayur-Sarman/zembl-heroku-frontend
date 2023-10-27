@@ -10,6 +10,7 @@ const MomentumNewConnection = ({
   control,
   state,
   powerAware,
+  gasConnected,
   electricityConnectionPrice,
   gasConnectionPrice,
   gas,
@@ -32,7 +33,7 @@ const MomentumNewConnection = ({
   }
 
   if (gas)
-    return <MomentumNewConnectionGas control={control} connectionPrice={gasConnectionPrice} powerAware={powerAware} />
+    return <MomentumNewConnectionGas control={control} connectionPrice={gasConnectionPrice} powerAware={gasConnected} />
   return electricity ? display : null
 }
 
@@ -40,6 +41,7 @@ interface MomentumNewConnectionProps {
   control: Control
   state: string
   powerAware: string
+  gasConnected?: string
   electricityConnectionPrice?: number | null
   gasConnectionPrice?: number | null
   gas: boolean

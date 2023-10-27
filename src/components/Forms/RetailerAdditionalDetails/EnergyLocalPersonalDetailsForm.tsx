@@ -45,7 +45,7 @@ interface EnergyLocalPersonalDetailsFormProps {
   registrationType: string
   hasSecondaryContact: string
   isNewConnection: boolean
-  electricalRenovationWork: string
+  electricalRenovationWork?: string
   connectionPrice: number | null
 }
 

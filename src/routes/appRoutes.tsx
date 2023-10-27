@@ -45,6 +45,7 @@ const appRoutes = [
       { path: 'plans', element: <SelectPlansPage /> },
       { path: 'personal-detail-1', element: <PersonalDetailPage pageNo={1} /> },
       { path: 'personal-detail-2', element: <PersonalDetailPage pageNo={2} /> },
+      { path: 'personal-detail-3', element: <PersonalDetailPage pageNo={3} /> },
       { path: 'plan-confirmation', element: <PlanConfirmationPage /> },
       { path: 'verification-code', element: <VerificationCodePage /> },
       // { path: 'review', element: <ReviewPage /> },

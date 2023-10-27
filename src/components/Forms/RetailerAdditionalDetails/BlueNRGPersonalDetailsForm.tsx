@@ -32,10 +32,10 @@ const BlueNRGPersonalDetailsForm = ({
 interface BlueNRGPersonalDetailsFormProps {
   control: Control
   isNewConnection: boolean
-  state: string
+  state?: string
   electric: boolean
   hasSecondaryContact: string
-  hasPower: string
+  hasPower?: string
   connectionPrice?: number | null
   connectionDate: Date | null
 }

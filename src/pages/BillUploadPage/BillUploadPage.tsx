@@ -28,7 +28,7 @@ const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
 const BillUploadPage = () => {
   const { fireAlert } = useToast()
-  const { registrationData, ocrFileMutation, createAccountMutation, setRegistrationData } = useRegistration()
+  const { registrationData, ocrFileMutation, createAccountMutation, setRegistrationData, setUploadText } = useRegistration()
   const { handleSubmit, control, setValue, watch, formState } = useForm({
     defaultValues: registrationData as FieldValues,
     mode: 'all',
@@ -52,6 +52,7 @@ const BillUploadPage = () => {
     const file = files[0]
 
     if( energyType === ELECTRICITY_VALUE) {
+      setUploadText('Please wait while we scan your bill. This will only take a moment.')
       const electricOCRFile = await transformToOCRFile(file)
       const electricOCRResponse = await ocrFileMutation.mutateAsync({
         file: electricOCRFile,
@@ -60,7 +61,7 @@ const BillUploadPage = () => {
 
       const nmi = extractNMI(electricOCRResponse)
       setValue('nmiProcessed', true)
-      if (!nmi && registrationData?.energyType !== BOTH_VALUE) {
+      if (!nmi /*&& registrationData?.energyType !== BOTH_VALUE*/) {
         setValue('billFileType', HAVE_PAPER_BILL)
         fireAlert({
           children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
@@ -72,6 +73,7 @@ const BillUploadPage = () => {
       setValue('nmi', nmi)
 
     } else if (energyType === GAS_VALUE) {
+      setUploadText('Please wait while we scan your bill. This will only take a moment.')
       const gasOCRFile = await transformToOCRFile(file)
       const electricOCRResponse = await ocrFileMutation.mutateAsync({
         file: gasOCRFile,
@@ -80,7 +82,7 @@ const BillUploadPage = () => {
         
       const mirn = extractMIRN(electricOCRResponse)
       setValue('mirnProcessed', true)
-      if(!mirn && registrationData?.energyType !== BOTH_VALUE) {
+      if(!mirn /*&& registrationData?.energyType !== BOTH_VALUE*/) {
         setValue('billFileType', HAVE_PAPER_BILL)
         fireAlert({
           children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
@@ -92,25 +94,25 @@ const BillUploadPage = () => {
       setValue('mirn', mirn)
     }
 
-    const watchNmiProcessed: unknown = watch('nmiProcessed', false)
-    const watchMirnProcessed: unknown = watch('mirnProcessed', false)
-    const watchNmi: unknown = watch('nmi', null)
-    const watchMirn: unknown = watch('mirn', null)
-    console.log(watchNmiProcessed, watchMirnProcessed, watchNmi, watchMirn)
-    if((watchNmiProcessed && watchMirnProcessed) && (!watchNmi || !watchMirn)) {
-      setValue('billFileType', HAVE_PAPER_BILL)
-        fireAlert({
-          children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
-          type: 'info',
-          duration: 5000,
-        })
-        return
-    }
+    // const watchNmiProcessed: unknown = watch('nmiProcessed', false)
+    // const watchMirnProcessed: unknown = watch('mirnProcessed', false)
+    // const watchNmi: unknown = watch('nmi', null)
+    // const watchMirn: unknown = watch('mirn', null)
+    // console.log(watchNmiProcessed, watchMirnProcessed, watchNmi, watchMirn)
+    // if((watchNmiProcessed && watchMirnProcessed) && (!watchNmi || !watchMirn)) {
+    //   setValue('billFileType', HAVE_PAPER_BILL)
+    //     fireAlert({
+    //       children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+    //       type: 'info',
+    //       duration: 5000,
+    //     })
+    //     return
+    // }
     // const nmiData: unknown = watch('nmi', null)
     // const mirnData: unknown = watch('mirn', null)
 
     // const nmi: string = nmiData as string;
-    // const mirn: string =mirnData as string;
+    // const mirn: string = mirnData as string;
 
     // if (ZEMBL_DEBUG_MODE) {
     //   console.log('registrationData?.energyType:', registrationData?.energyType)

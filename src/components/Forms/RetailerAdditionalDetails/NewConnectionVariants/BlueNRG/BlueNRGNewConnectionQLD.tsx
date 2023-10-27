@@ -62,7 +62,7 @@ const BlueNRGNewConnectionQLD = ({
 interface BlueNRGNewConnectionQLDProps {
   control: Control
   connectionDate: Date | null
-  hasPower: string
+  hasPower?: string
   businessHoursFee: number | null
   nonBusinessHoursFee: number | null
 }

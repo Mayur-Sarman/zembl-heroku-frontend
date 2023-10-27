@@ -63,7 +63,7 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
     concessionCardStartDate: getJSONDateString(concessionInput?.concessionCardStartDate),
     concessionCardEndDate: getJSONDateString(concessionInput?.concessionCardEndDate),
   }
-
+  
   const secondaryContactInput = data?.secondaryContact as Record<string, string>
   const shouldAddSecondaryContact = secondaryContactInput?.hasSecondaryContact === YES_VALUE
   const secondaryContact = {
@@ -76,10 +76,14 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
   const newConnectionInput = data?.newConnection as Record<string, string>
   const newConnection = { ...newConnectionInput }
 
+  const gasNewConnectionInput = data?.newConnection as Record<string, string>
+  const gasNewConnection = { ...gasNewConnectionInput }
+
   const buildedData: RetailerAdditionalDetail = {
     concession: !isConcessionHolder || !isConcessionConsent ? null : concession,
     secondaryContact: !shouldAddSecondaryContact ? null : secondaryContact,
     newConnection,
+    gasNewConnection
   }
 
   return buildedData
@@ -130,6 +134,7 @@ export interface RetailerAdditionalDetail {
   concession?: Concession | null
   secondaryContact?: SecondaryContact | null
   newConnection?: NewConnection | null
+  gasNewConnection?: NewConnection | null
 }
 
 interface Concession {

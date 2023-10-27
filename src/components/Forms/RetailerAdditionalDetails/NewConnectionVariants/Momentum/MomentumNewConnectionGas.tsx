@@ -32,7 +32,7 @@ const MomentumNewConnectionGas = ({ connectionPrice, control, powerAware }: Mome
       <ControllerRadioGroupInput
         label="Is the gas on at the property?"
         control={control}
-        name="newConnection.gasConnected"
+        name="gasNewConnection.gasConnected"
         options={OPTIONS}
       />
       {/* Case power connected */}
@@ -45,7 +45,7 @@ const MomentumNewConnectionGas = ({ connectionPrice, control, powerAware }: Mome
 interface MomentumNewConnectionGasProps {
   connectionPrice?: number | null
   control: Control
-  powerAware: string
+  powerAware?: string
 }
 
 export default MomentumNewConnectionGas
