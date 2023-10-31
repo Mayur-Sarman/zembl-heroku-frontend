@@ -104,19 +104,20 @@ export const getExactLengthValidation = (length: number) => ({
 
 export const DATE_MUST_FUTURE = {
   min: {
-    value: (value: Date) => value > new Date(),
+    value: new Date(),
     message: 'Date must be in the future.',
   },
 }
 
 export const DATE_MUST_PAST = {
-  min: {
-    value: (value: Date) => value <= new Date(),
+  max: {
+    
+    value: new Date(),
     message: 'Date must be in the past.',
   },
 }
 
 export interface ValidationObject {
-  value: string | number | boolean | ((value: Date) => boolean)
+  value: string | number | boolean | ((value: Date) => boolean) | Date
   message: string
 }

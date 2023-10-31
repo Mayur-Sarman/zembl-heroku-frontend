@@ -82,7 +82,7 @@ const PersonalDetailPage1 = () => {
     energyType !== ELECTRICITY_VALUE ? (
       <MiniPlanCard
         brandIcon={gasQuote?.retailerLogo ?? ''}
-        energyType={ELECTRICITY_VALUE}
+        energyType={GAS_VALUE}
         planName={gasQuote?.retailerName ?? ''}
       />
     ) : null

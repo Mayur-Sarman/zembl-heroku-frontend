@@ -14,6 +14,8 @@ import {
   NEXT_BUSINESS_ENERGY,
   NO_VALUE,
   SIMPLY_ENERGY,
+  GAS_VALUE,  
+  ELECTRICITY_VALUE
 } from '../../../constants'
 import BlueNRGPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/BlueNRGPersonalDetailsForm'
 import EAPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/EAPersonalDetailsForm'
@@ -24,6 +26,8 @@ import EnergyLocalPersonalDetailsForm from '../../../components/Forms/RetailerAd
 import NBEPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/NBEPersonalDetailsForm'
 import { useRetailerAdditionalDetailsMutation } from '../../../hooks/useRetailerAdditionalDetailsMutation'
 import { buildRetailerAdditionalDetailPayload } from '../../../api/profile'
+import AccordionCard from '../../../components/AccordionCard'
+import MiniPlanCard from '../../../components/MiniPlanCard'
 import { useEffect } from 'react'
 
 const PersonalDetailPage3 = () => {
@@ -37,7 +41,7 @@ const PersonalDetailPage3 = () => {
       setRegistrationData((prev) => ({
         ...prev,
         secondaryContact: data.secondaryContact,
-        newConnectionData: data.newConnection,
+        gasNewConnectionData: data.newConnection,
         concession: data.concession,
       }))
       navigate('/plan-confirmation')
@@ -52,6 +56,7 @@ const PersonalDetailPage3 = () => {
     gasConnected,
     powerAware,
     accessMethod,
+    electricalRenovationWork,
     firstName,
     lastName,
   ]: string[] = watch([
@@ -60,17 +65,26 @@ const PersonalDetailPage3 = () => {
     'concession.onlyStateRebateResidence',
     'secondaryContact.hasSecondaryContact',
     'gasNewConnection.gasConnected',
-    'gasNewConnection.powerAware',
-    'gasNewConnection.accessMethod',
+    'newConnection.powerAware',
+    'newConnection.accessMethod',
+    'newConnection.electricalRenovationWork',
     'secondaryContact.firstName',
     'secondaryContact.lastName',
   ]) as string[]
 
   const onSubmit = (data: Record<string, unknown>) => {
-    const a = false;
-    if(a)retailerAdditionalDetailsMutation.mutate(buildRetailerAdditionalDetailPayload(data))
-
-    console.log('page - 3: ', data)
+    data.electricQuoteId = registrationData?.electricityQuote?.quoteId
+    data.gasQuoteId = registrationData?.gasQuote?.quoteId
+    data.gasNewConnection = data.newConnection || data.gasNewConnection ? {...(data.newConnection as Record<string, unknown>), ...(data.gasNewConnection as Record<string, unknown>)} : null
+    data.newConnection = registrationData?.newConnectionData
+    data.concession= {
+      ...(data.concession as Record<string, unknown>),
+      contactId: registrationData?.accountDetails?.contactId
+    }
+    data.secondaryContact = {
+      ...(data.secondaryContact as Record<string, unknown>),
+      accountId: registrationData?.accountDetails?.accountId
+    }
     setRegistrationData((prev) => ({
       ...prev,
       secondaryContact: data.secondaryContact,
@@ -78,25 +92,25 @@ const PersonalDetailPage3 = () => {
       concession: data.concession,
     }))
 
+    console.log('page - 3 data: ', data)
+
+    retailerAdditionalDetailsMutation.mutate(buildRetailerAdditionalDetailPayload(data))
+
     console.log('registrationData - 3', registrationData)
   }
-  console.log('log:', concessionCardHolder)
-  console.log('registrationData', registrationData)
+
   const contactName = `${firstName ?? ''} ${lastName ?? ''}`.trim()
-  const selectedGasRetailer = registrationData?.gasQuote?.retailerName ?? MOMENTUM
+  const selectedGasRetailer = registrationData?.gasQuote?.retailerName ?? ENERGY_AU
   const isGasTransfer = selectedGasRetailer !== registrationData?.currentRetailerGas
   const gasPrice = registrationData?.gasQuote?.connectionPrice ?? null
-  registrationData.gas = true
-  registrationData.registrationType = REGISTRATION_TYPE_RESIDENTIAL
 
-  // setRegistrationData((prev) => ({
-  //   ...prev,
-  // registrationType: '',
-  //   connectionDetails: {
-  //     ...prev.connectionDetails,
-  //     state: 'QLD'
-  //   }
-  // }))
+  // registrationData.gas = true
+  // registrationData.newConnection = true
+  // registrationData.registrationType = REGISTRATION_TYPE_RESIDENTIAL
+  // const connectionDetails = {
+  //   state: 'QLD'
+  // }
+  // registrationData.connectionDetails = connectionDetails
 
   useEffect(() => {
     if (!onlyResidence || onlyResidence === NO_VALUE) {
@@ -104,29 +118,41 @@ const PersonalDetailPage3 = () => {
     }
   }, [setValue, onlyResidence])
 
+  const gasQuote = registrationData?.gasQuote
+  const energyType = registrationData?.energyType
+
+  const gasPlanCard =
+    energyType !== ELECTRICITY_VALUE ? (
+      <MiniPlanCard
+        brandIcon={gasQuote?.retailerLogo ?? ''}
+        energyType={GAS_VALUE}
+        planName={gasQuote?.retailerName ?? ''}
+      />
+    ) : null
+
   useEffect(() => {
     setValue('secondaryContact', registrationData?.secondaryContact ?? {})
     setValue('concession', registrationData?.concession ?? {})
-    setValue('newConnectionData', registrationData?.newConnectionData ?? {})
   }, [])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-      {/* <SecondaryAccountHolderForm
-        control={control}
-        hasSecondaryAccountHolder={hasSecondaryAccountHolder === YES_VALUE}
-      /> */}
+      <AccordionCard
+        alwaysOpen
+        open
+        title="Your Energy Plans"
+        bodyClassName="w-full grid grid-cols-1 lg:grid-cols-2 gap-6"
+      >
+          {gasPlanCard}
+      </AccordionCard>
+
       {[selectedGasRetailer].includes(AGL) ? (
         <AGLPersonalDetailsForm
           control={control}
           electric={false}
           gas={!!registrationData?.gas}
-          // connectionPrice={electricPrice} // NO GAS CONNECTION
           isNewConnection={!!registrationData?.newConnection}
           registrationType={registrationData?.registrationType ?? ''}
-          // state={registrationData?.connectionDetails?.state ?? ''}
-          // hasPower={hasPower}
-          // hasWorkCompleted={hasWorkCompleted}
           concessionHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
           hasSecondaryContact={hasSecondaryContact}
@@ -150,7 +176,6 @@ const PersonalDetailPage3 = () => {
       {[selectedGasRetailer].includes(ENERGY_AU) ? (
         <EAPersonalDetailsForm
           control={control}
-          electricityConnectionPrice={null}
           gasConnectionPrice={gasPrice ?? null}
           isNewConnection={!!registrationData?.newConnection}
           state={registrationData?.connectionDetails?.state ?? ''}
@@ -163,7 +188,7 @@ const PersonalDetailPage3 = () => {
       {[selectedGasRetailer].includes(SIMPLY_ENERGY) ? (
         <SEPersonalDetailsForm
           control={control}
-          electric={true}//!!registrationData?.electricity}
+          electric={false}
           registrationType={registrationData?.registrationType ?? ''}
           state={registrationData?.connectionDetails?.state ?? 'NSW'}
           onlyResidence={onlyResidence}
@@ -174,7 +199,6 @@ const PersonalDetailPage3 = () => {
           }
           isNewConnection={!!registrationData?.newConnection}
           powerAware={powerAware}
-          electricityConnectionPrice={null}
           gasConnectionPrice={gasPrice ?? null}
           hasSecondaryContact={hasSecondaryContact}
           secondaryContactName={contactName}
@@ -191,13 +215,12 @@ const PersonalDetailPage3 = () => {
           isNewConnection={!!registrationData?.newConnection}
           powerAware={powerAware}
           gasConnected={gasConnected}
-          electricityConnectionPrice={null}
           gasConnectionPrice={gasPrice ?? null}
           hasSecondaryContact={hasSecondaryContact}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
           gas={!!registrationData.gas}
-          electricity={!!registrationData.electricity}
+          electricity={false}
         />
       ) : null}
 
@@ -205,8 +228,8 @@ const PersonalDetailPage3 = () => {
         <EnergyLocalPersonalDetailsForm
           control={control}
           registrationType={registrationData?.registrationType ?? ''}
-          isNewConnection={false}
-          // electricalRenovationWork={electricalRenovationWork}
+          isNewConnection={!!registrationData?.newConnection}
+          electricalRenovationWork={electricalRenovationWork}
           hasSecondaryContact={hasSecondaryContact}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}

@@ -76,15 +76,24 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
   const newConnectionInput = data?.newConnection as Record<string, string>
   const newConnection = { ...newConnectionInput }
 
-  const gasNewConnectionInput = data?.newConnection as Record<string, string>
+  const gasNewConnectionInput = data?.gasNewConnection as Record<string, string>
   const gasNewConnection = { ...gasNewConnectionInput }
+
+  const gasQuoteId = data?.gasQuoteId as string
+  const electricQuoteId = data?.electricQuoteId as string
+
+  const businessType = data?.businessType as string
 
   const buildedData: RetailerAdditionalDetail = {
     concession: !isConcessionHolder || !isConcessionConsent ? null : concession,
     secondaryContact: !shouldAddSecondaryContact ? null : secondaryContact,
     newConnection,
-    gasNewConnection
+    gasNewConnection,
+    gasQuoteId,
+    electricQuoteId,
+    businessType
   }
+  console.log('retailer additional build', buildedData)
 
   return buildedData
 }
@@ -135,6 +144,9 @@ export interface RetailerAdditionalDetail {
   secondaryContact?: SecondaryContact | null
   newConnection?: NewConnection | null
   gasNewConnection?: NewConnection | null
+  electricQuoteId?: string | null
+  gasQuoteId?: string | null
+  businessType?: string
 }
 
 interface Concession {
