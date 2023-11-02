@@ -74,10 +74,10 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
   }
 
   const newConnectionInput = data?.newConnection as Record<string, string>
-  const newConnection = { ...newConnectionInput }
+  const newConnection = newConnectionInput ? { ...newConnectionInput } : null
 
   const gasNewConnectionInput = data?.gasNewConnection as Record<string, string>
-  const gasNewConnection = { ...gasNewConnectionInput }
+  const gasNewConnection = gasNewConnectionInput ? { ...gasNewConnectionInput } : null
 
   const gasQuoteId = data?.gasQuoteId as string
   const electricQuoteId = data?.electricQuoteId as string

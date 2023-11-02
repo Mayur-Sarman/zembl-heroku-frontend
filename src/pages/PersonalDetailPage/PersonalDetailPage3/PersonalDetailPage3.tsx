@@ -85,6 +85,7 @@ const PersonalDetailPage3 = () => {
       ...(data.secondaryContact as Record<string, unknown>),
       accountId: registrationData?.accountDetails?.accountId
     }
+    data.businessType = registrationData?.registrationType
     setRegistrationData((prev) => ({
       ...prev,
       secondaryContact: data.secondaryContact,

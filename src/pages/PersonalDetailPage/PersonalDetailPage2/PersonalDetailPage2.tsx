@@ -121,6 +121,7 @@ const PersonalDetailPage2 = () => {
 
     } else {
       data.electricQuoteId = registrationData?.electricityQuote?.quoteId
+      data.gasNewConnection = null
       data.gasQuoteId = registrationData?.gasQuote?.quoteId
       data.businessType = registrationData?.registrationType
       data.concession= {
@@ -148,14 +149,14 @@ const PersonalDetailPage2 = () => {
   const electricPrice = registrationData?.electricityQuote?.connectionPrice ?? 1000
   const gasPrice = registrationData?.gasQuote?.connectionPrice ?? 1000
 
-  registrationData.registrationType = REGISTRATION_TYPE_RESIDENTIAL
+  // registrationData.registrationType = REGISTRATION_TYPE_RESIDENTIAL
   registrationData.electricity = true
-  registrationData.gas = true
-  registrationData.newConnection = true
-  const connectionDetails = {
-    state: 'QLD'
-  }
-  registrationData.connectionDetails = connectionDetails
+  registrationData.gas = false
+  // registrationData.newConnection = true
+  // const connectionDetails = {
+  //   state: 'QLD'
+  // }
+  // registrationData.connectionDetails = connectionDetails
 
   const electricQuote = registrationData?.electricityQuote
   const gasQuote = registrationData?.gasQuote

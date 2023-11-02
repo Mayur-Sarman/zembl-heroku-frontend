@@ -43,8 +43,10 @@ const ReviewPlanPage = () => {
           ...(data as Partial<RegistrationData>),
           accountDetails: updatedAccountDetail,
         }))
+        console.log('updatedAccount:', updatedAccountDetail)
         setValue('businessDetails', data.businessDetails)
         setValue('accountDetails', updatedAccountDetail)
+        setValue('accountDetails.dateOfBirth', getJSONDateString(updatedAccountDetail?.dateOfBirth))
       },
       onError: (error) => {
         if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
@@ -86,6 +88,7 @@ const ReviewPlanPage = () => {
         ...updatedAccount,
         dateOfBirth: getJSONDateString(updatedAccount.dateOfBirth),
       }
+      
       const updatedPlanData = { ...registrationData, accountDetails: updatedAccount }
       updatePlanData.mutate({ planData: updatedPlanData, token: registrationToken ?? '' })
     }

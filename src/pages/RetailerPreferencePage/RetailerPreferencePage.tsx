@@ -33,11 +33,11 @@ const RetailerPreferencePage = () => {
       ...prev,
       electricityQuote: {
         ...prev.electricityQuote,
-        retailerName: AGL,
+        // retailerName: AGL,
       },
       gasQuote: {
         ...prev.gasQuote,
-        retailerName: BLUE_NRG,
+        // retailerName: BLUE_NRG,
       },
     }))
   }, [setRegistrationData])
