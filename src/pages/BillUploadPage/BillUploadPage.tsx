@@ -136,7 +136,7 @@ const BillUploadPage = () => {
   const onSubmit = (data: Partial<RegistrationData>) => {
     const nmi: string | undefined = data?.nmi
     const mirn: string | undefined = data?.mirn
-    console.log('nmi, mirn', nmi, mirn)
+
     if((registrationData?.energyType === BOTH_VALUE && (!nmi || !mirn)) || (!nmi && !mirn)) {
       setValue('billFileType', HAVE_PAPER_BILL)
       fireAlert({
