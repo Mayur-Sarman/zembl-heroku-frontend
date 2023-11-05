@@ -40,7 +40,6 @@ const DateInput = ({
         control={control}
         rules={required ? { ...rules, ...REQUIRED_VALIDATION } : {}}
         render={({ field, fieldState }) => {
-          console.log('field.value =>', field.value)
           return (
             <>
               <Datepicker
