@@ -45,7 +45,7 @@ const BasicInfoPage1 = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
       <BasicBusinessDetailsForm control={control} hideNonBusiness={isNonBusiness} />
       <EnergyTypeForm control={control} isMoving={isMoving as string} hideNonBusiness={isNonBusiness} />
-      <EnergySpendForm control={control} billingType={billFrequency as string} />
+      {!isNonBusiness ? <EnergySpendForm control={control} billingType={billFrequency as string} /> : null}
 
       <PageNavigationActions prevLink="/" nextDisabled={!formState.isValid} />
     </form>

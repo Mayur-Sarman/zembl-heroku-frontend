@@ -175,7 +175,7 @@ const BillUploadPage = () => {
   if (registrationData?.energyType !== BOTH_VALUE) {
     uploadOptions = UPLOAD_BILL_TYPE_OPTIONS.filter((item) => {
       if (!registrationData?.energyType) return false
-      return item.value.includes(registrationData?.energyType) || item.value === HAVE_PAPER_BILL
+      return item.value?.toLowerCase().includes(registrationData?.energyType?.toLowerCase()) || item.value === HAVE_PAPER_BILL
     })
   }
 

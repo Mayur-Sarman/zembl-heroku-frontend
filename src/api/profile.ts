@@ -70,7 +70,7 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
     ...secondaryContactInput,
     dateOfBirth: getJSONDateString(secondaryContactInput?.dateOfBirth),
     type: data?.registrationType as string,
-    accountId: (data?.accountDetails as AccountDetail)?.accountId,
+    accountId: data?.accountId as string,
   }
 
   const newConnectionInput = data?.newConnection as Record<string, string>
@@ -93,7 +93,6 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
     electricQuoteId,
     businessType
   }
-  console.log('retailer additional build', buildedData)
 
   return buildedData
 }

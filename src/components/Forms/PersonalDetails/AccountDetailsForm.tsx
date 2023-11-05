@@ -77,7 +77,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
           datepickerClassNames={'top-auto'}
           readOnly={isFieldsReadOnly}
           rules={DATE_MUST_PAST}
-          maxDate={new Date()}
+          // maxDate={new Date()}
         />
         <ControllerInput
           name={`${prefix ? prefix + '.' : ''}email`}

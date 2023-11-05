@@ -37,6 +37,7 @@ const appRoutes = [
       { path: 'zembl-assist-upload', element: <ZemblUploadPage /> },
       { path: 'abn-error', element: <ABNErrorPage /> },
       { path: 'nmi-mirn-error', element: <ABNErrorPage /> },
+      { path: 'quoting-error', element: <ABNErrorPage /> },
       { path: 'basic-info-1', element: <BasicInfoPage pageNo={1} /> },
       { path: 'basic-info-2', element: <BasicInfoPage pageNo={2} /> },
       { path: 'bill-upload', element: <BillUploadPage /> },

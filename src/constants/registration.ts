@@ -67,9 +67,9 @@ export const MEDIUM_VALUE = 'Medium'
 export const HIGH_VALUE = 'High'
 
 export const UPLOAD_PDF_BILL = 'Upload PDF Bill'
-export const HAVE_PAPER_BILL = 'Have Paper Bill'
-export const UPLOAD_ELECTRICITY_BILL = 'Upload Electricity Bill'
-export const UPLOAD_GAS_BILL = 'Upload Gas Bill'
+export const HAVE_PAPER_BILL = 'Have paper bill'
+export const UPLOAD_ELECTRICITY_BILL = 'Upload PDF electricity bill'
+export const UPLOAD_GAS_BILL = 'Upload PDF gas bill'
 
 export const REGISTRATION_TYPE_BUSINESS = 'Business'
 export const REGISTRATION_TYPE_RESIDENTIAL = 'Residential'
@@ -300,7 +300,6 @@ export const RETAILER_OPTIONS: SelectOption[] = [
   NECTR,
   NEXT_BUSINESS_ENERGY,
   ORIGIN,
-  OTHER,
   POWERSHOP,
   RED_ENERGY,
   SHELL,
@@ -308,6 +307,7 @@ export const RETAILER_OPTIONS: SelectOption[] = [
   SMARTEST_ENERGY,
   SUMO,
   TANGO,
+  OTHER,
 ].map((i) => ({ value: i, label: i }))
 
 export const AGL_CONCESSION_CARD_TYPES = [

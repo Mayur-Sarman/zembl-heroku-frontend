@@ -66,6 +66,7 @@ const PlanSummaryCard = ({
         planEstCostPerMonth={planEstCostPerMonth}
         planEstCostPerYear={planEstCostPerYear}
         hideSelectButton
+        isReviewPlan={true}
       />
     </AccordionCard>
   )

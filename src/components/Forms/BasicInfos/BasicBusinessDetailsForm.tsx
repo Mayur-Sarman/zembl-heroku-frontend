@@ -6,8 +6,9 @@ import { REQUIRED_VALIDATION, ABN_NMI_MIRN_VALIDATION } from '../../../constants
 import ControllerInput from '../../Inputs/ControllerInput'
 
 const BasicBusinessDetailsForm = ({ control, hideNonBusiness }: BasicBusinessDetailsFormProps) => {
+  const detailsHeader = hideNonBusiness ? 'Residential Details' : 'Business Details'
   return (
-    <AccordionCard alwaysOpen open title="Business Details">
+    <AccordionCard alwaysOpen open title={detailsHeader}>
       <div className="w-full lg:w-1/2 flex flex-col gap-3">
         <GoogleAddressInput
           required

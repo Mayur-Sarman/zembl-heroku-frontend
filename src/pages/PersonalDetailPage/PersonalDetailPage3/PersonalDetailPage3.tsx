@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import PageNavigationActions from '../../../components/PageNavigationActions'
 import AGLPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/AGLPersonalDetailsForm'
 import { useRegistration } from '../../../hooks/useRegistration'
-import { REGISTRATION_TYPE_RESIDENTIAL } from '../../../constants'
+// import { REGISTRATION_TYPE_RESIDENTIAL } from '../../../constants'
 import {
   AGL,
   BLUE_NRG,
@@ -31,13 +31,14 @@ import MiniPlanCard from '../../../components/MiniPlanCard'
 import { useEffect } from 'react'
 
 const PersonalDetailPage3 = () => {
-  const { registrationData, registrationToken, setRegistrationData } = useRegistration()
+  const { registrationData, registrationToken, setRegistrationData, setUploadText } = useRegistration()
   // On load page get data from context
   const { handleSubmit, control, watch, setValue } = useForm({ mode: 'all' })
   const navigate = useNavigate()
 
   const retailerAdditionalDetailsMutation = useRetailerAdditionalDetailsMutation(registrationToken ?? '', {
     onSuccess: (_, data) => {
+      setUploadText(null)
       setRegistrationData((prev) => ({
         ...prev,
         secondaryContact: data.secondaryContact,
@@ -46,6 +47,9 @@ const PersonalDetailPage3 = () => {
       }))
       navigate('/plan-confirmation')
     },
+    onError:() => {
+      setUploadText(null)
+    }
   })
 
   const [
@@ -77,13 +81,17 @@ const PersonalDetailPage3 = () => {
     data.gasQuoteId = registrationData?.gasQuote?.quoteId
     data.gasNewConnection = data.newConnection || data.gasNewConnection ? {...(data.newConnection as Record<string, unknown>), ...(data.gasNewConnection as Record<string, unknown>)} : null
     data.newConnection = registrationData?.newConnectionData
+    data.businessType = registrationData?.registrationType
+    data.accountId = registrationData?.accountDetails?.accountId
     data.concession= {
       ...(data.concession as Record<string, unknown>),
       contactId: registrationData?.accountDetails?.contactId
     }
     data.secondaryContact = {
       ...(data.secondaryContact as Record<string, unknown>),
-      accountId: registrationData?.accountDetails?.accountId
+      accountId: registrationData?.accountDetails?.accountId,
+      contactId: registrationData?.accountDetails?.contactId,
+      businessType: registrationData?.registrationType
     }
     data.businessType = registrationData?.registrationType
     setRegistrationData((prev) => ({
@@ -93,11 +101,9 @@ const PersonalDetailPage3 = () => {
       concession: data.concession,
     }))
 
-    console.log('page - 3 data: ', data)
 
+    setUploadText('Please Wait')
     retailerAdditionalDetailsMutation.mutate(buildRetailerAdditionalDetailPayload(data))
-
-    console.log('registrationData - 3', registrationData)
   }
 
   const contactName = `${firstName ?? ''} ${lastName ?? ''}`.trim()

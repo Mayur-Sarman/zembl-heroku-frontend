@@ -3,7 +3,7 @@ import { ENERGY_TYPE_OPTIONS, YES_NO_OPTIONS, YES_VALUE } from '../../../constan
 import AccordionCard from '../../AccordionCard'
 import DateInput from '../../Inputs/DateInput'
 import ControllerRadioGroupInput from '../../Inputs/ControllerRadioGroupInput'
-import { DATE_MUST_FUTURE, REQUIRED_VALIDATION } from '../../../constants/validation'
+import { DATE_MUST_IN_90_DAY, REQUIRED_VALIDATION, DATE_MUST_MORE_THAN_TWO_DAY } from '../../../constants/validation'
 
 const EnergyTypeForm = ({ control, isMoving, hideNonBusiness }: EnergyTypeFormProps) => {
   return (
@@ -41,10 +41,9 @@ const EnergyTypeForm = ({ control, isMoving, hideNonBusiness }: EnergyTypeFormPr
             datepickerClassNames={'top-auto'}
             label={'Moving Date?'}
             defaultDate={null}
-            minDate={new Date()}
             required
             containerClassName={`w-full lg:w-1/2`}
-            rules={DATE_MUST_FUTURE}
+            rules={{...DATE_MUST_IN_90_DAY, ...DATE_MUST_MORE_THAN_TWO_DAY}}
           />
         ) : null}
       </div>

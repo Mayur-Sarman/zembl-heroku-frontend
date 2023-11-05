@@ -15,7 +15,7 @@ const FullPlanCard = ({
   control,
 }: FullPlanCardProps) => {
   const prefix = energyType === ELECTRICITY_VALUE ? 'electricityQuote' : 'gasQuote'
-  const termChecksDisplay = termAndConditionItems.map((item, index) => (
+  const termChecksDisplay = termAndConditionItems?.map((item, index) => (
     <ControllerCheckBox
       key={item.id}
       name={`${prefix}.[${index}].accepted`}

@@ -29,6 +29,7 @@ import {
   postConfirmQuote,
   postCreateQuote,
   postCreateQuoteLine,
+  postQuoteToken,
 } from '../api/quote'
 import { isArray } from 'lodash'
 import { MainProfile, UpdateProfileResponse, patchUpdateProfile } from '../api/profile'
@@ -54,6 +55,8 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       message = `Unfortunately, we couldn't process your request at this time. Please try again later.`,
     ) => {
       let errorMessage = message
+      console.log(error.response)
+      const data = error?.response?.data as ErrorResponse
       switch (error.response?.status) {
         case 401: {
           errorMessage = 'Your session has expired. Please submit a new registration.'
@@ -64,7 +67,22 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
           return
         }
       }
-      fireAlert({ children: errorMessage, type: 'error', duration: 5000 })
+      if(data?.items != null && data?.items != undefined && data?.items.length > 0) {
+        const item = data.items[0]
+        if(item.statusCode === 'GET_NMI_DETAIL_ERROR') {
+          navigate('/nmi-mirn-error')
+        } else if (item.statusCode === 'MIRN_FLOW_ERROR') {
+          navigate('/nmi-mirn-error')
+        } else if (item.statusCode === 'TWILIO_CALLOUT_ERROR') {
+          fireAlert({ children: 'Your mobile number or email address is incorrect, Please change the information and try again later', type: 'error', duration: 5000 })
+        } else if (item.statusCode === 'QUOTING_FLOW_ERROR') {
+          navigate('/quoting-error')
+        } else { 
+          fireAlert({ children: errorMessage, type: 'error', duration: 5000 })
+        }
+      } else {
+        fireAlert({ children: errorMessage, type: 'error', duration: 5000 })
+      }
     },
     [fireAlert],
   )
@@ -270,9 +288,21 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     },
   })
 
-  // useEffect(() => {
-  //   if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
-  // }, [location.pathname, navigate, registrationToken])
+  const sendOTPMutation = useMutation({
+    mutationFn: () => postQuoteToken(buildConfirmQuotePayload(registrationData), registrationToken ?? ''),
+    onError: (error: AxiosError, req) => {
+      if (ZEMBL_DEBUG_MODE) console.log('POST_CONFIRM_QUOTE_ERROR', error, 'REQ:', req)
+      handleErrorResponse(error)
+    },
+    onSuccess: (data: SimpleResponse)  => {
+      setRegistrationData((prev) => ({...prev, quoteToken: data?.token, email: data?.email, mobile: data?.mobile}))
+      navigate('/verification-code?token=' + data?.token);
+    }
+  })
+
+  useEffect(() => {
+    if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
+  }, [location.pathname, navigate, registrationToken])
 
   const isLoading =
     validateReCaptchaMutation.isLoading ||
@@ -285,7 +315,8 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     createQuoteMutation.isLoading ||
     createQuoteLineMutation.isLoading ||
     updateProfileMutation.isLoading ||
-    sendQuoteEmailMutation.isLoading
+    sendQuoteEmailMutation.isLoading ||
+    sendOTPMutation.isLoading
 
   return (
     <RegistrationContext.Provider
@@ -308,6 +339,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         createQuoteLineMutation,
         updateProfileMutation,
         sendQuoteEmailMutation,
+        sendOTPMutation,
         handleErrorResponse,
         isLoading,
         uploadText
@@ -337,9 +369,23 @@ interface RegistrationActions {
   createQuoteLineMutation: UseMutationResult<CreateQuoteLineResponse, AxiosError, CreateQuoteLinePayload>
   updateProfileMutation: UseMutationResult<UpdateProfileResponse, AxiosError, MainProfile>
   sendQuoteEmailMutation: UseMutationResult<SimpleResponse, AxiosError, void>
+  sendOTPMutation: UseMutationResult<SimpleResponse, AxiosError, void>
+
   handleErrorResponse: (error: AxiosError, message?: string) => void
   isLoading: boolean
   uploadText: string | null
+}
+
+interface ErrorResponse {
+  id?: string | null
+  items?: ErrorItem[] | null | undefined
+  successful?: string
+}
+
+interface ErrorItem {
+  id?: string | null
+  message?: string | null
+  statusCode?: string | null
 }
 
 RegistrationContextProvider.propTypes = {

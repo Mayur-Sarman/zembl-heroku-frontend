@@ -17,6 +17,7 @@ export const CREATE_QUOTE_LINE_ENDPOINT = `${import.meta.env.VITE_SERVICE_CREATE
 export const UPDATE_MAIN_PROFILE_ENDPOINT = `${import.meta.env.VITE_SERVICE_UPDATE_MAIN_PROFILE_ENDPOINT ?? '/api/crm/main-profile'}`
 export const ADD_ADDITIONAL_PROFILE_DETAIL_ENDPOINT = `${import.meta.env.VITE_SERVICE_ADD_ADDITIONAL_PROFILE_DETAIL_ENDPOINT ?? '/api/crm/secondary-profile'}`
 export const SEND_QUOTE_EMAIL_ENDPOINT = `${import.meta.env.VITE_SERVICE_SEND_QUOTE_EMAIL_ENDPOINT ?? '/api/verification/generate-tc-link'}`
+export const GET_QUOTE_TOKEN_AND_SEND_OTP_ENDPOINT = `${import.meta.env.VITE_SERVICE_GET_QUOTE_TOKEN_AND_SEND_OTP_ENDPOINT ?? '/api/verification/generate-token-and-otp'}`
 export const VALIDATE_LINK_ENDPOINT = `${import.meta.env.VITE_SERVICE_VALIDATE_LINK_ENDPOINT ?? '/api/crm/lead'}`
 export const RESEND_OTP_ENDPOINT = `${import.meta.env.VITE_SERVICE_RESEND_OTP_ENDPOINT ?? '/api/verification/send-otp'}`
 export const VALIDATE_OTP_ENDPOINT = `${import.meta.env.VITE_SERVICE_VALIDATE_OTP_ENDPOINT ?? '/api/verification/validate-quote'}`

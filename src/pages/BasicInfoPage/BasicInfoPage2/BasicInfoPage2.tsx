@@ -15,10 +15,16 @@ import { convertPreference } from '../../../api/common'
 import { ZEMBL_DEBUG_MODE } from '../../../constants/misc'
 
 const BasicInfoPage2 = () => {
-  const { registrationData, updateLeadMutation, createSiteMutation, setRegistrationData } = useRegistration()
+  const { registrationData, updateLeadMutation, createSiteMutation, setRegistrationData  } = useRegistration()
   // On load page get data from context
-  const { handleSubmit, control } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
+  const { handleSubmit, control, watch } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
   const navigate = useNavigate()
+
+  const [
+    solar,
+  ]: string[] = watch([
+    'solar',
+  ]) as string[]
 
   const onSubmit = async (data: FieldValues) => {
     // Call API
@@ -69,7 +75,7 @@ const BasicInfoPage2 = () => {
 
       <BillAndMessageForm control={control} />
       <BasicLifeSupportForm control={control} />
-      <SolarForm control={control} />
+      <SolarForm control={control} solar={solar}/>
       <ControllerPreferencesSelector name={'preferenceList'} control={control} rules={REQUIRED_VALIDATION} />
 
       <PageNavigationActions prevLink="/basic-info-1" />

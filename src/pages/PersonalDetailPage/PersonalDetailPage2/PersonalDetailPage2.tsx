@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import PageNavigationActions from '../../../components/PageNavigationActions'
 import AGLPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/AGLPersonalDetailsForm'
 import { useRegistration } from '../../../hooks/useRegistration'
-import { REGISTRATION_TYPE_RESIDENTIAL } from '../../../constants'
+// import { REGISTRATION_TYPE_RESIDENTIAL } from '../../../constants'
 import {
   AGL,
   BLUE_NRG,
@@ -31,21 +31,25 @@ import { buildRetailerAdditionalDetailPayload } from '../../../api/profile'
 import { useEffect } from 'react'
 
 const PersonalDetailPage2 = () => {
-  const { registrationData, registrationToken, setRegistrationData } = useRegistration()
+  const { registrationData, registrationToken, setRegistrationData, sendOTPMutation, setUploadText } = useRegistration()
   // On load page get data from context
   const { handleSubmit, control, watch, setValue } = useForm({ mode: 'all' })
   const navigate = useNavigate()
 
   const retailerAdditionalDetailsMutation = useRetailerAdditionalDetailsMutation(registrationToken ?? '', {
     onSuccess: (_, data) => {
+      setUploadText(null)
       setRegistrationData((prev) => ({
         ...prev,
         secondaryContact: data.secondaryContact,
         newConnectionData: data.newConnection,
         concession: data.concession,
       }))
-      navigate('/plan-confirmation')
+      sendOTPMutation.mutate();
     },
+    onError:() => {
+      setUploadText(null)
+    }
   })
 
   const [
@@ -106,17 +110,19 @@ const PersonalDetailPage2 = () => {
       data.electricQuoteId = registrationData?.electricityQuote?.quoteId
       data.gasQuoteId = registrationData?.gasQuote?.quoteId
       data.businessType = registrationData?.registrationType
+      data.accountId = registrationData?.accountDetails?.accountId
       data.concession= {
         ...(data.concession as Record<string, unknown>),
         contactId: registrationData?.accountDetails?.contactId
       }
       data.secondaryContact = {
         ...(data.secondaryContact as Record<string, unknown>),
-        accountId: registrationData?.accountDetails?.accountId
+        accountId: registrationData?.accountDetails?.accountId,
+        contactId: registrationData?.accountDetails?.contactId,
+        businessType: registrationData?.registrationType
       }
-      console.log('page - 2 data:', data)
-      // const a = false
-      // if(a)
+   
+      setUploadText('Please Wait')
       retailerAdditionalDetailsMutation.mutate(buildRetailerAdditionalDetailPayload(data))
 
     } else {
@@ -124,17 +130,19 @@ const PersonalDetailPage2 = () => {
       data.gasNewConnection = null
       data.gasQuoteId = registrationData?.gasQuote?.quoteId
       data.businessType = registrationData?.registrationType
+      data.accountId = registrationData?.accountDetails?.accountId
       data.concession= {
         ...(data.concession as Record<string, unknown>),
         contactId: registrationData?.accountDetails?.contactId
       }
       data.secondaryContact = {
         ...(data.secondaryContact as Record<string, unknown>),
-        accountId: registrationData?.accountDetails?.accountId
+        accountId: registrationData?.accountDetails?.accountId,
+        contactId: registrationData?.accountDetails?.contactId,
+        businessType: registrationData?.registrationType
       }
-      console.log('page - 2 data:', data)
-      // const a = false
-      // if(a)
+
+      setUploadText('Please Wait')
       retailerAdditionalDetailsMutation.mutate(buildRetailerAdditionalDetailPayload(data))
     }
     
@@ -146,12 +154,12 @@ const PersonalDetailPage2 = () => {
   const isElectricTransfer = selectedElecRetailer !== registrationData?.currentRetailerElectric
   const isGasTransfer = selectedGasRetailer !== registrationData?.currentRetailerGas
 
-  const electricPrice = registrationData?.electricityQuote?.connectionPrice ?? 1000
-  const gasPrice = registrationData?.gasQuote?.connectionPrice ?? 1000
+  const electricPrice = registrationData?.electricityQuote?.connectionPrice ?? null
+  const gasPrice = registrationData?.gasQuote?.connectionPrice ?? null
 
   // registrationData.registrationType = REGISTRATION_TYPE_RESIDENTIAL
-  registrationData.electricity = true
-  registrationData.gas = false
+  // registrationData.electricity = true
+  // registrationData.gas = false
   // registrationData.newConnection = true
   // const connectionDetails = {
   //   state: 'QLD'
@@ -189,7 +197,6 @@ const PersonalDetailPage2 = () => {
     setValue('secondaryContact', registrationData?.secondaryContact ?? {})
     setValue('concession', registrationData?.concession ?? {})
     setValue('newConnection', registrationData?.newConnectionData ?? null)
-    console.log('RegistrationData', registrationData)
   }, [])
 
   return (

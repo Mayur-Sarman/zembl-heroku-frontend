@@ -20,7 +20,6 @@ const ReviewTermsPage = () => {
 
   const updatePlanData = useUpdateQuoteMutation({
     onSuccess: (_, data) => {
-      console.log(data)
       setRegistrationData((prev) => ({ ...prev, ...data.planData }))
       navigate('/thank-you')
     },
