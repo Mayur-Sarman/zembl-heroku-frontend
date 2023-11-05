@@ -27,7 +27,7 @@ const VerificationCodePage = () => {
   const validateToken = useValidateTokenQuery(token, {
     onSuccess: (data: ValidateTokenResponse) => {
       setOtpDigits(data.otpDigit ?? 4)
-      setRegistrationData((prev) => ({ ...prev, quoteToken: token }))
+      setRegistrationData((prev) => ({ ...prev, quoteToken: token, email: data?.email, mobile: data?.mobile }))
     },
     onError: (error) => {
       if (ZEMBL_DEBUG_MODE) console.log('VERIFICATION_CODE_PAGE', error)
@@ -79,7 +79,8 @@ const VerificationCodePage = () => {
             name="otpCode"
             control={control}
             setValue={setValue}
-            phoneNumber={registrationData?.phone ?? registrationData?.mobile ?? ''}
+            phoneNumber={registrationData?.mobile ?? null}
+            email={registrationData?.email ?? null}
             onResendClicked={onResendClick}
             digits={otpDigits}
           />

@@ -5,7 +5,7 @@ import RegistrationStep from '../../components/RegistrationStep'
 import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
 import RetailerPreferenceForm from '../../components/Forms/RetailerPreferenceForm'
-import { AGL, BLUE_NRG, RegistrationData } from '../../constants'
+import {RegistrationData } from '../../constants'
 import { Quote } from '../../api/quote'
 import { useEffect } from 'react'
 
@@ -23,7 +23,7 @@ const RetailerPreferencePage = () => {
           gasQuote: { ...data.gasQuote, quotePreferences: commonPreferences },
         }
       : data
-    console.log(updatedData)
+      
     setRegistrationData((prev) => ({ ...prev, ...updatedData }))
     navigate('/review-terms')
   }
@@ -33,11 +33,11 @@ const RetailerPreferencePage = () => {
       ...prev,
       electricityQuote: {
         ...prev.electricityQuote,
-        retailerName: AGL,
+        // retailerName: AGL,
       },
       gasQuote: {
         ...prev.gasQuote,
-        retailerName: BLUE_NRG,
+        // retailerName: BLUE_NRG,
       },
     }))
   }, [setRegistrationData])

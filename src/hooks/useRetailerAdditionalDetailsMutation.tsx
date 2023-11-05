@@ -16,8 +16,8 @@ export const useRetailerAdditionalDetailsMutation = (
   useMutation({
     mutationFn: (reZemblConsentData: RetailerAdditionalDetail) =>
       postCreateRetailerAdditionalDetail(reZemblConsentData, token),
-    ...rest,
-    retry: false,
-    onSuccess,
-    onError,
+      ...rest,
+      retry: false,
+      onSuccess,
+      onError,
   })

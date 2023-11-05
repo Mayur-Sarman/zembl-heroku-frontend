@@ -59,17 +59,17 @@ export const QUARTERLY_SPEND_LESS = '< 7,500'
 export const EMAIL_VALUE = 'Email'
 export const POST_VALUE = 'Post'
 
-export const ZEMBL_ASSIST_VALUE = 'Zembl Assistance'
-export const SELF_SERVE_VALUE = 'Self Serve'
+export const ZEMBL_ASSIST_VALUE = 'Talk to an expert'
+export const SELF_SERVE_VALUE = 'Compare online'
 
 export const LOW_VALUE = 'Low'
 export const MEDIUM_VALUE = 'Medium'
 export const HIGH_VALUE = 'High'
 
 export const UPLOAD_PDF_BILL = 'Upload PDF Bill'
-export const HAVE_PAPER_BILL = 'Have Paper Bill'
-export const UPLOAD_ELECTRICITY_BILL = 'Upload Electricity Bill'
-export const UPLOAD_GAS_BILL = 'Upload Gas Bill'
+export const HAVE_PAPER_BILL = 'Have paper bill'
+export const UPLOAD_ELECTRICITY_BILL = 'Upload PDF electricity bill'
+export const UPLOAD_GAS_BILL = 'Upload PDF gas bill'
 
 export const REGISTRATION_TYPE_BUSINESS = 'Business'
 export const REGISTRATION_TYPE_RESIDENTIAL = 'Residential'
@@ -300,7 +300,6 @@ export const RETAILER_OPTIONS: SelectOption[] = [
   NECTR,
   NEXT_BUSINESS_ENERGY,
   ORIGIN,
-  OTHER,
   POWERSHOP,
   RED_ENERGY,
   SHELL,
@@ -308,6 +307,7 @@ export const RETAILER_OPTIONS: SelectOption[] = [
   SMARTEST_ENERGY,
   SUMO,
   TANGO,
+  OTHER,
 ].map((i) => ({ value: i, label: i }))
 
 export const AGL_CONCESSION_CARD_TYPES = [

@@ -1,8 +1,9 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { Badge, Button, Card, CardBody, CardFooter, CardProps, Typography } from '@material-tailwind/react'
 import { useCallback } from 'react'
-import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
+import { ELECTRICITY_VALUE } from '../constants'
 import { formatCurrency, formatPercent } from '../helpers/formatter'
+import ControllerTooltip from './Icons/ControllerTooltip'
 
 const PlanCard = ({
   planId,
@@ -10,19 +11,20 @@ const PlanCard = ({
   logoURL = '',
   logoImageHTML,
   bpidLink = '#',
-  detailLink = '#',
+  // detailLink = '#',
   exitPenalty,
   australianOwned,
   contractLength,
   planDescription,
   planLessThanCurrentPricePercent,
-  planEstAnnualSaving,
+  // planEstAnnualSaving,
   planEstCostPerMonth,
   planEstCostPerYear,
   planType,
   isSelected,
   selectButtonText,
   hideSelectButton = false,
+  isReviewPlan = false,
   onPlanChoose,
 }: PlanCardProps) => {
   const onPlanChooseHandler = useCallback(() => (onPlanChoose ? onPlanChoose(planId) : null), [planId, onPlanChoose])
@@ -49,11 +51,11 @@ const PlanCard = ({
                 <Typography className="text-xs underline">Basic Plan Information Document</Typography>
               </a>
             </div>
-            <div role="button" onKeyDown={undefined} tabIndex={0}>
+            {/* <div role="button" onKeyDown={undefined} tabIndex={0}>
               <a href={detailLink} target="_blank" rel="noreferrer">
                 <Typography className="text-xs underline">View Details</Typography>
               </a>
-            </div>
+            </div> */}
           </div>
           <div className="flex flex-col gap-1 w-full md:w-[calc(33.33%-0.5rem] lg:w-1/5">
             {exitPenalty ? (
@@ -72,17 +74,20 @@ const PlanCard = ({
               </div>
             ) : null}
           </div>
-          <div className="grid grid-cols-2 gap-3 w-full lg:w-2/5 auto-rows-max">
-            <PlanHilight
+          <div className={`grid grid-cols-2 ${isReviewPlan ? 'gap-y-0 gap-x-3' : 'gap-3'} w-full lg:w-2/5 auto-rows-max`}>
+            <div></div>
+            {
+              isReviewPlan ? <div></div> : <PlanHilight
               className={planType === ELECTRICITY_VALUE ? '' : 'hidden lg:flex opacity-0 h-0 pointer-events-none'}
             >
               <Typography variant="h6" className="text-lg">
                 {formatPercent(planLessThanCurrentPricePercent)} Less than
               </Typography>
-              <Typography className="text-xs font-normal">the current reference price</Typography>
+              <Typography className="text-[10px] font-normal">the current reference price</Typography>
             </PlanHilight>
-
-            <PlanHilight
+            }
+            
+            {/* <PlanHilight
               className={`!bg-zembl-action-primary ${planType === GAS_VALUE ? 'col-span-2 lg:col-span-1' : ''}`}
             >
               <Typography className="text-xs font-normal">Estimated Annual Saving</Typography>
@@ -92,10 +97,13 @@ const PlanCard = ({
                 </Typography>
                 <Typography className="text-xs font-normal">inc GST</Typography>
               </div>
-            </PlanHilight>
+            </PlanHilight> */}
 
             <PlanHilight>
-              <Typography className="text-xs font-normal">Estimated Cost</Typography>
+              <div className="inline-block">
+              <Typography className="text-xs font-normal inline-block mr-1">Estimated Cost</Typography>
+              <ControllerTooltip tooltipText={`Approximate charges (incl GST) for 31 days based on average 27.47 KWh daily usage. The estimated cost displayed is rounded up to the closest dollar (Example: $352.38 is rounded up to $353)`} />
+              </div>
               <div className="flex items-baseline justify-center gap-1 ">
                 <Typography variant="h6" className="text-lg">
                   {formatCurrency(planEstCostPerMonth)}
@@ -105,7 +113,10 @@ const PlanCard = ({
             </PlanHilight>
 
             <PlanHilight>
-              <Typography className="text-xs font-normal">Estimated Cost</Typography>
+            <div className="inline-block">
+              <Typography className="text-xs font-normal inline-block mr-1">Estimated Cost</Typography>
+              <ControllerTooltip tooltipText={`Approximate charges (incl GST) for 31 days based on average 27.47 KWh daily usage. The estimated cost displayed is rounded up to the closest dollar (Example: $352.38 is rounded up to $353)`} />
+              </div>
               <div className="flex items-baseline justify-center gap-1 ">
                 <Typography variant="h6" className="text-lg">
                   {formatCurrency(planEstCostPerYear)}
@@ -170,6 +181,7 @@ export interface PlanCardProps {
   hideSelectButton?: boolean
   onPlanChoose?: (planId: string) => void
   minimized?: boolean
+  isReviewPlan?: boolean
 }
 
 export default PlanCard

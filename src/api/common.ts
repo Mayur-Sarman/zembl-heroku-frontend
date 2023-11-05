@@ -73,4 +73,7 @@ interface CommonResponsePayloadError {
 
 export interface SimpleResponse {
   message?: string
+  token?: string
+  email?: string
+  mobile?: string
 }

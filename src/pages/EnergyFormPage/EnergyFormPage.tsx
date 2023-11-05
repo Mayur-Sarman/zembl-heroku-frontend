@@ -1,8 +1,16 @@
 import { useEffect } from 'react'
 
+import { Helmet } from 'react-helmet'
 import { useForm } from 'react-hook-form'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
+import agl from '../../assets/agl.svg'
+import bluenrg from '../../assets/bluenrg.svg'
+import energyaustralia from '../../assets/energyaustralia.svg'
+import energylocals from '../../assets/energylocals.svg'
+import momentumenergy from '../../assets/momentumenergy.svg'
+import nextbusinessenergy from '../../assets/nextbusinessenergy.svg'
+import simplyenergy from '../../assets/simplyenergy.svg'
 
 import { Button } from '@material-tailwind/react'
 
@@ -88,6 +96,29 @@ const HomePage = () => {
 
   return (
     <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
+      <Helmet>
+      <script type="text/javascript">
+        {`window.__productReviewSettings = {
+          brandId: 'f8416ed1-a744-35b1-81b9-4f03ed7a177e'
+        }`}
+      </script>
+        
+      <script src="https://cdn.productreview.com.au/assets/widgets/loader.js" async></script>
+      <script type="text/javascript">{`
+        window.__productReviewCallbackQueue = window.__productReviewCallbackQueue || [];
+        window.__productReviewCallbackQueue.push(function(ProductReview) {
+        ProductReview.use('reviews-carousel', {
+        "container": "#pr-reviews-carousel-widget",
+        "identificationDetails": {
+        "type": "single",
+        "strategy": "from-internal-entry-id",
+        "identifier": "7ed48432-6790-3542-8e1a-a14f7ac5f66c"
+        }
+        });
+        });`}
+      </script>
+      </Helmet>
+
       <EnergyFormPageTitle />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 md:w-1/2 ">
         <InputWithLabel
@@ -134,6 +165,20 @@ const HomePage = () => {
           Next
         </Button>
       </form>
+      <div className="bg-grey-100 w-screen pt-16 pb-16">
+      <div className="bg-grey-100">
+        <div className="inline-block p-1.5"><img src={bluenrg} alt="BlueNRG" /></div>
+        <div className="inline-block p-1.5"><img src={nextbusinessenergy} alt="NextBusinessEnergy" /></div>
+        <div className="inline-block p-1.5"><img src={momentumenergy} alt="Momentum" /></div>
+        <div className="inline-block p-1.5"><img src={simplyenergy} alt="SimplyEnergy" /></div>
+      </div>
+      <div>
+        <div className="inline-block p-1.5"><img src={agl} alt="AGL" /></div>
+        <div className="inline-block p-1.5"><img src={energyaustralia} alt="EnergyAustralia" /></div>
+        <div className="inline-block p-1.5"><img src={energylocals} alt="EnergyLocals" /></div>
+      </div>
+      </div>
+      <div className="w-screen"><div className="m-auto w-11/12" id="pr-reviews-carousel-widget">&nbsp;</div></div>
     </PageWrapper>
   )
 }

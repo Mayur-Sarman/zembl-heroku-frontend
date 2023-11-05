@@ -13,7 +13,7 @@ export const MAX_CUS_TEXT_FIELD_LENGTH = 255
 export const MAX_STD_PHONE_FIELD_LENGTH = 11
 export const MAX_STD_NUMBER_FIELD_LENGTH = 18
 export const STD_EMAIL_PATTERN =
-  /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
+  /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/
 
 export const STD_NUMBER_PATTERN = /\+?\d+/
 
@@ -104,19 +104,34 @@ export const getExactLengthValidation = (length: number) => ({
 
 export const DATE_MUST_FUTURE = {
   min: {
-    value: (value: Date) => value > new Date(),
+    value: new Date(),
     message: 'Date must be in the future.',
   },
 }
 
-export const DATE_MUST_PAST = {
+export const DATE_MUST_MORE_THAN_TWO_DAY = {
   min: {
-    value: (value: Date) => value <= new Date(),
+    value: new Date().setDate(new Date().getDate() + 2),
+    message: 'Date must after today for two days.',
+  }
+}
+
+export const DATE_MUST_IN_90_DAY = {
+  max: {
+    value: new Date().setDate(new Date().getDate() + 90),
+    message: 'Date must be in 90 days later.',
+  }
+}
+
+export const DATE_MUST_PAST = {
+  max: {
+    
+    value: new Date(),
     message: 'Date must be in the past.',
   },
 }
 
 export interface ValidationObject {
-  value: string | number | boolean | ((value: Date) => boolean)
+  value: string | number | boolean | ((value: Date) => boolean) | Date
   message: string
 }

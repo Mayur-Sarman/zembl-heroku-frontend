@@ -64,7 +64,6 @@ const SecondaryContactForm = ({ control }: SecondaryContactFormProps) => {
         datepickerClassNames={'top-auto'}
         required
         rules={DATE_MUST_PAST}
-        maxDate={new Date()}
       />
     </div>
   )

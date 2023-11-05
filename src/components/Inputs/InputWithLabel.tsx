@@ -4,6 +4,7 @@ import { Input, InputProps, Typography } from '@material-tailwind/react'
 import { ForwardedRef, ReactNode, forwardRef } from 'react'
 import { FieldError, FieldErrors, FieldValues } from 'react-hook-form'
 import ErrorTextMessage from '../ErrorTextMessage'
+import ControllerTooltip from '../Icons/ControllerTooltip'
 
 const InputWithLabel = forwardRef(function InputWithLabel(
   {
@@ -16,11 +17,21 @@ const InputWithLabel = forwardRef(function InputWithLabel(
     errors,
     fieldError,
     required,
+    tooltipText,
     ...rest
   }: InputWithLabelProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const textLabelDisplay = textLabel ? (
+     tooltipText ? <><Typography
+     variant="small"
+     className={`mb-2 pl-1 inline-block ${required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''}`}
+   >
+     {textLabel}
+   </Typography>
+   <ControllerTooltip tooltipText={tooltipText}/>
+   </> :
+    
     <Typography
       variant="small"
       className={`mb-2 pl-1 ${required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''}`}
@@ -75,6 +86,7 @@ export interface InputWithLabelProps extends InputProps {
   containerClassName?: string
   fieldError?: FieldError
   required?: boolean
+  tooltipText?: string
 }
 
 export default InputWithLabel

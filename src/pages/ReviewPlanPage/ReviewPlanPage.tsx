@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import PageWrapper from '../../components/PageWrapper'
 import { FieldValues, useForm } from 'react-hook-form'
 import RegistrationContext from '../../contexts/RegistrationContext'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { Typography } from '@material-tailwind/react'
 import { ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
 import PlanSummaryCard from '../../components/PlanSummaryCard'
@@ -45,6 +45,7 @@ const ReviewPlanPage = () => {
         }))
         setValue('businessDetails', data.businessDetails)
         setValue('accountDetails', updatedAccountDetail)
+        setValue('accountDetails.dateOfBirth', getJSONDateString(data?.accountDetails?.dateOfBirth as string))
       },
       onError: (error) => {
         if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
@@ -86,6 +87,7 @@ const ReviewPlanPage = () => {
         ...updatedAccount,
         dateOfBirth: getJSONDateString(updatedAccount.dateOfBirth),
       }
+      
       const updatedPlanData = { ...registrationData, accountDetails: updatedAccount }
       updatePlanData.mutate({ planData: updatedPlanData, token: registrationToken ?? '' })
     }
@@ -99,6 +101,10 @@ const ReviewPlanPage = () => {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    setValue('accountDetails.dateOfBirth', registrationData.accountDetails?.dateOfBirth)
+  }, [registrationData])
 
   const electricityPlanSummary = registrationData?.electricityQuote ? (
     <PlanSummaryCard
@@ -114,8 +120,8 @@ const ReviewPlanPage = () => {
       planLessThanCurrentPricePercent={registrationData?.electricityQuote?.percentDifference}
       planEstCostPerMonth={registrationData?.electricityQuote?.billSize}
       planEstCostPerYear={registrationData?.electricityQuote?.annualBillSize}
-      fullAddress={registrationData?.electricityQuote?.address ?? ''}
-      gasOrEnergyCode={registrationData?.electricityQuote?.nmi ?? ''}
+      fullAddress={registrationData?.fullAddress as string ?? ''}
+      gasOrEnergyCode={registrationData?.nmi ?? ''}
     />
   ) : null
 
@@ -133,8 +139,8 @@ const ReviewPlanPage = () => {
       planLessThanCurrentPricePercent={registrationData?.gasQuote?.percentDifference}
       planEstCostPerMonth={registrationData?.gasQuote?.billSize}
       planEstCostPerYear={registrationData?.gasQuote?.annualBillSize}
-      fullAddress={registrationData?.gasQuote?.address ?? ''}
-      gasOrEnergyCode={registrationData?.gasQuote?.mirn ?? ''}
+      fullAddress={registrationData?.fullAddress as string ?? ''}
+      gasOrEnergyCode={registrationData?.mirn ?? ''}
     />
   ) : null
 

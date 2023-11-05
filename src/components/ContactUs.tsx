@@ -9,13 +9,13 @@ const ContactUs = () => {
           <span className="inline-block font-bold mr-1">1300 957 721 |</span>
           <span className="inline-block">
             <button className='underline'>
-              hello@zembl.com.auto
+              hello@zembl.com.au
             </button>
           </span>
         </div>
         <div className="text-xs sm:text-sm md:text-base">
-          <span className="inline-block mr-1">Mon-Thur 9AM-5PM,</span>
-          <span className="inline-block">Fri 9AM-4PM AEST</span>
+          <span className="inline-block mr-1">Mon-Thur 9am-5pm,</span>
+          <span className="inline-block">Fri 9am-4pm Sydney</span>
         </div>
       </div>
     </div>

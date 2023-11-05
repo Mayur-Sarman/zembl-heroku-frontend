@@ -21,7 +21,7 @@ const PlanSelector = ({ plans, planType, selectedPlanId, onPlanSelect, title }: 
 
   return (
     <div>
-      <Accordion open={open}>
+      <Accordion open={open} key={Math.random()}>
         <AccordionHeader onClick={openToggleHandler}>{title}</AccordionHeader>
         <AccordionBody className="flex flex-col gap-6">
           {plans.map((plan) => (
