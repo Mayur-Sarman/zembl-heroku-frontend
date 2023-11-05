@@ -111,7 +111,7 @@ const VerificationCodeInput = ({
     // <div className="w-full text-center p-0 md:p-4">
     <div className="w-full text-center p-4">
       <Typography className="text-sm lg:text-base font-normal text-zembl-p">
-        A text message with a verification code was sent to {'+'+phoneNumber ?? email}
+        A text message with a verification code was sent to {phoneNumber ?? email}
       </Typography>
       <div className="flex relative px-0 py-6 md:p-6 justify-center">
         {/* <div className="flex relative p-6 justify-center"> */}
