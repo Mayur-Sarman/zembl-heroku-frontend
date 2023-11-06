@@ -9,8 +9,6 @@ import {RegistrationData } from '../../constants'
 import { Quote } from '../../api/quote'
 import { useEffect } from 'react'
 
-import { MOMENTUM } from '../../constants'
-
 const RetailerPreferencePage = () => {
   const { registrationData, setRegistrationData } = useRegistration()
   const { handleSubmit, control } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
@@ -35,7 +33,7 @@ const RetailerPreferencePage = () => {
       ...prev,
       electricityQuote: {
         ...prev.electricityQuote,
-        retailerName: MOMENTUM,
+        // retailerName: MOMENTUM,
       },
       gasQuote: {
         ...prev.gasQuote,
