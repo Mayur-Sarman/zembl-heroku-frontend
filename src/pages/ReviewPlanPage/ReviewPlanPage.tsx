@@ -125,7 +125,7 @@ const ReviewPlanPage = () => {
     />
   ) : null
 
-  const gasPlanSummary = registrationData?.gasQuote ? (
+  const gasPlanSummary = registrationData?.gasQuote?.quoteId ? (
     <PlanSummaryCard
       planId={registrationData?.gasQuote.quoteId ?? ''}
       planType={GAS_VALUE}

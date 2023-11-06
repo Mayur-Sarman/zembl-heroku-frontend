@@ -33,7 +33,7 @@ const ReZemblTermForm = ({
             Re-Zembl
           </Typography>
         </div>
-        { zemblElectric != null ? 
+        { zemblElectric?.quoteId != null ? 
           <>
             {electricTermDisplay}
             <Checkbox
@@ -45,7 +45,7 @@ const ReZemblTermForm = ({
           </>
         : null}
         
-        {zemblGas != null ? 
+        {zemblGas?.quoteId != null ? 
           <>
             {gasTermDisplay}
             <Checkbox

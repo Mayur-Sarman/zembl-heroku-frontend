@@ -19,8 +19,8 @@ const RetailerPreferencePage = () => {
     const updatedData = commonPreferences
       ? {
           ...data,
-          electricityQuote: { ...data.electricityQuote, quotePreferences: commonPreferences },
-          gasQuote: { ...data.gasQuote, quotePreferences: commonPreferences },
+          electricityQuote: { ...data.electricityQuote, quotePreferences: {...commonPreferences, preferenceId: registrationData.electricityQuote?.quotePreferences?.preferenceId} },
+          gasQuote: { ...data.gasQuote, quotePreferences: {...commonPreferences, preferenceId: registrationData.gasQuote?.quotePreferences?.preferenceId} },
         }
       : data
       
@@ -33,13 +33,14 @@ const RetailerPreferencePage = () => {
       ...prev,
       electricityQuote: {
         ...prev.electricityQuote,
-        // retailerName: AGL,
+        // retailerName: MOMENTUM,
       },
       gasQuote: {
         ...prev.gasQuote,
         // retailerName: BLUE_NRG,
       },
     }))
+    console.log(registrationData)
   }, [setRegistrationData])
 
   const showSingle = registrationData?.electricityQuote?.retailerName === registrationData?.gasQuote?.retailerName
@@ -71,8 +72,8 @@ const RetailerPreferencePage = () => {
           <RetailerPreferenceForm
             control={control}
             prefix="commonQuote.quotePreferences"
-            retailerName={registrationData?.electricityQuote?.retailerName ?? ''}
-            siteAddress={registrationData?.electricityQuote?.address ?? ''}
+            retailerName={registrationData?.electricityQuote?.retailerName ?? registrationData?.gasQuote?.retailerName ?? ''}
+            siteAddress={registrationData?.electricityQuote?.address ?? registrationData?.gasQuote?.address ?? ''}
           />
         ) : null}
 
