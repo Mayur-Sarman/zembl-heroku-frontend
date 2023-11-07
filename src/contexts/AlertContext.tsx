@@ -5,11 +5,19 @@ import { uniqueId } from 'lodash'
 import { color, variant, children } from '@material-tailwind/react/types/components/alert'
 
 import { Alert } from '@material-tailwind/react'
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ExclamationTriangleIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/20/solid'
 
 const ALERT_DEFAULT_VARIANT: variant = 'filled'
 const ALERT_DEFAULT_DURATION = 5000
 const AlertContainer = ({ children }: PropsWithChildren) => (
-  <div className="max-w-full flex flex-col place-items-center absolute z-20 mx-auto pointer-events-none w-full">{children}</div>
+  <div className="max-w-full flex flex-col place-items-center absolute z-20 mx-auto pointer-events-none w-full">
+    {children}
+  </div>
 )
 
 export const AlertContext = createContext({} as AlertActions)
@@ -36,9 +44,7 @@ export const AlertContextProvider = ({ children }: PropsWithChildren) => {
 
       if (newAlert?.duration) {
         const duration = newAlert.duration === 'default' ? ALERT_DEFAULT_DURATION : newAlert.duration
-        setTimeout(() => {
-          onAlertClosedHandler(id)
-        }, duration)
+        setTimeout(() => onAlertClosedHandler(id), duration)
       }
 
       return id
@@ -51,23 +57,32 @@ export const AlertContextProvider = ({ children }: PropsWithChildren) => {
       Object.entries(alerts).map((alert) => {
         const [alertId, alertData] = alert
 
+        let icon = null
         let alertColor: color = 'gray'
         switch (alertData.type) {
           case 'success': {
             alertColor = 'green'
+            icon = <CheckCircleIcon width={25} height={25} />
             break
           }
           case 'warn': {
             alertColor = 'amber'
+            icon = <ExclamationTriangleIcon width={25} height={25} />
             break
           }
           case 'error': {
             alertColor = 'red'
+            icon = <ExclamationCircleIcon width={25} height={25} />
             break
           }
           case 'info':
           default:
+            icon = <InformationCircleIcon width={25} height={25} />
             break
+        }
+
+        if (alertData.icon) {
+          icon = alertData.icon
         }
 
         return (
@@ -76,7 +91,7 @@ export const AlertContextProvider = ({ children }: PropsWithChildren) => {
             open={alertData.open}
             onClose={() => onAlertClosedHandler(alertId)}
             action={alertData.actions}
-            icon={alertData.icon}
+            icon={icon}
             color={alertColor}
             className="mt-1 w-fit pointer-events-auto"
             variant={ALERT_DEFAULT_VARIANT}

@@ -1,92 +1,261 @@
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
 import AccordionCard from '../../components/AccordionCard'
-import RadioGroupInput, { InputOptions } from '../../components/Inputs/RadioGroupInput'
 import PaperBillForm from './PaperBillForm'
 import FileUploadInput from '../../components/Inputs/FileUploadInput'
-import { Button } from '@material-tailwind/react'
-import { useNavigate } from 'react-router-dom'
 import RegistrationStep from '../../components/RegistrationStep'
 import PageWrapper from '../../components/PageWrapper'
+import {
+  BOTH_VALUE,
+  ELECTRICITY_VALUE,
+  GAS_VALUE,
+  HAVE_PAPER_BILL,
+  RegistrationData,
+  UPLOAD_BILL_TYPE_OPTIONS,
+  UPLOAD_ELECTRICITY_BILL,
+  UPLOAD_GAS_BILL
+} from '../../constants'
+import PageNavigationActions from '../../components/PageNavigationActions'
+import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
+import { REQUIRED_VALIDATION } from '../../constants/validation'
+import { MAX_FILE_SIZE, PDF_FILE_TYPE } from '../../constants/file'
+import { useRegistration } from '../../hooks/useRegistration'
+import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
+import { useToast } from '../../hooks'
+import { buildCreateAccountPayload } from '../../api/account'
+import { getPhoneNumber } from '../../helpers/formatter'
 
-const UPLOAD_BILL_TYPE_OPTIONS: InputOptions[] = [
-  { value: 'Upload PDF Bill', label: 'Upload PDF Bill' },
-  { value: 'Have Paper Bill', label: 'Have Paper Bill' },
-  { value: 'Upload Electricity Bill', label: 'Upload Electricity Bill' },
-  { value: 'Upload Gas Bill', label: 'Upload Gas Bill' },
-]
+const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
 const BillUploadPage = () => {
-  const { handleSubmit, control, setValue, watch, register } = useForm()
-  const navigate = useNavigate()
+  const { fireAlert } = useToast()
+  const { registrationData, ocrFileMutation, createAccountMutation, setRegistrationData, setUploadText } = useRegistration()
+  const { handleSubmit, control, setValue, watch, formState } = useForm({
+    defaultValues: registrationData as FieldValues,
+    mode: 'all',
+  })
 
-  const watchBillType: unknown = watch('billType', null)
+  const watchBillFileType: unknown = watch('billFileType', null)
 
-  const isUpload: boolean =
-    typeof watchBillType === 'string' ? watchBillType.toLocaleLowerCase().startsWith('upload') : false
+  const fileValidation = (value: FileList) => {
+    const file = value?.[0] ?? null
+    if (!file) return true
+    if (file.size > MAX_FILE_SIZE) return 'File size must be less than 15MB.'
+    if (!file?.type || !SUPPORTED_FILE_TYPES.includes(file.type)) return 'File type must be PDF only.'
+    return true
+  }
 
-  const onSubmit = (data: Record<string, string>) => {
-    console.log(data)
+  const onFileChange = async (files: FileList | null , energyType: string) => {
+    if (!files) {
+      return;
+    }
+
+    const file = files[0]
+
+    if( energyType === ELECTRICITY_VALUE) {
+      setUploadText('Please wait while we scan your bill. This will only take a moment.')
+      const electricOCRFile = await transformToOCRFile(file)
+      const electricOCRResponse = await ocrFileMutation.mutateAsync({
+        file: electricOCRFile,
+        type: ELECTRICITY_VALUE,
+      })
+
+      const nmi = extractNMI(electricOCRResponse)
+      setValue('nmiProcessed', true)
+      if (!nmi /*&& registrationData?.energyType !== BOTH_VALUE*/) {
+        setValue('billFileType', HAVE_PAPER_BILL)
+        fireAlert({
+          children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+          type: 'info',
+          duration: 5000,
+        })
+        return
+      }
+      setValue('nmi', nmi)
+
+    } else if (energyType === GAS_VALUE) {
+      setUploadText('Please wait while we scan your bill. This will only take a moment.')
+      const gasOCRFile = await transformToOCRFile(file)
+      const electricOCRResponse = await ocrFileMutation.mutateAsync({
+        file: gasOCRFile,
+        type: ELECTRICITY_VALUE,
+      })
+        
+      const mirn = extractMIRN(electricOCRResponse)
+      setValue('mirnProcessed', true)
+      if(!mirn /*&& registrationData?.energyType !== BOTH_VALUE*/) {
+        setValue('billFileType', HAVE_PAPER_BILL)
+        fireAlert({
+          children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+          type: 'info',
+          duration: 5000,
+        })
+        return
+      }
+      setValue('mirn', mirn)
+    }
+
+    // const watchNmiProcessed: unknown = watch('nmiProcessed', false)
+    // const watchMirnProcessed: unknown = watch('mirnProcessed', false)
+    // const watchNmi: unknown = watch('nmi', null)
+    // const watchMirn: unknown = watch('mirn', null)
+    // console.log(watchNmiProcessed, watchMirnProcessed, watchNmi, watchMirn)
+    // if((watchNmiProcessed && watchMirnProcessed) && (!watchNmi || !watchMirn)) {
+    //   setValue('billFileType', HAVE_PAPER_BILL)
+    //     fireAlert({
+    //       children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+    //       type: 'info',
+    //       duration: 5000,
+    //     })
+    //     return
+    // }
+    // const nmiData: unknown = watch('nmi', null)
+    // const mirnData: unknown = watch('mirn', null)
+
+    // const nmi: string = nmiData as string;
+    // const mirn: string = mirnData as string;
+
+    // if (ZEMBL_DEBUG_MODE) {
+    //   console.log('registrationData?.energyType:', registrationData?.energyType)
+    //   console.log('NMI, MIRN:', nmi, ',', mirn)
+    // }
+    
+
+    // if (registrationData?.energyType === BOTH_VALUE && nmiData != null && mirnData != null) {
+    //   const buildedData = buildCreateAccountPayload(registrationData, nmi, mirn)
+    //   setRegistrationData((prev) => ({
+    //     ...prev,
+    //     nmiData,
+    //     mirnData,
+    //     phone: getPhoneNumber(registrationData?.phone),
+    //     mobile: getPhoneNumber(registrationData?.phone),
+    //   }))
+    //   return createAccountMutation.mutate(buildedData)
+    // }
+  }
+
+  const onSubmit = (data: Partial<RegistrationData>) => {
+    const nmi: string | undefined = data?.nmi
+    const mirn: string | undefined = data?.mirn
+
+    if((registrationData?.energyType === BOTH_VALUE && (!nmi || !mirn)) || (!nmi && !mirn)) {
+      setValue('billFileType', HAVE_PAPER_BILL)
+      fireAlert({
+        children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+        type: 'info',
+        duration: 5000,
+      })
+      ocrFileMutation.reset()
+      return
+    }
+
+    if (data.billFileType === HAVE_PAPER_BILL) {
+      const buildedData = buildCreateAccountPayload(data, nmi, mirn)
+      setRegistrationData((prev) => ({
+        ...prev,
+        ...data,
+        phone: getPhoneNumber(data.phone),
+        mobile: getPhoneNumber(data.phone),
+      }))
+      return createAccountMutation.mutate(buildedData)
+    } else {
+      const buildedData = buildCreateAccountPayload(data, nmi, mirn)
+      setRegistrationData((prev) => ({
+        ...prev,
+        ...data,
+        nmi,
+        mirn,
+        phone: getPhoneNumber(data.phone),
+        mobile: getPhoneNumber(data.phone),
+      }))
+      return createAccountMutation.mutate(buildedData)
+    }
+  }
+
+  let uploadOptions = UPLOAD_BILL_TYPE_OPTIONS
+  if (registrationData?.energyType !== BOTH_VALUE) {
+    uploadOptions = UPLOAD_BILL_TYPE_OPTIONS.filter((item) => {
+      if (!registrationData?.energyType) return false
+      return item.value?.toLowerCase().includes(registrationData?.energyType?.toLowerCase()) || item.value === HAVE_PAPER_BILL
+    })
   }
 
   return (
     <PageWrapper>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
-        <div className="lg:h-32 lg:py-3 lg:px-14 lg:mt-6 w-full">
-          <div className="hidden lg:block">
-            <RegistrationStep currentStep={0} />
-          </div>
-        </div>
-
+        <RegistrationStep currentStep={0} />
         <hr className="hidden lg:block" />
-        <AccordionCard alwaysOpen open title="Bill & Messages">
+
+        <AccordionCard alwaysOpen open title="Bill Details">
           <div className="w-full flex flex-col gap-3 text-left">
-            <Controller
+            <ControllerRadioGroupInput
               control={control}
-              name="billType"
-              render={({ field }) => (
-                <RadioGroupInput
-                  {...field}
-                  label="How would you like to receive your bills and other notices, like disconnection warnings and price change notifications?"
-                  values={[field.value]}
-                  options={UPLOAD_BILL_TYPE_OPTIONS}
-                  buttonContainerClassName="w-full lg:w-1/2 p-1"
-                  optionsContainerClassName="inline-flex flex-wrap"
-                />
-              )}
+              name="billFileType"
+              rules={REQUIRED_VALIDATION}
+              options={uploadOptions}
             />
-            {watchBillType === 'Have Paper Bill' ? (
-              <PaperBillForm control={control} register={register} energyType="both" setValue={setValue} />
+            {watchBillFileType === HAVE_PAPER_BILL && registrationData?.energyType ? (
+              <PaperBillForm control={control} energyType={registrationData?.energyType} setValue={setValue} />
             ) : null}
 
-            {isUpload ? (
-              <FileUploadInput
-                labelText="Upload File"
-                labelClassName="mb-4"
-                dropzoneText="Click to upload or drag and drop"
-                helpText="SVG, PNG, JPG or GIF (MAX. 800x400px)"
-                {...register('billFile')}
-                onChange={(e) => setValue('billFile', e.target.files)}
+            {registrationData?.energyType !== GAS_VALUE ? (
+              <Controller
+                name={`electricityBillInfo.billFiles`}
+                control={control}
+                rules={{
+                  validate: fileValidation,
+                }}
+                render={({ field, fieldState }) => {
+                  if (watchBillFileType !== UPLOAD_ELECTRICITY_BILL) return <></>
+                  return (
+                    <FileUploadInput
+                      labelText="Upload File"
+                      labelClassName="mb-4"
+                      dropzoneText="Click to upload or drag and drop"
+                      helpText="PDF (MAX. 4MB)"
+                      accept={PDF_FILE_TYPE}
+                      {...field}
+                      error={fieldState.error}
+                      onChange={(files: FileList | null) => {
+                        field.onChange(files)
+                       void onFileChange(files, ELECTRICITY_VALUE)
+                      }}
+                    />
+                  )
+                }}
+              />
+            ) : null}
+
+            {registrationData?.energyType !== ELECTRICITY_VALUE ? (
+              <Controller
+                name={`gasBillInfo.billFiles`}
+                control={control}
+                rules={{
+                  validate: fileValidation,
+                }}
+                render={({ field, fieldState }) => {
+                  if (watchBillFileType !== UPLOAD_GAS_BILL) return <></>
+                  return (
+                    <FileUploadInput
+                      labelText="Upload File"
+                      labelClassName="mb-4"
+                      dropzoneText="Click to upload or drag and drop"
+                      helpText="PDF (MAX. 4MB)"
+                      accept={PDF_FILE_TYPE}
+                      {...field}
+                      error={fieldState.error}
+                      onChange={(files: FileList | null) => {
+                        field.onChange(files)
+                        void onFileChange(files, GAS_VALUE)
+                      }}
+                    />
+                  )
+                }}
               />
             ) : null}
           </div>
         </AccordionCard>
 
-        <div className="flex flex-col lg:flex-row gap-6 justify-center">
-          <Button
-            variant="outlined"
-            onClick={() => navigate('/basic-info-2')}
-            className="text-zembl-p w-full lg:w-1/3 place-self-center"
-          >
-            Back
-          </Button>
-          <Button
-            type="submit"
-            onClick={() => navigate('/plans')}
-            className="bg-zembl-action-primary text-zembl-p w-full lg:w-1/3 place-self-center"
-          >
-            Next
-          </Button>
-        </div>
+        <PageNavigationActions prevLink="/basic-info-2" nextDisabled={!formState.isValid} />
       </form>
     </PageWrapper>
   )

@@ -1,32 +1,23 @@
 import { DocumentIcon } from '@heroicons/react/20/solid'
-import { Button } from '@material-tailwind/react'
-import { MouseEventHandler } from 'react'
+import { Chip, ChipProps } from '@material-tailwind/react'
+import { onClose } from '@material-tailwind/react/types/components/chip'
 
-// TODO: IMPLEMENT THIS
-const AttachmentBadge = ({ file, fileType, fileSize, fileName, onClick }: AttachmentBadgeProps) => {
+const AttachmentBadge = ({ file, fileName, onClose, ...rest }: AttachmentBadgeProps) => {
   const _fileName = file?.name ?? fileName ?? null
-  const _fileSize = file?.size ?? fileSize ?? null
-  const _fileType = file?.type ?? fileType ?? null
-
-  console.log(_fileType)
-  console.log(_fileSize)
+  // const _fileSize = file?.size ?? fileSize ?? null
+  // const _fileType = file?.type ?? fileType ?? null
 
   const fileIcon = <DocumentIcon />
 
-  return (
-    <Button onClick={onClick} className="flex gap-2 px-6 py-4">
-      {fileIcon}
-      {_fileName}
-    </Button>
-  )
+  return <Chip open={true} onClose={onClose} icon={fileIcon} value={_fileName} size="lg"  {...rest} />
 }
 
-interface AttachmentBadgeProps {
+interface AttachmentBadgeProps extends Partial<ChipProps> {
   file?: File
   fileName?: string
   fileType?: string
   fileSize?: string
-  onClick?: MouseEventHandler
+  onClose?: onClose
 }
 
 export default AttachmentBadge

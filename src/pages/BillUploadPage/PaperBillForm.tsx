@@ -1,18 +1,21 @@
 import { Typography } from '@material-tailwind/react'
 
-import InputWithLabel from '../../components/Inputs/InputWithLabel'
-import SelectInput from '../../components/Inputs/SelectInput'
-import RadioGroupInput, { InputOptions } from '../../components/Inputs/RadioGroupInput'
-import { Controller, FieldValues, UseFormRegister, UseFormReturn, UseFormSetValue } from 'react-hook-form'
-import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
+import { Control, FieldValues, UseFormReturn, UseFormSetValue, useForm } from 'react-hook-form'
+import { 
+  CURRENT_USAGE_OPTIONS, 
+  ELECTRICITY_VALUE, 
+  GAS_VALUE, 
+  RETAILER_OPTIONS, 
+} from '../../constants'
+import ControllerRadioGroupPaperbillInput from '../../components/Inputs/ControllerRadioGroupPaperbillInput'
+import { REQUIRED_VALIDATION, ABN_NMI_MIRN_VALIDATION } from '../../constants/validation'
+import ControllerInput from '../../components/Inputs/ControllerInput'
+import ControllerSelectInput from '../../components/Inputs/ControllerSelectInput'
+import GoogleAddressInput from '../../components/Inputs/GoogleAddressInput'
 
-const CURRENT_USAGE_OPTIONS: InputOptions[] = [
-  { value: 'Low', label: 'Low' },
-  { value: 'Medium', label: 'Medium' },
-  { value: 'High', label: 'High' },
-]
+const PaperBillForm = ({ control, energyType }: PaperBillFormProps) => {
+  const { setValue } = useForm({})
 
-const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFormProps) => {
   const gasForm =
     energyType !== ELECTRICITY_VALUE ? (
       <div className="flex flex-col gap-3">
@@ -20,16 +23,34 @@ const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFor
           Gas
         </Typography>
         <div className="w-full lg:w-1/2 flex flex-col gap-3">
-          <InputWithLabel inputLabel="MIRN" textLabel="Enter your MIRN" {...register('mirn')} />
-          <SelectInput
+          <ControllerInput
+            name="mirn"
+            rules={ABN_NMI_MIRN_VALIDATION}
+            required
+            control={control}
+            inputLabel="MIRN"
+            textLabel="Enter your MIRN"
+            tooltipText="You can locate your MIRN or Meter Installation Registration Number (sometimes referred to as the ‘DPI’) on your gas bill, usually under the gas usage section."
+          />
+          <ControllerSelectInput
+            control={control}
+            name="currentRetailerGas"
             textLabel="Current retailer"
             label="Retailer"
             placeholder="Select"
-            options={[{ value: 'test', label: 'test' }]}
-            {...register('gasCurrentRetailer')}
-            onChange={(e) => setValue('gasCurrentRetailer', e)}
+            options={RETAILER_OPTIONS}
+            rules={REQUIRED_VALIDATION}
           />
         </div>
+        <ControllerRadioGroupPaperbillInput
+            control={control}
+            name="currentUsageGas"
+            options={CURRENT_USAGE_OPTIONS}
+            rules={REQUIRED_VALIDATION}
+            label="What is current usage?"
+            isCurrentUsage={true}
+          currentUsageType={GAS_VALUE}
+          />
       </div>
     ) : null
 
@@ -40,33 +61,49 @@ const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFor
           Electricity
         </Typography>
         <div className="w-full lg:w-1/2 flex flex-col gap-3">
-          <InputWithLabel inputLabel="NMI" textLabel="Enter your NMI" {...register('nmi')} />
-          <SelectInput
+          <ControllerInput
+            name="nmi"
+            rules={ABN_NMI_MIRN_VALIDATION}
+            required
+            control={control}
+            inputLabel="NMI"
+            textLabel="Enter your NMI"
+            tooltipText="Your NMI, or National Meter Identifier, is a unique number for your home or business. You'll find the NMI on the electricity bill. The NMI may be on the front of the first or second page and can include numbers and letters and is 10 or 11 characters long"
+          />
+          <GoogleAddressInput
+            control={control}
+            required
+            onSelectedCallback={(data) => {
+              setValue('unitNumber', data?.unitNumber)
+              setValue('unitType', data?.unitType)
+              setValue('streetNumber', data?.street)
+              setValue('streetName', data?.route)
+              setValue('city', data?.suburb)
+              setValue('postCode', data?.postCode)
+              setValue('state', data?.state)
+            }}
+            textLabel="Your Connection Address"
+            name="address"
+            rules={REQUIRED_VALIDATION}
+          />
+          <ControllerSelectInput
+            control={control}
+            name="currentRetailerElectric"
             textLabel="Current retailer"
             label="Retailer"
             placeholder="Select"
-            options={[{ value: 'test', label: 'test' }]}
-            {...register('electricityCurrentRetailer')}
-            onChange={(e) => setValue('electricityCurrentRetailer', e)}
+            options={RETAILER_OPTIONS}
+            rules={REQUIRED_VALIDATION}
           />
         </div>
-        <Controller
+        <ControllerRadioGroupPaperbillInput
           control={control}
-          name="currentUsage"
-          render={({ field }) => (
-            <RadioGroupInput
-              {...field}
-              label={
-                <div>
-                  <Typography variant="small">What is current usage?</Typography>
-                </div>
-              }
-              values={[field.value]}
-              options={CURRENT_USAGE_OPTIONS}
-              buttonContainerClassName="w-full lg:w-1/3 py-1 lg:px-1 first:pl-0 last:pr-0"
-              optionsContainerClassName="flex flex-wrap w-full"
-            />
-          )}
+          name="currentUsageElectric"
+          options={CURRENT_USAGE_OPTIONS}
+          rules={REQUIRED_VALIDATION}
+          label="What is current usage?"
+          isCurrentUsage={true}
+          currentUsageType={ELECTRICITY_VALUE}
         />
       </div>
     ) : null
@@ -80,9 +117,9 @@ const PaperBillForm = ({ register, setValue, control, energyType }: PaperBillFor
 }
 
 interface PaperBillFormProps extends Partial<UseFormReturn> {
+  control: Control
+  energyType: string
   setValue: UseFormSetValue<FieldValues>
-  register: UseFormRegister<FieldValues>
-  energyType: GAS_VALUE | ELECTRICITY_VALUE | BOTH_VALUE
 }
 
 export default PaperBillForm

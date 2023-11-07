@@ -1,7 +1,15 @@
 import { Accordion, AccordionBody, AccordionHeader } from '@material-tailwind/react'
 import { ReactNode, useCallback, useState } from 'react'
 
-const AccordionCard = ({ open, alwaysOpen, title, children }: AccordionCardProps) => {
+const AccordionCard = ({
+  open,
+  alwaysOpen,
+  title,
+  children,
+  containerClassName,
+  headerClassName,
+  bodyClassName,
+}: AccordionCardProps) => {
   const [_open, setOpen] = useState<boolean>(open)
 
   const handleOpen = useCallback(() => {
@@ -10,7 +18,7 @@ const AccordionCard = ({ open, alwaysOpen, title, children }: AccordionCardProps
 
   const titleDisplay = title ? (
     <AccordionHeader
-      className={`py-3 px-6 bg-zembl-s rounded-t-lg ${alwaysOpen ? 'pointer-events-none' : ''}`}
+      className={`py-3 px-6 bg-zembl-s rounded-t-lg ${alwaysOpen ? 'pointer-events-none' : ''} ${headerClassName ?? ''}`}
       onClick={handleOpen}
     >
       {title}
@@ -18,9 +26,9 @@ const AccordionCard = ({ open, alwaysOpen, title, children }: AccordionCardProps
   ) : null
 
   return (
-    <Accordion open={_open} className="border border-blue-gray-100 rounded-lg">
+    <Accordion open={_open} className={`border border-blue-gray-100 rounded-lg ${containerClassName ?? ''} [&>div]:!overflow-visible`} >
       {titleDisplay}
-      <AccordionBody className="p-6 flex">{children}</AccordionBody>
+      <AccordionBody className={`p-6 flex ${bodyClassName ?? ''}`}>{children}</AccordionBody>
     </Accordion>
   )
 }
@@ -30,6 +38,9 @@ interface AccordionCardProps {
   alwaysOpen?: boolean
   title?: ReactNode
   children: ReactNode
+  containerClassName?: string
+  headerClassName?: string
+  bodyClassName?: string
 }
 
 export default AccordionCard
