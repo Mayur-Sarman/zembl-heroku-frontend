@@ -39,15 +39,11 @@ http {
 
         location = /index.html {
             add_header Cache-Control "no-store, no-cache";
-            add_header Access-Control-Allow-Origin "zembl-frontend-staging-39b18a07853d.herokuapp.com";
-            add_header Access-Control-Allow-Origin "stg.energy.zembl.com.au/";
             try_files $uri $uri/ =404;
         }
 
         location / {
             add_header 'Cache-Control' "public, max-age=3600";
-            add_header Access-Control-Allow-Origin "zembl-frontend-staging-39b18a07853d.herokuapp.com";
-            add_header Access-Control-Allow-Origin "stg.energy.zembl.com.au/";
             try_files $uri $uri/ /index.html;
         }
     }
