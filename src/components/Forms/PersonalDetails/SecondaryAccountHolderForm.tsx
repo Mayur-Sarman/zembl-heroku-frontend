@@ -1,21 +1,23 @@
 import { Control } from 'react-hook-form'
-import DateInput from '../../Inputs/DateInput'
-import ZemblPhoneInput from '../../Inputs/PhoneInput'
+// import DateInput from '../../Inputs/DateInput'
+// import ZemblPhoneInput from '../../Inputs/PhoneInput'
 import { Typography } from '@material-tailwind/react'
 import AccordionCard from '../../AccordionCard'
-import { TITLE_LIST_OPTIONS, YES_NO_OPTIONS, YES_VALUE } from '../../../constants'
+import { YES_NO_OPTIONS, YES_VALUE } from '../../../constants'
 import ControllerRadioGroupInput from '../../Inputs/ControllerRadioGroupInput'
-import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
-import ControllerInput from '../../Inputs/ControllerInput'
-import {
-  DATE_MUST_PAST,
-  EMAIL_VALIDATION,
-  REQUIRED_VALIDATION,
-  STANDARD_SF_TEXT_VALIDATION,
-} from '../../../constants/validation'
+// import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
+// import ControllerInput from '../../Inputs/ControllerInput'
+// import {
+//   DATE_MUST_PAST,
+//   EMAIL_VALIDATION,
+//   REQUIRED_VALIDATION,
+//   STANDARD_SF_TEXT_VALIDATION,
+// } from '../../../constants/validation'
+import SecondaryContactForm from '../SecondaryContactForm'
+
 
 const SecondaryAccountHolderForm = ({ control, hasSecondaryContact }: SecondaryAccountHolderFormProps) => {
-  const isSecondaryContact = hasSecondaryContact === YES_VALUE
+  // const isSecondaryContact = hasSecondaryContact === YES_VALUE
   return (
     <AccordionCard
       alwaysOpen
@@ -43,7 +45,7 @@ const SecondaryAccountHolderForm = ({ control, hasSecondaryContact }: SecondaryA
               be displayed on the bill, and they will remain on the account until removed or it is no longer active.
             </Typography>
           </div>
-          <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6`}>
+          {/* <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6`}>
             <div className="w-full lg:col-span-2 lg:w-1/2">
               <ControllerSelectInput
                 name="secondaryContact.title"
@@ -97,7 +99,10 @@ const SecondaryAccountHolderForm = ({ control, hasSecondaryContact }: SecondaryA
               rules={DATE_MUST_PAST}
               maxDate={new Date()}
             />
-          </div>
+          </div> */}
+          <SecondaryContactForm
+            control={control}
+          />
         </>
       ) : null}
     </AccordionCard>

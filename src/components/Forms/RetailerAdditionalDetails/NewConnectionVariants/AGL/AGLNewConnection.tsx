@@ -142,10 +142,10 @@ const AGLNewConnection = ({
 
 interface AGLNewConnectionProps {
   control: Control
-  hasPower: string
-  hasAnyWorkCompleted: string
+  hasPower?: string
+  hasAnyWorkCompleted?: string
   connectionPrice?: number | null
-  state: string
+  state?: string
 }
 
 export default AGLNewConnection

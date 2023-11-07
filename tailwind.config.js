@@ -18,6 +18,7 @@ export default withMT({
       addComponents({
         '.zembl-btn': {
           color: theme('zembl-p', '#19292C'),
+          'box-shadow': 'none',
           'background-color': theme('zembl-action-primary', '#8EFF95'),
           '&:active': {
             'background-color': '#7FE586',

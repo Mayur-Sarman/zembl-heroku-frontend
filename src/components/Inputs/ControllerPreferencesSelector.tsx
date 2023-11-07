@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import { ValidationObject } from '../../constants/validation'
 import PreferenceSelector, { PreferenceSelectorProps } from './PreferenceSelector'
+import { NO_PREFERENCE } from '../../constants'
 
 const ControllerPreferencesSelector = ({ name, control, rules, ...rest }: ControllerPreferencesSelectorProps) => {
   const onPreferenceSelected = (
@@ -12,8 +13,12 @@ const ControllerPreferencesSelector = ({ name, control, rules, ...rest }: Contro
     const value = event.target.value
     const prev = currentSelections ?? []
     const isSelected = prev.includes(value)
-    const values = isSelected ? prev.filter((i) => i != value) : [...prev, value]
-
+    let values = []
+    if(value === NO_PREFERENCE) {
+      values = isSelected ? [] : [value]
+    } else {
+      values = isSelected ? prev.filter((i) => i != value) : [...prev.filter((i) => i != NO_PREFERENCE), value]
+    }
     onChange(values)
   }
 

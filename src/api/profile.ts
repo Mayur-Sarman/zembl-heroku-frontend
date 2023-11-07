@@ -63,23 +63,35 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
     concessionCardStartDate: getJSONDateString(concessionInput?.concessionCardStartDate),
     concessionCardEndDate: getJSONDateString(concessionInput?.concessionCardEndDate),
   }
-
+  
   const secondaryContactInput = data?.secondaryContact as Record<string, string>
   const shouldAddSecondaryContact = secondaryContactInput?.hasSecondaryContact === YES_VALUE
   const secondaryContact = {
     ...secondaryContactInput,
     dateOfBirth: getJSONDateString(secondaryContactInput?.dateOfBirth),
     type: data?.registrationType as string,
-    accountId: (data?.accountDetails as AccountDetail)?.accountId,
+    accountId: data?.accountId as string,
   }
 
   const newConnectionInput = data?.newConnection as Record<string, string>
-  const newConnection = { ...newConnectionInput }
+  const newConnection = newConnectionInput ? { ...newConnectionInput } : null
+
+  const gasNewConnectionInput = data?.gasNewConnection as Record<string, string>
+  const gasNewConnection = gasNewConnectionInput ? { ...gasNewConnectionInput } : null
+
+  const gasQuoteId = data?.gasQuoteId as string
+  const electricQuoteId = data?.electricQuoteId as string
+
+  const businessType = data?.businessType as string
 
   const buildedData: RetailerAdditionalDetail = {
     concession: !isConcessionHolder || !isConcessionConsent ? null : concession,
     secondaryContact: !shouldAddSecondaryContact ? null : secondaryContact,
     newConnection,
+    gasNewConnection,
+    gasQuoteId,
+    electricQuoteId,
+    businessType
   }
 
   return buildedData
@@ -130,6 +142,10 @@ export interface RetailerAdditionalDetail {
   concession?: Concession | null
   secondaryContact?: SecondaryContact | null
   newConnection?: NewConnection | null
+  gasNewConnection?: NewConnection | null
+  electricQuoteId?: string | null
+  gasQuoteId?: string | null
+  businessType?: string
 }
 
 interface Concession {

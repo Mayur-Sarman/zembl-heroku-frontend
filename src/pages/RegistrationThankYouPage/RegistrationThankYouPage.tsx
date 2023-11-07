@@ -6,14 +6,20 @@ import ReZemblForm from '../../components/Forms/PersonalDetails/ReZemblForm'
 import { FieldValues, useForm } from 'react-hook-form'
 import PageWrapper from '../../components/PageWrapper'
 import { YES_VALUE } from '../../constants'
+import { useRegistration } from '../../hooks/useRegistration'
 
 const RegistrationThankYouPage = () => {
   const navigate = useNavigate()
   const { handleSubmit, control } = useForm()
-
+  const {registrationData} = useRegistration()
+  registrationData.registrationType = 'Residential'
   const onSubmit = (data: FieldValues) => {
     if (data.reZembl === YES_VALUE) {
-      navigate('/rezembl-details')
+      if(registrationData.registrationType === 'Residential') {
+        navigate('/rezembl-terms')
+      } else {
+        navigate('/rezembl-details')
+      }
     } else {
       navigate('/rezembl-no-thank-you')
     }

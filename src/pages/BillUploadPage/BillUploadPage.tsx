@@ -28,7 +28,7 @@ const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 
 const BillUploadPage = () => {
   const { fireAlert } = useToast()
-  const { registrationData, ocrFileMutation, createAccountMutation, setRegistrationData } = useRegistration()
+  const { registrationData, ocrFileMutation, createAccountMutation, setRegistrationData, setUploadText } = useRegistration()
   const { handleSubmit, control, setValue, watch, formState } = useForm({
     defaultValues: registrationData as FieldValues,
     mode: 'all',
@@ -52,15 +52,16 @@ const BillUploadPage = () => {
     const file = files[0]
 
     if( energyType === ELECTRICITY_VALUE) {
+      setUploadText('Please wait while we scan your bill. This will only take a moment.')
       const electricOCRFile = await transformToOCRFile(file)
-        const electricOCRResponse = await ocrFileMutation.mutateAsync({
-          file: electricOCRFile,
-          type: ELECTRICITY_VALUE,
-        })
+      const electricOCRResponse = await ocrFileMutation.mutateAsync({
+        file: electricOCRFile,
+        type: ELECTRICITY_VALUE,
+      })
 
       const nmi = extractNMI(electricOCRResponse)
-
-      if (!nmi && registrationData?.energyType !== BOTH_VALUE) {
+      setValue('nmiProcessed', true)
+      if (!nmi /*&& registrationData?.energyType !== BOTH_VALUE*/) {
         setValue('billFileType', HAVE_PAPER_BILL)
         fireAlert({
           children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
@@ -72,15 +73,16 @@ const BillUploadPage = () => {
       setValue('nmi', nmi)
 
     } else if (energyType === GAS_VALUE) {
+      setUploadText('Please wait while we scan your bill. This will only take a moment.')
       const gasOCRFile = await transformToOCRFile(file)
-        const electricOCRResponse = await ocrFileMutation.mutateAsync({
-          file: gasOCRFile,
-          type: ELECTRICITY_VALUE,
-        })
+      const electricOCRResponse = await ocrFileMutation.mutateAsync({
+        file: gasOCRFile,
+        type: ELECTRICITY_VALUE,
+      })
         
       const mirn = extractMIRN(electricOCRResponse)
-      
-      if(!mirn && registrationData?.energyType !== BOTH_VALUE) {
+      setValue('mirnProcessed', true)
+      if(!mirn /*&& registrationData?.energyType !== BOTH_VALUE*/) {
         setValue('billFileType', HAVE_PAPER_BILL)
         fireAlert({
           children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
@@ -91,11 +93,26 @@ const BillUploadPage = () => {
       }
       setValue('mirn', mirn)
     }
+
+    // const watchNmiProcessed: unknown = watch('nmiProcessed', false)
+    // const watchMirnProcessed: unknown = watch('mirnProcessed', false)
+    // const watchNmi: unknown = watch('nmi', null)
+    // const watchMirn: unknown = watch('mirn', null)
+    // console.log(watchNmiProcessed, watchMirnProcessed, watchNmi, watchMirn)
+    // if((watchNmiProcessed && watchMirnProcessed) && (!watchNmi || !watchMirn)) {
+    //   setValue('billFileType', HAVE_PAPER_BILL)
+    //     fireAlert({
+    //       children: 'We cannot extract your NMI/MIRN from the provided bill. Please enter it manually.',
+    //       type: 'info',
+    //       duration: 5000,
+    //     })
+    //     return
+    // }
     // const nmiData: unknown = watch('nmi', null)
     // const mirnData: unknown = watch('mirn', null)
 
     // const nmi: string = nmiData as string;
-    // const mirn: string =mirnData as string;
+    // const mirn: string = mirnData as string;
 
     // if (ZEMBL_DEBUG_MODE) {
     //   console.log('registrationData?.energyType:', registrationData?.energyType)
@@ -119,7 +136,7 @@ const BillUploadPage = () => {
   const onSubmit = (data: Partial<RegistrationData>) => {
     const nmi: string | undefined = data?.nmi
     const mirn: string | undefined = data?.mirn
-    console.log('nmi, mirn', nmi, mirn)
+
     if((registrationData?.energyType === BOTH_VALUE && (!nmi || !mirn)) || (!nmi && !mirn)) {
       setValue('billFileType', HAVE_PAPER_BILL)
       fireAlert({
@@ -158,7 +175,7 @@ const BillUploadPage = () => {
   if (registrationData?.energyType !== BOTH_VALUE) {
     uploadOptions = UPLOAD_BILL_TYPE_OPTIONS.filter((item) => {
       if (!registrationData?.energyType) return false
-      return item.value.includes(registrationData?.energyType) || item.value === HAVE_PAPER_BILL
+      return item.value?.toLowerCase().includes(registrationData?.energyType?.toLowerCase()) || item.value === HAVE_PAPER_BILL
     })
   }
 

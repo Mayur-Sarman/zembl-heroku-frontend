@@ -68,7 +68,7 @@ const SEConcessionNotSA = ({
             </TextNote>
           )}
 
-          {['VIC', 'QLD'].includes(state ?? '') && !isConsent && concessionConsent ? (
+          {['VIC', 'NSW'].includes(state ?? '') && !isConsent && concessionConsent ? (
             <TextNote>
               Without this consent we can not validate your concession eligiblity. Update your preference or please call
               Zembl on 1300 957 721 for assistance.

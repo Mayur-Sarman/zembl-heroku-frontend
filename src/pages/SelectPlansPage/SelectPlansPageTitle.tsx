@@ -1,6 +1,6 @@
 import { Button, Typography } from '@material-tailwind/react'
 import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE } from '../../constants'
-import { InformationCircleIcon } from '@heroicons/react/20/solid'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 
 const SelectPlansPageTitle = ({
   energyType,
@@ -33,10 +33,13 @@ const SelectPlansPageTitle = ({
             Here are the plans relevant to your selections
           </Typography>
         </div>
-        <Button className="!zembl-btn" onClick={requestCallbackClick}>
-          Want a more accurate quote?
+        <Button className="!zembl-btn border-solid border-black border" onClick={requestCallbackClick}>
+        <Typography className="text-xs !font-normal flex justify-center gap-1">
+        Want a more accurate quote?
+        </Typography>
+          
           <Typography className="text-xs !font-extrabold flex justify-center gap-1">
-            Request a callback <InformationCircleIcon className="w-4 h-4" />
+            Request a callback <InformationCircleIcon className="w-4 h-4 text-gray-500" />
           </Typography>
         </Button>
       </div>

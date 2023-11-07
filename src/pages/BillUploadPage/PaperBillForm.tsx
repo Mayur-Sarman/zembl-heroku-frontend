@@ -1,14 +1,21 @@
 import { Typography } from '@material-tailwind/react'
 
-import { Control, FieldValues, UseFormReturn, UseFormSetValue } from 'react-hook-form'
-import { CURRENT_USAGE_OPTIONS, ELECTRICITY_VALUE, GAS_VALUE, RETAILER_OPTIONS } from '../../constants'
-import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
+import { Control, FieldValues, UseFormReturn, UseFormSetValue, useForm } from 'react-hook-form'
+import { 
+  CURRENT_USAGE_OPTIONS, 
+  ELECTRICITY_VALUE, 
+  GAS_VALUE, 
+  RETAILER_OPTIONS, 
+} from '../../constants'
+import ControllerRadioGroupPaperbillInput from '../../components/Inputs/ControllerRadioGroupPaperbillInput'
 import { REQUIRED_VALIDATION, ABN_NMI_MIRN_VALIDATION } from '../../constants/validation'
 import ControllerInput from '../../components/Inputs/ControllerInput'
 import ControllerSelectInput from '../../components/Inputs/ControllerSelectInput'
 import GoogleAddressInput from '../../components/Inputs/GoogleAddressInput'
 
-const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) => {
+const PaperBillForm = ({ control, energyType }: PaperBillFormProps) => {
+  const { setValue } = useForm({})
+
   const gasForm =
     energyType !== ELECTRICITY_VALUE ? (
       <div className="flex flex-col gap-3">
@@ -23,6 +30,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
             control={control}
             inputLabel="MIRN"
             textLabel="Enter your MIRN"
+            tooltipText="You can locate your MIRN or Meter Installation Registration Number (sometimes referred to as the ‘DPI’) on your gas bill, usually under the gas usage section."
           />
           <ControllerSelectInput
             control={control}
@@ -34,12 +42,14 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
             rules={REQUIRED_VALIDATION}
           />
         </div>
-        <ControllerRadioGroupInput
+        <ControllerRadioGroupPaperbillInput
             control={control}
             name="currentUsageGas"
             options={CURRENT_USAGE_OPTIONS}
             rules={REQUIRED_VALIDATION}
             label="What is current usage?"
+            isCurrentUsage={true}
+          currentUsageType={GAS_VALUE}
           />
       </div>
     ) : null
@@ -58,6 +68,7 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
             control={control}
             inputLabel="NMI"
             textLabel="Enter your NMI"
+            tooltipText="Your NMI, or National Meter Identifier, is a unique number for your home or business. You'll find the NMI on the electricity bill. The NMI may be on the front of the first or second page and can include numbers and letters and is 10 or 11 characters long"
           />
           <GoogleAddressInput
             control={control}
@@ -85,12 +96,14 @@ const PaperBillForm = ({ control, energyType, setValue }: PaperBillFormProps) =>
             rules={REQUIRED_VALIDATION}
           />
         </div>
-        <ControllerRadioGroupInput
+        <ControllerRadioGroupPaperbillInput
           control={control}
           name="currentUsageElectric"
           options={CURRENT_USAGE_OPTIONS}
           rules={REQUIRED_VALIDATION}
           label="What is current usage?"
+          isCurrentUsage={true}
+          currentUsageType={ELECTRICITY_VALUE}
         />
       </div>
     ) : null

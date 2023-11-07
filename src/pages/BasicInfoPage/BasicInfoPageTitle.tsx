@@ -1,6 +1,9 @@
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import { Typography } from '@material-tailwind/react'
 import { PropsWithChildren } from 'react'
+import RegistrationContext from '../../contexts/RegistrationContext'
+import { useContext } from 'react'
+import { REGISTRATION_TYPE_BUSINESS } from '../../constants'
 
 const CheckIcon = ({ children }: PropsWithChildren) => {
   return (
@@ -13,7 +16,10 @@ const CheckIcon = ({ children }: PropsWithChildren) => {
   )
 }
 
+  
+
 const BasicInfoPageTitle = () => {
+  const { registrationData } = useContext(RegistrationContext)
   return (
     <div className="flex flex-col gap-y-3 items-center">
       <Typography variant="h1" className="text-zembl-p text-3xl md:text-5xl">
@@ -27,11 +33,12 @@ const BasicInfoPageTitle = () => {
           <CheckIcon>Latest Bill</CheckIcon>
         </span>
         <span className="flex gap-1 text-zembl-p items-center">
-          <CheckIcon>Drivers License or Medicare Card</CheckIcon>
+          <CheckIcon>Drivers License, Passport or Medicare Card</CheckIcon>
         </span>
+        {registrationData?.accountType === REGISTRATION_TYPE_BUSINESS ? 
         <span className="flex gap-1 text-zembl-p items-center">
           <CheckIcon>ABN</CheckIcon>
-        </span>
+        </span> : null}
       </div>
     </div>
   )

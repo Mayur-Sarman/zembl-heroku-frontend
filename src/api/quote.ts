@@ -9,6 +9,7 @@ import {
   RESEND_OTP_ENDPOINT,
   VALIDATE_OTP_ENDPOINT,
   UPDATE_QUOTE_CALLBACK_ENDPOINT,
+  GET_QUOTE_TOKEN_AND_SEND_OTP_ENDPOINT,
 } from '../constants'
 import { performGetRequest, performPatchRequest, performPostRequest } from '../helpers'
 import { Preference, SimpleResponse } from './common'
@@ -35,6 +36,11 @@ export const patchQuoteCallback = async (payload: CallbackRequestPayload, quoteT
 
 export const postConfirmQuote = async (payload: ConfirmQuotePayload, quoteToken: string) => {
   const response = await performPostRequest(SEND_QUOTE_EMAIL_ENDPOINT, payload, quoteToken ?? '')
+  return response.data as SimpleResponse
+}
+
+export const postQuoteToken = async (payload: ConfirmQuotePayload, quoteToken: string) => {
+  const response = await performPostRequest(GET_QUOTE_TOKEN_AND_SEND_OTP_ENDPOINT, payload, quoteToken ?? '')
   return response.data as SimpleResponse
 }
 
@@ -91,6 +97,8 @@ export interface ConfirmQuotePayload {
 
 export interface ValidateTokenResponse extends SimpleResponse {
   otpDigit?: number
+  mobile?: string
+  email?: string
 }
 
 export interface ValidateOTPResponse extends SimpleResponse {

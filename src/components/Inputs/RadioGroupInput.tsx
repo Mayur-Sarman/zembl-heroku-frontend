@@ -4,6 +4,7 @@ import { FormEventHandler, ForwardedRef, ReactNode, forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import ErrorTextMessage from '../ErrorTextMessage'
+import ControllerTooltip from '../Icons/ControllerTooltip'
 
 const RadioGroupInput = forwardRef(function RadioGroupInput(
   {
@@ -19,12 +20,25 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
     error,
     required,
     labelClassName,
+    tooltipText,
+    isCurrentUsage, 
+    currentUsageType
   }: RadioGroupInputProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const hasError = !!error
   const labelDisplay =
-    label && typeof label === 'string' ? (
+    label && (typeof label === 'string') ? (
+      (isCurrentUsage ?? !!tooltipText) ? <>
+        <Typography
+        className={`mb-2 pl-1 font-light text-sm inline-block ${
+          required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
+        } ${labelClassName ?? ''}`}
+        >
+          {label}
+        </Typography>
+        <ControllerTooltip tooltipText={tooltipText} isCurrentUsage={isCurrentUsage} currentUsageType={currentUsageType}/>
+      </> :
       <Typography
         className={`mb-2 pl-1 font-light text-sm ${
           required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
@@ -88,6 +102,9 @@ export interface RadioGroupInputProps {
   readOnly?: boolean
   error?: FieldError
   required?: boolean
+  tooltipText?: string
+  isCurrentUsage?: boolean
+  currentUsageType?: string
 }
 
 export interface InputOptions {

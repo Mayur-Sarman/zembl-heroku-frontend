@@ -39,7 +39,6 @@ const PersonalDetailPage1 = () => {
   const identificationTypeWatcher: unknown = watch<string>('identificationType', '')
 
   const onSubmit = (data: Record<string, string>) => {
-    console.log(data)
 
     // Call API
     // Put data to context
@@ -82,7 +81,7 @@ const PersonalDetailPage1 = () => {
     energyType !== ELECTRICITY_VALUE ? (
       <MiniPlanCard
         brandIcon={gasQuote?.retailerLogo ?? ''}
-        energyType={ELECTRICITY_VALUE}
+        energyType={GAS_VALUE}
         planName={gasQuote?.retailerName ?? ''}
       />
     ) : null
@@ -101,7 +100,7 @@ const PersonalDetailPage1 = () => {
 
       <AccountDetailsForm control={control} />
       {registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS ? (
-        <BusinessDetailsForm control={control} />
+        <BusinessDetailsForm control={control} readOnly={true}/>
       ) : null}
       <ConnectionDetailsForm control={control} setValue={setValue} />
 

@@ -51,7 +51,7 @@ const DateInput = ({
                   minDate: minDate,
                   maxDate: maxDate,
                   clearBtn: false,
-                  defaultDate: field.value ? new Date(field.value as string) : defaultDate ?? undefined,
+                  defaultDate: field.value ? new Date(field.value as string) : defaultDate ?? (null as unknown) as Date,
                   datepickerClassNames: `left-0 ${datepickerClassNames} lg:left-auto`,
                   theme: {
                     background: 'bg-white dark:bg-zembl-p',

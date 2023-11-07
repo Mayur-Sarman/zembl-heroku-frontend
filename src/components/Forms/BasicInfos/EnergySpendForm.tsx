@@ -27,7 +27,7 @@ const EnergySpendForm = ({ control, billingType }: EnergySpendFormProps) => {
             name="billEnergySpend"
             options={billingType === BILLING_TYPE_QUARTERLY ? QUARTERLY_SPEND_OPTIONS : MONTHLY_SPEND_OPTIONS}
             rules={REQUIRED_VALIDATION}
-            label={'Roughly how much does your business spend on energy per month?'}
+            label={'Roughly how much do you expect your business spend on energy per bill?'}
           />
         ) : null}
       </div>

@@ -15,6 +15,7 @@ export const patchConsentReZemblTerms = async (payload: UpdateReZemblTermsConsen
 export interface ReZemblRequestPayload {
   electricityQuoteId?: string
   gasQuoteId?: string
+  accountId?: string
 }
 
 export interface UpdateReZemblTermsConsentPayload extends ReZemblRequestPayload {

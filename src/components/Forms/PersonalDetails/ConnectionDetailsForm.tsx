@@ -2,27 +2,27 @@ import AccordionCard from '../../AccordionCard'
 import { Typography } from '@material-tailwind/react'
 import { STATE_LIST_OPTIONS } from '../../../constants'
 import { Control, FieldValues, UseFormSetValue } from 'react-hook-form'
-import { MouseEventHandler, useCallback, useState } from 'react'
+import {  useState } from 'react'
 import ControllerInput from '../../Inputs/ControllerInput'
 import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
 import { REQUIRED_VALIDATION } from '../../../constants/validation'
-import GoogleAddressInput from '../../Inputs/GoogleAddressInput'
+// import GoogleAddressInput from '../../Inputs/GoogleAddressInput'
 
-const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps) => {
-  const [isManualAddress, setIsManualAddress] = useState<boolean>(false)
+const ConnectionDetailsForm = ({ control }: ConnectionDetailsFormProps) => {
+  const [isManualAddress] = useState<boolean>(false)
 
-  const onToggleManualAddressClick = useCallback<MouseEventHandler>(() => {
-    setIsManualAddress((prev) => !prev)
-  }, [])
+  // const onToggleManualAddressClick = useCallback<MouseEventHandler>(() => {
+  //   setIsManualAddress((prev) => !prev)
+  // }, [])
 
-  const toggleAddressLabel = isManualAddress
-    ? 'Find you address automatically'
-    : 'Can’t find your address? Enter manually'
+  // const toggleAddressLabel = isManualAddress
+  //   ? 'Find you address automatically'
+  //   : 'Can’t find your address? Enter manually'
 
   return (
     <AccordionCard alwaysOpen open title="Connection Details" bodyClassName="w-full flex flex-col gap-3 text-left">
       <div className={`flex flex-col gap-y-6`}>
-        <GoogleAddressInput
+        {/* <GoogleAddressInput
           control={control}
           required
           onSelectedCallback={(data) => {
@@ -38,9 +38,9 @@ const ConnectionDetailsForm = ({ control, setValue }: ConnectionDetailsFormProps
           name="address"
           rules={!isManualAddress ? { ...REQUIRED_VALIDATION } : {}}
           disabled={isManualAddress}
-        />
-        <Typography className="text-xs underline cursor-pointer" onClick={onToggleManualAddressClick}>
-          {toggleAddressLabel}
+        /> */}
+        <Typography className="" >
+          Your Connection Address
         </Typography>
       </div>
       <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6`}>
