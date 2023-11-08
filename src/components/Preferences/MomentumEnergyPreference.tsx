@@ -3,8 +3,11 @@ import { Control } from 'react-hook-form'
 import { YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
-
+import { useRegistration } from '../../hooks/useRegistration'
 const MomentumEnergyPreference = ({ control, prefix }: MomentumEnergyPreferenceProps) => {
+  const { registrationData } = useRegistration()
+
+
   return (
     <AccordionCard alwaysOpen open title="Momentum Energy Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
@@ -27,6 +30,14 @@ const MomentumEnergyPreference = ({ control, prefix }: MomentumEnergyPreferenceP
         options={YES_NO_OPTIONS}
         required
       />
+
+      {
+        registrationData?.consentMonthlyBilling === 'Yes' ? 
+        <TextNote>
+        The plan you’ve chosen has some fixed billing and communication preferences. Whenever possible, Momentum will email you, but sometimes they’ll need to contact you via phone or post.
+        </TextNote>
+        : null
+      }
     </AccordionCard>
   )
 }
