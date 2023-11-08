@@ -12,7 +12,7 @@ const BlueNRGPreference = ({ control, prefix }: BlueNRGPreferenceProps) => {
         control={control}
         name={`${prefix}.consentMonthlyBilling`}
         required
-        label={'Do you consent to receive your energy bills from Blue NRG on a monthly basis?'}
+        label={'Do you consent to receive your èlectricity bills from Blue NRG on a monthly basis?'}
         options={YES_NO_OPTIONS}
       />
 
