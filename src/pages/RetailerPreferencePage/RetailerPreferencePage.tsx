@@ -40,7 +40,6 @@ const RetailerPreferencePage = () => {
         // retailerName: BLUE_NRG,
       },
     }))
-    console.log(registrationData)
   }, [setRegistrationData])
 
   const showSingle = registrationData?.electricityQuote?.retailerName === registrationData?.gasQuote?.retailerName
