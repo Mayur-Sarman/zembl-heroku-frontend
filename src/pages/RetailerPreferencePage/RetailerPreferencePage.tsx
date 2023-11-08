@@ -8,11 +8,13 @@ import RetailerPreferenceForm from '../../components/Forms/RetailerPreferenceFor
 import {RegistrationData } from '../../constants'
 import { Quote } from '../../api/quote'
 import { useEffect } from 'react'
+// import { BLUE_NRG } from '../../constants'
 
 const RetailerPreferencePage = () => {
   const { registrationData, setRegistrationData } = useRegistration()
-  const { handleSubmit, control } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
+  const { handleSubmit, control, watch } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
   const navigate = useNavigate()
+  registrationData.consentMonthlyBilling = watch('electricityQuote.quotePreferences.consentMonthlyBilling')
 
   const onSubmit = (data: RegistrationData) => {
     const commonPreferences = (data?.commonQuote as Quote)?.quotePreferences
@@ -33,14 +35,13 @@ const RetailerPreferencePage = () => {
       ...prev,
       electricityQuote: {
         ...prev.electricityQuote,
-        // retailerName: MOMENTUM,
+        // retailerName: BLUE_NRG,
       },
       gasQuote: {
         ...prev.gasQuote,
-        // retailerName: BLUE_NRG,
+        // retailerName: MOMENTUM,
       },
     }))
-    console.log(registrationData)
   }, [setRegistrationData])
 
   const showSingle = registrationData?.electricityQuote?.retailerName === registrationData?.gasQuote?.retailerName
