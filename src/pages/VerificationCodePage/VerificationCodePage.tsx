@@ -59,7 +59,6 @@ const VerificationCodePage = () => {
   }, [resendOTP])
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data)
     validateOTP.mutate(data?.otpCode as string)
   }
 
