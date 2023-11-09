@@ -4,14 +4,9 @@ import { YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import { Typography } from '@material-tailwind/react'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
-import { useRegistration } from '../../hooks/useRegistration'
-import { FieldValues, useForm } from 'react-hook-form'
 
 const BlueNRGPreference = ({ control, prefix, pref }: BlueNRGPreferenceProps) => {
-  const {registrationData} = useRegistration()
-  const { watch } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
-  const consent = watch(prefix + '.consentMonthlyBilling') as string
-  console.log('consent', consent)
+
   return (
     <AccordionCard alwaysOpen open title="Blue NRG Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
