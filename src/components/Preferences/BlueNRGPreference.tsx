@@ -5,7 +5,8 @@ import TextNote from '../TextNote'
 import { Typography } from '@material-tailwind/react'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
-const BlueNRGPreference = ({ control, prefix }: BlueNRGPreferenceProps) => {
+const BlueNRGPreference = ({ control, prefix, pref }: BlueNRGPreferenceProps) => {
+
   return (
     <AccordionCard alwaysOpen open title="Blue NRG Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
@@ -15,11 +16,14 @@ const BlueNRGPreference = ({ control, prefix }: BlueNRGPreferenceProps) => {
         label={'Do you consent to receive your èlectricity bills from Blue NRG on a monthly basis?'}
         options={YES_NO_OPTIONS}
       />
-
+      {
+              pref?.consentMonthlyBilling === 'No' ? 
       <TextNote>
         This plan is not available to customers who do not consent to monthly billing. Update your preference or please
         call Zembl on 1300 957 721 for assistance.
-      </TextNote>
+      </TextNote> : null
+      }
+
       <Typography>
         Blue NRG may collect, use, and disclose to its related bodies, credit reporting agencies and third parties -
         your personal, business, credit related and confidential information (including metering data) where it is
@@ -35,11 +39,13 @@ const BlueNRGPreference = ({ control, prefix }: BlueNRGPreferenceProps) => {
         label={'Do you understand and accept these terms?”'}
         options={YES_NO_OPTIONS}
       />
-
-      <TextNote>
+      {pref?.doYouUnderstandAndAcceptTheTerms === 'No' ?
+        <TextNote>
         This plan is not available to where the electricity at the site is not used predominately for business purposes.
         Update your preference or please call Zembl on 1300 957 721 for assistance.
       </TextNote>
+      : null}
+      
 
       <ControllerRadioGroupInput
         control={control}
@@ -50,11 +56,12 @@ const BlueNRGPreference = ({ control, prefix }: BlueNRGPreferenceProps) => {
         }
         options={YES_NO_OPTIONS}
       />
-
+      {pref?.smallBusinessCustomerConsent === 'No' ?
       <TextNote>
         This plan is not available to where the electricity at the site is not used predominately for business purposes.
         Update your preference or please call Zembl on 1300 957 721 for assistance.
       </TextNote>
+      :null}
     </AccordionCard>
   )
 }
@@ -62,6 +69,7 @@ const BlueNRGPreference = ({ control, prefix }: BlueNRGPreferenceProps) => {
 interface BlueNRGPreferenceProps {
   control: Control
   prefix: string
+  pref?: Record<string, string>
 }
 
 export default BlueNRGPreference

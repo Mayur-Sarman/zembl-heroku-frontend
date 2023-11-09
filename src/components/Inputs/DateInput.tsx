@@ -40,6 +40,7 @@ const DateInput = ({
         control={control}
         rules={required ? { ...rules, ...REQUIRED_VALIDATION } : {}}
         render={({ field, fieldState }) => {
+          defaultDate = defaultDate ? defaultDate : field.value ? new Date(field.value as string) : (null as unknown) as Date
           return (
             <>
               <Datepicker
@@ -51,7 +52,8 @@ const DateInput = ({
                   minDate: minDate,
                   maxDate: maxDate,
                   clearBtn: false,
-                  defaultDate: field.value ? new Date(field.value as string) : defaultDate ?? (null as unknown) as Date,
+                  defaultDate: defaultDate ? defaultDate : field.value ? new Date(field.value as string) : (null as unknown) as Date,
+                  // !field.value ? new Date(field.value as string) : defaultDate ?? (null as unknown) as Date,
                   datepickerClassNames: `left-0 ${datepickerClassNames} lg:left-auto`,
                   theme: {
                     background: 'bg-white dark:bg-zembl-p',

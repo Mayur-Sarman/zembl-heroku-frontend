@@ -21,7 +21,7 @@ const FullPlanCard = ({
       name={`${prefix}.[${index}].accepted`}
       control={control}
       required
-      label={item.label}
+      label={item.label ?? 'By checking this box I agree this is my \'Digital Signature\' and acceptance of all terms'}
     />
   ))
   return (

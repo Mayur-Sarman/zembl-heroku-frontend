@@ -29,7 +29,8 @@ const SelectInput = forwardRef(function SelectInput(
         ref={ref}
         onChange={onChange}
         placeholder="Select..."
-        className={`!border !border-blue-gray-200 focus:!border-gray-900 ${hasError ? '!border-red-500' : ''} ${
+        size='lg'
+        className={`p-4 !border !border-blue-gray-200 focus:!border-gray-900  ${hasError ? '!border-red-500' : ''} ${
           readOnly ? 'pointer-events-none' : 'pointer-events-auto'
         }`}
         labelProps={{ className: 'hidden' }}
