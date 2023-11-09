@@ -78,9 +78,9 @@ const SelectPlansPage = () => {
       if (ZEMBL_DEBUG_MODE) console.log('SELECT_PLAN_PAGE', e)
     }
   }
-
+console.log(registrationData)
   const onPreferenceSaved = (newPreferences: string[]) => {
-    const { opportunityId, accountDetails, businessDetails, categoryId, electricity, gas } = registrationData
+    const { opportunityId, accountDetails, businessDetails, categoryId, electricity, gas, siteRelationshipId, accountType } = registrationData
     createQuoteMutation.mutate({
       opportunityId,
       accountId: businessDetails?.accountId,
@@ -89,6 +89,8 @@ const SelectPlansPage = () => {
       electricity,
       gas,
       preferences: convertPreference(newPreferences),
+      siteRelationshipId: siteRelationshipId,
+      accountType: accountType
     })
 
     setValue('electricPlanId', null)

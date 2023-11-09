@@ -16,22 +16,22 @@ import {
 } from '../../constants'
 import { Control } from 'react-hook-form'
 
-const RetailerPreferenceForm = ({ retailerName, prefix, control, siteAddress }: RetailerPreferenceFormProps) => {
+const RetailerPreferenceForm = ({ retailerName, prefix, control, siteAddress, pref }: RetailerPreferenceFormProps) => {
   switch (retailerName) {
     case AGL:
       return <AGLPreference control={control} prefix={prefix} />
     case BLUE_NRG:
-      return <BlueNRGPreference control={control} prefix={prefix} />
+      return <BlueNRGPreference control={control} prefix={prefix} pref={pref}/>
     case SIMPLY_ENERGY:
-      return <SimplyEnergyPreference />
+      return <SimplyEnergyPreference control={control} prefix={prefix}/>
     case ENERGY_AU:
-      return <EnergyAUPreference siteAddress={siteAddress} control={control} prefix={prefix} />
+      return <EnergyAUPreference siteAddress={siteAddress} control={control} prefix={prefix} pref={pref}/>
     case ENERGY_LOCALS:
-      return <EnergyLocalsPreference control={control} prefix={prefix} />
+      return <EnergyLocalsPreference control={control} prefix={prefix} pref={pref}/>
     case MOMENTUM:
-      return <MomentumEnergyPreference control={control} prefix={prefix} />
+      return <MomentumEnergyPreference control={control} prefix={prefix} pref={pref}/>
     case NEXT_BUSINESS_ENERGY:
-      return <NextBusinessEnergyPreference control={control} prefix={prefix} />
+      return <NextBusinessEnergyPreference control={control} prefix={prefix} pref={pref}/>
   }
 }
 
@@ -40,6 +40,7 @@ interface RetailerPreferenceFormProps {
   prefix: string
   control: Control
   siteAddress?: string
+  pref?: Record<string, string>
 }
 
 export default RetailerPreferenceForm

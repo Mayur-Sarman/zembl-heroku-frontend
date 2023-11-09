@@ -4,8 +4,10 @@ import { GREEN_POWER_OPTIONS, YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import ControllerSelectInput from '../Inputs/ControllerSelectInput'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
+import { useRegistration } from '../../hooks/useRegistration'
 
-const EnergyAUPreference = ({ siteAddress, control, prefix }: EnergyAUPreferenceProps) => {
+const EnergyAUPreference = ({ siteAddress, control, prefix, pref }: EnergyAUPreferenceProps) => {
+  const {registrationData} = useRegistration()
   return (
     <AccordionCard alwaysOpen open title="Energy Australia Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
@@ -18,9 +20,9 @@ const EnergyAUPreference = ({ siteAddress, control, prefix }: EnergyAUPreference
         required
       />
 
-      <TextNote>You have indicated that someone in the property has life support equipment.</TextNote>
-
-      <div className="w-full lg:w-1/2">
+      {/* <TextNote>You have indicated that someone in the property has life support equipment.</TextNote> */}
+      { pref?.interestedGreenPower === 'Yes' && registrationData?.billType === 'Email' ?
+        <div className="w-full lg:w-1/2">
         <ControllerSelectInput
           control={control}
           name={`${prefix}.greenPowerOption`}
@@ -31,6 +33,8 @@ const EnergyAUPreference = ({ siteAddress, control, prefix }: EnergyAUPreference
           required
         />
       </div>
+      : null}
+      
 
       <ControllerRadioGroupInput
         control={control}
@@ -39,8 +43,10 @@ const EnergyAUPreference = ({ siteAddress, control, prefix }: EnergyAUPreference
         options={YES_NO_OPTIONS}
         required
       />
-
-      <TextNote>A fee of $1.69 Inc. GST may apply per bill</TextNote>
+      {pref?.receiveEmailBills === 'No' ?
+        <TextNote>A fee of $1.69 Inc. GST may apply per bill</TextNote>
+      : null}
+      
     </AccordionCard>
   )
 }
@@ -49,6 +55,7 @@ interface EnergyAUPreferenceProps {
   control: Control
   siteAddress?: string
   prefix: string
+  pref?: Record<string, string>
 }
 
 export default EnergyAUPreference
