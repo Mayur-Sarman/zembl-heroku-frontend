@@ -149,7 +149,7 @@ const PersonalDetailPage2 = () => {
   }
 
   const contactName = `${firstName ?? ''} ${lastName ?? ''}`.trim()
-  const selectedElecRetailer = registrationData?.electricityQuote?.retailerName ?? AGL
+  const selectedElecRetailer = registrationData?.electricityQuote?.retailerName ?? null
   const selectedGasRetailer = registrationData?.gasQuote?.retailerName ?? null
   const isElectricTransfer = selectedElecRetailer !== registrationData?.currentRetailerElectric
   const isGasTransfer = selectedGasRetailer !== registrationData?.currentRetailerGas
