@@ -4,7 +4,7 @@ import { YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 
-const EnergyLocalsPreference = ({ control, prefix }: EnergyLocalsPreferenceProps) => {
+const EnergyLocalsPreference = ({ control, prefix, pref}: EnergyLocalsPreferenceProps) => {
   return (
     <AccordionCard alwaysOpen open title="Energy Locals  Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
@@ -14,11 +14,13 @@ const EnergyLocalsPreference = ({ control, prefix }: EnergyLocalsPreferenceProps
         options={YES_NO_OPTIONS}
         required
       />
-
+    {pref?.creditCheckConsent === 'No' ?
       <TextNote>
-        This plan is not available to customers who do not consent to a credit check. Update your preference or please
-        call Zembl on 1300 957 721 for assistance.
-      </TextNote>
+      This plan is not available to customers who do not consent to a credit check. Update your preference or please
+      call Zembl on 1300 957 721 for assistance.
+    </TextNote>
+    : null}
+      
     </AccordionCard>
   )
 }
@@ -26,6 +28,7 @@ const EnergyLocalsPreference = ({ control, prefix }: EnergyLocalsPreferenceProps
 interface EnergyLocalsPreferenceProps {
   control: Control
   prefix: string
+  pref?: Record<string, string>
 }
 
 export default EnergyLocalsPreference

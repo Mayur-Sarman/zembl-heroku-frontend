@@ -157,10 +157,18 @@ export const CHRONIC_POSITIVE_AIRWAYS_PRESSURE_RESPIRATORS_CPAP = 'Chronic posit
 export const CRIGLER_NAJJAR_SYNDROME_PHOTOTHERAPY_EQUIPMENT = 'Crigler najjar syndrome phototherapy equipment'
 export const VENTILATORS_FOR_LIFE_SUPPORT = 'Ventilators for life support'
 
+export const SIMPLY_ENERGY_OPTIONS_ONE = 'You can change the method you receive your bills anytime by contacting customer service.'
+export const SIMPLY_ENERGY_OPTIONS_TWO = 'By receiving your bills via post you will be charged a fee of $1.65 including GST. You can change the method you receive your bills anytime by contacting customer service.'
+
 export const INSPECTION_METHOD_OPTIONS = [
   { value: INSPECTION_METHOD_PERSON, label: INSPECTION_METHOD_PERSON },
   { value: INSPECTION_METHOD_KEYS_MAIL, label: INSPECTION_METHOD_KEYS_MAIL },
   { value: INSPECTION_METHOD_KEYS_METER, label: INSPECTION_METHOD_KEYS_METER },
+]
+
+export const SIMPLY_ENERGY_OPTIONS = [
+  { value: SIMPLY_ENERGY_OPTIONS_ONE, label: SIMPLY_ENERGY_OPTIONS_ONE },
+  { value: SIMPLY_ENERGY_OPTIONS_TWO, label: SIMPLY_ENERGY_OPTIONS_TWO },
 ]
 
 export const REGISTRATION_TYPE_OPTIONS = [

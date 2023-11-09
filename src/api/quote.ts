@@ -113,6 +113,8 @@ export interface PostCreateQuotePayload {
   electricity?: boolean
   gas?: boolean
   preferences?: Preference
+  siteRelationshipId?: string
+  accountType?: string
 }
 
 export interface CreateQuoteLinePayload {
@@ -137,6 +139,7 @@ export interface ProcessQuoteOutput {
   categoryId?: string
   electricityQuote?: Quote
   gasQuote?: Quote
+  commonQuote?: Quote
 }
 
 export interface BusinessDetail {
@@ -181,6 +184,9 @@ export interface Quote extends QuoteComparison {
   fuelType?: string | null
   preferenceId?: string | null
   quoteLineId?: string | null
+  lifeSupport?: string | null
+  billType?: string | null
+  accountType?: string | null
 
   termAndConditionContent?: string | null
   termAndConditions?: TermAndCondition[]

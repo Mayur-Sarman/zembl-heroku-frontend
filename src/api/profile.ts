@@ -69,6 +69,7 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
   const secondaryContact = {
     ...secondaryContactInput,
     dateOfBirth: getJSONDateString(secondaryContactInput?.dateOfBirth),
+    mobile: getPhoneNumber(secondaryContactInput?.mobile),
     type: data?.registrationType as string,
     accountId: data?.accountId as string,
   }

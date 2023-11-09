@@ -6,18 +6,29 @@ import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
 import RetailerPreferenceForm from '../../components/Forms/RetailerPreferenceForm'
 import {RegistrationData } from '../../constants'
-import { Quote } from '../../api/quote'
 import { useEffect } from 'react'
-// import { BLUE_NRG } from '../../constants'
+// import { SIMPLY_ENERGY } from '../../constants'
 
 const RetailerPreferencePage = () => {
   const { registrationData, setRegistrationData } = useRegistration()
   const { handleSubmit, control, watch } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
   const navigate = useNavigate()
-  registrationData.consentMonthlyBilling = watch('electricityQuote.quotePreferences.consentMonthlyBilling')
-
+  registrationData.electricityQuote = {
+    ...registrationData.electricityQuote,
+    quotePreferences: watch('electricityQuote.quotePreferences') as Record<string, string>
+  }
+  registrationData.gasQuote = {
+    ...registrationData.gasQuote,
+    quotePreferences: watch('gasQuote.quotePreferences') as Record<string, string>
+  }
+  registrationData.commonQuote = {
+    ...registrationData.commonQuote,
+    quotePreferences: watch('commonQuote.quotePreferences') as Record<string, string>
+  }
+  
+  
   const onSubmit = (data: RegistrationData) => {
-    const commonPreferences = (data?.commonQuote as Quote)?.quotePreferences
+    const commonPreferences = (data?.commonQuote)?.quotePreferences
     const updatedData = commonPreferences
       ? {
           ...data,
@@ -33,9 +44,10 @@ const RetailerPreferencePage = () => {
   useEffect(() => {
     setRegistrationData((prev) => ({
       ...prev,
+      // accountType: 'SME',
       electricityQuote: {
         ...prev.electricityQuote,
-        // retailerName: BLUE_NRG,
+        // retailerName: SIMPLY_ENERGY,
       },
       gasQuote: {
         ...prev.gasQuote,
@@ -57,6 +69,7 @@ const RetailerPreferencePage = () => {
             prefix="electricityQuote.quotePreferences"
             retailerName={registrationData?.electricityQuote?.retailerName ?? ''}
             siteAddress={registrationData?.electricityQuote?.address ?? ''}
+            pref={registrationData?.electricityQuote?.quotePreferences as Record<string, string> ?? null}
           />
         ) : null}
 
@@ -66,6 +79,7 @@ const RetailerPreferencePage = () => {
             prefix="gasQuote.quotePreferences"
             retailerName={registrationData?.gasQuote?.retailerName ?? ''}
             siteAddress={registrationData?.gasQuote?.address ?? ''}
+            pref={registrationData?.gasQuote?.quotePreferences as Record<string, string> ?? null}
           />
         ) : null}
 
@@ -75,6 +89,7 @@ const RetailerPreferencePage = () => {
             prefix="commonQuote.quotePreferences"
             retailerName={registrationData?.electricityQuote?.retailerName ?? registrationData?.gasQuote?.retailerName ?? ''}
             siteAddress={registrationData?.electricityQuote?.address ?? registrationData?.gasQuote?.address ?? ''}
+            pref={registrationData?.commonQuote?.quotePreferences as Record<string, string> ?? null}
           />
         ) : null}
 
