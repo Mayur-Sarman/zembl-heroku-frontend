@@ -78,7 +78,7 @@ const SelectPlansPage = () => {
       if (ZEMBL_DEBUG_MODE) console.log('SELECT_PLAN_PAGE', e)
     }
   }
-console.log(registrationData)
+
   const onPreferenceSaved = (newPreferences: string[]) => {
     const { opportunityId, accountDetails, businessDetails, categoryId, electricity, gas, siteRelationshipId, accountType } = registrationData
     createQuoteMutation.mutate({
