@@ -38,7 +38,7 @@ export const buildLeadPayload = (data: RegistrationData) => {
   } else if (isCI) {
     recordType = CAndI_VALUE
   }
-
+  const address = data?.address as GoogleMapExtractedComponents
   const buildedData = {
     ...data,
     electricity: [ELECTRICITY_VALUE, BOTH_VALUE].includes(data?.energyType ?? ''),
@@ -48,6 +48,14 @@ export const buildLeadPayload = (data: RegistrationData) => {
     moveInDate: getJSONDateString(data?.moveInDate),
     newConnection: data?.isMoving === YES_VALUE,
     fullAddress: (data?.address as GoogleMapExtractedComponents).fullAddress,
+    address: {
+      country: address?.country,
+      fullAddress: address?.fullAddress,
+      postCode: address?.postCode,
+      street: address?.route,
+      state: address?.state,
+      city: address?.suburb
+    }
   }
 
   return buildedData

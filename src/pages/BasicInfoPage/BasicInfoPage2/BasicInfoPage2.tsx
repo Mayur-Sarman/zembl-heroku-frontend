@@ -45,6 +45,7 @@ const BasicInfoPage2 = () => {
         solar: data?.solar as string,
         solarConsideration: data?.solarConsideration as string,
         preferences: convertPreference(selectedPreferences),
+        ...registrationData?.address as Record<string, string>
       }
       const createSiteResult = await createSiteMutation.mutateAsync(siteData)
 
