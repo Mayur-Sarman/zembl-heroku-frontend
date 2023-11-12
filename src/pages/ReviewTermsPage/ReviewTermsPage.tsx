@@ -8,7 +8,7 @@ import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../.
 import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
 import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
-import { getJSONDateString } from '../../helpers/formatter'
+import { getJSONDateString, getPhoneNumber } from '../../helpers/formatter'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const ReviewTermsPage = () => {
@@ -30,10 +30,19 @@ const ReviewTermsPage = () => {
   })
 
   const onSubmit = (data: RegistrationData) => {
-    const { businessDetails, accountDetails, electricityQuote, gasQuote } = data
-    const formattedAccountDetails = { ...accountDetails, dateOfBirth: getJSONDateString(accountDetails?.dateOfBirth) }
+    const { businessDetails, accountDetails } = data
+    const formattedAccountDetails = { 
+      ...accountDetails, 
+      dateOfBirth: getJSONDateString(accountDetails?.dateOfBirth), 
+      mobile: getPhoneNumber(accountDetails?.mobile),
+      accountId: accountDetails?.accountId ?? businessDetails?.accountId
+    }
     updatePlanData.mutate({
-      planData: { businessDetails, accountDetails: formattedAccountDetails, electricityQuote, gasQuote },
+      planData: { 
+        businessDetails, 
+        accountDetails: formattedAccountDetails, 
+        electricityQuote: registrationData?.electricityQuote?.quoteId ? registrationData?.electricityQuote : null, 
+        gasQuote: registrationData?.gasQuote?.quoteId ? registrationData?.gasQuote : null },
       token: registrationToken ?? '',
     })
 

@@ -32,16 +32,16 @@ const replaceInvalidCodeToken = (value: string | null | undefined) =>
 
 export const extractNMI = (ocrFileResult: OCRFileResult): string | undefined => {
   const keyPairs = extractKeyPair(ocrFileResult)
-  console.log('ELECTRIC OCR KEYPAIR:', keyPairs)
+  // console.log('ELECTRIC OCR KEYPAIR:', keyPairs)
   let nmi: string | undefined = extractNMIByKeypair(keyPairs)
 
   if (!nmi) {
     const possibleNMI = extractNMIByText(ocrFileResult.document.text)
-    console.log('POSSIBLE NMI', possibleNMI)
+    // console.log('POSSIBLE NMI', possibleNMI)
     nmi = replaceInvalidCodeToken(possibleNMI)?.match(NMI_VALUE_PATTERN)?.[0]
   }
 
-  console.log('RESULT NMI:', nmi)
+  // console.log('RESULT NMI:', nmi)
 
   return nmi
 }
@@ -51,7 +51,7 @@ export const extractNMIByKeypair = (keyPairs: Record<string, string>): string | 
   const keyPair = Object.entries(keyPairs).find(
     ([key, value]) => regex.test(key.toLowerCase()) && replaceInvalidCodeToken(value)?.match(NMI_VALUE_PATTERN)?.[0],
   )
-  console.log('NMI MATCHING KEY PAIR:', keyPair)
+  // console.log('NMI MATCHING KEY PAIR:', keyPair)
   return keyPair?.[1]
 }
 
@@ -69,16 +69,16 @@ export const extractNMIByText = (text: string) => {
 
 export const extractMIRN = (ocrFileResult: OCRFileResult): string | undefined => {
   const keyPairs = extractKeyPair(ocrFileResult)
-  console.log('GAS OCR KEYPAIR:', keyPairs)
+  // console.log('GAS OCR KEYPAIR:', keyPairs)
   let mirn: string | undefined = extractMIRNByKeypair(keyPairs)
 
   if (!mirn) {
     const possibleMIRN = extractMIRNByText(ocrFileResult.document.text)
-    console.log('POSSIBLE MIRN', possibleMIRN)
+    // console.log('POSSIBLE MIRN', possibleMIRN)
     mirn = replaceInvalidCodeToken(possibleMIRN ?? '')?.match(MIRN_VALUE_PATTERN)?.[0]
   }
 
-  console.log('RESULT MIRN:', mirn)
+  // console.log('RESULT MIRN:', mirn)
 
   return mirn
 }
@@ -88,7 +88,7 @@ export const extractMIRNByKeypair = (keyPairs: Record<string, string>): string |
   const keyPair = Object.entries(keyPairs).find(
     ([key, value]) => regex.test(key.toLowerCase()) && replaceInvalidCodeToken(value)?.match(MIRN_VALUE_PATTERN)?.[0],
   )
-  console.log('MIRN MATCHING KEY PAIR:', keyPair)
+  // console.log('MIRN MATCHING KEY PAIR:', keyPair)
   return keyPair?.[1]
 }
 

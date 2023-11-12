@@ -16,8 +16,6 @@ const CheckIcon = ({ children }: PropsWithChildren) => {
   )
 }
 
-  
-
 const BasicInfoPageTitle = () => {
   const { registrationData } = useContext(RegistrationContext)
   return (
@@ -35,7 +33,7 @@ const BasicInfoPageTitle = () => {
         <span className="flex gap-1 text-zembl-p items-center">
           <CheckIcon>Drivers License, Passport or Medicare Card</CheckIcon>
         </span>
-        {registrationData?.accountType === REGISTRATION_TYPE_BUSINESS ? 
+        {registrationData?.registrationType === REGISTRATION_TYPE_BUSINESS ? 
         <span className="flex gap-1 text-zembl-p items-center">
           <CheckIcon>ABN</CheckIcon>
         </span> : null}

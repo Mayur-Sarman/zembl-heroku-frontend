@@ -13,13 +13,13 @@ const ReZemblTermForm = ({
   register,
 }: ReZemblTermFormProps) => {
   const electricTermDisplay = zemblElectric?.termAndConditionContent ? (
-    <TextNote>
+    <TextNote className={'break-all'}>
       <RichText htmlString={zemblElectric.termAndConditionContent} />
     </TextNote>
   ) : null
 
   const gasTermDisplay = zemblGas?.termAndConditionContent ? (
-    <TextNote>
+    <TextNote className={'break-all'}>
       <RichText htmlString={zemblGas.termAndConditionContent} />
     </TextNote>
   ) : null
