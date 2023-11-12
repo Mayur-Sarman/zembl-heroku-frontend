@@ -12,7 +12,7 @@ const RegistrationThankYouPage = () => {
   const navigate = useNavigate()
   const { handleSubmit, control } = useForm()
   const {registrationData} = useRegistration()
-  registrationData.registrationType = 'Residential'
+
   const onSubmit = (data: FieldValues) => {
     if (data.reZembl === YES_VALUE) {
       if(registrationData.registrationType === 'Residential') {

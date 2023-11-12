@@ -25,7 +25,7 @@ const FullPlanCard = ({
     />
   ))
   return (
-    <div className="grid grid-cols-1 gap-3">
+    <div className="grid grid-cols-1 gap-3 break-all">
       <div className="p-2 md:p-6">
         <MiniPlanCard brandIcon={brandIconSrc} energyType={energyType} planName={planName} />
       </div>

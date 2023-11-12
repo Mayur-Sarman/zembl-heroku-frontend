@@ -14,7 +14,7 @@ const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }:
           planName={electricityPlan?.productName ?? ''}
           brandIconSrc={electricityPlan?.retailerLogo ?? ''}
           termAndConditionContent={electricityPlan?.termAndConditionContent}
-          termAndConditionItems={electricityPlan?.termAndConditions}
+          termAndConditionItems={electricityPlan?.termAndConditionCheckboxs}
           control={control}
         />
       ) : null}
@@ -25,7 +25,7 @@ const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }:
           planName={gasPlan?.productName ?? ''}
           brandIconSrc={gasPlan?.retailerLogo ?? ''}
           termAndConditionContent={gasPlan?.termAndConditionContent}
-          termAndConditionItems={gasPlan?.termAndConditions}
+          termAndConditionItems={gasPlan?.termAndConditionCheckboxs}
         />
       ) : null}
     </>
