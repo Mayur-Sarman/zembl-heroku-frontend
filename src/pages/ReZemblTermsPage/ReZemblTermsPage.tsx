@@ -28,7 +28,7 @@ const ReZemblTermsPage = () => {
     const rezemblConsentPayload: UpdateReZemblTermsConsentPayload = {
       electricityQuoteId: registrationData?.electricityQuote?.quoteId,
       gasQuoteId: registrationData?.gasQuote?.quoteId,
-      accountId: registrationData?.accountDetails?.accountId,
+      accountId: registrationData?.accountDetails?.accountId ?? registrationData?.businessDetails?.accountId,
       reZemblConsent: true,
     }
 
