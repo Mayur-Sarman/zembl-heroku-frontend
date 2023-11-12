@@ -137,8 +137,8 @@ export interface ProcessQuoteOutput {
   accountDetails?: AccountDetail
   connectionDetails?: ConnectionDetail
   categoryId?: string
-  electricityQuote?: Quote
-  gasQuote?: Quote
+  electricityQuote?: Quote | null
+  gasQuote?: Quote | null
   commonQuote?: Quote
 }
 
@@ -189,7 +189,10 @@ export interface Quote extends QuoteComparison {
   accountType?: string | null
 
   termAndConditionContent?: string | null
+  rezemblTermsAndCondition?: boolean | null
+  rezemblTermsAndConditions?: string | null
   termAndConditions?: TermAndCondition[]
+  termAndConditionCheckboxs?: TermAndCondition[]
 
   address?: string | null
   nmi?: string | null

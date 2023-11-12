@@ -10,6 +10,7 @@ import { useReZemblQuery } from '../../hooks/useReZemblQuery'
 import { CustomerDetails, ReZemblData, ReZemblRequestPayload } from '../../api/reZembl'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 import { AxiosError } from 'axios'
+import { useEffect } from 'react'
 
 const SUPPLY_POINT_DETAIL_COLUMNS: ColumnDefinition[] = [
   { key: 'fuelType', type: DATA_TYPE_TEXT, label: 'Fuel Type' },
@@ -44,6 +45,14 @@ const ReZemblDetailPage = () => {
     },
   })
   const customerFullName = (registrationData?.customerDetails as CustomerDetails)?.contactPerson ?? ''
+
+  useEffect(() => {
+    registrationData.electricityQuote = {
+      ...registrationData.electricityQuote,
+      nmi: registrationData?.nmi,
+      address: registrationData?.fullAddress as string
+    }
+  }, [])
 
   return (
     <PageWrapper showLoading={reZemblDataQuery.isLoading}>

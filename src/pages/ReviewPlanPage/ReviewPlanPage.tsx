@@ -13,7 +13,7 @@ import ControllerCheckBox from '../../components/Inputs/ControllerCheckBox'
 import { useFetchQuoteDataQuery } from '../../hooks/useQueryPlanData'
 import { AccountDetail, ProcessQuoteOutput } from '../../api/quote'
 import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
-import { getJSONDateString } from '../../helpers/formatter'
+import { getJSONDateString, getPhoneNumber } from '../../helpers/formatter'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 
 const ReviewPlanPage = () => {
@@ -28,7 +28,6 @@ const ReviewPlanPage = () => {
   })
 
   const businessDetails: unknown = watch('businessDetails')
-
   const getPlanData = useFetchQuoteDataQuery(
     { quoteToken: registrationData?.quoteToken as string, token: registrationToken ?? '' },
     {
@@ -86,8 +85,9 @@ const ReviewPlanPage = () => {
         ...registrationData?.accountDetails,
         ...updatedAccount,
         dateOfBirth: getJSONDateString(updatedAccount.dateOfBirth),
+        mobile: getPhoneNumber(updatedAccount.mobile)
       }
-      
+      registrationData.accountDetails = updatedAccount
       const updatedPlanData = { ...registrationData, accountDetails: updatedAccount }
       updatePlanData.mutate({ planData: updatedPlanData, token: registrationToken ?? '' })
     }
