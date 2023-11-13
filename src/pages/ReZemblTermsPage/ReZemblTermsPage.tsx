@@ -12,7 +12,7 @@ import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 const ReZemblTermsPage = () => {
   const { registrationData, registrationToken, handleErrorResponse } = useRegistration()
   const navigate = useNavigate()
-
+  // console.log('registrationData rezeml T&C =>' , registrationData)
   // On load page get data from context
   const { handleSubmit, register } = useForm()
 

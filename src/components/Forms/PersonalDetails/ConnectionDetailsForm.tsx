@@ -75,7 +75,7 @@ const ConnectionDetailsForm = ({ control }: ConnectionDetailsFormProps) => {
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="address.suburb"
+          name="address.city"
           control={control}
           required={isManualAddress}
           label="Suburb/City"

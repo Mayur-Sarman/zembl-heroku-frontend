@@ -27,7 +27,9 @@ const SelectPlansPage = () => {
     handleErrorResponse,
   } = useContext(RegistrationContext)
   const quoteCallbackMutation = useQuoteCallbackMutation(registrationToken ?? '', {
-    onSuccess: () => navigate('/abn-error'),
+    onSuccess: () => {
+      navigate('/abn-error')
+    },
     onError: (error: AxiosError) => {
       handleErrorResponse(error)
     },
@@ -113,7 +115,7 @@ const SelectPlansPage = () => {
   const selectedEnergyType = registrationData?.energyType
 
   return (
-    <PageWrapper>
+    <PageWrapper showLoading={quoteCallbackMutation.isLoading && createQuoteMutation.isLoading}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
         <RegistrationStep currentStep={1} />
         <hr className="hidden lg:block" />

@@ -94,6 +94,10 @@ const HomePage = () => {
     setRegistrationData?.({} as RegistrationData)
   }, [setRegistrationData])
 
+  useEffect(() => {
+    setRegistrationData({})
+  }, [])
+
   return (
     <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
       <Helmet>

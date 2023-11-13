@@ -95,8 +95,11 @@ const ReviewPlanPage = () => {
 
   const onSubmit = (data: FieldValues) => {
     try {
-      setRegistrationData((prev) => ({ ...prev, ...data }))
+      setRegistrationData(() => ({  ...registrationData, accountDetails: data.accountDetails as Record<string, string> }))
+
+      // console.log('registrationData After NEXT =>', registrationData)
       navigate('/preferences')
+      
     } catch (error) {
       console.log(error)
     }

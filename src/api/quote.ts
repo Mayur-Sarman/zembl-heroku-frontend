@@ -187,6 +187,7 @@ export interface Quote extends QuoteComparison {
   lifeSupport?: string | null
   billType?: string | null
   accountType?: string | null
+  nextReZemblDate?: string | null
 
   termAndConditionContent?: string | null
   rezemblTermsAndCondition?: boolean | null
