@@ -42,6 +42,7 @@ const GoogleAddressInput = ({
   ) => {
     const extractedAddress = extractAddressComponent(fieldValue, ref?.value as string)
     onChange(extractedAddress)
+
     if (displayAs) setValueDisplay(displayAs(extractedAddress) as string)
     if (onSelectedCallback) onSelectedCallback(extractedAddress)
   }

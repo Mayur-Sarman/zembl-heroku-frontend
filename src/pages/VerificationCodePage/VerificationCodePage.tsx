@@ -63,6 +63,10 @@ const VerificationCodePage = () => {
   }
 
   const isPageLoading = validateOTP.isLoading || resendOTP.isLoading || validateToken.isLoading
+  // console.log('otp registrationData =>', registrationData)
+  // useEffect(() => {
+  //   setRegistrationData({})
+  // }, [])
 
   return (
     <PageWrapper showLoading={isPageLoading}>

@@ -10,7 +10,6 @@ import { useReZemblQuery } from '../../hooks/useReZemblQuery'
 import { CustomerDetails, ReZemblData, ReZemblRequestPayload } from '../../api/reZembl'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 import { AxiosError } from 'axios'
-import { useEffect } from 'react'
 
 const SUPPLY_POINT_DETAIL_COLUMNS: ColumnDefinition[] = [
   { key: 'fuelType', type: DATA_TYPE_TEXT, label: 'Fuel Type' },
@@ -29,15 +28,28 @@ const CUSTOMER_DETAIL_COLUMNS: ColumnDefinition[] = [
 ]
 
 const ReZemblDetailPage = () => {
-  const { registrationData, setRegistrationData, registrationToken, handleErrorResponse } = useRegistration()
+  const { registrationData, registrationToken, handleErrorResponse } = useRegistration()
 
+registrationData.electricityQuote = {
+  ...registrationData.electricityQuote,
+  nmi: registrationData?.nmi,
+  address: registrationData?.fullAddress as string,
+  fuelType: 'Electricity',
+  nextReZemblDate: registrationData?.nextReZemblDate as string
+}
   const quoteData: ReZemblRequestPayload = {
     electricityQuoteId: registrationData?.electricityQuote?.quoteId,
     gasQuoteId: registrationData?.gasQuote?.quoteId,
   }
   const reZemblDataQuery = useReZemblQuery(quoteData, registrationToken ?? '', {
     onSuccess: (reZemblData: ReZemblData) => {
-      setRegistrationData((prev) => ({ ...prev, ...reZemblData }))
+
+      registrationData.customerDetails = reZemblData?.customerDetails
+      registrationData.electricityQuote = {
+        ...registrationData.electricityQuote,
+        nextReZemblDate: reZemblData?.electricityQuote?.nextRezemblDate
+      }
+      // setRegistrationData((prev) => ({ ...prev, ...reZemblData }))
     },
     onError: (error: AxiosError) => {
       if (ZEMBL_DEBUG_MODE) console.log('REVIEW_PLAN_PAGE', error)
@@ -45,14 +57,6 @@ const ReZemblDetailPage = () => {
     },
   })
   const customerFullName = (registrationData?.customerDetails as CustomerDetails)?.contactPerson ?? ''
-
-  useEffect(() => {
-    registrationData.electricityQuote = {
-      ...registrationData.electricityQuote,
-      nmi: registrationData?.nmi,
-      address: registrationData?.fullAddress as string
-    }
-  }, [])
 
   return (
     <PageWrapper showLoading={reZemblDataQuery.isLoading}>
