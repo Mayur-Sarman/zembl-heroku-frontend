@@ -28,6 +28,9 @@ const ReviewPlanPage = () => {
   })
 
   const businessDetails: unknown = watch('businessDetails')
+  const accountDetails: unknown = watch('accountDetails')
+
+  console.log('accountDetails =>', accountDetails);
   const getPlanData = useFetchQuoteDataQuery(
     { quoteToken: registrationData?.quoteToken as string, token: registrationToken ?? '' },
     {
@@ -95,8 +98,11 @@ const ReviewPlanPage = () => {
 
   const onSubmit = (data: FieldValues) => {
     try {
-      setRegistrationData((prev) => ({ ...prev, ...data }))
+      setRegistrationData(() => ({  ...registrationData, accountDetails: data.accountDetails as Record<string, string> }))
+
+      // console.log('registrationData After NEXT =>', registrationData)
       navigate('/preferences')
+      
     } catch (error) {
       console.log(error)
     }
@@ -161,6 +167,7 @@ const ReviewPlanPage = () => {
           prefix="accountDetails"
           onSave={onFormSaved}
           saveDisabled={!!formState.errors?.accountDetails}
+          defaultDate={registrationData.accountDetails ? new Date(registrationData?.accountDetails?.dateOfBirth as string) : null}
         />
         {businessDetails ? (
           <BusinessDetailsForm control={control} readOnly compactForm prefix="businessDetails" />

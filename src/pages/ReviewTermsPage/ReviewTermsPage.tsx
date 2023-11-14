@@ -31,7 +31,7 @@ const ReviewTermsPage = () => {
 
   const onSubmit = (data: RegistrationData) => {
     const { businessDetails, accountDetails } = data
-    const formattedAccountDetails = { 
+    const formattedAccountDetails = {
       ...accountDetails, 
       dateOfBirth: getJSONDateString(accountDetails?.dateOfBirth), 
       mobile: getPhoneNumber(accountDetails?.mobile),
@@ -59,7 +59,7 @@ const ReviewTermsPage = () => {
   } else if (registrationData?.gasQuote) {
     energyType = GAS_VALUE
   }
-
+  // console.log('registrationData review term page =>', registrationData)
   return (
     <PageWrapper showLoading={updatePlanData.isLoading}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">

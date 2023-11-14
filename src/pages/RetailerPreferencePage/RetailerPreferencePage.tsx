@@ -6,8 +6,8 @@ import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
 import RetailerPreferenceForm from '../../components/Forms/RetailerPreferenceForm'
 import {RegistrationData } from '../../constants'
-import { useEffect } from 'react'
-// import { SIMPLY_ENERGY } from '../../constants'
+// import { useEffect } from 'react'
+// import { AGL } from '../../constants'
 
 const RetailerPreferencePage = () => {
   const { registrationData, setRegistrationData } = useRegistration()
@@ -25,8 +25,8 @@ const RetailerPreferencePage = () => {
     ...registrationData.commonQuote,
     quotePreferences: watch('commonQuote.quotePreferences') as Record<string, string>
   }
-  
-  
+
+  console.log('registrationData pref page =>', registrationData)
   const onSubmit = (data: RegistrationData) => {
     const commonPreferences = (data?.commonQuote)?.quotePreferences
     const updatedData = commonPreferences
@@ -36,25 +36,25 @@ const RetailerPreferencePage = () => {
           gasQuote: { ...data.gasQuote, quotePreferences: {...commonPreferences, preferenceId: registrationData.gasQuote?.quotePreferences?.preferenceId} },
         }
       : data
-      
+
     setRegistrationData((prev) => ({ ...prev, ...updatedData }))
     navigate('/review-terms')
   }
 
-  useEffect(() => {
-    setRegistrationData((prev) => ({
-      ...prev,
-      // accountType: 'SME',
-      electricityQuote: {
-        ...prev.electricityQuote,
-        // retailerName: SIMPLY_ENERGY,
-      },
-      gasQuote: {
-        ...prev.gasQuote,
-        // retailerName: MOMENTUM,
-      },
-    }))
-  }, [setRegistrationData])
+  // useEffect(() => {
+  //   setRegistrationData((prev) => ({
+  //     ...prev,
+  //     accountType: 'SME',
+  //     electricityQuote: {
+  //       ...prev.electricityQuote,
+  //       retailerName: AGL,
+  //     },
+  //     gasQuote: {
+  //       ...prev.gasQuote,
+  //       // retailerName: MOMENTUM,
+  //     },
+  //   }))
+  // }, [setRegistrationData])
 
   const showSingle = registrationData?.electricityQuote?.retailerName === registrationData?.gasQuote?.retailerName
   return (
