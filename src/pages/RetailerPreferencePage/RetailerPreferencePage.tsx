@@ -7,7 +7,7 @@ import { useRegistration } from '../../hooks/useRegistration'
 import RetailerPreferenceForm from '../../components/Forms/RetailerPreferenceForm'
 import {RegistrationData } from '../../constants'
 // import { useEffect } from 'react'
-// import { SIMPLY_ENERGY } from '../../constants'
+// import { AGL } from '../../constants'
 
 const RetailerPreferencePage = () => {
   const { registrationData, setRegistrationData } = useRegistration()
@@ -25,10 +25,7 @@ const RetailerPreferencePage = () => {
     ...registrationData.commonQuote,
     quotePreferences: watch('commonQuote.quotePreferences') as Record<string, string>
   }
-  registrationData.electricityQuote = {
-    ...registrationData.electricityQuote,
-    retailerName: 'EA'
-  }
+
   console.log('registrationData pref page =>', registrationData)
   const onSubmit = (data: RegistrationData) => {
     const commonPreferences = (data?.commonQuote)?.quotePreferences
@@ -39,7 +36,7 @@ const RetailerPreferencePage = () => {
           gasQuote: { ...data.gasQuote, quotePreferences: {...commonPreferences, preferenceId: registrationData.gasQuote?.quotePreferences?.preferenceId} },
         }
       : data
-      
+
     setRegistrationData((prev) => ({ ...prev, ...updatedData }))
     navigate('/review-terms')
   }
@@ -47,10 +44,10 @@ const RetailerPreferencePage = () => {
   // useEffect(() => {
   //   setRegistrationData((prev) => ({
   //     ...prev,
-  //     // accountType: 'SME',
+  //     accountType: 'SME',
   //     electricityQuote: {
   //       ...prev.electricityQuote,
-  //       retailerName: SIMPLY_ENERGY,
+  //       retailerName: AGL,
   //     },
   //     gasQuote: {
   //       ...prev.gasQuote,

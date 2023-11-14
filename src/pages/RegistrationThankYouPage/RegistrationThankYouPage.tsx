@@ -16,7 +16,7 @@ const RegistrationThankYouPage = () => {
   const onSubmit = (data: FieldValues) => {
     if (data.reZembl === YES_VALUE) {
       if(registrationData.registrationType === 'Residential') {
-        navigate('/rezembl-terms')
+        navigate('/rezembl-no-thank-you')
       } else {
         navigate('/rezembl-details')
       }

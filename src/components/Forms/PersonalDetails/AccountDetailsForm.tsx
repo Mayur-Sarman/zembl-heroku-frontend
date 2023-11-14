@@ -10,7 +10,7 @@ import ControllerInput from '../../Inputs/ControllerInput'
 import { DATE_MUST_PAST, EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../../constants/validation'
 import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
 
-const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }: AccountDetailsFormProps) => {
+const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled, defaultDate }: AccountDetailsFormProps) => {
   const [isEditing, setIsEditing] = useState(!readOnly)
 
   const onEditClickHandler: MouseEventHandler<HTMLDivElement> = useCallback(
@@ -50,6 +50,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
           required={!isFieldsReadOnly}
           options={TITLE_LIST_OPTIONS}
           readOnly={isFieldsReadOnly}
+          disabled={isFieldsReadOnly}
         />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
@@ -60,6 +61,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
           rules={!isFieldsReadOnly ? { ...STANDARD_SF_TEXT_VALIDATION, ...REQUIRED_VALIDATION } : {}}
           textLabel="First Name (As per ID)"
           readOnly={isFieldsReadOnly}
+          disabled={isFieldsReadOnly}
         />
         <ControllerInput
           name={`${prefix ? prefix + '.' : ''}lastName`}
@@ -68,6 +70,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
           rules={!isFieldsReadOnly ? { ...STANDARD_SF_TEXT_VALIDATION, ...REQUIRED_VALIDATION } : {}}
           textLabel="Last Name"
           readOnly={isFieldsReadOnly}
+          disabled={isFieldsReadOnly}
         />
         <DateInput
           name={`${prefix ? prefix + '.' : ''}dateOfBirth`}
@@ -77,6 +80,8 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
           datepickerClassNames={'top-auto'}
           readOnly={isFieldsReadOnly}
           rules={DATE_MUST_PAST}
+          defaultDate={defaultDate}
+          disabled={isFieldsReadOnly}
           // maxDate={new Date()}
         />
         <ControllerInput
@@ -87,6 +92,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
           textLabel="Email"
           type="email"
           readOnly={isFieldsReadOnly}
+          disabled={isFieldsReadOnly}
         />
         <ZemblPhoneInput
           control={control}
@@ -96,6 +102,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
           dropdownClass="bottom-8 !rounded-lg"
           readOnly={isFieldsReadOnly}
           required={!isFieldsReadOnly}
+          disabled={isFieldsReadOnly}
         />
         <ZemblPhoneInput
           control={control}
@@ -104,6 +111,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled }:
           defaultCountry={'au'}
           dropdownClass="bottom-8 !rounded-lg"
           readOnly={isFieldsReadOnly}
+          disabled={isFieldsReadOnly}
         />
       </div>
     </AccordionCard>
@@ -116,6 +124,7 @@ interface AccountDetailsFormProps {
   prefix?: string
   onSave?: () => unknown
   saveDisabled?: boolean
+  defaultDate?: Date | null
 }
 
 export default AccountDetailsForm

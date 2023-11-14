@@ -52,7 +52,7 @@ export const buildLeadPayload = (data: RegistrationData) => {
       country: address?.country,
       fullAddress: address?.fullAddress,
       postCode: address?.postCode,
-      street: address?.route,
+      street: address?.street + ' ' + address?.route,
       state: address?.state,
       city: address?.suburb
     }
