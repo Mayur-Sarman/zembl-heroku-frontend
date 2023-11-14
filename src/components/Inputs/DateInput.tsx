@@ -40,7 +40,6 @@ const DateInput = ({
         control={control}
         rules={required ? { ...rules, ...REQUIRED_VALIDATION } : {}}
         render={({ field, fieldState }) => {
-          defaultDate = defaultDate ? defaultDate : field.value ? new Date(field.value as string) : (null as unknown) as Date
           return (
             <>
               <Datepicker

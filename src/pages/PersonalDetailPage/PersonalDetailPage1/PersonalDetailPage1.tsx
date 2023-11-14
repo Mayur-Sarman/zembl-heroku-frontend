@@ -26,6 +26,7 @@ import PageNavigationActions from '../../../components/PageNavigationActions'
 import ControllerRadioGroupInput from '../../../components/Inputs/ControllerRadioGroupInput'
 import { useRegistration } from '../../../hooks/useRegistration'
 import { buildMainProfilePayload } from '../../../api/profile'
+import { useEffect } from 'react'
 // import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
 
 const PersonalDetailPage1 = () => {
@@ -85,6 +86,18 @@ const PersonalDetailPage1 = () => {
         planName={gasQuote?.retailerName ?? ''}
       />
     ) : null
+
+    const onlyContainsNumbers = (str:string) => /^\d+$/.test(str);
+
+    useEffect(() => {
+      const addressList = (watch('address.street') as string).split(' ')
+
+      if(onlyContainsNumbers(addressList[0])) {
+        setValue('address.street', addressList.splice(0,1))
+      }
+
+      setValue('address.route', addressList.join(' '))
+    },[])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">

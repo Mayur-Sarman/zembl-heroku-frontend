@@ -10,7 +10,6 @@ import { REQUIRED_VALIDATION } from '../../../constants/validation'
 
 const ConnectionDetailsForm = ({ control }: ConnectionDetailsFormProps) => {
   const [isManualAddress] = useState<boolean>(false)
-
   // const onToggleManualAddressClick = useCallback<MouseEventHandler>(() => {
   //   setIsManualAddress((prev) => !prev)
   // }, [])
@@ -18,7 +17,6 @@ const ConnectionDetailsForm = ({ control }: ConnectionDetailsFormProps) => {
   // const toggleAddressLabel = isManualAddress
   //   ? 'Find you address automatically'
   //   : 'Can’t find your address? Enter manually'
-
   return (
     <AccordionCard alwaysOpen open title="Connection Details" bodyClassName="w-full flex flex-col gap-3 text-left">
       <div className={`flex flex-col gap-y-6`}>
@@ -75,7 +73,7 @@ const ConnectionDetailsForm = ({ control }: ConnectionDetailsFormProps) => {
           disabled={!isManualAddress}
         />
         <ControllerInput
-          name="address.suburb"
+          name="address.city"
           control={control}
           required={isManualAddress}
           label="Suburb/City"

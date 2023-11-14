@@ -6,6 +6,7 @@ import DuoPlanCard from './DuoPlanCard'
 import { Quote } from '../api/quote'
 
 const SelectedPlans = ({ title, control, energyType, electricityPlan, gasPlan }: SelectedPlansProps) => {
+
   const individualPlanDisplay = (
     <>
       {energyType !== GAS_VALUE && electricityPlan?.quoteId != null ? (
