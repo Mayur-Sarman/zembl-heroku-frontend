@@ -90,13 +90,15 @@ const PersonalDetailPage1 = () => {
     const onlyContainsNumbers = (str:string) => /^\d+$/.test(str);
 
     useEffect(() => {
-      const addressList = (watch('address.street') as string).split(' ')
+      if(!onlyContainsNumbers(watch('address.street') as string)) {
+        const addressList = (watch('address.street') as string).split(' ')
 
-      if(onlyContainsNumbers(addressList[0])) {
-        setValue('address.street', addressList.splice(0,1))
+        if(onlyContainsNumbers(addressList[0])) {
+          setValue('address.street', addressList.splice(0,1))
+        }
+
+        setValue('address.route', addressList.join(' '))
       }
-
-      setValue('address.route', addressList.join(' '))
     },[])
 
   return (
