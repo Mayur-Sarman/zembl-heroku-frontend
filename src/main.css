@@ -21,6 +21,12 @@
   -webkit-text-size-adjust: 100%;
 }
 
+ul {
+  word-break: break-all;
+  list-style: disc;
+  padding: 12px;
+}
+
 body, #root {
   height: 100%;
 }

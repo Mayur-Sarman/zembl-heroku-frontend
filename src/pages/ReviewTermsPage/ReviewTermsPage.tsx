@@ -59,6 +59,7 @@ const ReviewTermsPage = () => {
   } else if (registrationData?.gasQuote) {
     energyType = GAS_VALUE
   }
+
   // console.log('registrationData review term page =>', registrationData)
   return (
     <PageWrapper showLoading={updatePlanData.isLoading}>
