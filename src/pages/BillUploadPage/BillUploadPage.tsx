@@ -157,7 +157,7 @@ const BillUploadPage = () => {
         mobile: getPhoneNumber(data.phone),
       }))
       console.log('buildedData=>', buildedData)
-      // return createAccountMutation.mutate(buildedData)
+      return createAccountMutation.mutate(buildedData)
     } else {
       const buildedData = buildCreateAccountPayload(data, nmi, mirn)
       setRegistrationData((prev) => ({

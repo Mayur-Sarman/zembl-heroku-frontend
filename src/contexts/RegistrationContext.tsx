@@ -1,4 +1,4 @@
-import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useState } from 'react'
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useEffect ,useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   ABN_ACTIVE,
@@ -323,9 +323,9 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     }
   })
 
-  // useEffect(() => {
-  //   if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
-  // }, [location.pathname, navigate, registrationToken])
+  useEffect(() => {
+    if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
+  }, [location.pathname, navigate, registrationToken])
 
   const isLoading =
     validateReCaptchaMutation.isLoading ||
