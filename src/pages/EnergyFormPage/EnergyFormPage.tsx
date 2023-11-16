@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Helmet } from 'react-helmet'
+// import { Helmet } from 'react-helmet'
 import { useForm } from 'react-hook-form'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
@@ -107,7 +107,7 @@ const HomePage = () => {
 
   return (
     <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
-      <Helmet>
+      {/* <Helmet>
       <script type="text/javascript">
         {`window.__productReviewSettings = {
           brandId: 'f8416ed1-a744-35b1-81b9-4f03ed7a177e'
@@ -128,7 +128,7 @@ const HomePage = () => {
         });
         });`}
       </script>
-      </Helmet>
+      </Helmet> */}
 
       <EnergyFormPageTitle />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 md:w-1/2 ">
@@ -189,7 +189,7 @@ const HomePage = () => {
         <div className="inline-block p-1.5"><img width="200" height="90" src={energylocals} alt="EnergyLocals" /></div>
       </div>
       </div>
-      <div className="w-screen"><div className="m-auto w-11/12" id="pr-reviews-carousel-widget">&nbsp;</div></div>
+      {/* <div className="w-screen"><div className="m-auto w-11/12" id="pr-reviews-carousel-widget">&nbsp;</div></div> */}
     </PageWrapper>
   )
 }
