@@ -1,15 +1,15 @@
-import { Typography } from '@material-tailwind/react'
+// import { Typography } from '@material-tailwind/react'
 import StatefulButton from './StatefulButton'
 import { FormEventHandler, ForwardedRef, ReactNode, forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import ErrorTextMessage from '../ErrorTextMessage'
-import ControllerTooltip from '../Icons/ControllerTooltip'
+// import ControllerTooltip from '../Icons/ControllerTooltip'
 
 const RadioGroupInput = forwardRef(function RadioGroupInput(
   {
     name,
-    label,
+    // label,
     disabled,
     values,
     onChange,
@@ -18,35 +18,35 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
     options,
     readOnly,
     error,
-    required,
-    labelClassName,
-    tooltipText,
-    isCurrentUsage, 
-    currentUsageType
+    // required,
+    // labelClassName,
+    // tooltipText,
+    // isCurrentUsage, 
+    // currentUsageType
   }: RadioGroupInputProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const hasError = !!error
-  const labelDisplay =
-    label && (typeof label === 'string') ? (
-      (isCurrentUsage ?? !!tooltipText) ? <>
-        <Typography
-        className={`mb-2 pl-1 font-light text-sm inline-block ${
-          required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
-        } ${labelClassName ?? ''}`}
-        >
-          {label}
-        </Typography>
-        <ControllerTooltip tooltipText={tooltipText} isCurrentUsage={isCurrentUsage} currentUsageType={currentUsageType}/>
-      </> :
-      <Typography
-        className={`mb-2 pl-1 font-light text-sm ${
-          required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
-        } ${labelClassName ?? ''}`}
-      >
-        {label}
-      </Typography>
-    ) : label
+  // const labelDisplay =
+  //   label && (typeof label === 'string') ? (
+  //     (isCurrentUsage ?? !!tooltipText) ? <>
+  //       <Typography
+  //       className={`mb-2 pl-1 font-light text-sm inline-block ${
+  //         required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
+  //       } ${labelClassName ?? ''}`}
+  //       >
+  //         {label}
+  //       </Typography>
+  //       <ControllerTooltip tooltipText={tooltipText} isCurrentUsage={isCurrentUsage} currentUsageType={currentUsageType}/>
+  //     </> :
+  //     <Typography
+  //       className={`mb-2 pl-1 font-light text-sm ${
+  //         required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
+  //       } ${labelClassName ?? ''}`}
+  //     >
+  //       {label}
+  //     </Typography>
+  //   ) : label
 
   const optionsDisplay: ReactNode[] = options.map((option) => {
     const className =
@@ -69,7 +69,7 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
 
   return (
     <div ref={ref}>
-      {labelDisplay}
+      {/* {labelDisplay} */}
       <div className={`flex flex-wrap lg:flex-nowrap gap-3 ${optionsContainerClassName ?? ''}`}>{optionsDisplay}</div>
       {error ? (
         <div className="mt-1 px-1 text-left">
