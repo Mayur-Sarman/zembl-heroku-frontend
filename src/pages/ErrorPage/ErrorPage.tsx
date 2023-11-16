@@ -1,5 +1,5 @@
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom'
-
+import { Controller, useForm } from 'react-hook-form'
 import { Button, Typography } from '@material-tailwind/react'
 // import Header from '../../components/Header'
 // import Footer from '../../components/Footer'
@@ -8,9 +8,11 @@ import zemblLogo from '../../assets/zembl-icon.svg'
 import { useEffect } from 'react'
 import { useCreateLogDataMutation } from '../../hooks/useCreateLogMutation'
 import { useRegistration } from '../../hooks/useRegistration'
+import FileUploadInput from '../../components/Inputs/FileUploadInput'
 
 const ErrorPage = () => {
   const { registrationToken } = useRegistration()
+  const { control } = useForm()
   const navigate = useNavigate()
   // const routerError: unknown & { statusText: string; message: string } = useRouteError()
   const error = useRouteError()
@@ -18,6 +20,9 @@ const ErrorPage = () => {
   let errorTitle = 'An unexpected error has occurred.'
   let errorStackTrace = ''
   let shouldSaveLog = true
+
+
+
 
   const logMutation = useCreateLogDataMutation(registrationToken ?? '')
 
@@ -65,6 +70,23 @@ const ErrorPage = () => {
         <Typography variant="h6" className="text-slate-400">
           <i>{errorMessage}</i>
         </Typography>
+        <Controller
+          name="billFile"
+          control={control}
+          render={({ field }) => {
+            return (
+              <FileUploadInput
+                {...field}
+                wrapperClassName="max-w-xl"
+                labelText="Upload Bill (Optional)"
+                labelClassName="mb-4"
+                dropzoneText="Click to upload or drag and drop"
+
+                helpText="Supported PDF, DOC, DOCX, JPG, PNG files (MAX. 15MB)"
+              />
+            )
+          }}
+        />
         <Button className="!zembl-btn" onClick={() => navigate('..')}>
           Back to Zembl
         </Button>
