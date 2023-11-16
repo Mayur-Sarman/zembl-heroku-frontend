@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
 import { Helmet } from 'react-helmet'
-import { useForm } from 'react-hook-form'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+// import { useForm } from 'react-hook-form'
+// import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
 // import agl from '../../assets/agl.svg'
 // import bluenrg from '../../assets/bluenrg.svg'
@@ -19,60 +19,60 @@ import momentumenergy from '../../assets/energylocals.svg'
 import nextbusinessenergy from '../../assets/energylocals.svg'
 import simplyenergy from '../../assets/energylocals.svg'
 
-import { Button } from '@material-tailwind/react'
+// import { Button } from '@material-tailwind/react'
 
-import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
+// import ZemblPhoneInput from '../../components/Inputs/PhoneInput'
 import PageWrapper from '../../components/PageWrapper'
-import InputWithLabel from '../../components/Inputs/InputWithLabel'
+// import InputWithLabel from '../../components/Inputs/InputWithLabel'
 
 import EnergyFormPageTitle from './EnergyFormPageTitle'
 import {
-  BUSINESS_REGISTRATION_TYPE_OPTIONS,
+  // BUSINESS_REGISTRATION_TYPE_OPTIONS,
   REGISTRATION_TYPE_BUSINESS,
-  REGISTRATION_TYPE_OPTIONS,
-  REGISTRATION_TYPE_RESIDENTIAL,
+  // REGISTRATION_TYPE_OPTIONS,
+  // REGISTRATION_TYPE_RESIDENTIAL,
   RegistrationData,
-  SME_VALUE,
+  // SME_VALUE,
   ZEMBL_ASSIST_VALUE,
 } from '../../constants'
-import RadioCheckGroupInput from '../../components/Inputs/RadioCheckGroupInput'
-import { EMAIL_VALIDATION, STANDARD_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../constants/validation'
+// import RadioCheckGroupInput from '../../components/Inputs/RadioCheckGroupInput'
+// import { EMAIL_VALIDATION, STANDARD_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../constants/validation'
 import { useRegistration } from '../../hooks/useRegistration'
-import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
-import { getPhoneNumber } from '../../helpers/formatter'
+// import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
+// import { getPhoneNumber } from '../../helpers/formatter'
 
 const HomePage = () => {
-  const { createLeadMutation, validateReCaptchaMutation, registrationData, setRegistrationData } = useRegistration()
-  const {
-    register,
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm({
-    mode: 'all',
-  })
-  const { executeRecaptcha }: IGoogleReCaptchaConsumerProps = useGoogleReCaptcha()
+  const { createLeadMutation, registrationData, setRegistrationData } = useRegistration()
+  // const {
+  //   // register,
+  //   // handleSubmit,
+  //   // control,
+  //   // watch,
+  //   // formState: { errors },
+  // } = useForm({
+  //   mode: 'all',
+  // })
+  // const { executeRecaptcha }: IGoogleReCaptchaConsumerProps = useGoogleReCaptcha()
   const navigate = useNavigate()
 
-  const typeWatcher: unknown = watch('registrationType', REGISTRATION_TYPE_BUSINESS)
+  // const typeWatcher: unknown = watch('registrationType', REGISTRATION_TYPE_BUSINESS)
 
-  const onSubmit = async (data: Record<string, string>) => {
-    if (!executeRecaptcha) return
+  // const onSubmit = async (data: Record<string, string>) => {
+  //   if (!executeRecaptcha) return
 
-    const buildedData = {
-      ...data,
-      phone: getPhoneNumber(data.phone),
-      recordType: data?.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
-    }
+  //   const buildedData = {
+  //     ...data,
+  //     phone: getPhoneNumber(data.phone),
+  //     recordType: data?.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
+  //   }
 
-    const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
-    const reCaptchaValidateResponse = await validateReCaptchaMutation.mutateAsync(token)
+  //   const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
+  //   const reCaptchaValidateResponse = await validateReCaptchaMutation.mutateAsync(token)
 
-    if (reCaptchaValidateResponse?.success) {
-      createLeadMutation.mutate(buildedData)
-    }
-  }
+  //   if (reCaptchaValidateResponse?.success) {
+  //     createLeadMutation.mutate(buildedData)
+  //   }
+  // }
 
   // TODO: ERROR HANDLING (EXTRACT DATA)
   useEffect(() => {
@@ -131,7 +131,7 @@ const HomePage = () => {
       </Helmet>
 
       <EnergyFormPageTitle />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 md:w-1/2 ">
+      {/* <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 md:w-1/2 ">
         <InputWithLabel
           inputLabel="First Name"
           {...register('firstName', {
@@ -175,7 +175,7 @@ const HomePage = () => {
         <Button type="submit" className="!zembl-btn w-1/3 place-self-center flex-shrink-0">
           Next
         </Button>
-      </form>
+      </form> */}
       <div className="bg-grey-100 w-screen pt-16 pb-16">
       <div className="bg-grey-100">
         <div className="inline-block p-1.5"><img loading="lazy" width="200" height="90" src={bluenrg} alt="BlueNRG" /></div>
@@ -194,9 +194,9 @@ const HomePage = () => {
   )
 }
 
-interface IGoogleReCaptchaConsumerProps {
-  executeRecaptcha?: (action?: string) => Promise<string>
-  container?: string | HTMLElement
-}
+// interface IGoogleReCaptchaConsumerProps {
+//   executeRecaptcha?: (action?: string) => Promise<string>
+//   container?: string | HTMLElement
+// }
 
 export default HomePage
