@@ -1,12 +1,11 @@
-// import { Typography } from '@material-tailwind/react'
+import { Typography } from '@material-tailwind/react'
 import { PropsWithChildren } from 'react'
 
 const ErrorTextMessage = ({ children }: PropsWithChildren) => {
   return (
-    // <Typography color="red" className="text-sm font-medium">
-    <p className="text-sm font-medium text-red-500">
+    <Typography color="red" className="text-sm font-medium">
       {children}
-    </p>
+    </Typography>
   )
 }
 
