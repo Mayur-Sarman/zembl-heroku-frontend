@@ -103,13 +103,27 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     onSuccess: (data: ABNResponse) => {
       const hasException = !!data?.ABRPayloadSearchResults?.response?.exception
       const responseABN = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.ABN?.identifierValue
-      const entityStatusCode =
-        data?.ABRPayloadSearchResults?.response?.businessEntity202001?.entityStatus?.entityStatusCode
+      const entityStatusCode = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.entityStatus?.entityStatusCode
+      const entityType = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.entityType?.entityDescription
+      const entityTypeCode = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.entityType?.entityTypeCode
 
       const abnMainNameObject = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.mainName
-      const abnBusinessName = isArray(abnMainNameObject)
+      const abnBusinessNameObject = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.businessName
+      const abnMainName = isArray(abnMainNameObject)
         ? abnMainNameObject[0]?.organisationName
         : abnMainNameObject?.organisationName
+
+      const abnBusinessName = isArray(abnBusinessNameObject)
+        ? abnBusinessNameObject[0]?.organisationName
+        : abnBusinessNameObject?.organisationName
+
+      const mainNameEffectiveFrom = isArray(abnMainNameObject)
+      ? abnMainNameObject[0]?.effectiveFrom
+      : abnMainNameObject?.effectiveFrom
+
+      const businessNameEffectiveFrom = isArray(abnBusinessNameObject)
+        ? abnBusinessNameObject[0]?.effectiveFrom
+        : abnBusinessNameObject?.effectiveFrom
 
       const abnInactive = entityStatusCode !== ABN_ACTIVE
       const abnNotMatched = responseABN !== registrationData?.abn
@@ -117,8 +131,17 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       if (hasException || abnNotMatched || abnInactive) {
         navigate('/abn-error', { replace: true })
       } else {
-        const accountName = abnBusinessName ?? responseABN
-        setRegistrationData((prev) => ({ ...prev, accountName, legalName: accountName }))
+        const accountName = abnMainName ?? abnBusinessName ?? responseABN
+        const effectiveFrom = mainNameEffectiveFrom ?? businessNameEffectiveFrom ?? null
+        setRegistrationData((prev) => ({ 
+          ...prev, 
+          accountName, 
+          legalName: accountName, 
+          effectiveFrom: effectiveFrom,
+          entityType: entityType,
+          entityTypeCode: entityTypeCode,
+          abnStatus: entityStatusCode
+        }))
         navigate('/basic-info-2')
       }
     },

@@ -33,7 +33,7 @@ const BillUploadPage = () => {
     defaultValues: registrationData as FieldValues,
     mode: 'all',
   })
-
+  console.log('registrationData => ', registrationData)
   const watchBillFileType: unknown = watch('billFileType', null)
 
   const fileValidation = (value: FileList) => {
@@ -156,7 +156,8 @@ const BillUploadPage = () => {
         phone: getPhoneNumber(data.phone),
         mobile: getPhoneNumber(data.phone),
       }))
-      return createAccountMutation.mutate(buildedData)
+      console.log('buildedData=>', buildedData)
+      // return createAccountMutation.mutate(buildedData)
     } else {
       const buildedData = buildCreateAccountPayload(data, nmi, mirn)
       setRegistrationData((prev) => ({
