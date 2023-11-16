@@ -4,7 +4,7 @@ import { FormEventHandler, ForwardedRef, ReactNode, forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import ErrorTextMessage from '../ErrorTextMessage'
-import ControllerTooltip from '../Icons/ControllerTooltip'
+// import ControllerTooltip from '../Icons/ControllerTooltip'
 
 const RadioGroupInput = forwardRef(function RadioGroupInput(
   {
@@ -22,7 +22,7 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
     // labelClassName,
     tooltipText,
     isCurrentUsage, 
-    currentUsageType
+    // currentUsageType
   }: RadioGroupInputProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -34,7 +34,7 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
         >
           {label}
         </p>
-        <ControllerTooltip tooltipText={tooltipText} isCurrentUsage={isCurrentUsage} currentUsageType={currentUsageType}/>
+        {/* <ControllerTooltip tooltipText={tooltipText} isCurrentUsage={isCurrentUsage} currentUsageType={currentUsageType}/> */}
       </> :
       <p
       >
