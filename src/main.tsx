@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import './main.css'
 
@@ -22,7 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <ModalContextProvider>
-            <RouterProvider router={router} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <RouterProvider router={router} />
+            </Suspense>
           </ModalContextProvider>
         </ThemeProvider>
       </QueryClientProvider>
