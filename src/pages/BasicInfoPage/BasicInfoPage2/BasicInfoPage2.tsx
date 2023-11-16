@@ -1,4 +1,5 @@
 import { FieldValues, useForm } from 'react-hook-form'
+import { Button } from '@material-tailwind/react'
 
 // import { useNavigate } from 'react-router-dom'
 // import { REQUIRED_VALIDATION } from '../../../constants/validation'
@@ -7,19 +8,19 @@ import { FieldValues, useForm } from 'react-hook-form'
 // import { Site } from '../../../api/site'
 // import { convertPreference } from '../../../api/common'
 // import { ZEMBL_DEBUG_MODE } from '../../../constants/misc'
-import { lazy } from 'react'
+// import { lazy } from 'react'
 
 // const RegistrationStep = lazy(() => import('../../../components/RegistrationStep'))
 // const PageNavigationActions = lazy(() => import('../../../components/PageNavigationActions'))
 // const SolarForm = lazy(() => import('../../../components/Forms/BasicInfos/SolarForm'))
 // const BasicLifeSupportForm = lazy(() => import('../../../components/Forms/BasicInfos/BasicLifeSupportForm'))
-const BillAndMessageForm = lazy(() => import('../../../components/Forms/BasicInfos/BillAndMessageForm'))
+// const BillAndMessageForm = lazy(() => import('../../../components/Forms/BasicInfos/BillAndMessageForm'))
 // const ControllerPreferencesSelector = lazy(() => import('../../../components/Inputs/ControllerPreferencesSelector'))
 
 const BasicInfoPage2 = () => {
   // const { registrationData, updateLeadMutation, createSiteMutation, setRegistrationData  } = useRegistration()
   // On load page get data from context
-  const { handleSubmit, control } = useForm({ mode: 'all' })
+  const { handleSubmit } = useForm({ mode: 'all' })
   // const navigate = useNavigate()
 
   // const [
@@ -76,8 +77,10 @@ const BasicInfoPage2 = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="">
       {/* <RegistrationStep currentStep={0} />
       <hr className="hidden lg:block" /> */}
-
-      <BillAndMessageForm control={control} />
+      <p>How would you like to receive your bills and other notices, like disconnection warnings and price change notifications?</p>
+      <Button>TEST</Button>
+      <Button>TEST</Button>
+      {/* <BillAndMessageForm control={control} /> */}
       {/* <BasicLifeSupportForm control={control} /> */}
       {/* <SolarForm control={control} solar={solar}/>
       <ControllerPreferencesSelector name={'preferenceList'} control={control} rules={REQUIRED_VALIDATION} />
