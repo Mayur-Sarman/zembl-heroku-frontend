@@ -1,10 +1,10 @@
-import { Typography } from '@material-tailwind/react'
+// import { Typography } from '@material-tailwind/react'
 import StatefulButton from './StatefulButton'
 import { FormEventHandler, ForwardedRef, ReactNode, forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import ErrorTextMessage from '../ErrorTextMessage'
-import ControllerTooltip from '../Icons/ControllerTooltip'
+// import ControllerTooltip from '../Icons/ControllerTooltip'
 
 const RadioGroupInput = forwardRef(function RadioGroupInput(
   {
@@ -18,11 +18,11 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
     options,
     readOnly,
     error,
-    required,
-    labelClassName,
+    // required,
+    // labelClassName,
     tooltipText,
     isCurrentUsage, 
-    currentUsageType
+    // currentUsageType
   }: RadioGroupInputProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -30,22 +30,16 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
   const labelDisplay =
     label && (typeof label === 'string') ? (
       (isCurrentUsage ?? !!tooltipText) ? <>
-        <Typography
-        className={`mb-2 pl-1 font-light text-sm inline-block ${
-          required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
-        } ${labelClassName ?? ''}`}
+        <p
         >
           {label}
-        </Typography>
-        <ControllerTooltip tooltipText={tooltipText} isCurrentUsage={isCurrentUsage} currentUsageType={currentUsageType}/>
+        </p>
+        {/* <ControllerTooltip tooltipText={tooltipText} isCurrentUsage={isCurrentUsage} currentUsageType={currentUsageType}/> */}
       </> :
-      <Typography
-        className={`mb-2 pl-1 font-light text-sm ${
-          required ? "after:content-['*'] after:text-red-500 after:ml-1" : ''
-        } ${labelClassName ?? ''}`}
+      <p
       >
         {label}
-      </Typography>
+      </p>
     ) : label
 
   const optionsDisplay: ReactNode[] = options.map((option) => {
@@ -55,7 +49,7 @@ const RadioGroupInput = forwardRef(function RadioGroupInput(
     return (
       <div key={option.value} className={className}>
         <StatefulButton
-          className="min-h-12 h-full"
+          className="min-h-12 h-full normal-case"
           checked={values?.includes?.(option?.value as never) ?? false}
           onChange={onChange}
           disabled={disabled}

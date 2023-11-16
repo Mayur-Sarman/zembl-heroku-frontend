@@ -1,8 +1,8 @@
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom'
 
 import { Button, Typography } from '@material-tailwind/react'
-// import Header from '../../components/Header'
-// import Footer from '../../components/Footer'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 
 import zemblLogo from '../../assets/zembl-icon.svg'
 import { useEffect } from 'react'
@@ -56,7 +56,7 @@ const ErrorPage = () => {
 
   return (
     <div className="flex flex-col justify-between h-screen">
-      {/* <Header /> */}
+      <Header />
       <div className="flex text-black flex-col gap-8 justify-center items-center py-8 px-6 sm:px-0">
         <img src={zemblLogo} alt="Zembl"></img>
         <Typography variant="h6" color="black" className="text-center">
@@ -69,8 +69,7 @@ const ErrorPage = () => {
           Back to Zembl
         </Button>
       </div>
-
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }
