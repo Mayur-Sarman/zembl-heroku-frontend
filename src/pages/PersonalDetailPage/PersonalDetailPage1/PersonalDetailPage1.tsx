@@ -15,19 +15,19 @@ import {
   NEXT_BUSINESS_ENERGY,
   REGISTRATION_TYPE_BUSINESS,
 } from '../../../constants'
-import DriverLicenseForm from '../../../components/Forms/PersonalDetails/DriverLicenseForm'
-import AustralianPassportForm from '../../../components/Forms/PersonalDetails/AustralianPassportForm'
-import MedicareCardForm from '../../../components/Forms/PersonalDetails/MedicareCard'
-import ForeignPassportForm from '../../../components/Forms/PersonalDetails/ForeignPassport'
-import AccountDetailsForm from '../../../components/Forms/PersonalDetails/AccountDetailsForm'
-import BusinessDetailsForm from '../../../components/Forms/PersonalDetails/BusinessDetailsForm'
-import ConnectionDetailsForm from '../../../components/Forms/PersonalDetails/ConnectionDetailsForm'
-import PageNavigationActions from '../../../components/PageNavigationActions'
-import ControllerRadioGroupInput from '../../../components/Inputs/ControllerRadioGroupInput'
 import { useRegistration } from '../../../hooks/useRegistration'
 import { buildMainProfilePayload } from '../../../api/profile'
-import { useEffect } from 'react'
-// import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
+import { lazy, useEffect } from 'react'
+
+const DriverLicenseForm = lazy(() => import('../../../components/Forms/PersonalDetails/DriverLicenseForm'))
+const AustralianPassportForm = lazy(() => import('../../../components/Forms/PersonalDetails/AustralianPassportForm'))
+const MedicareCardForm = lazy(() => import('../../../components/Forms/PersonalDetails/MedicareCard'))
+const ForeignPassportForm = lazy(() => import('../../../components/Forms/PersonalDetails/ForeignPassport'))
+const AccountDetailsForm = lazy(() => import('../../../components/Forms/PersonalDetails/AccountDetailsForm'))
+const BusinessDetailsForm = lazy(() => import('../../../components/Forms/PersonalDetails/BusinessDetailsForm'))
+const ConnectionDetailsForm = lazy(() => import('../../../components/Forms/PersonalDetails/ConnectionDetailsForm'))
+const PageNavigationActions = lazy(() => import('../../../components/PageNavigationActions'))
+const ControllerRadioGroupInput = lazy(() => import('../../../components/Inputs/ControllerRadioGroupInput'))
 
 const PersonalDetailPage1 = () => {
   const { registrationData, updateProfileMutation } = useRegistration()

@@ -115,7 +115,7 @@ const HomePage = () => {
       </script>
         
       <script src="https://cdn.productreview.com.au/assets/widgets/loader.js" async defer></script>
-      <script type="text/javascript" defer>{`
+      <script type="text/javascript" async defer>{`
         window.__productReviewCallbackQueue = window.__productReviewCallbackQueue || [];
         window.__productReviewCallbackQueue.push(function(ProductReview) {
         ProductReview.use('reviews-carousel', {

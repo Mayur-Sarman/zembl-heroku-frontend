@@ -1,13 +1,15 @@
 import { useForm } from 'react-hook-form'
-import ReZemblTermForm from '../../components/Forms/ReZemblTermForm'
-import PageWrapper from '../../components/PageWrapper'
 import { useNavigate } from 'react-router-dom'
-import PageNavigationActions from '../../components/PageNavigationActions'
 import { Typography } from '@material-tailwind/react'
 import { useRegistration } from '../../hooks/useRegistration'
 import { UpdateReZemblTermsConsentPayload } from '../../api/reZembl'
 import { useReZemblTermsMutation } from '../../hooks/useReZemblTermsMutation'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
+import { lazy } from 'react'
+
+const ReZemblTermForm = lazy(() => import('../../components/Forms/ReZemblTermForm'))
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
+const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
 
 const ReZemblTermsPage = () => {
   const { registrationData, registrationToken, handleErrorResponse } = useRegistration()

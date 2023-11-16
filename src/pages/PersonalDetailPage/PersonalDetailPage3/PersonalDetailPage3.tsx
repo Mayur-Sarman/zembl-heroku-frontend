@@ -17,18 +17,19 @@ import {
   GAS_VALUE,  
   ELECTRICITY_VALUE
 } from '../../../constants'
-import BlueNRGPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/BlueNRGPersonalDetailsForm'
-import EAPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/EAPersonalDetailsForm'
-import SEPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/SEPersonalDetailsForm'
-import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
-import MomentumPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/MomentumPersonalDetailsForm'
-import EnergyLocalPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/EnergyLocalPersonalDetailsForm'
-import NBEPersonalDetailsForm from '../../../components/Forms/RetailerAdditionalDetails/NBEPersonalDetailsForm'
 import { useRetailerAdditionalDetailsMutation } from '../../../hooks/useRetailerAdditionalDetailsMutation'
 import { buildRetailerAdditionalDetailPayload } from '../../../api/profile'
-import AccordionCard from '../../../components/AccordionCard'
-import MiniPlanCard from '../../../components/MiniPlanCard'
-import { useEffect } from 'react'
+import { GoogleMapExtractedComponents } from '../../../helpers/googleMap'
+import { lazy, useEffect } from 'react'
+
+const BlueNRGPersonalDetailsForm = lazy(() => import('../../../components/Forms/RetailerAdditionalDetails/BlueNRGPersonalDetailsForm'))
+const EAPersonalDetailsForm = lazy(() => import('../../../components/Forms/RetailerAdditionalDetails/EAPersonalDetailsForm'))
+const SEPersonalDetailsForm = lazy(() => import('../../../components/Forms/RetailerAdditionalDetails/SEPersonalDetailsForm'))
+const MomentumPersonalDetailsForm = lazy(() => import('../../../components/Forms/RetailerAdditionalDetails/MomentumPersonalDetailsForm'))
+const EnergyLocalPersonalDetailsForm = lazy(() => import('../../../components/Forms/RetailerAdditionalDetails/EnergyLocalPersonalDetailsForm'))
+const NBEPersonalDetailsForm = lazy(() => import('../../../components/Forms/RetailerAdditionalDetails/NBEPersonalDetailsForm'))
+const AccordionCard = lazy(() => import('../../../components/AccordionCard'))
+const MiniPlanCard = lazy(() => import('../../../components/MiniPlanCard'))
 
 const PersonalDetailPage3 = () => {
   const { registrationData, registrationToken, setRegistrationData, setUploadText } = useRegistration()

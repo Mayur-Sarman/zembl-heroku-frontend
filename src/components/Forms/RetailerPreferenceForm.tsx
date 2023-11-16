@@ -1,10 +1,4 @@
-import AGLPreference from '../../components/Preferences/AGLPreference'
-import BlueNRGPreference from '../../components/Preferences/BlueNRGPreference'
-import SimplyEnergyPreference from '../../components/Preferences/SimplyEnergyPreference'
-import EnergyAUPreference from '../../components/Preferences/EnergyAUPreference'
-import EnergyLocalsPreference from '../../components/Preferences/EnergyLocalsPreference'
-import MomentumEnergyPreference from '../../components/Preferences/MomentumEnergyPreference'
-import NextBusinessEnergyPreference from '../../components/Preferences/NextBusinessEnergyPreference'
+import { lazy } from 'react'
 import {
   AGL,
   BLUE_NRG,
@@ -15,6 +9,14 @@ import {
   SIMPLY_ENERGY,
 } from '../../constants'
 import { Control } from 'react-hook-form'
+
+const AGLPreference = lazy(() => import('../../components/Preferences/AGLPreference'))
+const BlueNRGPreference = lazy(() => import('../../components/Preferences/BlueNRGPreference'))
+const SimplyEnergyPreference = lazy(() => import('../../components/Preferences/SimplyEnergyPreference'))
+const EnergyAUPreference = lazy(() => import('../../components/Preferences/EnergyAUPreference'))
+const EnergyLocalsPreference = lazy(() => import('../../components/Preferences/EnergyLocalsPreference'))
+const MomentumEnergyPreference = lazy(() => import('../../components/Preferences/MomentumEnergyPreference'))
+const NextBusinessEnergyPreference = lazy(() => import('../../components/Preferences/NextBusinessEnergyPreference'))
 
 const RetailerPreferenceForm = ({ retailerName, prefix, control, siteAddress, pref }: RetailerPreferenceFormProps) => {
   switch (retailerName) {
