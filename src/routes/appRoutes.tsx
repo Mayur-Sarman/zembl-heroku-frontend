@@ -1,25 +1,28 @@
-import Root from '../pages/Root'
-import ErrorPage from '../pages/ErrorPage/ErrorPage'
-import EnergyFormPage from '../pages/EnergyFormPage/EnergyFormPage'
-import ZemblAssistPage from '../pages/ZemblAssistPage/ZemblAssistPage'
-import ABNErrorPage from '../pages/ABNErrorPage/ABNErrorPage'
-import BasicInfoPage from '../pages/BasicInfoPage/BasicInfoPage'
-import BillUploadPage from '../pages/BillUploadPage/BillUploadPage'
-import SelectPlansPage from '../pages/SelectPlansPage/SelectPlansPage'
-import PersonalDetailPage from '../pages/PersonalDetailPage/PersonalDetailPage'
-import PlanConfirmationPage from '../pages/PlanConfirmationPage/PlanConfirmationPage'
-import VerificationCodePage from '../pages/VerificationCodePage/VerificationCodePage'
-import NoReZemblThankPage from '../pages/NoReZemblThankPage/NoReZemblThankPage'
-import ReZemblThankPage from '../pages/ReZemblThankPage/ReZemblThankPage'
-import ReviewPlanPage from '../pages/ReviewPlanPage/ReviewPlanPage'
-import RetailerPreferencePage from '../pages/RetailerPreferencePage/RetailerPreferencePage'
-import ReviewTermsPage from '../pages/ReviewTermsPage/ReviewTermsPage'
-import RegistrationThankYouPage from '../pages/RegistrationThankYouPage/RegistrationThankYouPage'
-import ReZemblDetailPage from '../pages/ReZemblDetailPage/ReZemblDetailPage'
-import ReZemblTermsPage from '../pages/ReZemblTermsPage/ReZemblTermsPage'
+/* eslint-disable react-refresh/only-export-components */
+import { lazy } from 'react'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import { GOOGLE_RECAPTCHA_KEY } from '../constants'
-import ZemblUploadPage from '../pages/ZemblUploadPage/ZemblUploadPage'
+
+const ErrorPage = lazy(() => import('../pages/ErrorPage/ErrorPage'))
+const Root = lazy(() => import('../pages/Root'))
+const EnergyFormPage = lazy(() => import('../pages/EnergyFormPage/EnergyFormPage'))
+const ZemblAssistPage = lazy(() => import('../pages/ZemblAssistPage/ZemblAssistPage'))
+const ABNErrorPage = lazy(() => import('../pages/ABNErrorPage/ABNErrorPage'))
+const BasicInfoPage = lazy(() => import('../pages/BasicInfoPage/BasicInfoPage'))
+const BillUploadPage = lazy(() => import('../pages/BillUploadPage/BillUploadPage'))
+const SelectPlansPage = lazy(() => import('../pages/SelectPlansPage/SelectPlansPage'))
+const PersonalDetailPage = lazy(() => import('../pages/PersonalDetailPage/PersonalDetailPage'))
+const PlanConfirmationPage = lazy(() => import('../pages/PlanConfirmationPage/PlanConfirmationPage'))
+const VerificationCodePage = lazy(() => import('../pages/VerificationCodePage/VerificationCodePage'))
+const NoReZemblThankPage = lazy(() => import('../pages/NoReZemblThankPage/NoReZemblThankPage'))
+const ReZemblThankPage = lazy(() => import('../pages/ReZemblThankPage/ReZemblThankPage'))
+const ReviewPlanPage = lazy(() => import('../pages/ReviewPlanPage/ReviewPlanPage'))
+const RetailerPreferencePage = lazy(() => import('../pages/RetailerPreferencePage/RetailerPreferencePage'))
+const ReviewTermsPage = lazy(() => import('../pages/ReviewTermsPage/ReviewTermsPage'))
+const RegistrationThankYouPage = lazy(() => import('../pages/RegistrationThankYouPage/RegistrationThankYouPage'))
+const ReZemblDetailPage = lazy(() => import('../pages/ReZemblDetailPage/ReZemblDetailPage'))
+const ReZemblTermsPage = lazy(() => import('../pages/ReZemblTermsPage/ReZemblTermsPage'))
+const ZemblUploadPage = lazy(() => import('../pages/ZemblUploadPage/ZemblUploadPage'))
 
 const wrappedEnergyPage = (
   <GoogleReCaptchaProvider reCaptchaKey={GOOGLE_RECAPTCHA_KEY}>
