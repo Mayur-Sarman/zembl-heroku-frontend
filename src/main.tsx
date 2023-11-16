@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import './main.css'
 
@@ -9,8 +9,9 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import appRoutes from './routes/appRoutes'
 
 import { ErrorBoundary } from 'react-error-boundary'
-import ErrorPage from './pages/ErrorPage/ErrorPage'
 import { QueryClient, QueryClientProvider } from 'react-query'
+
+const ErrorPage = lazy(() => import('./pages/ErrorPage/ErrorPage'))
 
 const router = createBrowserRouter(appRoutes)
 const queryClient = new QueryClient()

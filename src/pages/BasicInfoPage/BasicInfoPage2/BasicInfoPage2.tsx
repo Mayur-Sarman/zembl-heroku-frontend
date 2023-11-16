@@ -1,18 +1,20 @@
 import { FieldValues, useForm } from 'react-hook-form'
 
-import RegistrationStep from '../../../components/RegistrationStep'
 import { useNavigate } from 'react-router-dom'
-import PageNavigationActions from '../../../components/PageNavigationActions'
-import SolarForm from '../../../components/Forms/BasicInfos/SolarForm'
-import BasicLifeSupportForm from '../../../components/Forms/BasicInfos/BasicLifeSupportForm'
-import BillAndMessageForm from '../../../components/Forms/BasicInfos/BillAndMessageForm'
 import { REQUIRED_VALIDATION } from '../../../constants/validation'
-import ControllerPreferencesSelector from '../../../components/Inputs/ControllerPreferencesSelector'
 import { useRegistration } from '../../../hooks/useRegistration'
 import { LEAD_STATUS_CONVERTED_WON } from '../../../constants'
 import { Site } from '../../../api/site'
 import { convertPreference } from '../../../api/common'
 import { ZEMBL_DEBUG_MODE } from '../../../constants/misc'
+import { lazy } from 'react'
+
+const RegistrationStep = lazy(() => import('../../../components/RegistrationStep'))
+const PageNavigationActions = lazy(() => import('../../../components/PageNavigationActions'))
+const SolarForm = lazy(() => import('../../../components/Forms/BasicInfos/SolarForm'))
+const BasicLifeSupportForm = lazy(() => import('../../../components/Forms/BasicInfos/BasicLifeSupportForm'))
+const BillAndMessageForm = lazy(() => import('../../../components/Forms/BasicInfos/BillAndMessageForm'))
+const ControllerPreferencesSelector = lazy(() => import('../../../components/Inputs/ControllerPreferencesSelector'))
 
 const BasicInfoPage2 = () => {
   const { registrationData, updateLeadMutation, createSiteMutation, setRegistrationData  } = useRegistration()

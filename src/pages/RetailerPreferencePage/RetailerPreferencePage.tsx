@@ -1,13 +1,15 @@
 import { useNavigate } from 'react-router-dom'
-import PageWrapper from '../../components/PageWrapper'
 import { FieldValues, useForm } from 'react-hook-form'
-import RegistrationStep from '../../components/RegistrationStep'
-import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
-import RetailerPreferenceForm from '../../components/Forms/RetailerPreferenceForm'
 import {RegistrationData } from '../../constants'
+import { lazy } from 'react'
 // import { useEffect } from 'react'
 // import { AGL } from '../../constants'
+
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
+const RetailerPreferenceForm = lazy(() => import('../../components/Forms/RetailerPreferenceForm'))
+const RegistrationStep = lazy(() => import('../../components/RegistrationStep'))
+const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
 
 const RetailerPreferencePage = () => {
   const { registrationData, setRegistrationData } = useRegistration()
