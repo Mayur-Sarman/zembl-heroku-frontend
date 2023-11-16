@@ -32,7 +32,7 @@ const Header = () => {
     <Navbar className="sticky px-6 top-0 z-20 h-max max-w-full border-0 rounded-none bg-zembl-p bg-opacity-100 md:px-8 md:py-4">
       <div className="flex items-center justify-between text-white">
         <Button onClick={onLogoClickedHandler} ripple className="bg-zembl-p rounded-md">
-          <img src={zemblLogo} alt="Zembl" />
+          <img src={zemblLogo} width={135} height={35} alt="Zembl" />
         </Button>
         <div className="flex items-center gap-4">
           <div className="hidden md:inline-block">{contact}</div>
