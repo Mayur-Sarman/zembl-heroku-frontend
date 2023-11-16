@@ -48,7 +48,7 @@ interface BusinessEntity {
   goodsAndServicesTax: GoodsAndServicesTax | GoodsAndServicesTax[]
   mainName: BusinessName | BusinessName[] | null
   mainBusinessPhysicalAddress: MainBusinessPhysicalAddress | MainBusinessPhysicalAddress[]
-  businessName: BusinessName[]
+  businessName: BusinessName | BusinessName[] | null
 }
 
 interface ABN {
