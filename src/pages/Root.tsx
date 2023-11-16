@@ -16,7 +16,7 @@ function Root() {
           </RegistrationContextProvider>
         </AlertContextProvider>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

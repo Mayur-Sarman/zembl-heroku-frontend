@@ -72,7 +72,7 @@ const VerificationCodePage = () => {
   return (
     <PageWrapper showLoading={isPageLoading}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
-        <Typography variant="h1" className="text-center text-zembl-p text-3xl lg:text-5xl">
+        <Typography className="text-center text-zembl-p text-3xl lg:text-5xl font-bold">
           Energy Plan Confirmation
         </Typography>
         <Typography className="text-center text-base font-normal text-zembl-p">
