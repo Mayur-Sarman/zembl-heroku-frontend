@@ -20,7 +20,7 @@ const BasicInfoPageTitle = () => {
   const { registrationData } = useContext(RegistrationContext)
   return (
     <div className="flex flex-col gap-y-3 items-center">
-      <Typography className="text-zembl-p text-3xl md:text-5xl font-bold">
+      <Typography variant="h1" className="text-zembl-p text-3xl md:text-5xl">
         Compare energy plans
       </Typography>
       <Typography variant="small" className="text-zembl-p px-12 lg:text-base max-w-lg">

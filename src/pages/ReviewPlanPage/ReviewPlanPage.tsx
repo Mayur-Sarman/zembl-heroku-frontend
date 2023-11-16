@@ -158,7 +158,7 @@ const ReviewPlanPage = () => {
   return (
     <PageWrapper showLoading={getPlanData.isLoading || updatePlanData.isLoading}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12 items-center">
-        <Typography className="text-center text-zembl-p text-3xl lg:text-5xl font-bold">
+        <Typography variant="h1" className="text-center text-zembl-p text-3xl lg:text-5xl">
           Energy Plan Confirmation
         </Typography>
         <Typography className="text-center text-base font-normal text-zembl-p">
