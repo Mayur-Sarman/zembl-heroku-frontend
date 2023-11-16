@@ -3,7 +3,7 @@ import contactIcon from '../assets/contact.svg'
 const ContactUs = () => {
   return (
     <div className="flex align-top">
-      <img loading="lazy" src={contactIcon} width={50} height={48} alt="Contact" className='h-8 md:h-auto'></img>
+      <img src={contactIcon} width={50} height={48} alt="Contact" className='h-8 md:h-auto'></img>
       <div className="ml-4 md:ml-3">
         <div className="text-xs sm:text-sm md:text-base">
           <span className="inline-block font-bold mr-1">1300 957 721 |</span>
