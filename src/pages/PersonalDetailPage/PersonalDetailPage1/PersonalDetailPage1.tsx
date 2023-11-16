@@ -32,18 +32,18 @@ const ControllerRadioGroupInput = lazy(() => import('../../../components/Inputs/
 const PersonalDetailPage1 = () => {
   // const { registrationData, updateProfileMutation } = useRegistration()
   // On load page get data from context
-  const { control, setValue } = useForm({
+  const { handleSubmit, control, setValue } = useForm({
     mode: 'all'
   })
 
   // const identificationTypeWatcher: unknown = watch<string>('identificationType', '')
 
-  // const onSubmit = (data: Record<string, string>) => {
-  //   console.log(data)
+  const onSubmit = (data: Record<string, string>) => {
+    console.log(data)
     // Call API
     // Put data to context
     // updateProfileMutation.mutate(buildMainProfilePayload({ ...registrationData, ...data }))
-  // }
+  }
 
   // let identificationForm = null
   // switch (identificationTypeWatcher) {
@@ -101,7 +101,7 @@ const PersonalDetailPage1 = () => {
     // },[])
 
   return (
-    <form className="flex flex-col gap-6 w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <AccordionCard
         alwaysOpen
         open

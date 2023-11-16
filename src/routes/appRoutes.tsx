@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Suspense, lazy } from 'react'
-// import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
-// import { GOOGLE_RECAPTCHA_KEY } from '../constants'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import { GOOGLE_RECAPTCHA_KEY } from '../constants'
 import { Spinner } from '@material-tailwind/react'
 
 const ErrorPage = lazy(() => import('../pages/ErrorPage/ErrorPage'))
@@ -26,9 +26,9 @@ const ReZemblTermsPage = lazy(() => import('../pages/ReZemblTermsPage/ReZemblTer
 const ZemblUploadPage = lazy(() => import('../pages/ZemblUploadPage/ZemblUploadPage'))
 
 const wrappedEnergyPage = (
-  // <GoogleReCaptchaProvider reCaptchaKey={GOOGLE_RECAPTCHA_KEY}>
+  <GoogleReCaptchaProvider reCaptchaKey={GOOGLE_RECAPTCHA_KEY}>
     <EnergyFormPage />
-  // </GoogleReCaptchaProvider>
+  </GoogleReCaptchaProvider>
 )
 
 const spinnerFallback = (
