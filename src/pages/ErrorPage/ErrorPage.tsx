@@ -6,12 +6,12 @@ import { Button, Typography } from '@material-tailwind/react'
 
 import zemblLogo from '../../assets/zembl-icon.svg'
 import { useEffect } from 'react'
-import { useCreateLogDataMutation } from '../../hooks/useCreateLogMutation'
-import { useRegistration } from '../../hooks/useRegistration'
+// import { useCreateLogDataMutation } from '../../hooks/useCreateLogMutation'
+// import { useRegistration } from '../../hooks/useRegistration'
 import FileUploadInput from '../../components/Inputs/FileUploadInput'
 
 const ErrorPage = () => {
-  const { registrationToken } = useRegistration()
+  // const { registrationToken } = useRegistration()
   const { control } = useForm()
   const navigate = useNavigate()
   // const routerError: unknown & { statusText: string; message: string } = useRouteError()
@@ -24,7 +24,7 @@ const ErrorPage = () => {
 
 
 
-  const logMutation = useCreateLogDataMutation(registrationToken ?? '')
+  // const logMutation = useCreateLogDataMutation(registrationToken ?? '')
 
   if (isRouteErrorResponse(error)) {
     // error is type `ErrorResponse`
@@ -43,21 +43,21 @@ const ErrorPage = () => {
   }
 
   useEffect(() => {
-    if (errorMessage && logMutation?.isIdle && shouldSaveLog) {
-      logMutation.mutate({
-        errorMessage,
-        endpoint: 'Web Error',
-        response: errorStackTrace,
-        status: 'ERROR',
-        source: 'Web',
-      })
-    }
-  }, [errorMessage, logMutation, errorStackTrace, shouldSaveLog])
+    // if (errorMessage && logMutation?.isIdle && shouldSaveLog) {
+    //   logMutation.mutate({
+    //     errorMessage,
+    //     endpoint: 'Web Error',
+    //     response: errorStackTrace,
+    //     status: 'ERROR',
+    //     source: 'Web',
+    //   })
+    // }
+  }, [errorMessage, errorStackTrace, shouldSaveLog])
 
-  useEffect(() => {
-    return () => logMutation.reset()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   return () => logMutation.reset()
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   return (
     <div className="flex flex-col justify-between h-screen">
