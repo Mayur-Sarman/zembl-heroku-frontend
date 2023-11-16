@@ -4,13 +4,20 @@ import { Helmet } from 'react-helmet'
 import { useForm } from 'react-hook-form'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useNavigate } from 'react-router-dom'
-import agl from '../../assets/agl.svg'
-import bluenrg from '../../assets/bluenrg.svg'
-import energyaustralia from '../../assets/energyaustralia.svg'
+// import agl from '../../assets/agl.svg'
+// import bluenrg from '../../assets/bluenrg.svg'
+// import energyaustralia from '../../assets/energyaustralia.svg'
+// import energylocals from '../../assets/energylocals.svg'
+// import momentumenergy from '../../assets/momentumenergy.svg'
+// import nextbusinessenergy from '../../assets/nextbusinessenergy.svg'
+// import simplyenergy from '../../assets/simplyenergy.svg'
+import agl from '../../assets/energylocals.svg'
+import bluenrg from '../../assets/energylocals.svg'
+import energyaustralia from '../../assets/energylocals.svg'
 import energylocals from '../../assets/energylocals.svg'
-import momentumenergy from '../../assets/momentumenergy.svg'
-import nextbusinessenergy from '../../assets/nextbusinessenergy.svg'
-import simplyenergy from '../../assets/simplyenergy.svg'
+import momentumenergy from '../../assets/energylocals.svg'
+import nextbusinessenergy from '../../assets/energylocals.svg'
+import simplyenergy from '../../assets/energylocals.svg'
 
 import { Button } from '@material-tailwind/react'
 
@@ -171,15 +178,15 @@ const HomePage = () => {
       </form>
       <div className="bg-grey-100 w-screen pt-16 pb-16">
       <div className="bg-grey-100">
-        <div className="inline-block p-1.5"><img src={bluenrg} alt="BlueNRG" /></div>
-        <div className="inline-block p-1.5"><img src={nextbusinessenergy} alt="NextBusinessEnergy" /></div>
-        <div className="inline-block p-1.5"><img src={momentumenergy} alt="Momentum" /></div>
-        <div className="inline-block p-1.5"><img src={simplyenergy} alt="SimplyEnergy" /></div>
+        <div className="inline-block p-1.5 max-w-max max-h-max"><img src={bluenrg} alt="BlueNRG" /></div>
+        <div className="inline-block p-1.5 max-w-max max-h-max"><img src={nextbusinessenergy} alt="NextBusinessEnergy" /></div>
+        <div className="inline-block p-1.5 max-w-max max-h-max"><img src={momentumenergy} alt="Momentum" /></div>
+        <div className="inline-block p-1.5 max-w-max max-h-max"><img src={simplyenergy} alt="SimplyEnergy" /></div>
       </div>
       <div>
-        <div className="inline-block p-1.5"><img src={agl} alt="AGL" /></div>
-        <div className="inline-block p-1.5"><img src={energyaustralia} alt="EnergyAustralia" /></div>
-        <div className="inline-block p-1.5"><img src={energylocals} alt="EnergyLocals" /></div>
+        <div className="inline-block p-1.5 max-w-max max-h-max"><img src={agl} alt="AGL" /></div>
+        <div className="inline-block p-1.5 max-w-max max-h-max"><img src={energyaustralia} alt="EnergyAustralia" /></div>
+        <div className="inline-block p-1.5 max-w-max max-h-max"><img src={energylocals} alt="EnergyLocals" /></div>
       </div>
       </div>
       <div className="w-screen"><div className="m-auto w-11/12" id="pr-reviews-carousel-widget">&nbsp;</div></div>
