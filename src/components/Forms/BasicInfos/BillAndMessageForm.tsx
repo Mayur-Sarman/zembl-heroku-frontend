@@ -6,7 +6,7 @@ import { SUBSCRIBE_TYPE_OPTIONS } from '../../../constants'
 
 const BillAndMessageForm = ({ control }: BillAndMessageFormProps) => {
   return (
-    <AccordionCard alwaysOpen open title="Bill & Messages" bodyClassName="w-full flex flex-col gap-3 text-left">
+    <AccordionCard alwaysOpen open title="Bill & Messages" bodyClassName="">
       <ControllerRadioGroupInput
         control={control}
         name="billType"
