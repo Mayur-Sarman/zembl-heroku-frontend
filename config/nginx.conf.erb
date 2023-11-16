@@ -15,8 +15,6 @@ http {
     gzip_proxied any; # Heroku router sends Via header
     gzip_disable "msie6";
     gzip_vary on;
-    gzip_buffers 16 8k;
-    gzip_http_version 1.1;
     gzip_types text/plain application/javascript text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/vnd.ms-fontobject application/x-font-ttf font/opentype;
 
     server_tokens off;
