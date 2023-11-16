@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from 'react-hook-form'
 
 import { useNavigate } from 'react-router-dom'
-// import { REQUIRED_VALIDATION } from '../../../constants/validation'
+import { REQUIRED_VALIDATION } from '../../../constants/validation'
 import { useRegistration } from '../../../hooks/useRegistration'
 import { LEAD_STATUS_CONVERTED_WON } from '../../../constants'
 import { Site } from '../../../api/site'
@@ -9,24 +9,24 @@ import { convertPreference } from '../../../api/common'
 import { ZEMBL_DEBUG_MODE } from '../../../constants/misc'
 import { lazy } from 'react'
 
-// const RegistrationStep = lazy(() => import('../../../components/RegistrationStep'))
-// const PageNavigationActions = lazy(() => import('../../../components/PageNavigationActions'))
-// const SolarForm = lazy(() => import('../../../components/Forms/BasicInfos/SolarForm'))
-// const BasicLifeSupportForm = lazy(() => import('../../../components/Forms/BasicInfos/BasicLifeSupportForm'))
+const RegistrationStep = lazy(() => import('../../../components/RegistrationStep'))
+const PageNavigationActions = lazy(() => import('../../../components/PageNavigationActions'))
+const SolarForm = lazy(() => import('../../../components/Forms/BasicInfos/SolarForm'))
+const BasicLifeSupportForm = lazy(() => import('../../../components/Forms/BasicInfos/BasicLifeSupportForm'))
 const BillAndMessageForm = lazy(() => import('../../../components/Forms/BasicInfos/BillAndMessageForm'))
-// const ControllerPreferencesSelector = lazy(() => import('../../../components/Inputs/ControllerPreferencesSelector'))
+const ControllerPreferencesSelector = lazy(() => import('../../../components/Inputs/ControllerPreferencesSelector'))
 
 const BasicInfoPage2 = () => {
   const { registrationData, updateLeadMutation, createSiteMutation, setRegistrationData  } = useRegistration()
   // On load page get data from context
-  const { handleSubmit, control } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
+  const { handleSubmit, control, watch } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
   const navigate = useNavigate()
 
-  // const [
-  //   solar,
-  // ]: string[] = watch([
-  //   'solar',
-  // ]) as string[]
+  const [
+    solar,
+  ]: string[] = watch([
+    'solar',
+  ]) as string[]
 
   const onSubmit = async (data: FieldValues) => {
     // Call API
@@ -72,16 +72,16 @@ const BasicInfoPage2 = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="">
-      {/* <RegistrationStep currentStep={0} />
-      <hr className="hidden lg:block" /> */}
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
+      <RegistrationStep currentStep={0} />
+      <hr className="hidden lg:block" />
 
       <BillAndMessageForm control={control} />
-      {/* <BasicLifeSupportForm control={control} /> */}
-      {/* <SolarForm control={control} solar={solar}/>
+      <BasicLifeSupportForm control={control} />
+      <SolarForm control={control} solar={solar}/>
       <ControllerPreferencesSelector name={'preferenceList'} control={control} rules={REQUIRED_VALIDATION} />
 
-      <PageNavigationActions prevLink="/basic-info-1" /> */}
+      <PageNavigationActions prevLink="/basic-info-1" />
     </form>
   )
 }
