@@ -189,7 +189,7 @@ const HomePage = () => {
         <div className="inline-block p-1.5"><img width="200" height="90" src={energylocals} alt="EnergyLocals" /></div>
       </div>
       </div>
-      {/* <div className="w-screen"><div className="m-auto w-11/12" id="pr-reviews-carousel-widget">&nbsp;</div></div> */}
+      <div className="w-screen"><div className="m-auto w-11/12" id="pr-reviews-carousel-widget">&nbsp;</div></div>
     </PageWrapper>
   )
 }
