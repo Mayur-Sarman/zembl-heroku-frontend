@@ -108,14 +108,14 @@ const HomePage = () => {
   return (
     <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
       <Helmet>
-      <script type="text/javascript">
+      <script type="text/javascript" defer>
         {`window.__productReviewSettings = {
           brandId: 'f8416ed1-a744-35b1-81b9-4f03ed7a177e'
         }`}
       </script>
         
-      <script src="https://cdn.productreview.com.au/assets/widgets/loader.js" async></script>
-      <script type="text/javascript">{`
+      <script src="https://cdn.productreview.com.au/assets/widgets/loader.js" async defer></script>
+      <script type="text/javascript" defer>{`
         window.__productReviewCallbackQueue = window.__productReviewCallbackQueue || [];
         window.__productReviewCallbackQueue.push(function(ProductReview) {
         ProductReview.use('reviews-carousel', {
