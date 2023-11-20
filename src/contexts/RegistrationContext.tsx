@@ -118,9 +118,17 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         ? abnBusinessNameObject[0]?.organisationName
         : abnBusinessNameObject?.organisationName
 
-      const abnLegalName = isArray(abnLegalNameObject)
-      ? `${abnLegalNameObject[0]?.givenName} ${abnLegalNameObject[0]?.familyName}`
-      : `${abnLegalNameObject?.givenName} ${abnLegalNameObject?.familyName}`
+      const legalNameList = []
+
+      if(isArray(abnLegalNameObject)) {
+        if(abnLegalNameObject[0]?.givenName)legalNameList.push(abnLegalNameObject[0]?.givenName)
+        if(abnLegalNameObject[0]?.familyName)legalNameList.push(abnLegalNameObject[0]?.familyName)
+      } else {
+        if(abnLegalNameObject?.givenName) legalNameList.push(abnLegalNameObject?.givenName)
+        if(abnLegalNameObject?.familyName) legalNameList.push(abnLegalNameObject?.familyName)
+      }
+
+      const legalFullName = legalNameList.join(' ') !== ' ' ? legalNameList.join(' ').trim() : undefined
 
       const mainNameEffectiveFrom = isArray(abnMainNameObject)
       ? abnMainNameObject[0]?.effectiveFrom
@@ -140,7 +148,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       if (hasException || abnNotMatched || abnInactive) {
         navigate('/abn-error', { replace: true })
       } else {
-        const accountName = abnMainName ?? abnBusinessName ?? abnLegalName ?? responseABN
+        const accountName = abnMainName ?? abnBusinessName ?? legalFullName ?? responseABN
         const effectiveFrom = mainNameEffectiveFrom ?? businessNameEffectiveFrom ?? abnLegalEffectiveFrom ?? null
         setRegistrationData((prev) => ({ 
           ...prev, 
