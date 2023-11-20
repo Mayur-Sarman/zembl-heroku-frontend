@@ -1,12 +1,14 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import BasicBusinessDetailsForm from '../../../components/Forms/BasicInfos/BasicBusinessDetailsForm'
-import EnergyTypeForm from '../../../components/Forms/BasicInfos/EnergyTypeForm'
-import EnergySpendForm from '../../../components/Forms/BasicInfos/EnergySpendForm'
-import PageNavigationActions from '../../../components/PageNavigationActions'
+
 import { useRegistration } from '../../../hooks/useRegistration'
-import { useEffect } from 'react'
+import { lazy, useEffect } from 'react'
 import { REGISTRATION_TYPE_BUSINESS } from '../../../constants'
 import { buildLeadPayload } from '../../../api/lead'
+
+const BasicBusinessDetailsForm = lazy(() => import('../../../components/Forms/BasicInfos/BasicBusinessDetailsForm'))
+const EnergyTypeForm = lazy(() => import('../../../components/Forms/BasicInfos/EnergyTypeForm'))
+const EnergySpendForm = lazy(() => import('../../../components/Forms/BasicInfos/EnergySpendForm'))
+const PageNavigationActions = lazy(() => import('../../../components/PageNavigationActions'))
 
 const BasicInfoPage1 = () => {
   // On load page get data from context

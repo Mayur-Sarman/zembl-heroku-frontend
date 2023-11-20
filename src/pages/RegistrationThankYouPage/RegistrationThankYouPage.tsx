@@ -2,11 +2,13 @@ import { Button, Typography } from '@material-tailwind/react'
 
 import zemblLogo from '../../assets/zembl-icon.svg'
 import { useNavigate } from 'react-router-dom'
-import ReZemblForm from '../../components/Forms/PersonalDetails/ReZemblForm'
 import { FieldValues, useForm } from 'react-hook-form'
-import PageWrapper from '../../components/PageWrapper'
 import { YES_VALUE } from '../../constants'
 import { useRegistration } from '../../hooks/useRegistration'
+import { lazy } from 'react'
+
+const ReZemblForm = lazy(() => import('../../components/Forms/PersonalDetails/ReZemblForm'))
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 
 const RegistrationThankYouPage = () => {
   const navigate = useNavigate()

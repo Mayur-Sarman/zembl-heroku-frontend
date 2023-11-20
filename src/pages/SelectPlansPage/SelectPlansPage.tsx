@@ -1,20 +1,21 @@
-import { useContext } from 'react'
+import { lazy, useContext } from 'react'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
 
-import RegistrationStep from '../../components/RegistrationStep'
-import PageWrapper from '../../components/PageWrapper'
-import SelectPlansPageTitle from './SelectPlansPageTitle'
 import { ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
-import PlanSelector from '../../components/PlanSelector'
 import RegistrationContext from '../../contexts/RegistrationContext'
-import ControllerPreferencesSelector from '../../components/Inputs/ControllerPreferencesSelector'
-import PageNavigationActions from '../../components/PageNavigationActions'
 import { useNavigate } from 'react-router-dom'
 import { convertPreference } from '../../api/common'
 import { REQUIRED_VALIDATION } from '../../constants/validation'
 import { useQuoteCallbackMutation } from '../../hooks/useQuoteCallbackMutation'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 import { AxiosError } from 'axios'
+
+const RegistrationStep = lazy(() => import('../../components/RegistrationStep'))
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
+const SelectPlansPageTitle = lazy(() => import('./SelectPlansPageTitle'))
+const PlanSelector = lazy(() => import('../../components/PlanSelector'))
+const ControllerPreferencesSelector = lazy(() => import('../../components/Inputs/ControllerPreferencesSelector'))
+const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
 
 const SelectPlansPage = () => {
   const navigate = useNavigate()

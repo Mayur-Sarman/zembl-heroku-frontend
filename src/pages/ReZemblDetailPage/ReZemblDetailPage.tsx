@@ -1,15 +1,17 @@
 import { Typography } from '@material-tailwind/react'
-import PageWrapper from '../../components/PageWrapper'
-import SimpleTable from '../../components/Tables/SimpleTable/SimpleTable'
 import { DATA_TYPE_DATE, DATA_TYPE_TEXT } from '../../constants'
 import { ColumnDefinition } from '../../components/Tables/types'
-import HorizontalTable from '../../components/Tables/HorizontalTable/HorizontalTable'
-import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
 import { useReZemblQuery } from '../../hooks/useReZemblQuery'
 import { CustomerDetails, ReZemblData, ReZemblRequestPayload } from '../../api/reZembl'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 import { AxiosError } from 'axios'
+import { lazy } from 'react'
+
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
+const SimpleTable = lazy(() => import('../../components/Tables/SimpleTable/SimpleTable'))
+const HorizontalTable = lazy(() => import('../../components/Tables/HorizontalTable/HorizontalTable'))
+const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
 
 const SUPPLY_POINT_DETAIL_COLUMNS: ColumnDefinition[] = [
   { key: 'fuelType', type: DATA_TYPE_TEXT, label: 'Fuel Type' },

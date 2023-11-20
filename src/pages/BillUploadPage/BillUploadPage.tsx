@@ -1,9 +1,4 @@
 import { Controller, FieldValues, useForm } from 'react-hook-form'
-import AccordionCard from '../../components/AccordionCard'
-import PaperBillForm from './PaperBillForm'
-import FileUploadInput from '../../components/Inputs/FileUploadInput'
-import RegistrationStep from '../../components/RegistrationStep'
-import PageWrapper from '../../components/PageWrapper'
 import {
   BOTH_VALUE,
   ELECTRICITY_VALUE,
@@ -14,8 +9,7 @@ import {
   UPLOAD_ELECTRICITY_BILL,
   UPLOAD_GAS_BILL
 } from '../../constants'
-import PageNavigationActions from '../../components/PageNavigationActions'
-import ControllerRadioGroupInput from '../../components/Inputs/ControllerRadioGroupInput'
+
 import { REQUIRED_VALIDATION } from '../../constants/validation'
 import { MAX_FILE_SIZE, PDF_FILE_TYPE } from '../../constants/file'
 import { useRegistration } from '../../hooks/useRegistration'
@@ -23,6 +17,15 @@ import { extractMIRN, extractNMI, transformToOCRFile } from '../../helpers/ocr'
 import { useToast } from '../../hooks'
 import { buildCreateAccountPayload } from '../../api/account'
 import { getPhoneNumber } from '../../helpers/formatter'
+import { lazy } from 'react'
+
+const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
+const ControllerRadioGroupInput = lazy(() => import('../../components/Inputs/ControllerRadioGroupInput'))
+const AccordionCard = lazy(() => import('../../components/AccordionCard'))
+const PaperBillForm = lazy(() => import('./PaperBillForm'))
+const FileUploadInput = lazy(() => import('../../components/Inputs/FileUploadInput'))
+const RegistrationStep = lazy(() => import('../../components/RegistrationStep'))
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 
 const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE].join(',')
 

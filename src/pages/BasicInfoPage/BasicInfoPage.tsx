@@ -1,7 +1,9 @@
-import BasicInfoPageTitle from './BasicInfoPageTitle'
-import PageWrapper from '../../components/PageWrapper'
-import BasicInfoPage1 from './BasicInfoPage1/BasicInfoPage1'
-import BasicInfoPage2 from './BasicInfoPage2/BasicInfoPage2'
+import { lazy } from "react"
+
+const BasicInfoPageTitle = lazy(() => import('./BasicInfoPageTitle'))
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
+const BasicInfoPage1 = lazy(() => import('./BasicInfoPage1/BasicInfoPage1'))
+const BasicInfoPage2 = lazy(() => import('./BasicInfoPage2/BasicInfoPage2'))
 
 const BasicInfoPage = ({ pageNo }: { pageNo: number }) => {
   let header = null

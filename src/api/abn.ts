@@ -49,6 +49,7 @@ interface BusinessEntity {
   mainName: BusinessName | BusinessName[] | null
   mainBusinessPhysicalAddress: MainBusinessPhysicalAddress | MainBusinessPhysicalAddress[]
   businessName: BusinessName | BusinessName[] | null
+  legalName: BusinessName | BusinessName[] | null
 }
 
 interface ABN {
@@ -74,8 +75,11 @@ interface GoodsAndServicesTax {
 }
 
 interface BusinessName {
-  organisationName: string
-  effectiveFrom: string
+  organisationName?: string
+  effectiveFrom?: string
+  givenName?: string
+  familyName?: string
+  effectiveTo?: string
 }
 
 interface MainBusinessPhysicalAddress {
