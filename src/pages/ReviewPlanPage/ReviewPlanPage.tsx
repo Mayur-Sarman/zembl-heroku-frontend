@@ -1,20 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useNavigate } from 'react-router-dom'
-import PageWrapper from '../../components/PageWrapper'
 import { FieldValues, useForm } from 'react-hook-form'
 import RegistrationContext from '../../contexts/RegistrationContext'
-import { useContext, useEffect } from 'react'
-import { Typography } from '@material-tailwind/react'
+import { lazy, useContext, useEffect } from 'react'
 import { ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
-import PlanSummaryCard from '../../components/PlanSummaryCard'
-import AccountDetailsForm from '../../components/Forms/PersonalDetails/AccountDetailsForm'
-import BusinessDetailsForm from '../../components/Forms/PersonalDetails/BusinessDetailsForm'
-import PageNavigationActions from '../../components/PageNavigationActions'
-import ControllerCheckBox from '../../components/Inputs/ControllerCheckBox'
 import { useFetchQuoteDataQuery } from '../../hooks/useQueryPlanData'
 import { AccountDetail, ProcessQuoteOutput } from '../../api/quote'
 import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
 import { getJSONDateString, getPhoneNumber } from '../../helpers/formatter'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
+import { Typography } from '@material-tailwind/react'
+
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
+const PlanSummaryCard = lazy(() => import('../../components/PlanSummaryCard'))
+const AccountDetailsForm = lazy(() => import('../../components/Forms/PersonalDetails/AccountDetailsForm'))
+const BusinessDetailsForm = lazy(() => import('../../components/Forms/PersonalDetails/BusinessDetailsForm'))
+const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
+const ControllerCheckBox = lazy(() => import('../../components/Inputs/ControllerCheckBox'))
 
 const ReviewPlanPage = () => {
   const navigate = useNavigate()
@@ -30,7 +33,7 @@ const ReviewPlanPage = () => {
   const businessDetails: unknown = watch('businessDetails')
   const accountDetails: unknown = watch('accountDetails')
 
-  console.log('accountDetails =>', accountDetails);
+  console.log('accountDetails =>', accountDetails)
   const getPlanData = useFetchQuoteDataQuery(
     { quoteToken: registrationData?.quoteToken as string, token: registrationToken ?? '' },
     {
@@ -88,7 +91,7 @@ const ReviewPlanPage = () => {
         ...registrationData?.accountDetails,
         ...updatedAccount,
         dateOfBirth: getJSONDateString(updatedAccount.dateOfBirth),
-        mobile: getPhoneNumber(updatedAccount.mobile)
+        mobile: getPhoneNumber(updatedAccount.mobile),
       }
       registrationData.accountDetails = updatedAccount
       const updatedPlanData = { ...registrationData, accountDetails: updatedAccount }
@@ -98,11 +101,13 @@ const ReviewPlanPage = () => {
 
   const onSubmit = (data: FieldValues) => {
     try {
-      setRegistrationData(() => ({  ...registrationData, accountDetails: data.accountDetails as Record<string, string> }))
+      setRegistrationData(() => ({
+        ...registrationData,
+        accountDetails: data.accountDetails as Record<string, string>,
+      }))
 
       // console.log('registrationData After NEXT =>', registrationData)
       navigate('/preferences')
-      
     } catch (error) {
       console.log(error)
     }
@@ -126,7 +131,7 @@ const ReviewPlanPage = () => {
       planLessThanCurrentPricePercent={registrationData?.electricityQuote?.percentDifference}
       planEstCostPerMonth={registrationData?.electricityQuote?.billSize}
       planEstCostPerYear={registrationData?.electricityQuote?.annualBillSize}
-      fullAddress={registrationData?.fullAddress as string ?? ''}
+      fullAddress={(registrationData?.fullAddress as string) ?? ''}
       gasOrEnergyCode={registrationData?.nmi ?? ''}
     />
   ) : null
@@ -145,7 +150,7 @@ const ReviewPlanPage = () => {
       planLessThanCurrentPricePercent={registrationData?.gasQuote?.percentDifference}
       planEstCostPerMonth={registrationData?.gasQuote?.billSize}
       planEstCostPerYear={registrationData?.gasQuote?.annualBillSize}
-      fullAddress={registrationData?.fullAddress as string ?? ''}
+      fullAddress={(registrationData?.fullAddress as string) ?? ''}
       gasOrEnergyCode={registrationData?.mirn ?? ''}
     />
   ) : null
@@ -167,7 +172,9 @@ const ReviewPlanPage = () => {
           prefix="accountDetails"
           onSave={onFormSaved}
           saveDisabled={!!formState.errors?.accountDetails}
-          defaultDate={registrationData.accountDetails ? new Date(registrationData?.accountDetails?.dateOfBirth as string) : null}
+          defaultDate={
+            registrationData.accountDetails ? new Date(registrationData?.accountDetails?.dateOfBirth as string) : null
+          }
         />
         {businessDetails ? (
           <BusinessDetailsForm control={control} readOnly compactForm prefix="businessDetails" />

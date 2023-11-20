@@ -1,15 +1,17 @@
 import { useNavigate } from 'react-router-dom'
-import PageWrapper from '../../components/PageWrapper'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Typography } from '@material-tailwind/react'
-import RegistrationStep from '../../components/RegistrationStep'
-import SelectedPlans from '../../components/SelectedPlans'
 import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
-import PageNavigationActions from '../../components/PageNavigationActions'
 import { useRegistration } from '../../hooks/useRegistration'
 import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
 import { getJSONDateString, getPhoneNumber } from '../../helpers/formatter'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
+import { lazy } from 'react'
+
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
+const RegistrationStep = lazy(() => import('../../components/RegistrationStep'))
+const SelectedPlans = lazy(() => import('../../components/SelectedPlans'))
+const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
 
 const ReviewTermsPage = () => {
   const { registrationData, setRegistrationData, registrationToken, handleErrorResponse } = useRegistration()
@@ -32,17 +34,18 @@ const ReviewTermsPage = () => {
   const onSubmit = (data: RegistrationData) => {
     const { businessDetails, accountDetails } = data
     const formattedAccountDetails = {
-      ...accountDetails, 
-      dateOfBirth: getJSONDateString(accountDetails?.dateOfBirth), 
+      ...accountDetails,
+      dateOfBirth: getJSONDateString(accountDetails?.dateOfBirth),
       mobile: getPhoneNumber(accountDetails?.mobile),
-      accountId: accountDetails?.accountId ?? businessDetails?.accountId
+      accountId: accountDetails?.accountId ?? businessDetails?.accountId,
     }
     updatePlanData.mutate({
-      planData: { 
-        businessDetails, 
-        accountDetails: formattedAccountDetails, 
-        electricityQuote: registrationData?.electricityQuote?.quoteId ? registrationData?.electricityQuote : null, 
-        gasQuote: registrationData?.gasQuote?.quoteId ? registrationData?.gasQuote : null },
+      planData: {
+        businessDetails,
+        accountDetails: formattedAccountDetails,
+        electricityQuote: registrationData?.electricityQuote?.quoteId ? registrationData?.electricityQuote : null,
+        gasQuote: registrationData?.gasQuote?.quoteId ? registrationData?.gasQuote : null,
+      },
       token: registrationToken ?? '',
     })
 

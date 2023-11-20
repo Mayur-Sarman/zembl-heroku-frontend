@@ -108,14 +108,14 @@ const HomePage = () => {
   return (
     <PageWrapper containerClassName="bg-zembl-s" contentWrapperClassName="max-w-screen-lg">
       <Helmet>
-      <script type="text/javascript">
+      <script type="text/javascript" defer>
         {`window.__productReviewSettings = {
           brandId: 'f8416ed1-a744-35b1-81b9-4f03ed7a177e'
         }`}
       </script>
         
-      <script src="https://cdn.productreview.com.au/assets/widgets/loader.js" async></script>
-      <script type="text/javascript">{`
+      <script src="https://cdn.productreview.com.au/assets/widgets/loader.js" async defer></script>
+      <script type="text/javascript" async defer>{`
         window.__productReviewCallbackQueue = window.__productReviewCallbackQueue || [];
         window.__productReviewCallbackQueue.push(function(ProductReview) {
         ProductReview.use('reviews-carousel', {
@@ -178,15 +178,15 @@ const HomePage = () => {
       </form>
       <div className="bg-grey-100 w-screen pt-16 pb-16">
       <div className="bg-grey-100">
-        <div className="inline-block p-1.5"><img width="200" height="90" src={bluenrg} alt="BlueNRG" /></div>
-        <div className="inline-block p-1.5"><img width="200" height="90" src={nextbusinessenergy} alt="NextBusinessEnergy" /></div>
-        <div className="inline-block p-1.5"><img width="200" height="90" src={momentumenergy} alt="Momentum" /></div>
-        <div className="inline-block p-1.5"><img width="200" height="90" src={simplyenergy} alt="SimplyEnergy" /></div>
+        <div className="inline-block p-1.5"><img loading="lazy" width="200" height="90" src={bluenrg} alt="BlueNRG" /></div>
+        <div className="inline-block p-1.5"><img loading="lazy" width="200" height="90" src={nextbusinessenergy} alt="NextBusinessEnergy" /></div>
+        <div className="inline-block p-1.5"><img loading="lazy" width="200" height="90" src={momentumenergy} alt="Momentum" /></div>
+        <div className="inline-block p-1.5"><img loading="lazy" width="200" height="90" src={simplyenergy} alt="SimplyEnergy" /></div>
       </div>
       <div>
-        <div className="inline-block p-1.5"><img width="200" height="90" src={agl} alt="AGL" /></div>
-        <div className="inline-block p-1.5"><img width="200" height="90" src={energyaustralia} alt="EnergyAustralia" /></div>
-        <div className="inline-block p-1.5"><img width="200" height="90" src={energylocals} alt="EnergyLocals" /></div>
+        <div className="inline-block p-1.5"><img loading="lazy" width="200" height="90" src={agl} alt="AGL" /></div>
+        <div className="inline-block p-1.5"><img loading="lazy" width="200" height="90" src={energyaustralia} alt="EnergyAustralia" /></div>
+        <div className="inline-block p-1.5"><img loading="lazy" width="200" height="90" src={energylocals} alt="EnergyLocals" /></div>
       </div>
       </div>
       <div className="w-screen"><div className="m-auto w-11/12" id="pr-reviews-carousel-widget">&nbsp;</div></div>

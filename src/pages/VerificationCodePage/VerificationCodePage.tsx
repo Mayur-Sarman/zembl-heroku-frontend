@@ -1,18 +1,19 @@
 import { Typography } from '@material-tailwind/react'
-import PageWrapper from '../../components/PageWrapper'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import AccordionCard from '../../components/AccordionCard'
-import { useCallback, useContext, useState } from 'react'
+import { lazy, useCallback, useContext, useState } from 'react'
 import RegistrationContext from '../../contexts/RegistrationContext'
 import { FieldValues, useForm } from 'react-hook-form'
-import VerificationCodeInput from '../../components/Inputs/VerificationCodeInput'
-import PageNavigationActions from '../../components/PageNavigationActions'
 import { ValidateTokenResponse } from '../../api/quote'
 
 import { useValidateTokenQuery } from '../../hooks/useValidateTokenQuery'
 import { useValidateOTPMutation } from '../../hooks/useValidateOTPMutation'
 import { useResendOTPMutation } from '../../hooks/useResendOTPMutation'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
+
+const PageWrapper = lazy(() => import('../../components/PageWrapper'))
+const AccordionCard = lazy(() => import('../../components/AccordionCard'))
+const VerificationCodeInput = lazy(() => import('../../components/Inputs/VerificationCodeInput'))
+const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
 
 const VerificationCodePage = () => {
   const { registrationData, setRegistrationToken, setRegistrationData, handleErrorResponse } =

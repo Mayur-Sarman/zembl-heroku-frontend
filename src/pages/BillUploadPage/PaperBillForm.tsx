@@ -7,11 +7,13 @@ import {
   GAS_VALUE, 
   RETAILER_OPTIONS, 
 } from '../../constants'
-import ControllerRadioGroupPaperbillInput from '../../components/Inputs/ControllerRadioGroupPaperbillInput'
 import { REQUIRED_VALIDATION, ABN_NMI_MIRN_VALIDATION } from '../../constants/validation'
-import ControllerInput from '../../components/Inputs/ControllerInput'
-import ControllerSelectInput from '../../components/Inputs/ControllerSelectInput'
-import GoogleAddressInput from '../../components/Inputs/GoogleAddressInput'
+import { lazy } from 'react'
+
+const ControllerRadioGroupPaperbillInput = lazy(() => import('../../components/Inputs/ControllerRadioGroupPaperbillInput'))
+const ControllerInput = lazy(() => import('../../components/Inputs/ControllerInput'))
+const ControllerSelectInput = lazy(() => import('../../components/Inputs/ControllerSelectInput'))
+const GoogleAddressInput = lazy(() => import('../../components/Inputs/GoogleAddressInput'))
 
 const PaperBillForm = ({ control, energyType }: PaperBillFormProps) => {
   const { setValue } = useForm({})
