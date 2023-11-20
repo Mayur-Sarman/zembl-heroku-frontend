@@ -1,4 +1,4 @@
-import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback ,useState } from 'react'
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useEffect ,useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   ABN_ACTIVE,
@@ -109,6 +109,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
       const abnMainNameObject = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.mainName
       const abnBusinessNameObject = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.businessName
+      const abnLegalNameObject = data?.ABRPayloadSearchResults?.response?.businessEntity202001?.legalName
       const abnMainName = isArray(abnMainNameObject)
         ? abnMainNameObject[0]?.organisationName
         : abnMainNameObject?.organisationName
@@ -116,6 +117,10 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       const abnBusinessName = isArray(abnBusinessNameObject)
         ? abnBusinessNameObject[0]?.organisationName
         : abnBusinessNameObject?.organisationName
+
+      const abnLegalName = isArray(abnLegalNameObject)
+      ? `${abnLegalNameObject[0]?.givenName} ${abnLegalNameObject[0]?.familyName}`
+      : `${abnLegalNameObject?.givenName} ${abnLegalNameObject?.familyName}`
 
       const mainNameEffectiveFrom = isArray(abnMainNameObject)
       ? abnMainNameObject[0]?.effectiveFrom
@@ -125,14 +130,18 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
         ? abnBusinessNameObject[0]?.effectiveFrom
         : abnBusinessNameObject?.effectiveFrom
 
+      const abnLegalEffectiveFrom = isArray(abnLegalNameObject)
+      ? abnLegalNameObject[0]?.effectiveFrom
+      : abnLegalNameObject?.effectiveFrom
+
       const abnInactive = entityStatusCode !== ABN_ACTIVE
       const abnNotMatched = responseABN !== registrationData?.abn
 
       if (hasException || abnNotMatched || abnInactive) {
         navigate('/abn-error', { replace: true })
       } else {
-        const accountName = abnMainName ?? abnBusinessName ?? responseABN
-        const effectiveFrom = mainNameEffectiveFrom ?? businessNameEffectiveFrom ?? null
+        const accountName = abnMainName ?? abnBusinessName ?? abnLegalName ?? responseABN
+        const effectiveFrom = mainNameEffectiveFrom ?? businessNameEffectiveFrom ?? abnLegalEffectiveFrom ?? null
         setRegistrationData((prev) => ({ 
           ...prev, 
           accountName, 
@@ -323,9 +332,9 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     }
   })
 
-  // useEffect(() => {
-  //   if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
-  // }, [location.pathname, navigate, registrationToken])
+  useEffect(() => {
+    if (!['/', '/energy', '/verification-code'].includes(location.pathname) && !registrationToken) navigate('/')
+  }, [location.pathname, navigate, registrationToken])
 
   const isLoading =
     validateReCaptchaMutation.isLoading ||
