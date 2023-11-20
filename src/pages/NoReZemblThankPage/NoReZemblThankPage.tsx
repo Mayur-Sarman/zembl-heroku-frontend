@@ -1,4 +1,4 @@
-import { Button } from '@material-tailwind/react'
+import { Button, Typography } from '@material-tailwind/react'
 
 import zemblLogo from '../../assets/zembl-icon.svg'
 import { useNavigate } from 'react-router-dom'
@@ -9,13 +9,13 @@ const NoReZemblThankPage = () => {
   return (
     <div className="flex flex-col text-center h-full justify-center">
       <div className="flex text-black flex-col gap-8 justify-center items-center py-8 px-6 sm:px-0 w-full">
-        <img loading='lazy' src={zemblLogo} width={64} height={64} alt="Zembl" className="w-24 md:w-auto"></img>
+        <img src={zemblLogo} alt="Zembl" className="w-24 md:w-auto"></img>
         <div className="flex flex-col gap-4 max-w-screen-md">
-          <p >
+          <Typography className="text-center text-base md:text-2xl font-normal text-zembl-p mb-4">
             You have accepted your new energy offer. Please keep an eye on your email inbox for further communications
             from Zembl and your energy provider. If you have any questions, please do not hesitate to get in touch with
             us on 1300 957 721.
-          </p>
+          </Typography>
         </div>
         <Button className="!zembl-btn m-auto" onClick={() => navigate('/')}>
           Back to Zembl

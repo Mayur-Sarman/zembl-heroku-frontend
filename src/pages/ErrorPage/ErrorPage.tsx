@@ -1,18 +1,16 @@
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom'
-import { Controller, useForm } from 'react-hook-form'
+
 import { Button, Typography } from '@material-tailwind/react'
-// import Header from '../../components/Header'
-// import Footer from '../../components/Footer'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 
 import zemblLogo from '../../assets/zembl-icon.svg'
 import { useEffect } from 'react'
-// import { useCreateLogDataMutation } from '../../hooks/useCreateLogMutation'
-// import { useRegistration } from '../../hooks/useRegistration'
-import FileUploadInput from '../../components/Inputs/FileUploadInput'
+import { useCreateLogDataMutation } from '../../hooks/useCreateLogMutation'
+import { useRegistration } from '../../hooks/useRegistration'
 
 const ErrorPage = () => {
-  // const { registrationToken } = useRegistration()
-  const { control } = useForm()
+  const { registrationToken } = useRegistration()
   const navigate = useNavigate()
   // const routerError: unknown & { statusText: string; message: string } = useRouteError()
   const error = useRouteError()
@@ -21,10 +19,7 @@ const ErrorPage = () => {
   let errorStackTrace = ''
   let shouldSaveLog = true
 
-
-
-
-  // const logMutation = useCreateLogDataMutation(registrationToken ?? '')
+  const logMutation = useCreateLogDataMutation(registrationToken ?? '')
 
   if (isRouteErrorResponse(error)) {
     // error is type `ErrorResponse`
@@ -43,25 +38,25 @@ const ErrorPage = () => {
   }
 
   useEffect(() => {
-    // if (errorMessage && logMutation?.isIdle && shouldSaveLog) {
-    //   logMutation.mutate({
-    //     errorMessage,
-    //     endpoint: 'Web Error',
-    //     response: errorStackTrace,
-    //     status: 'ERROR',
-    //     source: 'Web',
-    //   })
-    // }
-  }, [errorMessage, errorStackTrace, shouldSaveLog])
+    if (errorMessage && logMutation?.isIdle && shouldSaveLog) {
+      logMutation.mutate({
+        errorMessage,
+        endpoint: 'Web Error',
+        response: errorStackTrace,
+        status: 'ERROR',
+        source: 'Web',
+      })
+    }
+  }, [errorMessage, logMutation, errorStackTrace, shouldSaveLog])
 
-  // useEffect(() => {
-  //   return () => logMutation.reset()
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  useEffect(() => {
+    return () => logMutation.reset()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="flex flex-col justify-between h-screen">
-      {/* <Header /> */}
+      <Header />
       <div className="flex text-black flex-col gap-8 justify-center items-center py-8 px-6 sm:px-0">
         <img src={zemblLogo} alt="Zembl"></img>
         <Typography variant="h6" color="black" className="text-center">
@@ -70,29 +65,11 @@ const ErrorPage = () => {
         <Typography variant="h6" className="text-slate-400">
           <i>{errorMessage}</i>
         </Typography>
-        <Controller
-          name="billFile"
-          control={control}
-          render={({ field }) => {
-            return (
-              <FileUploadInput
-                {...field}
-                wrapperClassName="max-w-xl"
-                labelText="Upload Bill (Optional)"
-                labelClassName="mb-4"
-                dropzoneText="Click to upload or drag and drop"
-
-                helpText="Supported PDF, DOC, DOCX, JPG, PNG files (MAX. 15MB)"
-              />
-            )
-          }}
-        />
         <Button className="!zembl-btn" onClick={() => navigate('..')}>
           Back to Zembl
         </Button>
       </div>
-
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }
