@@ -79,6 +79,7 @@ interface BusinessName {
   effectiveFrom?: string
   givenName?: string
   familyName?: string
+  otherGivenName?: string
   effectiveTo?: string
 }
 
