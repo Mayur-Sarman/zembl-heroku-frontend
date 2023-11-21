@@ -122,9 +122,11 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
 
       if(isArray(abnLegalNameObject)) {
         if(abnLegalNameObject[0]?.givenName)legalNameList.push(abnLegalNameObject[0]?.givenName)
+        if(abnLegalNameObject[0]?.otherGivenName)legalNameList.push(abnLegalNameObject[0]?.otherGivenName)
         if(abnLegalNameObject[0]?.familyName)legalNameList.push(abnLegalNameObject[0]?.familyName)
       } else {
         if(abnLegalNameObject?.givenName) legalNameList.push(abnLegalNameObject?.givenName)
+        if(abnLegalNameObject?.otherGivenName) legalNameList.push(abnLegalNameObject?.otherGivenName)
         if(abnLegalNameObject?.familyName) legalNameList.push(abnLegalNameObject?.familyName)
       }
 
@@ -148,8 +150,8 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       if (hasException || abnNotMatched || abnInactive) {
         navigate('/abn-error', { replace: true })
       } else {
-        const accountName = abnMainName ?? abnBusinessName ?? legalFullName ?? responseABN
-        const effectiveFrom = mainNameEffectiveFrom ?? businessNameEffectiveFrom ?? abnLegalEffectiveFrom ?? null
+        const accountName = entityTypeCode === 'IND' ? legalFullName ?? responseABN : abnMainName ?? abnBusinessName ?? responseABN
+        const effectiveFrom = entityTypeCode === 'IND' ?  abnLegalEffectiveFrom ?? null : mainNameEffectiveFrom ?? businessNameEffectiveFrom ?? null
         setRegistrationData((prev) => ({ 
           ...prev, 
           accountName, 
