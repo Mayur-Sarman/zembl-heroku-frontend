@@ -24,7 +24,7 @@ const PageNavigationActions = ({
       <Button
         variant="outlined"
         onClick={() => (prevExternal && prevLink ? (window.location.href = prevLink) : navigate(prevLink ?? '#'))}
-        className={`${BACK_CLASS} ${hidePrev ? 'hidden' : ''} ${prevClass ?? ''}`}
+        className={`capitalize ${BACK_CLASS} ${hidePrev ? 'hidden' : ''} ${prevClass ?? ''}`}
       >
         {prevLabel}
       </Button>
@@ -32,7 +32,7 @@ const PageNavigationActions = ({
         type={nextLink ? 'button' : 'submit'}
         disabled={nextDisabled}
         onClick={nextLink ? () => navigate(nextLink) : undefined}
-        className={`${NEXT_CLASS} ${hideNext ? 'hidden' : ''} ${nextClass ?? ''}`}
+        className={`capitalize ${NEXT_CLASS} ${hideNext ? 'hidden' : ''} ${nextClass ?? ''}`}
       >
         {nextLabel}
       </Button>

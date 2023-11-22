@@ -122,6 +122,7 @@ const ReviewPlanPage = () => {
       planId={registrationData?.electricityQuote.quoteId ?? ''}
       planType={ELECTRICITY_VALUE}
       planBrand={registrationData?.electricityQuote.productName ?? ''}
+      bpidLink={registrationData?.electricityQuote.linkBPID ?? ''}
       planLogoURL={registrationData?.electricityQuote.retailerLogo ?? ''}
       exitPenalty={registrationData?.electricityQuote?.exitPenalty}
       australianOwned={registrationData?.electricityQuote?.australianOwned}
@@ -141,6 +142,7 @@ const ReviewPlanPage = () => {
       planId={registrationData?.gasQuote.quoteId ?? ''}
       planType={GAS_VALUE}
       planBrand={registrationData?.gasQuote.productName ?? ''}
+      bpidLink={registrationData?.gasQuote.linkBPID ?? ''}
       planLogoURL={registrationData?.gasQuote.retailerLogo ?? ''}
       exitPenalty={registrationData?.gasQuote?.exitPenalty}
       australianOwned={registrationData?.gasQuote?.australianOwned}
