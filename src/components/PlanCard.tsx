@@ -75,17 +75,21 @@ const PlanCard = ({
             ) : null}
           </div>
           <div className={`grid grid-cols-2 ${isReviewPlan ? 'gap-y-0 gap-x-3' : 'gap-3'} w-full lg:w-2/5 auto-rows-max`}>
-            <div></div>
-            {
-              isReviewPlan ? <div></div> : <PlanHilight
-              className={planType === ELECTRICITY_VALUE ? '' : 'hidden lg:flex opacity-0 h-0 pointer-events-none'}
-            >
-              <Typography variant="h6" className="text-lg">
-                {formatPercent(planLessThanCurrentPricePercent)} Less than
-              </Typography>
-              <Typography className="text-[10px] font-normal">the current reference price</Typography>
-            </PlanHilight>
+            { planType === ELECTRICITY_VALUE ?
+              <>
+                <div></div>
+                <PlanHilight
+                  className={planType === ELECTRICITY_VALUE ? 'mb-2' : 'hidden lg:flex opacity-0 h-0 pointer-events-none'}
+                >
+                  <Typography variant="h6" className="text-lg">
+                    {formatPercent(planLessThanCurrentPricePercent)} Less than
+                  </Typography>
+                  <Typography className="text-[10px] font-normal">the current reference price</Typography>
+                </PlanHilight>
+              </> : null
             }
+            
+            
             
             {/* <PlanHilight
               className={`!bg-zembl-action-primary ${planType === GAS_VALUE ? 'col-span-2 lg:col-span-1' : ''}`}
@@ -131,7 +135,7 @@ const PlanCard = ({
         </Typography>
       </CardBody>
       <CardFooter className={`${hideSelectButton ? 'hidden' : ''}`}>
-        <Button onClick={onPlanChooseHandler} className={`!zembl-btn`}>
+        <Button onClick={onPlanChooseHandler} className={`capitalize !zembl-btn`}>
           {selectButtonText ? selectButtonText : 'Choose Plan'}
         </Button>
       </CardFooter>

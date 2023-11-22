@@ -20,7 +20,7 @@ const ZemblAssistPage = () => {
             We will be in contact shortly to assist.
           </Typography>
         </div>
-        <Button className="!zembl-btn" onClick={onBackClick}>
+        <Button className="capitalize !zembl-btn" onClick={onBackClick}>
           Back to Zembl
         </Button>
       </div>

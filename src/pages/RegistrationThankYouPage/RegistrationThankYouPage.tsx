@@ -37,7 +37,7 @@ const RegistrationThankYouPage = () => {
           </Typography>
         </div>
         <ReZemblForm control={control} />
-        <Button type='submit' className="!zembl-btn m-auto w-full lg:w-1/4">
+        <Button type='submit' className="capitalize !zembl-btn m-auto w-full lg:w-1/4">
           Continue
         </Button>
       </form>

@@ -99,6 +99,7 @@ export interface ValidateTokenResponse extends SimpleResponse {
   otpDigit?: number
   mobile?: string
   email?: string
+  birthDate?: string
 }
 
 export interface ValidateOTPResponse extends SimpleResponse {
@@ -226,6 +227,8 @@ export interface QuoteComparison {
 
   billSize?: number
   annualBillSize?: number
+  billCostGas?: number
+  annualBillCostGas?: number
   percentDifference?: number
   annualSavingIncGST?: number
   mandatoryInformation?: string
