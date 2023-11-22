@@ -17,7 +17,7 @@ const NoReZemblThankPage = () => {
             us on 1300 957 721.
           </Typography>
         </div>
-        <Button className="!zembl-btn m-auto" onClick={() => navigate('/')}>
+        <Button className="capitalize !zembl-btn m-auto" onClick={() => navigate('/')}>
           Back to Zembl
         </Button>
       </div>

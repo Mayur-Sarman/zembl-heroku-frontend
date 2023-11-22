@@ -133,7 +133,7 @@ export interface IOptions {
   theme?: ITheme
   icons?: IIcons
   datepickerClassNames?: string
-  defaultDate?: Date | undefined
+  defaultDate?: Date | undefined | null
   language?: string
 }
 

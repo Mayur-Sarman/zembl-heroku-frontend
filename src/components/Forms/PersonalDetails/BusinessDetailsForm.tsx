@@ -21,6 +21,7 @@ const BusinessDetailsForm = ({ control, readOnly, compactForm, prefix }: Busines
           textLabel="Legal Name"
           rules={{ ...STANDARD_SF_TEXT_VALIDATION, requiredValidation }}
           readOnly={readOnly}
+          disabled={readOnly}
         />
         <ControllerInput
           name={`${prefix ? prefix + '.' : ''}abn`}
@@ -29,6 +30,7 @@ const BusinessDetailsForm = ({ control, readOnly, compactForm, prefix }: Busines
           textLabel="ABN Number"
           readOnly={readOnly}
           rules={{ ...ABN_NMI_MIRN_VALIDATION, REQUIRED_VALIDATION }}
+          disabled={readOnly}
         />
         {compactForm ? null : (
           <ControllerInput
@@ -38,6 +40,7 @@ const BusinessDetailsForm = ({ control, readOnly, compactForm, prefix }: Busines
             textLabel="Position"
             rules={{ ...STANDARD_SF_TEXT_VALIDATION, REQUIRED_VALIDATION }}
             readOnly={readOnly}
+            disabled={readOnly}
           />
         )}
       </div>

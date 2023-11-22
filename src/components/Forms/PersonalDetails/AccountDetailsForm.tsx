@@ -124,7 +124,7 @@ interface AccountDetailsFormProps {
   prefix?: string
   onSave?: () => unknown
   saveDisabled?: boolean
-  defaultDate?: Date | null
+  defaultDate?: Date | null | undefined
 }
 
 export default AccountDetailsForm
