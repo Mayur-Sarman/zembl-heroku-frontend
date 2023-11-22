@@ -28,7 +28,6 @@ const RetailerPreferencePage = () => {
     quotePreferences: watch('commonQuote.quotePreferences') as Record<string, string>
   }
 
-  console.log('registrationData pref page =>', registrationData)
   const onSubmit = (data: RegistrationData) => {
     const commonPreferences = (data?.commonQuote)?.quotePreferences
     const updatedData = commonPreferences

@@ -30,7 +30,7 @@ const PlanConfirmationPage = () => {
   ) : null
 
   const continueButton = sendQuoteEmailMutation?.isSuccess ? null : (
-    <Button className="!zembl-btn md:w-1/3" onClick={performVerify}>
+    <Button className="capitalize !zembl-btn md:w-1/3" onClick={performVerify}>
       Continue
     </Button>
   )

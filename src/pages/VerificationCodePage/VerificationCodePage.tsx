@@ -28,7 +28,15 @@ const VerificationCodePage = () => {
   const validateToken = useValidateTokenQuery(token, {
     onSuccess: (data: ValidateTokenResponse) => {
       setOtpDigits(data.otpDigit ?? 4)
-      setRegistrationData((prev) => ({ ...prev, quoteToken: token, email: data?.email, mobile: data?.mobile }))
+      setRegistrationData((prev) => ({ ...prev, 
+        quoteToken: token, 
+        email: data?.email, 
+        mobile: data?.mobile, 
+        accountDetails: {
+          ...prev.accountDetails, 
+          dateOfBirth: data?.birthDate
+        }
+        }))
     },
     onError: (error) => {
       if (ZEMBL_DEBUG_MODE) console.log('VERIFICATION_CODE_PAGE', error)

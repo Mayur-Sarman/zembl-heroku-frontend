@@ -71,7 +71,7 @@ export const ABN_NMI_MIRN_VALIDATION = {
     message: EXACT_LENGTH_ERROR_TEXT(11),
   },
   minLength: {
-    value: 11,
+    value: 0,
     message: EXACT_LENGTH_ERROR_TEXT(11),
   },
   pattern: {

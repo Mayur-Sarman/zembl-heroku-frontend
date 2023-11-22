@@ -5,6 +5,8 @@ import PlanCard from './PlanCard'
 import { QuoteComparison } from '../api/quote'
 import { uniqueId } from 'lodash'
 
+import { ELECTRICITY_VALUE } from '../constants'
+
 const PlanSelector = ({ plans, planType, selectedPlanId, onPlanSelect, title }: PlanSelectorProps) => {
   const [open, setOpen] = useState<boolean>(true)
 
@@ -39,8 +41,8 @@ const PlanSelector = ({ plans, planType, selectedPlanId, onPlanSelect, title }: 
               planDescription={plan.mandatoryInformation}
               planLessThanCurrentPricePercent={plan.percentDifference}
               planEstAnnualSaving={plan.annualSavingIncGST}
-              planEstCostPerMonth={plan.billSize}
-              planEstCostPerYear={plan.annualBillSize}
+              planEstCostPerMonth={planType === ELECTRICITY_VALUE ? plan.billSize : plan.billCostGas}
+              planEstCostPerYear={planType === ELECTRICITY_VALUE ? plan.annualBillSize : plan.annualBillCostGas}
               planType={planType}
               isSelected={selectedPlanId === plan.id}
               selectButtonText={selectedPlanId === plan.id && open ? 'Change Plan' : 'Choose Plan'}
@@ -64,8 +66,8 @@ const PlanSelector = ({ plans, planType, selectedPlanId, onPlanSelect, title }: 
             planDescription={selectedPlan.mandatoryInformation}
             planLessThanCurrentPricePercent={selectedPlan.percentDifference}
             planEstAnnualSaving={selectedPlan.annualSavingIncGST}
-            planEstCostPerMonth={selectedPlan.billSize}
-            planEstCostPerYear={selectedPlan.annualBillSize}
+            planEstCostPerMonth={planType === ELECTRICITY_VALUE ? selectedPlan.billSize : selectedPlan.billCostGas}
+            planEstCostPerYear={planType === ELECTRICITY_VALUE ? selectedPlan.annualBillSize : selectedPlan.annualBillCostGas}
             planType={planType}
             isSelected
             selectButtonText="Change Plan"
