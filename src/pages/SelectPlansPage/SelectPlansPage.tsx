@@ -26,12 +26,15 @@ const SelectPlansPage = () => {
     setRegistrationData,
     createQuoteMutation,
     handleErrorResponse,
+    setUploadText
   } = useContext(RegistrationContext)
   const quoteCallbackMutation = useQuoteCallbackMutation(registrationToken ?? '', {
     onSuccess: () => {
+      setUploadText(null)
       navigate('/abn-error')
     },
     onError: (error: AxiosError) => {
+      setUploadText(null)
       handleErrorResponse(error)
     },
   })
@@ -103,6 +106,7 @@ const SelectPlansPage = () => {
   const onRequestCallbackClicked = () => {
     try {
       // QUOTE CALLBACK MUTATION
+      setUploadText('Please wait..')
       quoteCallbackMutation.mutate({
         callbackRequested: true,
         electricQuoteId: registrationData?.electricityQuote?.quoteId,

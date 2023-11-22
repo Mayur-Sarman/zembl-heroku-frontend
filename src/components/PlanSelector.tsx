@@ -5,7 +5,7 @@ import PlanCard from './PlanCard'
 import { QuoteComparison } from '../api/quote'
 import { uniqueId } from 'lodash'
 
-import { ELECTRICITY_VALUE, GAS_VALUE } from '../constants'
+import { ELECTRICITY_VALUE } from '../constants'
 
 const PlanSelector = ({ plans, planType, selectedPlanId, onPlanSelect, title }: PlanSelectorProps) => {
   const [open, setOpen] = useState<boolean>(true)
