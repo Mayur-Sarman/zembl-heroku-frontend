@@ -3,7 +3,7 @@
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import RegistrationContext from '../../contexts/RegistrationContext'
-import { lazy, useContext, useEffect } from 'react'
+import { lazy, useContext } from 'react'
 import { ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
 import { useFetchQuoteDataQuery } from '../../hooks/useQueryPlanData'
 import { AccountDetail, ProcessQuoteOutput } from '../../api/quote'
@@ -31,9 +31,7 @@ const ReviewPlanPage = () => {
   })
 
   const businessDetails: unknown = watch('businessDetails')
-  const accountDetails: unknown = watch('accountDetails')
 
-  console.log('accountDetails =>', accountDetails)
   const getPlanData = useFetchQuoteDataQuery(
     { quoteToken: registrationData?.quoteToken as string, token: registrationToken ?? '' },
     {
@@ -113,10 +111,6 @@ const ReviewPlanPage = () => {
     }
   }
 
-  useEffect(() => {
-    setValue('accountDetails.dateOfBirth', registrationData.accountDetails?.dateOfBirth)
-  }, [registrationData])
-
   const electricityPlanSummary = registrationData?.electricityQuote ? (
     <PlanSummaryCard
       planId={registrationData?.electricityQuote.quoteId ?? ''}
@@ -150,8 +144,8 @@ const ReviewPlanPage = () => {
       planDescription={registrationData?.gasQuote?.mandatoryInformation ?? ''}
       planEstAnnualSaving={registrationData?.gasQuote?.annualSavingIncGST ?? NaN}
       planLessThanCurrentPricePercent={registrationData?.gasQuote?.percentDifference}
-      planEstCostPerMonth={registrationData?.gasQuote?.billSize}
-      planEstCostPerYear={registrationData?.gasQuote?.annualBillSize}
+      planEstCostPerMonth={registrationData?.gasQuote?.billCostGas}
+      planEstCostPerYear={registrationData?.gasQuote?.annualBillCostGas}
       fullAddress={(registrationData?.fullAddress as string) ?? ''}
       gasOrEnergyCode={registrationData?.mirn ?? ''}
     />
@@ -174,12 +168,9 @@ const ReviewPlanPage = () => {
           prefix="accountDetails"
           onSave={onFormSaved}
           saveDisabled={!!formState.errors?.accountDetails}
-          defaultDate={
-            registrationData.accountDetails ? new Date(registrationData?.accountDetails?.dateOfBirth as string) : null
-          }
         />
         {businessDetails ? (
-          <BusinessDetailsForm control={control} readOnly compactForm prefix="businessDetails" />
+          <BusinessDetailsForm control={control} readOnly={true} compactForm prefix="businessDetails" />
         ) : null}
         <ControllerCheckBox
           label="I have checked this is my correct personal and or business information"

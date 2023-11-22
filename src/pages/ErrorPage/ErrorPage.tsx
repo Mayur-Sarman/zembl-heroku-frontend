@@ -65,7 +65,7 @@ const ErrorPage = () => {
         <Typography variant="h6" className="text-slate-400">
           <i>{errorMessage}</i>
         </Typography>
-        <Button className="!zembl-btn" onClick={() => navigate('..')}>
+        <Button className="capitalize !zembl-btn" onClick={() => navigate('..')}>
           Back to Zembl
         </Button>
       </div>
