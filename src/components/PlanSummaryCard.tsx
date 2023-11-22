@@ -22,6 +22,7 @@ const PlanSummaryCard = ({
   planEstAnnualSaving,
   planEstCostPerMonth,
   planEstCostPerYear,
+  bpidLink
 }: PlanSummaryCardProps) => {
   let planTypeIcon = null
   let nmiOrMirnText = null
@@ -55,6 +56,7 @@ const PlanSummaryCard = ({
       <PlanCard
         planId={planId}
         planType={planType}
+        bpidLink={bpidLink}
         brand={planBrand}
         logoURL={planLogoURL}
         exitPenalty={exitPenalty}
@@ -87,6 +89,7 @@ interface PlanSummaryCardProps {
   planEstAnnualSaving?: number
   planEstCostPerMonth?: number
   planEstCostPerYear?: number
+  bpidLink?: string
 }
 
 export default PlanSummaryCard

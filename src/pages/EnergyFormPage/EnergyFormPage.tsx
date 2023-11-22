@@ -172,7 +172,7 @@ const HomePage = () => {
           optionsContainerClassName="md:flex-nowrap"
           buttonContainerClassName="w-full md:w-1/2 bg-zembl-s1"
         />
-        <Button type="submit" className="!zembl-btn w-1/3 place-self-center flex-shrink-0">
+        <Button type="submit" className="capitalize !zembl-btn w-1/3 place-self-center flex-shrink-0">
           Next
         </Button>
       </form>
