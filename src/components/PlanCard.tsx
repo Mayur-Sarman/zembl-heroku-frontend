@@ -108,7 +108,7 @@ const PlanCard = ({
                 <Typography variant="h6" className="text-lg">
                   {formatCurrency(planEstCostPerMonth)}
                 </Typography>
-                <Typography className="text-xs font-normal">/month</Typography>
+                <Typography className="text-xs font-normal">/ Quaterly</Typography>
               </div>
             </PlanHilight>
 
@@ -121,7 +121,7 @@ const PlanCard = ({
                 <Typography variant="h6" className="text-lg">
                   {formatCurrency(planEstCostPerYear)}
                 </Typography>
-                <Typography className="text-xs font-normal">/year</Typography>
+                <Typography className="text-xs font-normal">/ Year</Typography>
               </div>
             </PlanHilight>
           </div>
