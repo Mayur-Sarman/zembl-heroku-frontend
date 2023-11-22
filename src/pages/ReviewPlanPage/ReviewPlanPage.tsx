@@ -111,7 +111,7 @@ const ReviewPlanPage = () => {
     }
   }
 
-  const electricityPlanSummary = registrationData?.electricityQuote ? (
+  const electricityPlanSummary = registrationData?.electricityQuote?.quoteId ? (
     <PlanSummaryCard
       planId={registrationData?.electricityQuote.quoteId ?? ''}
       planType={ELECTRICITY_VALUE}
