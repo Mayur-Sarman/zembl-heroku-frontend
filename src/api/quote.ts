@@ -98,6 +98,7 @@ export interface ConfirmQuotePayload {
 export interface ValidateTokenResponse extends SimpleResponse {
   otpDigit?: number
   mobile?: string
+  altPhone?: string
   email?: string
   birthDate?: string
 }

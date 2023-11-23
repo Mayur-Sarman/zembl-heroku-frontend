@@ -31,11 +31,13 @@ const ReviewPlanPage = () => {
   })
 
   const businessDetails: unknown = watch('businessDetails')
+  // const accountDetails: unknown = watch('accountDetails')
 
   const getPlanData = useFetchQuoteDataQuery(
     { quoteToken: registrationData?.quoteToken as string, token: registrationToken ?? '' },
     {
       onSuccess: (data: ProcessQuoteOutput) => {
+        console.log('data =>', data)
         const updatedAccountDetail = {
           ...data?.accountDetails,
           mobile: data?.accountDetails?.mobile?.replace('+', '') ?? undefined,
@@ -110,7 +112,6 @@ const ReviewPlanPage = () => {
       console.log(error)
     }
   }
-
   const electricityPlanSummary = registrationData?.electricityQuote?.quoteId ? (
     <PlanSummaryCard
       planId={registrationData?.electricityQuote.quoteId ?? ''}
@@ -151,7 +152,8 @@ const ReviewPlanPage = () => {
     />
   ) : null
 
-    console.log('registrationData State =>', registrationData)
+    // console.log('registrationData State =>', registrationData)
+    // console.log('account detail form State =>', accountDetails)
 
   return (
     <PageWrapper showLoading={getPlanData.isLoading || updatePlanData.isLoading}>
