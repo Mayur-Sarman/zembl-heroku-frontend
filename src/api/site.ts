@@ -30,4 +30,5 @@ export interface Site {
   solar?: string | null
   solarConsideration?: string | null
   preferences?: Preference
+  leadHerokuId?: string
 }

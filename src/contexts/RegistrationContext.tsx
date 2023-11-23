@@ -200,7 +200,7 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       handleErrorResponse(error)
     },
     onSuccess: (data, lead) => {
-      const responseLead = data?.processLeadOutput
+      const responseLead = data
       // return
       if (location.pathname !== '/basic-info-2') {
         setRegistrationData((prev) => ({ ...prev, ...responseLead, ...lead, leadId: responseLead?.id }))

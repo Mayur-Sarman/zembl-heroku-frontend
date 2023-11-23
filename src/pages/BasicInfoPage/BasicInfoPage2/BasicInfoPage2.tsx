@@ -30,7 +30,7 @@ const BasicInfoPage2 = () => {
 
   const onSubmit = async (data: FieldValues) => {
     // Call API
-    const lead = { id: (data?.leadId as string) ?? '', status: LEAD_STATUS_CONVERTED_WON }
+    const lead = { id: (data?.leadId as string) ?? '', status: LEAD_STATUS_CONVERTED_WON, leadHerokuId: data?.leadHerokuId as string }
 
     try {
       const leadConvertResult = await updateLeadMutation.mutateAsync(lead)
@@ -39,6 +39,7 @@ const BasicInfoPage2 = () => {
       const selectedPreferences: string[] = (data?.preferenceList as string[]) ?? []
       const siteData: Site = {
         leadId: leadId,
+        leadHerokuId: data?.leadHerokuId as string,
         gas: !!data?.gas,
         electricity: !!data?.electricity,
         siteType: data?.recordType as string,
