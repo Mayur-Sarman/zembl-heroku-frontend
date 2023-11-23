@@ -34,7 +34,9 @@ const VerificationCodePage = () => {
         mobile: data?.mobile, 
         accountDetails: {
           ...prev.accountDetails, 
-          dateOfBirth: data?.birthDate
+          dateOfBirth: data?.birthDate,
+          mobile: data?.mobile,
+          altPhone: data?.altPhone
         }
         }))
     },
