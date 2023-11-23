@@ -76,7 +76,7 @@ const HomePage = () => {
     const reCaptchaValidateResponse = await validateReCaptchaMutation.mutateAsync(token)
 
     if (reCaptchaValidateResponse?.success) {
-      // createLeadMutation.mutate(buildedData)
+      createLeadMutation.mutate(buildedData)
       console.log(buildedData)
     }
   }
