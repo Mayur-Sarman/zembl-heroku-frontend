@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { useForm } from 'react-hook-form'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
 import agl from '../../assets/agl.svg'
 import bluenrg from '../../assets/bluenrg.svg'
@@ -60,17 +61,23 @@ const HomePage = () => {
   const onSubmit = async (data: Record<string, string>) => {
     if (!executeRecaptcha) return
 
+    const newUuid: string = (uuidv4()) + new Date().getTime()
+
     const buildedData = {
       ...data,
       phone: getPhoneNumber(data.phone),
       recordType: data?.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
+      leadHerokuId: newUuid
     }
+
+    
 
     const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
     const reCaptchaValidateResponse = await validateReCaptchaMutation.mutateAsync(token)
 
     if (reCaptchaValidateResponse?.success) {
-      createLeadMutation.mutate(buildedData)
+      // createLeadMutation.mutate(buildedData)
+      console.log(buildedData)
     }
   }
 
