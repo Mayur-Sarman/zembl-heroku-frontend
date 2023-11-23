@@ -13,30 +13,32 @@ const AGLPreference = ({ control, prefix}: AGLPreferenceProps) => {
 
   return (
     <AccordionCard alwaysOpen open title="AGL Preferences" bodyClassName="flex-col text-left gap-y-6">
-      <TextNote>You have indicated that someone in the property has life support equipment.</TextNote>
-      <div className="w-full">
-        { registrationData.lifeSupport === 'Yes' ?
-          <div className="w-full lg:w-1/2">
-          <ControllerSelectInput
-            control={control}
-            label="What type of life support equipment?"
-            textLabel="What type of life support equipment?"
-            placeholder="Select..."
-            options={LIFE_SUPPORT_EQUIPMENT_OPTIONS}
-            name={`${prefix}.lifeSupportEquipment`}
-            rules={REQUIRED_VALIDATION}
-          />
+      { registrationData.lifeSupport === 'Yes' ?
+      <>
+        <TextNote>You have indicated that someone in the property has life support equipment.</TextNote>
+        <div className="w-full">
+          
+            <div className="w-full lg:w-1/2">
+            <ControllerSelectInput
+              control={control}
+              label="What type of life support equipment?"
+              textLabel="What type of life support equipment?"
+              placeholder="Select..."
+              options={LIFE_SUPPORT_EQUIPMENT_OPTIONS}
+              name={`${prefix}.lifeSupportEquipment`}
+              rules={REQUIRED_VALIDATION}
+            />
+          </div>
+          
+          
+          {(!!(registrationData?.electricityQuote?.quoteId && !registrationData?.gasQuote?.quoteId) || !!(!registrationData?.electricityQuote?.quoteId && registrationData?.gasQuote?.quoteId)) ?
+          <Typography variant="small" className="mt-3">
+          If your life support equipment requires both gas and electricity to operate, please inform your {!registrationData?.gasQuote?.quoteId ? 'Electricity' : 'Gas'} retailer that you or someone at your property relies on life support equipment.
+        </Typography>
+          : null}
         </div>
-        : null}
-        
-        {(!!(registrationData?.electricityQuote?.quoteId && !registrationData?.gasQuote?.quoteId) || !!(!registrationData?.electricityQuote?.quoteId && registrationData?.gasQuote?.quoteId)) ?
-        <Typography variant="small" className="mt-3">
-        If your life support equipment requires both gas and electricity to operate, please inform your {!registrationData?.gasQuote?.quoteId ? 'Electricity' : 'Gas'} retailer that you or someone at your property relies on life support equipment.
-      </Typography>
-        : null}
-        
-
-      </div>
+      </>
+    : null}
       <Typography>
         AGL will conduct a credit check and consider your history with them. AGL will use your details safely in
         accordance with their privacy and credit reporting policy which is available at{' '}
