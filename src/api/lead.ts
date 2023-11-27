@@ -15,7 +15,7 @@ import {
 } from '../constants'
 import { performPatchRequest, performPostRequest } from '../helpers'
 import { getJSONDateString } from '../helpers/formatter'
-import { GoogleMapExtractedComponents } from '../helpers/googleMap'
+// import { GoogleMapExtractedComponents } from '../helpers/googleMap'
 
 export const postCreateLead = async (data: Lead) => {
   const response = await performPostRequest(CREATE_LEAD_ENDPOINT, data)
