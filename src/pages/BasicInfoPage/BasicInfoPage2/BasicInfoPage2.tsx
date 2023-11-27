@@ -33,12 +33,11 @@ const BasicInfoPage2 = () => {
     const lead = { id: (data?.leadId as string) ?? '', status: LEAD_STATUS_CONVERTED_WON, leadHerokuId: data?.leadHerokuId as string }
 
     try {
-      const leadConvertResult = await updateLeadMutation.mutateAsync(lead)
-      const leadId = leadConvertResult?.processLeadOutput?.id ?? null
+      // const leadId = leadConvertResult?.processLeadOutput?.id ?? null
 
       const selectedPreferences: string[] = (data?.preferenceList as string[]) ?? []
       const siteData: Site = {
-        leadId: leadId,
+        // leadId: leadId,
         leadHerokuId: data?.leadHerokuId as string,
         gas: !!data?.gas,
         electricity: !!data?.electricity,
@@ -50,15 +49,20 @@ const BasicInfoPage2 = () => {
         preferences: convertPreference(selectedPreferences),
         ...registrationData?.address as Record<string, string>
       }
-      const createSiteResult = await createSiteMutation.mutateAsync(siteData)
+
+
+      const promise1 = updateLeadMutation.mutateAsync(lead)
+      const promise2 = createSiteMutation.mutateAsync(siteData)
+
+      await Promise.all([promise1, promise2])
 
       setRegistrationData((value) => {
         const mergedValue = {
           ...value,
           ...siteData,
-          ...createSiteResult?.processSiteOutput,
+          // ...createSiteResult?.processSiteOutput,
           preferenceList: selectedPreferences,
-          leadId: leadId,
+          // leadId: leadId,
         }
 
         return mergedValue
