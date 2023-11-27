@@ -34,6 +34,7 @@ export const buildCreateAccountPayload = (data: RegistrationData, nmi?: string, 
     currentRetailerGas,
     currentUsageElectric,
     currentUsageGas,
+    leadHerokuId
   } = data
 
   const buildedData = {
@@ -63,6 +64,7 @@ export const buildCreateAccountPayload = (data: RegistrationData, nmi?: string, 
     entityType: entityType,
     entityTypeCode: entityTypeCode,
     abnStatus: abnStatus,
+    leadHerokuId
   }
 
   return buildedData

@@ -228,14 +228,15 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
       if (ZEMBL_DEBUG_MODE) console.log('CREATE_SITE_MUTATION_ERROR', error, 'REQ:', req)
       handleErrorResponse(error)
     },
-    onSuccess: (data: SiteResponse, site) => {
+    onSuccess: (/*data: SiteResponse, */site) => { //changed removed data response
       setEnableABNFetching(false)
       setRegistrationData((prev) => {
         return {
           ...prev,
           ...site,
-          siteId: data?.processSiteOutput?.siteId,
-          siteRelationshipId: data?.processSiteOutput?.siteRelationshipId,
+          
+          // siteId: data?.processSiteOutput?.siteId,
+          // siteRelationshipId: data?.processSiteOutput?.siteRelationshipId,
         }
       })
     },
