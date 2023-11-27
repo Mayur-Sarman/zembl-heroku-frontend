@@ -69,9 +69,7 @@ const HomePage = () => {
       recordType: data?.registrationType === REGISTRATION_TYPE_RESIDENTIAL ? REGISTRATION_TYPE_RESIDENTIAL : SME_VALUE,
       leadHerokuId: newUuid
     }
-
-    
-
+    registrationData.leadHerokuId = newUuid
     const token = await executeRecaptcha('SUBMIT_ENERGY_FORM')
     const reCaptchaValidateResponse = await validateReCaptchaMutation.mutateAsync(token)
 
@@ -109,7 +107,7 @@ const HomePage = () => {
   }, [setRegistrationData])
 
   useEffect(() => {
-    setRegistrationData({})
+    setRegistrationData({} as RegistrationData)
   }, [])
 
   return (

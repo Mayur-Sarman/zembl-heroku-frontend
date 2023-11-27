@@ -36,7 +36,9 @@ const BillUploadPage = () => {
     defaultValues: registrationData as FieldValues,
     mode: 'all',
   })
+
   console.log('registrationData => ', registrationData)
+
   const watchBillFileType: unknown = watch('billFileType', null)
 
   const fileValidation = (value: FileList) => {
