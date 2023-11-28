@@ -15,7 +15,7 @@ import {
 } from '../constants'
 import { performPatchRequest, performPostRequest } from '../helpers'
 import { getJSONDateString } from '../helpers/formatter'
-import { GoogleMapExtractedComponents } from '../helpers/googleMap'
+// import { GoogleMapExtractedComponents } from '../helpers/googleMap'
 
 export const postCreateLead = async (data: Lead) => {
   const response = await performPostRequest(CREATE_LEAD_ENDPOINT, data)
@@ -38,7 +38,16 @@ export const buildLeadPayload = (data: RegistrationData) => {
   } else if (isCI) {
     recordType = CAndI_VALUE
   }
-  const address = data?.address as GoogleMapExtractedComponents
+  // const address = data?.address as GoogleMapExtractedComponents
+  const address = {
+    country: 'Australia',
+    fullAddress: '157 Para Road, Greensborough VIC, Australia',
+    postCode: '5400',
+    street: '157',
+    route: 'Para Road',
+    state: 'VIC',
+    suburb: 'Greensborough'
+  }
   const buildedData = {
     ...data,
     electricity: [ELECTRICITY_VALUE, BOTH_VALUE].includes(data?.energyType ?? ''),
@@ -47,7 +56,8 @@ export const buildLeadPayload = (data: RegistrationData) => {
     id: data?.leadId ?? '',
     moveInDate: getJSONDateString(data?.moveInDate),
     newConnection: data?.isMoving === YES_VALUE,
-    fullAddress: (data?.address as GoogleMapExtractedComponents).fullAddress,
+    // fullAddress: (data?.address as GoogleMapExtractedComponents).fullAddress,
+    fullAddress: '157 Para Road, Greensborough VIC, Australia',
     address: {
       country: address?.country,
       fullAddress: address?.fullAddress,
@@ -64,6 +74,20 @@ export const buildLeadPayload = (data: RegistrationData) => {
 export interface LeadResponse {
   accessToken?: string
   processLeadOutput?: Partial<Lead>
+  id?: string
+  firstName?: string
+  lastName?: string
+  phone?: string
+  recordType?: string // 'SME' | "C&I"
+  electricity?: boolean
+  gas?: boolean
+  newConnection?: boolean
+  moveInDate?: string | null
+  billFrequency?: string // 'Monthly' | 'Quarterly'
+  billEnergySpend?: string // '< 2,500' | '> 2,500' | '< 7,500' | '> 7,500'
+  abn?: string
+  postCode?: string | null
+  status?: string
 }
 
 export interface Lead {

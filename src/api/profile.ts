@@ -44,6 +44,7 @@ export const buildMainProfilePayload = (data: RegistrationData) => {
       type: data?.identificationType as string,
     },
     connectionDetails: buildedAddress,
+    leadHerokuId: data.leadHerokuId
   }
   return buildedData
 }
@@ -100,6 +101,7 @@ export const buildRetailerAdditionalDetailPayload = (data: Record<string, unknow
 
 export interface MainProfile {
   opportunityId?: string // '0060T0000060TF8QAM'
+  leadHerokuId?: string
   accountDetails?: AccountDetail
 
   businessDetails?: BusinessDetail
