@@ -27,7 +27,7 @@ const NextBusinessEnergyPreference = ({ control, prefix, pref }: NextBusinessEne
       </>
       : null}
       
-    {registrationData?.accountType === 'SME' && (prefix === 'electricityQuote.quotePreferences' || prefix === 'commonQuote.quotePreferences') ?
+    {(registrationData?.accountType === 'SME') && (prefix === 'electricityQuote.quotePreferences' || prefix === 'commonQuote.quotePreferences') ?
       <>
         <ControllerRadioGroupInput
                 control={control}
