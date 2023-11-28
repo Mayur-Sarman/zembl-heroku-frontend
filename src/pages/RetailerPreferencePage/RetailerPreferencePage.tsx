@@ -3,8 +3,8 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useRegistration } from '../../hooks/useRegistration'
 import {RegistrationData } from '../../constants'
 import { lazy } from 'react'
-// import { useEffect } from 'react'
-// import { AGL } from '../../constants'
+import { useEffect } from 'react'
+// import { SIMPLY_ENERGY } from '../../constants'
 
 const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 const RetailerPreferenceForm = lazy(() => import('../../components/Forms/RetailerPreferenceForm'))
@@ -42,20 +42,22 @@ const RetailerPreferencePage = () => {
     navigate('/review-terms')
   }
 
-  // useEffect(() => {
-  //   setRegistrationData((prev) => ({
-  //     ...prev,
-  //     accountType: 'SME',
-  //     electricityQuote: {
-  //       ...prev.electricityQuote,
-  //       retailerName: AGL,
-  //     },
-  //     gasQuote: {
-  //       ...prev.gasQuote,
-  //       // retailerName: MOMENTUM,
-  //     },
-  //   }))
-  // }, [setRegistrationData])
+  useEffect(() => {
+    registrationData.accountType = registrationData?.electricityQuote?.accountType ?? registrationData?.gasQuote?.accountType ?? ''
+    registrationData.billType = registrationData?.electricityQuote?.billType ?? registrationData?.gasQuote?.billType ?? ''
+    // setRegistrationData((prev) => ({
+    //   ...prev,
+    //   // accountType: 'SME',
+    //   electricityQuote: {
+    //     ...prev.electricityQuote,
+    //     retailerName: SIMPLY_ENERGY,
+    //   },
+    //   gasQuote: {
+    //     ...prev.gasQuote,
+    //     // retailerName: MOMENTUM,
+    //   }
+    // }))
+  }, [])
 
   const showSingle = registrationData?.electricityQuote?.retailerName === registrationData?.gasQuote?.retailerName
   return (

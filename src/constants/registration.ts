@@ -381,6 +381,7 @@ export interface RegistrationData
   gasBillInfo?: BillInfo
   electricityBillInfo?: BillInfo
   accountName?: string | null | undefined
+  accountType?: string
 }
 
 interface BillInfo {

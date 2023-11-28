@@ -25,7 +25,7 @@ const RetailerPreferenceForm = ({ retailerName, prefix, control, siteAddress, pr
     case BLUE_NRG:
       return <BlueNRGPreference control={control} prefix={prefix} pref={pref}/>
     case SIMPLY_ENERGY:
-      return <SimplyEnergyPreference control={control} prefix={prefix}/>
+      return <SimplyEnergyPreference />
     case ENERGY_AU:
       return <EnergyAUPreference siteAddress={siteAddress} control={control} prefix={prefix} pref={pref}/>
     case ENERGY_LOCALS:
