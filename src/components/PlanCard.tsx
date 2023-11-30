@@ -31,10 +31,10 @@ const PlanCard = ({
 
   const cardDisplay = (
     <Card className={`bg-zembl-s1 w-full border ${isSelected ? 'border-green-400 border-2' : ''}`}>
-      <CardBody className="flex flex-col gap-y-6">
-        <div className="flex flex-wrap flex-shrink-0 lg:flex-nowrap gap-4 lg:gap-6">
-          <div className="w-36">
-            {logoURL ? <img src={logoURL} alt="Brand Logo" className="w-36" /> : null}
+      <CardBody className={`flex flex-col ${planDescription ? 'gap-y-6' : ''}`}>
+        <div className={`flex flex-wrap flex-shrink-0 lg:flex-nowrap gap-4 lg:gap-6`}>
+          <div className="w-36 relative">
+            {logoURL ? <img src={logoURL} alt="Brand Logo" className="w-36 h-auto absolute inset-x-0 inset-y-0 m-auto" /> : null}
             {logoImageHTML ? (
               <div
                 className="flex items-center justify-center  grow-0 h-full"
