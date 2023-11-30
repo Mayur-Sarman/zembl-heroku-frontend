@@ -28,6 +28,9 @@ const RetailerPreferencePage = () => {
     quotePreferences: watch('commonQuote.quotePreferences') as Record<string, string>
   }
 
+  registrationData.accountType = registrationData?.electricityQuote?.accountType ?? registrationData?.gasQuote?.accountType ?? ''
+  registrationData.billType = registrationData?.electricityQuote?.billType ?? registrationData?.gasQuote?.billType ?? ''
+
   const onSubmit = (data: RegistrationData) => {
     const commonPreferences = (data?.commonQuote)?.quotePreferences
     const updatedData = commonPreferences
