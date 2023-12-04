@@ -65,6 +65,13 @@ export const PHONE_VALIDATION = {
   },
 }
 
+export const EIGTHTEEN_YEARS_OLD_VALIDATION = {
+  max: {
+    value: new Date().setFullYear(new Date().getFullYear() - 18),
+    message: 'You must be 18 years of over.',
+  },
+}
+
 export const ABN_NMI_MIRN_VALIDATION = {
   maxLength: {
     value: 11,

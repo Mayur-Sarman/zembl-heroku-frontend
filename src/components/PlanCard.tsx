@@ -130,7 +130,7 @@ const PlanCard = ({
             </PlanHilight>
           </div>
         </div>
-        <Typography variant="small" className="font-normal" title={planDescription}>
+        <Typography variant="small" className="font-normal text-left" title={planDescription}>
           {planDescription}
         </Typography>
       </CardBody>
