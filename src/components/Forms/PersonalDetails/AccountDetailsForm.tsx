@@ -7,7 +7,7 @@ import { MouseEventHandler, useCallback, useState } from 'react'
 import EditActionButton from '../../Buttons/EditActionButton'
 import { Typography } from '@material-tailwind/react'
 import ControllerInput from '../../Inputs/ControllerInput'
-import { DATE_MUST_PAST, EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../../constants/validation'
+import { EIGTHTEEN_YEARS_OLD_VALIDATION, EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../../constants/validation'
 import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
 
 const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled, defaultDate }: AccountDetailsFormProps) => {
@@ -79,7 +79,7 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled, d
           required={!isFieldsReadOnly}
           datepickerClassNames={'top-auto'}
           readOnly={isFieldsReadOnly}
-          rules={DATE_MUST_PAST}
+          rules={EIGTHTEEN_YEARS_OLD_VALIDATION}
           defaultDate={defaultDate}
           disabled={isFieldsReadOnly}
           // maxDate={new Date()}
