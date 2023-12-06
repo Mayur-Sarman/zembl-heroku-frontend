@@ -75,7 +75,7 @@ const HomePage = () => {
 
     if (reCaptchaValidateResponse?.success) {
       createLeadMutation.mutate(buildedData)
-      console.log(buildedData)
+      // console.log(buildedData)
     }
   }
 
