@@ -26,7 +26,7 @@ const ReZemblThankPage = () => {
           </Typography>
         </div>
         <Button className="capitalize !zembl-btn m-auto" onClick={() => navigate('/')}>
-          Back to Zembl
+          Next
         </Button>
       </div>
     </div>
