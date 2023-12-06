@@ -23,7 +23,12 @@ const ReviewTermsPage = () => {
   const updatePlanData = useUpdateQuoteMutation({
     onSuccess: (_, data) => {
       setRegistrationData((prev) => ({ ...prev, ...data.planData }))
-      navigate('/thank-you')
+      if(registrationData.registrationType === 'Residential' || 
+        (registrationData?.gasQuote?.quoteId != null && registrationData?.electricityQuote?.quoteId == null)) {
+        navigate('/rezembl-no-thank-you')
+      } else {
+        navigate('/thank-you')
+      } 
     },
     onError: (error) => {
       if (ZEMBL_DEBUG_MODE) console.log('REVIEW_TERMS_PAGE', error)

@@ -4,7 +4,7 @@ import zemblLogo from '../../assets/zembl-icon.svg'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { YES_VALUE } from '../../constants'
-import { useRegistration } from '../../hooks/useRegistration'
+// import { useRegistration } from '../../hooks/useRegistration'
 import { lazy } from 'react'
 
 const ReZemblForm = lazy(() => import('../../components/Forms/PersonalDetails/ReZemblForm'))
@@ -13,15 +13,11 @@ const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 const RegistrationThankYouPage = () => {
   const navigate = useNavigate()
   const { handleSubmit, control } = useForm()
-  const {registrationData} = useRegistration()
+  // const {registrationData} = useRegistration()
 
   const onSubmit = (data: FieldValues) => {
     if (data.reZembl === YES_VALUE) {
-      if(registrationData.registrationType === 'Residential') {
-        navigate('/rezembl-no-thank-you')
-      } else {
         navigate('/rezembl-details')
-      }
     } else {
       navigate('/rezembl-no-thank-you')
     }

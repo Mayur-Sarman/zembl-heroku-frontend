@@ -37,7 +37,7 @@ const ReviewPlanPage = () => {
     { quoteToken: registrationData?.quoteToken as string, token: registrationToken ?? '' },
     {
       onSuccess: (data: ProcessQuoteOutput) => {
-        console.log('data =>', data)
+        // console.log('data =>', data)
         const updatedAccountDetail = {
           ...data?.accountDetails,
           mobile: data?.accountDetails?.mobile?.replace('+', '') ?? undefined,
