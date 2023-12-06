@@ -25,7 +25,7 @@ const ReZemblThankPage = () => {
             panel of retailers.
           </Typography>
         </div>
-        <Button className="capitalize !zembl-btn m-auto" onClick={() => navigate('/')}>
+        <Button className="capitalize !zembl-btn m-auto" onClick={() => navigate('/rezembl-no-thank-you')}>
           Next
         </Button>
       </div>
