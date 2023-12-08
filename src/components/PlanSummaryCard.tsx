@@ -22,7 +22,8 @@ const PlanSummaryCard = ({
   planEstAnnualSaving,
   planEstCostPerMonth,
   planEstCostPerYear,
-  bpidLink
+  bpidLink,
+  retailerName
 }: PlanSummaryCardProps) => {
   let planTypeIcon = null
   let nmiOrMirnText = null
@@ -69,6 +70,7 @@ const PlanSummaryCard = ({
         planEstCostPerYear={planEstCostPerYear}
         hideSelectButton
         isReviewPlan={true}
+        retailerName={retailerName}
       />
     </AccordionCard>
   )
@@ -90,6 +92,7 @@ interface PlanSummaryCardProps {
   planEstCostPerMonth?: number
   planEstCostPerYear?: number
   bpidLink?: string
+  retailerName?: string
 }
 
 export default PlanSummaryCard

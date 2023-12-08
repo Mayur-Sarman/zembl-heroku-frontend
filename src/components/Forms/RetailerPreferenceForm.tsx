@@ -4,7 +4,7 @@ import {
   BLUE_NRG,
   ENERGY_AU,
   ENERGY_LOCALS,
-  MOMENTUM,
+  MOMENTUM_ENERGY,
   NEXT_BUSINESS_ENERGY,
   SIMPLY_ENERGY,
 } from '../../constants'
@@ -30,7 +30,7 @@ const RetailerPreferenceForm = ({ retailerName, prefix, control, siteAddress, pr
       return <EnergyAUPreference siteAddress={siteAddress} control={control} prefix={prefix} pref={pref}/>
     case ENERGY_LOCALS:
       return <EnergyLocalsPreference control={control} prefix={prefix} pref={pref}/>
-    case MOMENTUM:
+    case MOMENTUM_ENERGY:
       return <MomentumEnergyPreference control={control} prefix={prefix} pref={pref}/>
     case NEXT_BUSINESS_ENERGY:
       return <NextBusinessEnergyPreference control={control} prefix={prefix} pref={pref}/>

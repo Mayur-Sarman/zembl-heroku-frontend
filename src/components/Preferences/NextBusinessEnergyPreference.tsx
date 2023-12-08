@@ -5,9 +5,13 @@ import TextNote from '../TextNote'
 import ControllerSelectInput from '../Inputs/ControllerSelectInput'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 import { useRegistration } from '../../hooks/useRegistration'
+import { CUSTOM_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../constants/validation'
+import ControllerInput from '../Inputs/ControllerInput'
+
 
 const NextBusinessEnergyPreference = ({ control, prefix, pref }: NextBusinessEnergyPreferenceProps) => {
   const { registrationData } = useRegistration()
+
   return (
     <AccordionCard alwaysOpen open title="Next Business Energy Preferences" bodyClassName="flex-col text-left gap-y-6">
       { registrationData?.lifeSupport === 'Yes' ? 
@@ -24,26 +28,38 @@ const NextBusinessEnergyPreference = ({ control, prefix, pref }: NextBusinessEne
             required
           />
         </div>
+        { registrationData?.machineTypeSelected === 'Other' ?
+          <div>
+            <ControllerInput
+              name={`${prefix}.otherSelectedText`}
+              label="Since you have selected 'Other', Please fill the text in this field."
+              control={control}
+              rules={{ ...CUSTOM_SF_TEXT_VALIDATION, ...REQUIRED_VALIDATION }}
+              textLabel="Other"
+            />
+          </div>
+          : null
+        }
       </>
       : null}
       
-    {(registrationData?.accountType === 'SME') && (prefix === 'electricityQuote.quotePreferences' || prefix === 'commonQuote.quotePreferences') ?
-      <>
-        <ControllerRadioGroupInput
-                control={control}
-                name={`${prefix}.electricityUsedForBusinessPurposes`}
-                label={'Do you confirm that the electricity used at your address is for business purposes?'}
-                options={YES_NO_OPTIONS}
-                required
-              />
-        {pref?.electricityUsedForBusinessPurposes === 'No' ?
-          <TextNote>
-          This plan is not available to where the electricity at the site is not used for business purposes. Update your
-          preference or please call Zembl on 1300 957 721 for assistance.
-        </TextNote>
-        :null}  
-      </>
-    : null}
+      {(registrationData?.accountType === 'SME') && (prefix === 'electricityQuote.quotePreferences' || prefix === 'commonQuote.quotePreferences') ?
+        <>
+          <ControllerRadioGroupInput
+                  control={control}
+                  name={`${prefix}.electricityUsedForBusinessPurposes`}
+                  label={'Do you confirm that the electricity used at your address is for business purposes?'}
+                  options={YES_NO_OPTIONS}
+                  required
+                />
+          {pref?.electricityUsedForBusinessPurposes === 'No' ?
+            <TextNote>
+              This plan is not available to where the electricity at the site is not used for business purposes. Update your
+              preference or please call Zembl on 1300 957 721 for assistance.
+            </TextNote>
+          :null}  
+        </>
+      : null}
       
     </AccordionCard>
   )

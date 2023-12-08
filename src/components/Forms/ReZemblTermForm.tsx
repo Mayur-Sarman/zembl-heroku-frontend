@@ -12,7 +12,7 @@ const ReZemblTermForm = ({
   zemblGas,
   register,
 }: ReZemblTermFormProps) => {
-  const electricTermDisplay = zemblElectric?.rezemblTermsAndConditions  ? (
+  const electricTermDisplay = zemblElectric?.rezemblTermsAndConditions ? (
     <TextNote className={'break-all'}>
       <RichText htmlString={zemblElectric.rezemblTermsAndConditions } />
     </TextNote>

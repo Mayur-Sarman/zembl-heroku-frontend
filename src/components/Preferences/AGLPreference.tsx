@@ -4,9 +4,10 @@ import { LIFE_SUPPORT_EQUIPMENT_OPTIONS, YES_NO_OPTIONS } from '../../constants'
 import TextNote from '../TextNote'
 import { Typography } from '@material-tailwind/react'
 import ControllerSelectInput from '../Inputs/ControllerSelectInput'
-import { REQUIRED_VALIDATION } from '../../constants/validation'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 import { useRegistration } from '../../hooks/useRegistration'
+import { CUSTOM_SF_TEXT_VALIDATION, REQUIRED_VALIDATION } from '../../constants/validation'
+import ControllerInput from '../Inputs/ControllerInput'
 
 const AGLPreference = ({ control, prefix}: AGLPreferenceProps) => {
   const { registrationData } = useRegistration()
@@ -17,7 +18,6 @@ const AGLPreference = ({ control, prefix}: AGLPreferenceProps) => {
       <>
         <TextNote>You have indicated that someone in the property has life support equipment.</TextNote>
         <div className="w-full">
-          
             <div className="w-full lg:w-1/2">
             <ControllerSelectInput
               control={control}
@@ -29,7 +29,18 @@ const AGLPreference = ({ control, prefix}: AGLPreferenceProps) => {
               rules={REQUIRED_VALIDATION}
             />
           </div>
-          
+          { registrationData?.lifeSupportEquipment === 'Other' ?
+            <div className='mt-3'>
+            <ControllerInput
+              name={`${prefix}.otherSelectedText`}
+              label="Since you have selected 'Other', Please fill the text in this field."
+              control={control}
+              rules={{ ...CUSTOM_SF_TEXT_VALIDATION, ...REQUIRED_VALIDATION }}
+              textLabel="Other"
+            />
+          </div>
+            : null
+          }
           
           {(!!(registrationData?.electricityQuote?.quoteId && !registrationData?.gasQuote?.quoteId) || !!(!registrationData?.electricityQuote?.quoteId && registrationData?.gasQuote?.quoteId)) ?
           <Typography variant="small" className="mt-3">
@@ -112,7 +123,7 @@ const AGLPreference = ({ control, prefix}: AGLPreferenceProps) => {
       />
       : null}
 
-      { (registrationData?.electricityQuote?.quoteId && !registrationData?.gasQuote?.quoteId) && registrationData.accountType === 'Residential' ?
+      { (!registrationData?.electricityQuote?.quoteId && registrationData?.gasQuote?.quoteId) && registrationData.accountType === 'Residential' ?
         <ControllerRadioGroupInput
         control={control}
         name={`${prefix}.carbonNeutral`}

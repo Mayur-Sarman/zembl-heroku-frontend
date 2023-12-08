@@ -130,6 +130,7 @@ const ReviewPlanPage = () => {
       planEstCostPerYear={registrationData?.electricityQuote?.annualBillSize}
       fullAddress={(registrationData?.fullAddress as string) ?? ''}
       gasOrEnergyCode={registrationData?.nmi ?? ''}
+      retailerName={registrationData?.electricityQuote?.retailerName ?? ''}
     />
   ) : null
 
@@ -150,6 +151,7 @@ const ReviewPlanPage = () => {
       planEstCostPerYear={registrationData?.gasQuote?.annualBillCostGas}
       fullAddress={(registrationData?.fullAddress as string) ?? ''}
       gasOrEnergyCode={registrationData?.mirn ?? ''}
+      retailerName={registrationData?.gasQuote?.retailerName ?? ''}
     />
   ) : null
 
