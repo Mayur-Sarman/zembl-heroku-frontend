@@ -89,17 +89,19 @@ export const LOWEST_PRICE = 'Lowest Price'
 export const FIXED_PRICE = 'Fixed Price'
 export const NO_PREFERENCE = 'No Preference'
 
+export const ACTEW_AGL = 'Actew AGL'
 export const ACTEW = 'Actew'
 export const AGL = 'AGL'
 export const ALINTA = 'Alinta'
 export const BLUE_NRG = 'Blue NRG'
 export const COVA_U = 'CovaU'
-export const ENERGY_AU = 'Energy AU'
+export const ENERGY_AU = 'Energy Australia'
 export const ENERGY_LOCALS = 'Energy Locals'
 export const ENGIE = 'ENGIE'
 export const FLOW_POWER = 'Flow Power'
 export const LUMO = 'Lumo'
 export const MOMENTUM = 'Momentum'
+export const MOMENTUM_ENERGY = 'Momentum Energy'
 export const NECTR = 'Nectr'
 export const NEXT_BUSINESS_ENERGY = 'Next Business Energy'
 export const ORIGIN = 'Origin'
@@ -294,7 +296,7 @@ export const MEDICARE_REF_NO_OPTIONS: SelectOption[] = ['1', '2', '3', '4'].map(
 }))
 
 export const RETAILER_OPTIONS: SelectOption[] = [
-  ACTEW,
+  ACTEW_AGL,
   AGL,
   ALINTA,
   BLUE_NRG,
@@ -350,6 +352,7 @@ export const LIFE_SUPPORT_EQUIPMENT_OPTIONS = [
   CHRONIC_POSITIVE_AIRWAYS_PRESSURE_RESPIRATORS_CPAP,
   CRIGLER_NAJJAR_SYNDROME_PHOTOTHERAPY_EQUIPMENT,
   VENTILATORS_FOR_LIFE_SUPPORT,
+  OTHER
 ].map((item) => ({ value: item, label: item }))
 
 export const GREEN_POWER_OPTIONS = [
@@ -382,6 +385,7 @@ export interface RegistrationData
   electricityBillInfo?: BillInfo
   accountName?: string | null | undefined
   accountType?: string
+  nextPageDisabled?: boolean
 }
 
 interface BillInfo {
