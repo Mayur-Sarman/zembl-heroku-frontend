@@ -4,7 +4,7 @@ import { useRegistration } from '../../hooks/useRegistration'
 import {RegistrationData } from '../../constants'
 import { lazy } from 'react'
 // import { useEffect } from 'react'
-// import { MOMENTUM } from '../../constants'
+// import { BLUE_NRG } from '../../constants'
 
 const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 const RetailerPreferenceForm = lazy(() => import('../../components/Forms/RetailerPreferenceForm'))
@@ -15,6 +15,28 @@ const RetailerPreferencePage = () => {
   const { registrationData, setRegistrationData } = useRegistration()
   const { handleSubmit, control, watch } = useForm({ defaultValues: registrationData as FieldValues, mode: 'all' })
   const navigate = useNavigate()
+
+  const isNextPageDisabled = () => {
+    let isNextDisabled = false
+    if(registrationData.electricityQuote?.quotePreferences?.preferenceId != null) {
+      const electricQuotePref = registrationData.electricityQuote?.quotePreferences
+      const keys = Object.keys(electricQuotePref)
+      keys.forEach(key => {
+        if(electricQuotePref[key] != null && electricQuotePref[key] === 'No' && key !== 'greenPowerOption') isNextDisabled = true
+      })
+    }
+
+    if(registrationData.gasQuote?.quotePreferences?.preferenceId != null) {
+      const gasQuotePref = registrationData.gasQuote?.quotePreferences
+      const keys = Object.keys(gasQuotePref)
+      keys.forEach(key => {
+        if(gasQuotePref[key] != null && gasQuotePref[key] === 'No' && key !== 'greenPowerOption') isNextDisabled = true;
+      })
+    }
+
+    return isNextDisabled
+  }
+
   registrationData.electricityQuote = {
     ...registrationData.electricityQuote,
     quotePreferences: watch('electricityQuote.quotePreferences') as Record<string, string>
@@ -30,6 +52,12 @@ const RetailerPreferencePage = () => {
 
   registrationData.accountType = registrationData?.electricityQuote?.accountType ?? registrationData?.gasQuote?.accountType ?? ''
   registrationData.billType = registrationData?.electricityQuote?.billType ?? registrationData?.gasQuote?.billType ?? ''
+  registrationData.lifeSupport = registrationData?.electricityQuote?.lifeSupport ?? registrationData?.gasQuote?.lifeSupport ?? ''
+  registrationData.machineTypeSelected = registrationData.electricityQuote?.quotePreferences?.machineType ?? registrationData.gasQuote?.quotePreferences?.machineType ?? 
+                                          registrationData.commonQuote?.quotePreferences?.machineType ?? ''
+  registrationData.lifeSupportEquipment = registrationData.electricityQuote?.quotePreferences?.lifeSupportEquipment ?? registrationData.gasQuote?.quotePreferences?.lifeSupportEquipment ?? 
+                                          registrationData.commonQuote?.quotePreferences?.lifeSupportEquipment ?? ''
+  registrationData.nextPageDisabled = isNextPageDisabled()
 
   const onSubmit = (data: RegistrationData) => {
     const commonPreferences = (data?.commonQuote)?.quotePreferences
@@ -42,35 +70,28 @@ const RetailerPreferencePage = () => {
       : data
 
     setRegistrationData((prev) => ({ ...prev, ...updatedData }))
+    // console.log('registrationData =>', registrationData)
+    // console.log('data =>', updatedData)
     navigate('/review-terms')
   }
 
+
+
   // useEffect(() => {
-  //   registrationData.nextPage = false;
+  //   console.log('registrationData => ', registrationData)
   //   setRegistrationData((prev) => ({
   //     ...prev,
-  //     // accountType: 'SME',
+  //     accountType: 'Residential',
   //     electricityQuote: {
   //       ...prev.electricityQuote,
-  //       retailerName: '',
+  //       retailerName: BLUE_NRG,
   //     },
-  //     gasQuote: {
-  //       ...prev.gasQuote,
+  //     // gasQuote: {
+  //       // ...prev.gasQuote,
   //       // retailerName: MOMENTUM,
-  //     }
+  //     // }
   //   }))
   // }, [])
-
-  // useEffect(() => {
-    // if(registrationData.electricityQuote?.quotePreferences?.preferenceId != null) {
-    //   for (const [key, value] of Object.entries(registrationData.electricityQuote.quotePreferences)) {
-    //     console.log(`${key}: ${value}`);
-    //   }
-    // }
-    
-
-  //   console.log('registrationData.nextPage', registrationData.nextPage)
-  // }, [registrationData.gasQuote, registrationData.electricityQuote])
 
   const showSingle = registrationData?.electricityQuote?.retailerName === registrationData?.gasQuote?.retailerName
   return (
@@ -84,7 +105,7 @@ const RetailerPreferencePage = () => {
             control={control}
             prefix="electricityQuote.quotePreferences"
             retailerName={registrationData?.electricityQuote?.retailerName ?? ''}
-            siteAddress={registrationData?.electricityQuote?.address ?? ''}
+            siteAddress={registrationData?.fullAddress as string ?? ''}
             pref={registrationData?.electricityQuote?.quotePreferences as Record<string, string> ?? null}
           />
         ) : null}
@@ -94,7 +115,7 @@ const RetailerPreferencePage = () => {
             control={control}
             prefix="gasQuote.quotePreferences"
             retailerName={registrationData?.gasQuote?.retailerName ?? ''}
-            siteAddress={registrationData?.gasQuote?.address ?? ''}
+            siteAddress={registrationData?.fullAddress as string ?? ''}
             pref={registrationData?.gasQuote?.quotePreferences as Record<string, string> ?? null}
           />
         ) : null}
@@ -104,12 +125,13 @@ const RetailerPreferencePage = () => {
             control={control}
             prefix="commonQuote.quotePreferences"
             retailerName={registrationData?.electricityQuote?.retailerName ?? registrationData?.gasQuote?.retailerName ?? ''}
-            siteAddress={registrationData?.electricityQuote?.address ?? registrationData?.gasQuote?.address ?? ''}
+            siteAddress={registrationData?.fullAddress as string ?? registrationData?.fullAddress as string ?? ''}
             pref={registrationData?.commonQuote?.quotePreferences as Record<string, string> ?? null}
           />
         ) : null}
 
-        <PageNavigationActions prevLink="/review-plan" />
+        <PageNavigationActions prevLink="/review-plan" nextDisabled={registrationData.nextPageDisabled}/>
+        
       </form>
     </PageWrapper>
   )
