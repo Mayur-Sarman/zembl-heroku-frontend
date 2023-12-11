@@ -1,10 +1,9 @@
 import { Button, Typography } from '@material-tailwind/react'
 
 import zemblLogo from '../../assets/zembl-icon.svg'
-import { useNavigate } from 'react-router-dom'
+import { BACK_TO_ZEMBL_NAVIGATE } from '../../constants'
 
 const NoReZemblThankPage = () => {
-  const navigate = useNavigate()
 
   return (
     <div className="flex flex-col text-center h-full justify-center">
@@ -17,7 +16,7 @@ const NoReZemblThankPage = () => {
             us on 1300 957 721.
           </Typography>
         </div>
-        <Button className="capitalize !zembl-btn m-auto" onClick={() => navigate('/')}>
+        <Button className="capitalize !zembl-btn m-auto" onClick={() => {location.href = BACK_TO_ZEMBL_NAVIGATE}}>
           Back to Zembl
         </Button>
       </div>

@@ -18,7 +18,7 @@ const EnergyLocalsPreference = lazy(() => import('../../components/Preferences/E
 const MomentumEnergyPreference = lazy(() => import('../../components/Preferences/MomentumEnergyPreference'))
 const NextBusinessEnergyPreference = lazy(() => import('../../components/Preferences/NextBusinessEnergyPreference'))
 
-const RetailerPreferenceForm = ({ retailerName, prefix, control, siteAddress, pref }: RetailerPreferenceFormProps) => {
+const RetailerPreferenceForm = ({ retailerName, prefix, control, siteAddress, pref, isElectric }: RetailerPreferenceFormProps) => {
   switch (retailerName) {
     case AGL:
       return <AGLPreference control={control} prefix={prefix} />
@@ -27,7 +27,7 @@ const RetailerPreferenceForm = ({ retailerName, prefix, control, siteAddress, pr
     case SIMPLY_ENERGY:
       return <SimplyEnergyPreference />
     case ENERGY_AU:
-      return <EnergyAUPreference siteAddress={siteAddress} control={control} prefix={prefix} pref={pref}/>
+      return <EnergyAUPreference siteAddress={siteAddress} control={control} prefix={prefix} pref={pref} isElectric={isElectric}/>
     case ENERGY_LOCALS:
       return <EnergyLocalsPreference control={control} prefix={prefix} pref={pref}/>
     case MOMENTUM_ENERGY:
@@ -43,6 +43,7 @@ interface RetailerPreferenceFormProps {
   control: Control
   siteAddress?: string
   pref?: Record<string, string>
+  isElectric?: boolean
 }
 
 export default RetailerPreferenceForm
