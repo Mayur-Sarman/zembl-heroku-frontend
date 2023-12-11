@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import { ELECTRICITY_VALUE } from '../constants'
 import { formatCurrency, formatPercent } from '../helpers/formatter'
 import ControllerTooltip from './Icons/ControllerTooltip'
-import { NEXT_BUSINESS_ENERGY } from '../constants'
+// import { NEXT_BUSINESS_ENERGY } from '../constants'
 
 const PlanCard = ({
   planId,
@@ -27,7 +27,6 @@ const PlanCard = ({
   hideSelectButton = false,
   isReviewPlan = false,
   onPlanChoose,
-  retailerName
 }: PlanCardProps) => {
   const onPlanChooseHandler = useCallback(() => (onPlanChoose ? onPlanChoose(planId) : null), [planId, onPlanChoose])
 
@@ -36,7 +35,7 @@ const PlanCard = ({
       <CardBody className={`flex flex-col ${planDescription ? 'gap-y-6' : ''}`}>
         <div className={`flex flex-wrap flex-shrink-0 lg:flex-nowrap gap-4 lg:gap-6`}>
           <div className="w-[144px] relative">
-            {logoURL ? <img src={logoURL} alt="Brand Logo" className={`w-[144px] h-auto absolute inset-x-0 ${retailerName !== null && retailerName === NEXT_BUSINESS_ENERGY ? '' : 'inset-y-0'} m-auto`} /> : null}
+            {logoURL ? <img src={logoURL} alt="Brand Logo" className={`w-[144px] h-auto absolute inset-x-0 m-auto`} /> : null}
             {logoImageHTML ? (
               <div
                 className="flex items-center justify-center  grow-0 h-full"

@@ -43,17 +43,17 @@ const AGLPreference = ({ control, prefix}: AGLPreferenceProps) => {
           }
           
           {(!!(registrationData?.electricityQuote?.quoteId && !registrationData?.gasQuote?.quoteId) || !!(!registrationData?.electricityQuote?.quoteId && registrationData?.gasQuote?.quoteId)) ?
-          <Typography variant="small" className="mt-3">
+          <Typography variant="small" className="mt-3 text-sm">
           If your life support equipment requires both gas and electricity to operate, please inform your {!registrationData?.gasQuote?.quoteId ? 'Electricity' : 'Gas'} retailer that you or someone at your property relies on life support equipment.
         </Typography>
           : null}
         </div>
       </>
     : null}
-      <Typography>
+      <Typography className='text-sm'>
         AGL will conduct a credit check and consider your history with them. AGL will use your details safely in
         accordance with their privacy and credit reporting policy which is available at{' '}
-        <a href="https://www.agl.com.au/privacy-policy">https://www.agl.com.au/privacy-policy</a>.
+        <a rel='noreferrer' target='_blank' className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600' href="https://www.agl.com.au/privacy-policy">https://www.agl.com.au/privacy-policy</a>.
       </Typography>
       <ControllerRadioGroupInput
         control={control}

@@ -7,6 +7,8 @@ export const SESSION_TOKEN_KEY = `${import.meta.env.VITE_SESSION_STORAGE_PREFIX}
 export const NO_RESPONSE_ERROR = 'No Response'
 export const CONFIG_ERROR = 'Config Error'
 
+export const BACK_TO_ZEMBL_NAVIGATE = `${import.meta.env.VITE_SERVICE_BACK_TO_ZEMBL_URL ?? 'https://www.zembl.com.au/'}`
+
 export const CREATE_LEAD_ENDPOINT = `${import.meta.env.VITE_SERVICE_CREATE_LEAD_ENDPOINT ?? '/mule/api/public/zembl-energy/personal-detail/customer'}`
 export const UPDATE_LEAD_ENDPOINT = `${import.meta.env.VITE_SERVICE_UPDATE_LEAD_ENDPOINT ?? '/mule/api/zembl-energy/personal-detail/customer'}`
 export const UPLOAD_FILE_ENDPOINT = `${import.meta.env.VITE_SERVICE_UPLOAD_FILE_ENDPOINT ?? '/mule/api/zembl-energy/file/upload'}`

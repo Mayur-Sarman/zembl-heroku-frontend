@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useRegistration } from '../../hooks/useRegistration'
-import {RegistrationData } from '../../constants'
-import { lazy } from 'react'
-// import { useEffect } from 'react'
-// import { BLUE_NRG } from '../../constants'
+import {BLUE_NRG, ENERGY_AU, NEXT_BUSINESS_ENERGY, RESIDENTIAL_VALUE, RegistrationData, YES_VALUE } from '../../constants'
+import { lazy, useEffect } from 'react'
+import { PREF_RETAILERS } from '../../constants'
 
 const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 const RetailerPreferenceForm = lazy(() => import('../../components/Forms/RetailerPreferenceForm'))
@@ -22,7 +21,10 @@ const RetailerPreferencePage = () => {
       const electricQuotePref = registrationData.electricityQuote?.quotePreferences
       const keys = Object.keys(electricQuotePref)
       keys.forEach(key => {
-        if(electricQuotePref[key] != null && electricQuotePref[key] === 'No' && key !== 'greenPowerOption') isNextDisabled = true
+        if((electricQuotePref[key] != null && electricQuotePref[key] === 'No' && (key !== 'greenPowerOption' && key !== 'carbonNeutral' && key !== 'receiveEmailBills'))
+        ) {
+          isNextDisabled = true
+        }
       })
     }
 
@@ -30,7 +32,10 @@ const RetailerPreferencePage = () => {
       const gasQuotePref = registrationData.gasQuote?.quotePreferences
       const keys = Object.keys(gasQuotePref)
       keys.forEach(key => {
-        if(gasQuotePref[key] != null && gasQuotePref[key] === 'No' && key !== 'greenPowerOption') isNextDisabled = true;
+        if(gasQuotePref[key] != null && gasQuotePref[key] === 'No' && (key !== 'greenPowerOption' && key !== 'carbonNeutral' && key !== 'receiveEmailBills')
+        ) {
+          isNextDisabled = true;
+        }
       })
     }
 
@@ -81,7 +86,8 @@ const RetailerPreferencePage = () => {
   //   console.log('registrationData => ', registrationData)
   //   setRegistrationData((prev) => ({
   //     ...prev,
-  //     accountType: 'Residential',
+  //     accountType: RESIDENTIAL_VALUE,
+  //     billType: 'Post',
   //     electricityQuote: {
   //       ...prev.electricityQuote,
   //       retailerName: BLUE_NRG,
@@ -92,6 +98,32 @@ const RetailerPreferencePage = () => {
   //     // }
   //   }))
   // }, [])
+
+  useEffect(() => {
+    registrationData.toSkipPref = true
+    if(PREF_RETAILERS.includes(registrationData?.electricityQuote?.retailerName ?? '') || PREF_RETAILERS.includes(registrationData?.gasQuote?.retailerName ?? '')) {
+      registrationData.toSkipPref = false
+    } 
+    if(registrationData.electricityQuote?.retailerName === BLUE_NRG && registrationData.accountType !== RESIDENTIAL_VALUE) {
+      registrationData.toSkipPref = false
+    }
+    if(registrationData.electricityQuote?.retailerName === NEXT_BUSINESS_ENERGY && (registrationData.lifeSupport != YES_VALUE || registrationData.accountType !== RESIDENTIAL_VALUE)) {
+      registrationData.toSkipPref = false
+    }
+    if(registrationData.gasQuote?.retailerName === BLUE_NRG && registrationData.accountType !== RESIDENTIAL_VALUE) {
+      registrationData.toSkipPref = false
+    }
+    if(registrationData.gasQuote?.retailerName === NEXT_BUSINESS_ENERGY && (registrationData.lifeSupport != YES_VALUE || registrationData.accountType !== RESIDENTIAL_VALUE)) {
+      registrationData.toSkipPref = false
+    }
+    if(registrationData.electricityQuote?.retailerName === ENERGY_AU && (registrationData.billType == 'Email' || (registrationData.fullAddress?.includes('ACT') && registrationData.electricityQuote.quoteId !== null))) {
+      registrationData.toSkipPref = false
+    }
+
+    if(registrationData.toSkipPref) {
+      navigate('/review-terms')
+    }
+  }, [])
 
   const showSingle = registrationData?.electricityQuote?.retailerName === registrationData?.gasQuote?.retailerName
   return (
@@ -105,8 +137,9 @@ const RetailerPreferencePage = () => {
             control={control}
             prefix="electricityQuote.quotePreferences"
             retailerName={registrationData?.electricityQuote?.retailerName ?? ''}
-            siteAddress={registrationData?.fullAddress as string ?? ''}
+            siteAddress={registrationData?.fullAddress?? ''}
             pref={registrationData?.electricityQuote?.quotePreferences as Record<string, string> ?? null}
+            isElectric={true}
           />
         ) : null}
 
@@ -115,8 +148,9 @@ const RetailerPreferencePage = () => {
             control={control}
             prefix="gasQuote.quotePreferences"
             retailerName={registrationData?.gasQuote?.retailerName ?? ''}
-            siteAddress={registrationData?.fullAddress as string ?? ''}
+            siteAddress={registrationData?.fullAddress ?? ''}
             pref={registrationData?.gasQuote?.quotePreferences as Record<string, string> ?? null}
+            isElectric={false}
           />
         ) : null}
 
@@ -125,8 +159,9 @@ const RetailerPreferencePage = () => {
             control={control}
             prefix="commonQuote.quotePreferences"
             retailerName={registrationData?.electricityQuote?.retailerName ?? registrationData?.gasQuote?.retailerName ?? ''}
-            siteAddress={registrationData?.fullAddress as string ?? registrationData?.fullAddress as string ?? ''}
+            siteAddress={registrationData?.fullAddress ?? registrationData?.fullAddress ?? ''}
             pref={registrationData?.commonQuote?.quotePreferences as Record<string, string> ?? null}
+            isElectric={true}
           />
         ) : null}
 

@@ -47,7 +47,8 @@ const ReviewPlanPage = () => {
           ...prev,
           ...(data as Partial<RegistrationData>),
           accountDetails: updatedAccountDetail,
-          registrationType: data?.electricityQuote?.accountType ?? data?.gasQuote?.accountType ?? ''
+          registrationType: data?.electricityQuote?.accountType ?? data?.gasQuote?.accountType ?? '',
+          toSkipPref: true
         }))
         setValue('businessDetails', data.businessDetails)
         setValue('accountDetails', updatedAccountDetail)
