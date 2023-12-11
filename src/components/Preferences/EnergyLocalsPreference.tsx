@@ -15,7 +15,7 @@ const EnergyLocalsPreference = ({ control, prefix, pref}: EnergyLocalsPreference
         required
       />
     {pref?.creditCheckConsent === 'No' ?
-      <TextNote>
+      <TextNote className='text-sm'>
       This plan is not available to customers who do not consent to a credit check. Update your preference or please
       call Zembl on 1300 957 721 for assistance.
     </TextNote>

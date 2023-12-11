@@ -8,6 +8,7 @@ import { getJSONDateString, getPhoneNumber } from '../../helpers/formatter'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 import { lazy } from 'react'
 
+
 const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 const RegistrationStep = lazy(() => import('../../components/RegistrationStep'))
 const SelectedPlans = lazy(() => import('../../components/SelectedPlans'))
@@ -74,7 +75,6 @@ const ReviewTermsPage = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full md:w-10/12">
         <RegistrationStep currentStep={4} />
         <hr className="hidden lg:block" />
-
         <SelectedPlans
           title="Your Acknowledgment and Acceptance"
           control={control}
