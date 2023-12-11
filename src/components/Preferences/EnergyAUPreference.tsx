@@ -6,19 +6,23 @@ import ControllerSelectInput from '../Inputs/ControllerSelectInput'
 import ControllerRadioGroupInput from '../Inputs/ControllerRadioGroupInput'
 import { useRegistration } from '../../hooks/useRegistration'
 
-const EnergyAUPreference = ({ siteAddress, control, prefix, pref }: EnergyAUPreferenceProps) => {
+const EnergyAUPreference = ({ siteAddress, control, prefix, pref, isElectric }: EnergyAUPreferenceProps) => {
   const {registrationData} = useRegistration()
+  // Post && (!registrationData.fullAddress?.includes('ACT') || Gas)
   return (
     <AccordionCard alwaysOpen open title="Energy Australia Preferences" bodyClassName="flex-col text-left gap-y-6">
-      <ControllerRadioGroupInput
-        control={control}
-        name={`${prefix}.interestedGreenPower`}
-        label={`For the electricity at ${
-          siteAddress ?? ''
-        }, are you interested in Greenpower for an additional charge?`}
-        options={YES_NO_OPTIONS}
-        required
-      />
+      {registrationData.fullAddress?.includes('ACT') && isElectric ? 
+        <ControllerRadioGroupInput
+          control={control}
+          name={`${prefix}.interestedGreenPower`}
+          label={`For the electricity at ${
+            siteAddress ?? ''
+          }, are you interested in Greenpower for an additional charge?`}
+          options={YES_NO_OPTIONS}
+          required
+        />
+      : null}
+      
 
       {/* <TextNote>You have indicated that someone in the property has life support equipment.</TextNote> */}
       { pref?.interestedGreenPower === 'Yes' && registrationData?.billType === 'Email' ?
@@ -35,17 +39,21 @@ const EnergyAUPreference = ({ siteAddress, control, prefix, pref }: EnergyAUPref
       </div>
       : null}
       
-
-      <ControllerRadioGroupInput
-        control={control}
-        name={`${prefix}.receiveEmailBills`}
-        label={'Energy Australia will use your email address to send your bills and any other notices, is that ok?'}
-        options={YES_NO_OPTIONS}
-        required
-      />
-      {pref?.receiveEmailBills === 'No' ?
-        <TextNote>A fee of $1.69 Inc. GST may apply per bill</TextNote>
-      : null}
+      {registrationData?.billType === 'Email' ? 
+        <>
+          <ControllerRadioGroupInput
+          control={control}
+          name={`${prefix}.receiveEmailBills`}
+          label={'Energy Australia will use your email address to send your bills and any other notices, is that ok?'}
+          options={YES_NO_OPTIONS}
+          required
+          />
+          {pref?.receiveEmailBills === 'No' ?
+            <TextNote className='text-sm'>A fee of $1.69 Inc. GST may apply per bill</TextNote>
+          : null}
+        </>
+      :null}   
+      
       
     </AccordionCard>
   )
@@ -56,6 +64,7 @@ interface EnergyAUPreferenceProps {
   siteAddress?: string
   prefix: string
   pref?: Record<string, string>
+  isElectric?: boolean
 }
 
 export default EnergyAUPreference

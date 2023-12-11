@@ -13,7 +13,6 @@
 
   min-height: 100vh;
   height: 100%;
-
   /* font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -22,7 +21,7 @@
 }
 
 ul {
-  word-break: break-all;
+  word-break: break-word;
   padding: 12px;
 }
 

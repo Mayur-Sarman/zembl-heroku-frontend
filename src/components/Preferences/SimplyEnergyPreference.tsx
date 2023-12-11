@@ -22,10 +22,10 @@ const SimplyEnergyPreference = () => {
           options={SIMPLY_ENERGY_OPTIONS}
           required
         /> */}
-      <Typography>
+      <Typography className='text-sm'>
         {`You have selected you want to receive your bills and other notices via ${word}`}
       </Typography>
-      <TextNote>
+      <TextNote className='text-sm'>
         {`By receiving your bills via ${word} you will be charged a fee of $1.65 including GST. You can change the method you receive your bills anytime by contacting customer service.`}
       </TextNote>
     </AccordionCard>

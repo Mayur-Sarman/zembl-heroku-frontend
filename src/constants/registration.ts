@@ -320,6 +320,13 @@ export const RETAILER_OPTIONS: SelectOption[] = [
   OTHER,
 ].map((i) => ({ value: i, label: i }))
 
+export const PREF_RETAILERS: string[] = [
+  AGL,
+  ENERGY_LOCALS,
+  MOMENTUM_ENERGY,
+  SIMPLY_ENERGY,
+]
+
 export const AGL_CONCESSION_CARD_TYPES = [
   // HEALTH_CARE_CARD,
   // PENSIONER_CARD,
@@ -386,6 +393,7 @@ export interface RegistrationData
   accountName?: string | null | undefined
   accountType?: string
   nextPageDisabled?: boolean
+  fullAddress?: string
 }
 
 interface BillInfo {

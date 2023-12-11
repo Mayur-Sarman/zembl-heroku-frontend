@@ -14,7 +14,7 @@ const MomentumEnergyPreference = ({ control, prefix, pref }: MomentumEnergyPrefe
         required
       />
   { pref?.creditCheckConsent === 'No' ?
-      <TextNote>
+      <TextNote className='text-sm'>
         This plan is not available to customers who do not consent to a credit check. Update your preference or please
         call Zembl on 1300 957 721 for assistance.
       </TextNote>
@@ -31,7 +31,7 @@ const MomentumEnergyPreference = ({ control, prefix, pref }: MomentumEnergyPrefe
 
       {
         pref?.consentMonthlyBilling === 'Yes' ? 
-        <TextNote>
+        <TextNote className='text-sm'>
         The plan you’ve chosen has some fixed billing and communication preferences. Whenever possible, Momentum will email you, but sometimes they’ll need to contact you via phone or post.
         </TextNote>
         : null

@@ -11,12 +11,12 @@ import ControllerInput from '../Inputs/ControllerInput'
 
 const NextBusinessEnergyPreference = ({ control, prefix, pref }: NextBusinessEnergyPreferenceProps) => {
   const { registrationData } = useRegistration()
-
+  // NBE && Support == No && (NBE && Residential)
   return (
     <AccordionCard alwaysOpen open title="Next Business Energy Preferences" bodyClassName="flex-col text-left gap-y-6">
       { registrationData?.lifeSupport === 'Yes' ? 
       <>
-        <TextNote>You have indicated that someone in the property has life support equipment.</TextNote>
+        <TextNote className='text-sm'>You have indicated that someone in the property has life support equipment.</TextNote>
         <div className="w-full lg:w-1/2">
           <ControllerSelectInput
             name={`${prefix}.machineType`}
@@ -53,7 +53,7 @@ const NextBusinessEnergyPreference = ({ control, prefix, pref }: NextBusinessEne
                   required
                 />
           {pref?.electricityUsedForBusinessPurposes === 'No' ?
-            <TextNote>
+            <TextNote className='text-sm'>
               This plan is not available to where the electricity at the site is not used for business purposes. Update your
               preference or please call Zembl on 1300 957 721 for assistance.
             </TextNote>
