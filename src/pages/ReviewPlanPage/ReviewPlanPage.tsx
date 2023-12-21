@@ -129,7 +129,7 @@ const ReviewPlanPage = () => {
       planLessThanCurrentPricePercent={registrationData?.electricityQuote?.percentDifference}
       planEstCostPerMonth={registrationData?.electricityQuote?.billSize}
       planEstCostPerYear={registrationData?.electricityQuote?.annualBillSize}
-      fullAddress={(registrationData?.fullAddress as string) ?? ''}
+      fullAddress={(registrationData?.fullAddress) ?? ''}
       gasOrEnergyCode={registrationData?.nmi ?? ''}
       retailerName={registrationData?.electricityQuote?.retailerName ?? ''}
     />
@@ -150,7 +150,7 @@ const ReviewPlanPage = () => {
       planLessThanCurrentPricePercent={registrationData?.gasQuote?.percentDifference}
       planEstCostPerMonth={registrationData?.gasQuote?.billCostGas}
       planEstCostPerYear={registrationData?.gasQuote?.annualBillCostGas}
-      fullAddress={(registrationData?.fullAddress as string) ?? ''}
+      fullAddress={(registrationData?.fullAddress) ?? ''}
       gasOrEnergyCode={registrationData?.mirn ?? ''}
       retailerName={registrationData?.gasQuote?.retailerName ?? ''}
     />
