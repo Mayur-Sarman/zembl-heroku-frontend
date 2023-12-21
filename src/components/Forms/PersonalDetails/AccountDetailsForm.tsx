@@ -3,15 +3,20 @@ import { Control } from 'react-hook-form'
 import DateInput from '../../Inputs/DateInput'
 import ZemblPhoneInput from '../../Inputs/PhoneInput'
 import { TITLE_LIST_OPTIONS } from '../../../constants'
-import { MouseEventHandler, useCallback, useState } from 'react'
+import { MouseEventHandler, useCallback, useState, 
+  useContext,
+  useEffect
+} from 'react'
 import EditActionButton from '../../Buttons/EditActionButton'
 import { Typography } from '@material-tailwind/react'
 import ControllerInput from '../../Inputs/ControllerInput'
 import { EIGTHTEEN_YEARS_OLD_VALIDATION, EMAIL_VALIDATION, REQUIRED_VALIDATION, STANDARD_SF_TEXT_VALIDATION } from '../../../constants/validation'
 import ControllerSelectInput from '../../Inputs/ControllerSelectInput'
+import RegistrationContext from '../../../contexts/RegistrationContext'
 
 const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled, defaultDate }: AccountDetailsFormProps) => {
   const [isEditing, setIsEditing] = useState(!readOnly)
+  const { setRegistrationData } = useContext(RegistrationContext)
 
   const onEditClickHandler: MouseEventHandler<HTMLDivElement> = useCallback(
     (event) => {
@@ -22,10 +27,11 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled, d
         if (!current && onSave) onSave()
         return prev && saveDisabled ? prev : current
       })
+      
     },
     [onSave, saveDisabled],
   )
-
+  
   const editButton = readOnly ? (
     <EditActionButton isEditing={isEditing} onEditClickHandler={onEditClickHandler} />
   ) : null
@@ -38,6 +44,10 @@ const AccountDetailsForm = ({ control, readOnly, prefix, onSave, saveDisabled, d
   )
 
   const isFieldsReadOnly = readOnly && !isEditing
+  useEffect(() => {
+    setRegistrationData((prev) => ({...prev, disabledNextPage: isEditing}))
+  }, [isEditing])
+
 
   return (
     <AccordionCard alwaysOpen open title={titleDisplay} bodyClassName="w-full flex flex-col gap-3 text-left">

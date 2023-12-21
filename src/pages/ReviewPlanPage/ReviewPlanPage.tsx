@@ -23,7 +23,6 @@ const ReviewPlanPage = () => {
   const navigate = useNavigate()
   const { registrationData, registrationToken, setRegistrationData, handleErrorResponse } =
     useContext(RegistrationContext)
-
   // On load page get data from context
   const { handleSubmit, control, setValue, watch, getValues, trigger, formState } = useForm({
     mode: 'all',
@@ -48,7 +47,8 @@ const ReviewPlanPage = () => {
           ...(data as Partial<RegistrationData>),
           accountDetails: updatedAccountDetail,
           registrationType: data?.electricityQuote?.accountType ?? data?.gasQuote?.accountType ?? '',
-          toSkipPref: true
+          toSkipPref: true,
+          disabledNextPage: false
         }))
         setValue('businessDetails', data.businessDetails)
         setValue('accountDetails', updatedAccountDetail)
@@ -96,6 +96,7 @@ const ReviewPlanPage = () => {
         mobile: getPhoneNumber(updatedAccount.mobile),
       }
       registrationData.accountDetails = updatedAccount
+      registrationData.disabledNextPage = false
       const updatedPlanData = { ...registrationData, accountDetails: updatedAccount }
       updatePlanData.mutate({ planData: updatedPlanData, token: registrationToken ?? '' })
     }
@@ -114,6 +115,7 @@ const ReviewPlanPage = () => {
       console.log(error)
     }
   }
+
   const electricityPlanSummary = registrationData?.electricityQuote?.quoteId ? (
     <PlanSummaryCard
       planId={registrationData?.electricityQuote.quoteId ?? ''}
@@ -157,7 +159,6 @@ const ReviewPlanPage = () => {
   ) : null
 
     // console.log('registrationData State =>', registrationData)
-    // console.log('account detail form State =>', accountDetails)
 
   return (
     <PageWrapper showLoading={getPlanData.isLoading || updatePlanData.isLoading}>
@@ -186,7 +187,7 @@ const ReviewPlanPage = () => {
           name="confirm"
           required
         />
-        <PageNavigationActions nextLabel="Continue" hidePrev containerClass="w-full" />
+        <PageNavigationActions nextLabel="Continue" hidePrev containerClass="w-full" nextDisabled={registrationData.disabledNextPage as boolean} />
       </form>
     </PageWrapper>
   )
