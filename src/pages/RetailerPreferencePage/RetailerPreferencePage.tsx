@@ -21,7 +21,11 @@ const RetailerPreferencePage = () => {
       const electricQuotePref = registrationData.electricityQuote?.quotePreferences
       const keys = Object.keys(electricQuotePref)
       keys.forEach(key => {
-        if((electricQuotePref[key] != null && electricQuotePref[key] === 'No' && (key !== 'greenPowerOption' && key !== 'carbonNeutral' && key !== 'receiveEmailBills'))
+        if((electricQuotePref[key] != null && electricQuotePref[key] === 'No' && 
+        (key !== 'greenPowerOption' 
+        && key !== 'carbonNeutral' 
+        && key !== 'receiveEmailBills')
+        && key !== 'consentMonthlyBilling')
         ) {
           isNextDisabled = true
         }
@@ -32,7 +36,11 @@ const RetailerPreferencePage = () => {
       const gasQuotePref = registrationData.gasQuote?.quotePreferences
       const keys = Object.keys(gasQuotePref)
       keys.forEach(key => {
-        if(gasQuotePref[key] != null && gasQuotePref[key] === 'No' && (key !== 'greenPowerOption' && key !== 'carbonNeutral' && key !== 'receiveEmailBills')
+        if(gasQuotePref[key] != null && gasQuotePref[key] === 'No' && 
+        (key !== 'greenPowerOption' 
+        && key !== 'carbonNeutral' 
+        && key !== 'receiveEmailBills' 
+        && key !== 'consentMonthlyBilling')
         ) {
           isNextDisabled = true;
         }
@@ -80,8 +88,6 @@ const RetailerPreferencePage = () => {
     navigate('/review-terms')
   }
 
-
-
   // useEffect(() => {
   //   console.log('registrationData => ', registrationData)
   //   setRegistrationData((prev) => ({
@@ -90,7 +96,7 @@ const RetailerPreferencePage = () => {
   //     billType: 'Post',
   //     electricityQuote: {
   //       ...prev.electricityQuote,
-  //       retailerName: BLUE_NRG,
+  //       retailerName: MOMENTUM_ENERGY,
   //     },
   //     // gasQuote: {
   //       // ...prev.gasQuote,
