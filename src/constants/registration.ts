@@ -22,13 +22,13 @@ export const ON_VALUE = 'On'
 export const OFF_VALUE = 'Off'
 export const UNSURE_VALUE = 'Unsure'
 
-export const MISS_VALUE = 'Miss'
-export const MS_VALUE = 'Ms'
-export const MR_VALUE = 'Mr'
-export const SIR_VALUE = 'Sir'
-export const MRS_VALUE = 'Mrs'
-export const DR_VALUE = 'Dr'
-export const MX_VALUE = 'Mx'
+export const MISS_VALUE = 'Miss.'
+export const MS_VALUE = 'Ms.'
+export const MR_VALUE = 'Mr.'
+export const MRS_VALUE = 'Mrs.'
+export const DR_VALUE = 'Dr.'
+export const PROF_VALUE = 'Prof.'
+export const MX_VALUE = 'Mx.'
 
 export const NSW_VALUE = { fullName: 'New South Wales', shortName: 'NSW' }
 export const QLD_VALUE = { fullName: 'Queensland', shortName: 'QLD' }
@@ -232,7 +232,7 @@ export const PERFERENCES_OPTIONS: SelectOption[] = [
   { value: NO_PREFERENCE, label: NO_PREFERENCE },
 ]
 
-export const TITLE_LIST_OPTIONS = [MISS_VALUE, MS_VALUE, MR_VALUE, SIR_VALUE, MRS_VALUE, DR_VALUE, MX_VALUE].map(
+export const TITLE_LIST_OPTIONS = [MISS_VALUE, MS_VALUE, MR_VALUE, PROF_VALUE, MRS_VALUE, DR_VALUE, MX_VALUE].map(
   (title) => ({
     label: title,
     value: title,
