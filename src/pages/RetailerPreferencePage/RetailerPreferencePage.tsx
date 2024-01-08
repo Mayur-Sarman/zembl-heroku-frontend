@@ -113,7 +113,7 @@ const RetailerPreferencePage = () => {
     if(registrationData.electricityQuote?.retailerName === BLUE_NRG && registrationData.accountType !== RESIDENTIAL_VALUE) {
       registrationData.toSkipPref = false
     }
-    if(registrationData.electricityQuote?.retailerName === NEXT_BUSINESS_ENERGY && (registrationData.lifeSupport != YES_VALUE || registrationData.accountType !== RESIDENTIAL_VALUE)) {
+    if(registrationData.electricityQuote?.retailerName === NEXT_BUSINESS_ENERGY && (registrationData.lifeSupport == YES_VALUE || registrationData.accountType !== RESIDENTIAL_VALUE)) {
       registrationData.toSkipPref = false
     }
     if(registrationData.gasQuote?.retailerName === BLUE_NRG && registrationData.accountType !== RESIDENTIAL_VALUE) {
