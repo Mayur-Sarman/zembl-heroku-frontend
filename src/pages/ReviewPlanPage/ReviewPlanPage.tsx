@@ -48,7 +48,8 @@ const ReviewPlanPage = () => {
           accountDetails: updatedAccountDetail,
           registrationType: data?.electricityQuote?.accountType ?? data?.gasQuote?.accountType ?? '',
           toSkipPref: true,
-          disabledNextPage: false
+          disabledNextPage: false,
+          concessionCardNumber: data?.concessionCardNumber
         }))
         setValue('businessDetails', data.businessDetails)
         setValue('accountDetails', updatedAccountDetail)

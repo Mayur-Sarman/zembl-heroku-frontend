@@ -48,7 +48,7 @@ const EnergyAUPreference = ({ siteAddress, control, prefix, pref, isElectric }: 
           options={YES_NO_OPTIONS}
           required
           />
-          {pref?.receiveEmailBills === 'No' ?
+          {pref?.receiveEmailBills === 'No' && !registrationData.fullAddress?.includes('NSW') ?
             <TextNote className='text-sm'>A fee of $1.69 Inc. GST may apply per bill</TextNote>
           : null}
         </>
