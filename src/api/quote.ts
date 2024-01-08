@@ -142,6 +142,7 @@ export interface ProcessQuoteOutput {
   electricityQuote?: Quote | null
   gasQuote?: Quote | null
   commonQuote?: Quote
+  concessionCardNumber?: string
 }
 
 export interface BusinessDetail {
