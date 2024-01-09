@@ -39,22 +39,18 @@ const EnergyAUPreference = ({ siteAddress, control, prefix, pref, isElectric }: 
       </div>
       : null}
       
-      {registrationData?.billType === 'Email' ? 
-        <>
-          <ControllerRadioGroupInput
-          control={control}
-          name={`${prefix}.receiveEmailBills`}
-          label={'Energy Australia will use your email address to send your bills and any other notices, is that ok?'}
-          options={YES_NO_OPTIONS}
-          required
-          />
-          {pref?.receiveEmailBills === 'No' && !registrationData.fullAddress?.includes('NSW') ?
-            <TextNote className='text-sm'>A fee of $1.69 Inc. GST may apply per bill</TextNote>
-          : null}
-        </>
-      :null}   
-      
-      
+      <>
+        <ControllerRadioGroupInput
+        control={control}
+        name={`${prefix}.receiveEmailBills`}
+        label={'Energy Australia will use your email address to send your bills and any other notices, is that ok?'}
+        options={YES_NO_OPTIONS}
+        required
+        />
+        {pref?.receiveEmailBills === 'No' && !registrationData.fullAddress?.includes('NSW') ?
+          <TextNote className='text-sm'>A fee of $1.69 Inc. GST may apply per bill</TextNote>
+        : null}
+      </> 
     </AccordionCard>
   )
 }
