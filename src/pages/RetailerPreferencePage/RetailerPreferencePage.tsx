@@ -122,7 +122,7 @@ const RetailerPreferencePage = () => {
     if(registrationData.gasQuote?.retailerName === NEXT_BUSINESS_ENERGY && (registrationData.lifeSupport != YES_VALUE || registrationData.accountType !== RESIDENTIAL_VALUE)) {
       registrationData.toSkipPref = false
     }
-    if(registrationData.electricityQuote?.retailerName === ENERGY_AU && (registrationData.billType == 'Email' || (registrationData.fullAddress?.includes('ACT') && registrationData.electricityQuote.quoteId !== null))) {
+    if(registrationData.electricityQuote?.retailerName === ENERGY_AU) {
       registrationData.toSkipPref = false
     }
 
