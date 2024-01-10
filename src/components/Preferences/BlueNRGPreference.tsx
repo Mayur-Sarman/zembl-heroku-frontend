@@ -36,7 +36,7 @@ const BlueNRGPreference = ({ control, prefix, pref }: BlueNRGPreferenceProps) =>
         control={control}
         name={`${prefix}.doYouUnderstandAndAcceptTheTerms`}
         required
-        label={'Do you understand and accept these terms?”'}
+        label={'Do you understand and accept these terms?'}
         options={YES_NO_OPTIONS}
       />
       {pref?.doYouUnderstandAndAcceptTheTerms === 'No' ?
@@ -52,7 +52,7 @@ const BlueNRGPreference = ({ control, prefix, pref }: BlueNRGPreferenceProps) =>
         name={`${prefix}.smallBusinessCustomerConsent`}
         required
         label={
-          'The electricity at the supply address must be used predominantly for business purposes and must be a business premises. Blue NRG does not provide electricity for residential purposes. Do you agree that you are a small business customer for the purposes of this agreement?” '
+          'The electricity at the supply address must be used predominantly for business purposes and must be a business premises. Blue NRG does not provide electricity for residential purposes. Do you agree that you are a small business customer for the purposes of this agreement?'
         }
         options={YES_NO_OPTIONS}
       />
