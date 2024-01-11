@@ -25,8 +25,8 @@ const RetailerPreferencePage = () => {
         (key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
         && key !== 'receiveEmailBills')
-        && (key === 'consentMonthlyBilling' && registrationData?.electricityQuote?.retailerName === BLUE_NRG))
-        ) {
+        && ((key === 'consentMonthlyBilling' || key === 'doYouUnderstandAndAcceptTheTerms' || key === 'smallBusinessCustomerConsent') && registrationData?.electricityQuote?.retailerName === BLUE_NRG)
+        )) {
           isNextDisabled = true
         }
       })
@@ -40,7 +40,7 @@ const RetailerPreferencePage = () => {
         (key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
         && key !== 'receiveEmailBills' 
-        && (key === 'consentMonthlyBilling' && registrationData?.gasQuote?.retailerName === BLUE_NRG))
+        && ((key === 'consentMonthlyBilling' || key === 'doYouUnderstandAndAcceptTheTerms' || key === 'smallBusinessCustomerConsent') && registrationData?.gasQuote?.retailerName === BLUE_NRG))
         ) {
           isNextDisabled = true;
         }
