@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useRegistration } from '../../hooks/useRegistration'
-import {BLUE_NRG, ENERGY_AU, NEXT_BUSINESS_ENERGY, RESIDENTIAL_VALUE, RegistrationData, YES_VALUE } from '../../constants'
+import {BLUE_NRG, ENERGY_AU, NEXT_BUSINESS_ENERGY, RESIDENTIAL_VALUE, RegistrationData, YES_VALUE, AGL } from '../../constants'
 import { lazy, useEffect } from 'react'
 import { PREF_RETAILERS } from '../../constants'
 
@@ -22,10 +22,12 @@ const RetailerPreferencePage = () => {
       const keys = Object.keys(electricQuotePref)
       keys.forEach(key => {
         if((electricQuotePref[key] != null && electricQuotePref[key] === 'No' && 
-        (key !== 'greenPowerOption' 
+        ((key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBills')
-        && ((key === 'consentMonthlyBilling' || key === 'doYouUnderstandAndAcceptTheTerms' || key === 'smallBusinessCustomerConsent') && registrationData?.electricityQuote?.retailerName === BLUE_NRG)
+        && key !== 'receiveEmailBills'
+        && key !== 'interestedGreenPower' 
+        && (key !== 'consentMonthlyBilling' || (key === 'consentMonthlyBilling' && registrationData?.electricityQuote?.retailerName === BLUE_NRG))
+        ))
         )) {
           isNextDisabled = true
         }
@@ -36,12 +38,13 @@ const RetailerPreferencePage = () => {
       const gasQuotePref = registrationData.gasQuote?.quotePreferences
       const keys = Object.keys(gasQuotePref)
       keys.forEach(key => {
-        if(gasQuotePref[key] != null && gasQuotePref[key] === 'No' && 
+        if((gasQuotePref[key] != null && gasQuotePref[key] === 'No' && 
         (key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBills' 
-        && ((key === 'consentMonthlyBilling' || key === 'doYouUnderstandAndAcceptTheTerms' || key === 'smallBusinessCustomerConsent') && registrationData?.gasQuote?.retailerName === BLUE_NRG))
-        ) {
+        && key !== 'receiveEmailBills'
+        && key !== 'interestedGreenPower' 
+        && (key !== 'consentMonthlyBilling' || (key === 'consentMonthlyBilling' && registrationData?.gasQuote?.retailerName === BLUE_NRG))) 
+        )) {
           isNextDisabled = true;
         }
       })
