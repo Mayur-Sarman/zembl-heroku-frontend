@@ -22,11 +22,13 @@ const RetailerPreferencePage = () => {
       const keys = Object.keys(electricQuotePref)
       keys.forEach(key => {
         if((electricQuotePref[key] != null && electricQuotePref[key] === 'No' && 
-        (key !== 'greenPowerOption' 
+        ((key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBills')
-        && (key === 'consentMonthlyBilling' && registrationData?.electricityQuote?.retailerName === BLUE_NRG))
-        ) {
+        && key !== 'receiveEmailBills'
+        && key !== 'interestedGreenPower' 
+        && (key !== 'consentMonthlyBilling' || (key === 'consentMonthlyBilling' && registrationData?.electricityQuote?.retailerName === BLUE_NRG))
+        ))
+        )) {
           isNextDisabled = true
         }
       })
@@ -36,12 +38,13 @@ const RetailerPreferencePage = () => {
       const gasQuotePref = registrationData.gasQuote?.quotePreferences
       const keys = Object.keys(gasQuotePref)
       keys.forEach(key => {
-        if(gasQuotePref[key] != null && gasQuotePref[key] === 'No' && 
+        if((gasQuotePref[key] != null && gasQuotePref[key] === 'No' && 
         (key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBills' 
-        && (key === 'consentMonthlyBilling' && registrationData?.gasQuote?.retailerName === BLUE_NRG))
-        ) {
+        && key !== 'receiveEmailBills'
+        && key !== 'interestedGreenPower' 
+        && (key !== 'consentMonthlyBilling' || (key === 'consentMonthlyBilling' && registrationData?.gasQuote?.retailerName === BLUE_NRG))) 
+        )) {
           isNextDisabled = true;
         }
       })
