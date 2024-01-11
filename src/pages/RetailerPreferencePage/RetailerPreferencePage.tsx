@@ -41,8 +41,9 @@ const RetailerPreferencePage = () => {
         if((gasQuotePref[key] != null && gasQuotePref[key] === 'No' && 
         (key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBills') 
-        // && ((key === 'consentMonthlyBilling' || key === 'doYouUnderstandAndAcceptTheTerms' || key === 'smallBusinessCustomerConsent') && registrationData?.gasQuote?.retailerName === BLUE_NRG))
+        && key !== 'receiveEmailBills'
+        && key !== 'interestedGreenPower' 
+        && (key !== 'consentMonthlyBilling' || (key === 'consentMonthlyBilling' && registrationData?.gasQuote?.retailerName === BLUE_NRG))) 
         )) {
           isNextDisabled = true;
         }
