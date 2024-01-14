@@ -1,6 +1,7 @@
 export const REQUIRED_FIELD_ERROR_TEXT = 'Enter a value'
 export const TEXT_ONLY_ERROR_TEXT = 'Must be text only'
 export const NUMBER_ONLY_ERROR_TEXT = 'Must be number only'
+export const ABN_NUMBER_ERROR = 'Length must be 11 characters long.'
 
 export const MIN_LENGTH_ERROR_TEXT = (length: number) => `Must be at least ${length} characters long.`
 export const MAX_LENGTH_ERROR_TEXT = (length: number) => `Must be less than ${length} characters long.`
@@ -14,7 +15,7 @@ export const MAX_STD_PHONE_FIELD_LENGTH = 11
 export const MAX_STD_NUMBER_FIELD_LENGTH = 18
 export const STD_EMAIL_PATTERN =
   /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/
-
+export const STD_ABN_PATTERN = /^[\s.]*([^\s.][\s.]*){11,11}$/
 export const STD_NUMBER_PATTERN = /\+?\d+/
 
 export const STANDARD_SF_TEXT_VALIDATION = {
@@ -73,17 +74,17 @@ export const EIGTHTEEN_YEARS_OLD_VALIDATION = {
 }
 
 export const ABN_NMI_MIRN_VALIDATION = {
-  maxLength: {
-    value: 11,
-    message: EXACT_LENGTH_ERROR_TEXT(11),
-  },
-  minLength: {
-    value: 0,
-    message: EXACT_LENGTH_ERROR_TEXT(11),
-  },
+  // maxLength: {
+  //   value: 11,
+  //   message: EXACT_LENGTH_ERROR_TEXT(11),
+  // },
+  // minLength: {
+  //   value: 0,
+  //   message: EXACT_LENGTH_ERROR_TEXT(11),
+  // },
   pattern: {
-    value: STD_NUMBER_PATTERN,
-    message: NUMBER_ONLY_ERROR_TEXT,
+    value: STD_ABN_PATTERN,
+    message: ABN_NUMBER_ERROR,
   },
 }
 
