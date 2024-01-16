@@ -11,6 +11,14 @@ import appRoutes from './routes/appRoutes'
 import { ErrorBoundary } from 'react-error-boundary'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
+// import TagManager from 'react-gtm-module'
+
+// const tagManagerArgs = {
+//   gtmId: 'GTM-5NWKWTD',
+// }
+
+// TagManager.initialize(tagManagerArgs)
+
 const ErrorPage = lazy(() => import('./pages/ErrorPage/ErrorPage'))
 
 const router = createBrowserRouter(appRoutes)
