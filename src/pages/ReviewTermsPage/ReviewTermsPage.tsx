@@ -8,7 +8,6 @@ import { getJSONDateString, getPhoneNumber } from '../../helpers/formatter'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
 import { lazy } from 'react'
 
-
 const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 const RegistrationStep = lazy(() => import('../../components/RegistrationStep'))
 const SelectedPlans = lazy(() => import('../../components/SelectedPlans'))
@@ -29,7 +28,7 @@ const ReviewTermsPage = () => {
         navigate('/rezembl-no-thank-you')
       } else {
         navigate('/thank-you')
-      } 
+      }
     },
     onError: (error) => {
       if (ZEMBL_DEBUG_MODE) console.log('REVIEW_TERMS_PAGE', error)
