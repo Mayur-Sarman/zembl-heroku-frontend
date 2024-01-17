@@ -6,18 +6,20 @@ import { ThemeProvider } from '@material-tailwind/react'
 import { ModalContextProvider } from './contexts'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
+import { GOOGLE_TAG_MANAGER_ID } from './constants'
+
 import appRoutes from './routes/appRoutes'
 
 import { ErrorBoundary } from 'react-error-boundary'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-// import TagManager from 'react-gtm-module'
+import TagManager from 'react-gtm-module'
 
-// const tagManagerArgs = {
-//   gtmId: 'GTM-5NWKWTD',
-// }
+const tagManagerArgs = {
+  gtmId: GOOGLE_TAG_MANAGER_ID,
+}
 
-// TagManager.initialize(tagManagerArgs)
+TagManager.initialize(tagManagerArgs)
 
 const ErrorPage = lazy(() => import('./pages/ErrorPage/ErrorPage'))
 
