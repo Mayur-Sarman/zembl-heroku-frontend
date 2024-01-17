@@ -35,7 +35,7 @@ const PlanCard = ({
       <CardBody className={`flex flex-col ${planDescription ? 'gap-y-6' : ''}`}>
         <div className={`flex flex-wrap flex-shrink-0 lg:flex-nowrap gap-4 lg:gap-6`}>
           <div className="w-[144px] relative">
-            {logoURL ? <img src={logoURL} alt="Brand Logo" className={`w-[144px] h-auto absolute inset-x-0 m-auto`} /> : null}
+            {logoURL ? <img src={logoURL} alt="Brand Logo" className={`w-[144px] h-auto inset-x-0 m-auto`} /> : null}
             {logoImageHTML ? (
               <div
                 className="flex items-center justify-center  grow-0 h-full"
