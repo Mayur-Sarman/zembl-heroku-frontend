@@ -4,6 +4,8 @@ export const SESSION_TOKEN_KEY = `${import.meta.env.VITE_SESSION_STORAGE_PREFIX}
   import.meta.env.VITE_ACCESS_TOKEN_KEY
 }`
 
+export const GOOGLE_TAG_MANAGER_ID = `${import.meta.env.GOOGLE_TAG_MANAGER_ID ?? 'GTM-5NWKWTD'}`
+
 export const NO_RESPONSE_ERROR = 'No Response'
 export const CONFIG_ERROR = 'Config Error'
 
