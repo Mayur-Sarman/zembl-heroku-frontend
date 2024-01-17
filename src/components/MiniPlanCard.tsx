@@ -19,7 +19,7 @@ const MiniPlanCard = ({ energyType, brandIcon, planName }: MiniPlanCardProps) =>
   return (
     <div className="flex gap-4 md:gap-6 items-start md:items-center">
       {energyTypeIcon}
-      <div className="min-w-fit w-32 md:w-auto md:flex md:items-center md:gap-3">
+      <div className="min-w-fit w-32 md:w-auto flex md:items-center md:gap-3">
       <div className="w-[137px] relative">
         <img src={brandIcon} alt="Brand Icon" className="w-[137px] h-auto absolute inset-x-0 inset-y-0 m-auto" />
       </div>
