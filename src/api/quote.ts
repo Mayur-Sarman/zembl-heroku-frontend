@@ -11,7 +11,7 @@ import {
   UPDATE_QUOTE_CALLBACK_ENDPOINT,
   GET_QUOTE_TOKEN_AND_SEND_OTP_ENDPOINT,
 } from '../constants'
-import { performGetRequest, performPatchRequest, performPostRequest } from '../helpers'
+import { performGetRequest, performPatchRequest, performPostRequest, performNewPatchRequest } from '../helpers'
 import { Preference, SimpleResponse } from './common'
 
 export const postCreateQuoteLine = async (payload: CreateQuoteLinePayload, token: string) => {
@@ -84,7 +84,7 @@ export const getFetchQuotePlanData = async (quoteToken: string, token: string) =
 }
 
 export const patchUpdateQuotePlan = async (planData: ProcessQuoteOutput, token: string) => {
-  const response = await performPatchRequest(UPDATE_QUOTE_ENDPOINT, planData, token)
+  const response = await performNewPatchRequest(UPDATE_QUOTE_ENDPOINT, planData, token)
   return response.data as SimpleResponse
 }
 
