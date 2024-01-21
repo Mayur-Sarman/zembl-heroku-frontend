@@ -1,6 +1,6 @@
 import axios, { Axios, AxiosHeaders } from 'axios'
 
-import { REQUEST_BASE_URL, SESSION_TOKEN_KEY } from '../constants'
+import { REQUEST_BASE_URL, SESSION_TOKEN_KEY, REQUEST_BASE_URL_AUS } from '../constants'
 
 export const setSessionToken = (token: string | undefined | null) =>
   token ? sessionStorage.setItem(SESSION_TOKEN_KEY, token) : null
@@ -10,6 +10,22 @@ export const deleteSessionToken = () => sessionStorage.removeItem(SESSION_TOKEN_
 export const getAxiosInstance = (token?: string | null) => {
   const instance: Axios = axios.create({
     baseURL: REQUEST_BASE_URL,
+    timeout: 5 * 60 * 1000,
+    maxBodyLength: Infinity,
+    maxContentLength: Infinity,
+    timeoutErrorMessage: 'Request Timeout',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token ? `Bearer ${token}` : null,
+    },
+  })
+
+  return instance
+}
+
+export const getNewAxiosInstance = (token?: string | null) => {
+  const instance: Axios = axios.create({
+    baseURL: REQUEST_BASE_URL_AUS,
     timeout: 5 * 60 * 1000,
     maxBodyLength: Infinity,
     maxContentLength: Infinity,
@@ -66,6 +82,18 @@ export const performPatchRequest = async (
   options?: Record<string, unknown>,
 ) => {
   const axios = getAxiosInstance(token)
+
+  return await axios.patch(path, data, { headers, ...options })
+}
+
+export const performNewPatchRequest = async (
+  path: string,
+  data?: object | null,
+  token?: string | null,
+  headers?: AxiosHeaders,
+  options?: Record<string, unknown>,
+) => {
+  const axios = getNewAxiosInstance(token)
 
   return await axios.patch(path, data, { headers, ...options })
 }
