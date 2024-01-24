@@ -49,7 +49,7 @@ const ZemblPhoneInput = ({
                   readOnly: readOnly,
                 }}
                 masks={{ au: '... ... ...' }}
-                dropdownClass={`text-zembl-p max-w-[200px] ${dropdownClass}`}
+                dropdownClass={`hidden text-zembl-p max-w-[200px] ${dropdownClass}`}
                 containerClass="flex gap-8 w-full min-w-[200px]"
                 buttonClass={`!rounded-md active:!border-gray-900 focus:!border-gray-900 pointer-events-none${
                   !!disabled || !!readOnly ? 'pointer-events-none' : ''
@@ -62,6 +62,7 @@ const ZemblPhoneInput = ({
                 onlyCountries={['au']}
                 preferredCountries={['au']}
                 preserveOrder={['preferredCountries']}
+                disableDropdown={true}
               />
               {fieldState.error ? (
                 <div className="mt-1 px-1 text-left">

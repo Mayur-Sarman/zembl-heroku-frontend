@@ -44,7 +44,7 @@ const Footer = forwardRef(function Footer(_, ref: ForwardedRef<HTMLElement>) {
         providers in the market are compared. The availability of plans and providers may change from time to time. Not
         all plans available from the providers are compared. Due to commercial arrangements, area and service
         availability, not all plans compared will be available to all customers. Zembl earn a commission for every plan
-        sold through the website. Click <a className="text-red-600" href="https://www.zembl.com.au/suppliers">here</a> to view Zembl’s range of retail providers.
+        sold through the website. Click <a className="text-white-800" href="https://www.zembl.com.au/suppliers">here</a> to view Zembl’s range of retail providers.
       </Typography>
 
       <hr className="w-full my-2 border-blue-gray-50" />

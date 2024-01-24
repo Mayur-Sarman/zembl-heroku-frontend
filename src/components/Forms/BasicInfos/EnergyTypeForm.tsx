@@ -14,7 +14,7 @@ const EnergyTypeForm = ({ control, isMoving, hideNonBusiness }: EnergyTypeFormPr
           name="energyType"
           options={ENERGY_TYPE_OPTIONS}
           rules={REQUIRED_VALIDATION}
-          label={'What type of business energy are you looking for?'}
+          label={'What type of energy are you looking for?'}
         />
 
         {!hideNonBusiness ? (
