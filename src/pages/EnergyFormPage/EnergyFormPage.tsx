@@ -176,6 +176,7 @@ const HomePage = () => {
           options={BUSINESS_REGISTRATION_TYPE_OPTIONS}
           optionsContainerClassName="md:flex-nowrap"
           buttonContainerClassName="w-full md:w-1/2 bg-zembl-s1"
+          required
         />
         <Button type="submit" className="capitalize !zembl-btn w-1/3 place-self-center flex-shrink-0">
           Next

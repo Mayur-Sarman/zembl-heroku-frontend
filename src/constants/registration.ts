@@ -59,7 +59,7 @@ export const QUARTERLY_SPEND_LESS = '< 7,500'
 export const EMAIL_VALUE = 'Email'
 export const POST_VALUE = 'Post'
 
-export const ZEMBL_ASSIST_VALUE = 'Talk to an expert'
+export const ZEMBL_ASSIST_VALUE = 'Talk to expert'
 export const SELF_SERVE_VALUE = 'Compare online'
 
 export const LOW_VALUE = 'Low'
