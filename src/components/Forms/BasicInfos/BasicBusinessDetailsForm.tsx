@@ -1,7 +1,6 @@
 import { Control } from 'react-hook-form'
 import AccordionCard from '../../AccordionCard'
 import GoogleAddressInput from '../../Inputs/GoogleAddressInput'
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { REQUIRED_VALIDATION, ABN_NMI_MIRN_VALIDATION } from '../../../constants/validation'
 import ControllerInput from '../../Inputs/ControllerInput'
 
