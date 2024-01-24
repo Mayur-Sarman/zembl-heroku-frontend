@@ -28,7 +28,6 @@ const BasicBusinessDetailsForm = ({ control, hideNonBusiness }: BasicBusinessDet
             required
             inputLabel="ABN"
             textLabel="Enter your ABN"
-            icon={<MagnifyingGlassIcon fontSize={24} />}
           />
         ) : null}
       </div>
