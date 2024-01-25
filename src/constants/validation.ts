@@ -120,14 +120,14 @@ export const DATE_MUST_FUTURE = {
 export const DATE_MUST_MORE_THAN_TWO_DAY = {
   min: {
     value: new Date().setDate(new Date().getDate() + 2),
-    message: 'Date must after today for two days.',
+    message: 'New connections need a minimum of 2 days for electricity and 5 days for gas for connections to be set up (excluding weekend and public holidays)',
   }
 }
 
 export const DATE_MUST_IN_90_DAY = {
   max: {
     value: new Date().setDate(new Date().getDate() + 90),
-    message: 'Date must be in 90 days later.',
+    message: 'You can not select a date that is greater than 90 days in advance (excluding weekend and public holidays)',
   }
 }
 
