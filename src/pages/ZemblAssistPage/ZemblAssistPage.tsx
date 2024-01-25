@@ -17,7 +17,10 @@ const ZemblAssistPage = () => {
             Thank you for contacting Zembl
           </Typography>
           <Typography color="black" className="text-center text-base md:text-2xl font-normal">
-            We have captured everything you have provided to date and need to obtain more information from you to get you more accurate quote.
+            We have captured everything you have provided to date
+          </Typography>
+          <Typography color="black" className="text-center text-base md:text-2xl font-normal">
+            and need to obtain more information from you to get you more accurate quote.
           </Typography>
           <Typography color="black" className="text-center text-base md:text-2xl font-normal">
             An Energy Expert will be in contact shortly to assist.
