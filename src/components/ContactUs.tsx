@@ -8,9 +8,9 @@ const ContactUs = () => {
         <div className="text-xs sm:text-sm md:text-base">
           <span className="inline-block font-bold mr-1">1300 957 721 |</span>
           <span className="inline-block">
-            <button className='underline'>
+            <a className='underline' href='mailto: hello@zembl.com.au' >
               hello@zembl.com.au
-            </button>
+            </a>
           </span>
         </div>
         <div className="text-xs sm:text-sm md:text-base">

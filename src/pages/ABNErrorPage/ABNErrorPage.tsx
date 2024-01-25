@@ -9,10 +9,13 @@ const ABNErrorPage = () => {
         <img src={zemblLogo} alt="Zembl" className="w-24 md:w-auto"></img>
         <div>
           <Typography color="black" className="text-center text-base md:text-2xl font-normal">
-            We need to obtain more information from you.
+            Thank you for contacting Zembl
           </Typography>
           <Typography color="black" className="text-center text-base md:text-2xl font-normal">
-            An Energy Expert will be in contact shortly.
+            We have captured everything you have provided to date and need to obtain more information from you to get you more accurate quote.
+          </Typography>
+          <Typography color="black" className="text-center text-base md:text-2xl font-normal">
+            An Energy Expert will be in contact shortly to assist.
           </Typography>
         </div>
       </div>
