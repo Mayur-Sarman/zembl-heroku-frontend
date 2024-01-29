@@ -10,7 +10,7 @@ const EnergyLocalNewConnection = ({ control, electricalRenovationWork, connectio
   return (
     <AccordionCard open alwaysOpen title="New Connection" bodyClassName="w-full flex flex-col gap-6 text-left">
       <ControllerRadioGroupInput
-        label="Has there or will there be any work completed at the property that may lead to contact with the wires since the power was disconnected?"
+        label="Has there been any building, electrical or renovation works recently completed, in progress or due to start at the property?"
         control={control}
         name="newConnection.electricalRenovationWork"
         options={YES_NO_OPTIONS}
@@ -23,12 +23,14 @@ const EnergyLocalNewConnection = ({ control, electricalRenovationWork, connectio
           label="Please describe the works being completed at the premises."
           required={electricalRenovationWork === YES_VALUE}
         />
-      ) : null}
-
+      ) : 
       <TextNote className="text-green-500">
         A standard move in reconnection fee of {formatCurrency(connectionPrice)} inc GST will apply and the fee for this
         will be passed through to you directly from the distributor on your first bill.
       </TextNote>
+      }
+
+      
     </AccordionCard>
   )
 }

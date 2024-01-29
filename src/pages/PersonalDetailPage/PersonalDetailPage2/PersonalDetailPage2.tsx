@@ -13,9 +13,11 @@ import {
   MOMENTUM,
   NEXT_BUSINESS_ENERGY,
   NO_VALUE,
+  YES_VALUE,
   SIMPLY_ENERGY,
   GAS_VALUE,
-  ELECTRICITY_VALUE
+  ELECTRICITY_VALUE,
+  // REGISTRATION_TYPE_RESIDENTIAL
 } from '../../../constants'
 import { useRetailerAdditionalDetailsMutation } from '../../../hooks/useRetailerAdditionalDetailsMutation'
 import { buildRetailerAdditionalDetailPayload } from '../../../api/profile'
@@ -57,6 +59,7 @@ const PersonalDetailPage2 = () => {
     concessionCardHolder,
     concessionConsent,
     onlyResidence,
+    consessionCardType,
     hasSecondaryContact,
     hasPower,
     powerAware,
@@ -70,6 +73,7 @@ const PersonalDetailPage2 = () => {
     'concession.concessionCardHolder',
     'concession.concessionConsent',
     'concession.onlyStateRebateResidence',
+    'concession.concessionCardType',
     'secondaryContact.hasSecondaryContact',
     'newConnection.powerConnected',
     'newConnection.powerAware',
@@ -163,7 +167,7 @@ const PersonalDetailPage2 = () => {
   // registrationData.gas = false
   // registrationData.newConnection = true
   // const connectionDetails = {
-  //   state: 'QLD'
+  //   state: 'NSW'
   // }
   // registrationData.connectionDetails = connectionDetails
 
@@ -187,6 +191,25 @@ const PersonalDetailPage2 = () => {
         planName={gasQuote?.retailerName ?? ''}
       />
     ) : null
+
+  const isNextPageDisabled = () => {
+    let isNextDisabled = false
+    if(concessionCardHolder === NO_VALUE) {
+      setValue('concession', {})
+    }
+
+    if(([selectedElecRetailer].includes(SIMPLY_ENERGY) || [selectedGasRetailer].includes(SIMPLY_ENERGY)) && (onlyResidence === NO_VALUE || concessionConsent === NO_VALUE || (!consessionCardType && concessionConsent === YES_VALUE))) {
+      isNextDisabled = true
+    }
+
+    if(([selectedElecRetailer].includes(ENERGY_LOCALS) || [selectedGasRetailer].includes(ENERGY_LOCALS)) && (concessionConsent === NO_VALUE)) {
+      isNextDisabled = true
+    }
+
+    return isNextDisabled
+  }
+
+  registrationData.nextPageDisabled = isNextPageDisabled()
 
   useEffect(() => {
     if (!onlyResidence || onlyResidence === NO_VALUE) {
@@ -310,7 +333,6 @@ const PersonalDetailPage2 = () => {
           registrationType={registrationData?.registrationType ?? ''}
           isNewConnection={!!registrationData?.newConnection}
           electricalRenovationWork={electricalRenovationWork}
-          hasSecondaryContact={hasSecondaryContact}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
           connectionPrice={
@@ -427,7 +449,6 @@ const PersonalDetailPage2 = () => {
           registrationType={registrationData?.registrationType ?? ''}
           isNewConnection={!!registrationData?.newConnection}
           electricalRenovationWork={electricalRenovationWork}
-          hasSecondaryContact={hasSecondaryContact}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
           connectionPrice={
@@ -453,7 +474,7 @@ const PersonalDetailPage2 = () => {
       ) : null}
       </>
     }
-      <PageNavigationActions prevLink="/personal-detail-1" />
+      <PageNavigationActions prevLink="/personal-detail-1" nextDisabled={registrationData.nextPageDisabled}/>
     </form>
   )
 }
