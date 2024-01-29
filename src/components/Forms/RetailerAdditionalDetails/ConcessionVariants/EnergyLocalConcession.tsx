@@ -14,7 +14,7 @@ const EnergyLocalConcession = ({
     <AccordionCard alwaysOpen open title="Concession" bodyClassName="w-full flex flex-col gap-6 text-left">
       <ControllerRadioGroupInput
         name="concession.concessionCardHolder"
-        label="Are you applying for a concession or rebate?"
+        label="Would you like to add concession onto the account?"
         control={control}
         options={YES_NO_OPTIONS}
       />
