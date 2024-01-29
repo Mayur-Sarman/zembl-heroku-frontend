@@ -1,7 +1,6 @@
 import EnergyLocalConcession from './ConcessionVariants/EnergyLocalConcession'
 import { RESIDENTIAL_VALUE } from '../../../constants'
 import { Control } from 'react-hook-form'
-import SecondaryAccountHolderForm from '../PersonalDetails/SecondaryAccountHolderForm'
 import EnergyLocalNewConnection from './NewConnectionVariants/EnergyLocal/EnergyLocalNewConnection'
 
 const EnergyLocalPersonalDetailsForm = ({
@@ -9,9 +8,6 @@ const EnergyLocalPersonalDetailsForm = ({
   control,
   concessionCardHolder,
   concessionConsent,
-
-  hasSecondaryContact,
-
   isNewConnection,
   electricalRenovationWork,
   connectionPrice
@@ -26,7 +22,6 @@ const EnergyLocalPersonalDetailsForm = ({
         />
       ) : null}
 
-      <SecondaryAccountHolderForm control={control} hasSecondaryContact={hasSecondaryContact} />
       {isNewConnection ? (
         <EnergyLocalNewConnection
           control={control}
@@ -43,7 +38,6 @@ interface EnergyLocalPersonalDetailsFormProps {
   concessionCardHolder?: string
   concessionConsent?: string
   registrationType: string
-  hasSecondaryContact: string
   isNewConnection: boolean
   electricalRenovationWork?: string
   connectionPrice: number | null

@@ -24,6 +24,7 @@ const SEConcessionNotSA = ({
         label="Do you currently receive a government concession or rebate that can be added to your account?"
         control={control}
         options={YES_NO_OPTIONS}
+        required
       />
       {isCardHolder ? (
         <>
@@ -34,6 +35,7 @@ const SEConcessionNotSA = ({
             name="concession.onlyStateRebateResidence"
             control={control}
             options={YES_NO_OPTIONS}
+            required
           />
 
           {onlyResidence && isOnlyResidence ? (
@@ -60,6 +62,12 @@ const SEConcessionNotSA = ({
                 control={control}
                 options={YES_NO_OPTIONS}
               />
+              {['VIC', 'NSW'].includes(state ?? '') && !isConsent && concessionConsent ? (
+                <TextNote>
+                  Without this consent we can not validate your concession eligiblity. Update your preference or please call
+                  Zembl on 1300 957 721 for assistance.
+                </TextNote>
+              ) : null}
             </>
           ) : (
             <TextNote>
@@ -67,13 +75,6 @@ const SEConcessionNotSA = ({
               on 1300 957 721 for assistance.
             </TextNote>
           )}
-
-          {['VIC', 'NSW'].includes(state ?? '') && !isConsent && concessionConsent ? (
-            <TextNote>
-              Without this consent we can not validate your concession eligiblity. Update your preference or please call
-              Zembl on 1300 957 721 for assistance.
-            </TextNote>
-          ) : null}
         </>
       ) : null}
     </AccordionCard>
