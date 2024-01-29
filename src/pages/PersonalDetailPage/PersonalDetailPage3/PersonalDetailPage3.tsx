@@ -13,6 +13,7 @@ import {
   MOMENTUM,
   NEXT_BUSINESS_ENERGY,
   NO_VALUE,
+  YES_VALUE,
   SIMPLY_ENERGY,
   GAS_VALUE,  
   ELECTRICITY_VALUE
@@ -57,6 +58,7 @@ const PersonalDetailPage3 = () => {
     concessionCardHolder,
     concessionConsent,
     onlyResidence,
+    consessionCardType,
     hasSecondaryContact,
     gasConnected,
     powerAware,
@@ -68,6 +70,7 @@ const PersonalDetailPage3 = () => {
     'concession.concessionCardHolder',
     'concession.concessionConsent',
     'concession.onlyStateRebateResidence',
+    'concession.concessionCardType',
     'secondaryContact.hasSecondaryContact',
     'gasNewConnection.gasConnected',
     'newConnection.powerAware',
@@ -137,6 +140,25 @@ const PersonalDetailPage3 = () => {
         planName={gasQuote?.retailerName ?? ''}
       />
     ) : null
+
+  const isNextPageDisabled = () => {
+    let isNextDisabled = false
+    if(concessionCardHolder === NO_VALUE) {
+      setValue('concession', {})
+    }
+
+    if(([selectedGasRetailer].includes(SIMPLY_ENERGY)) && (onlyResidence === NO_VALUE || concessionConsent === NO_VALUE || (!consessionCardType && concessionConsent === YES_VALUE))) {
+      isNextDisabled = true
+    }
+
+    if(([selectedGasRetailer].includes(ENERGY_LOCALS)) && (concessionConsent === NO_VALUE)) {
+      isNextDisabled = true
+    }
+
+    return isNextDisabled
+  }
+  
+    registrationData.nextPageDisabled = isNextPageDisabled()
 
   useEffect(() => {
     setValue('secondaryContact', registrationData?.secondaryContact ?? {})
@@ -238,7 +260,6 @@ const PersonalDetailPage3 = () => {
           registrationType={registrationData?.registrationType ?? ''}
           isNewConnection={!!registrationData?.newConnection}
           electricalRenovationWork={electricalRenovationWork}
-          hasSecondaryContact={hasSecondaryContact}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
           connectionPrice={
