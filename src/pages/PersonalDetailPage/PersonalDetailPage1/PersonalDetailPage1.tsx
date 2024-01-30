@@ -74,7 +74,7 @@ const PersonalDetailPage1 = () => {
       <MiniPlanCard
         brandIcon={electricQuote?.retailerLogo ?? ''}
         energyType={ELECTRICITY_VALUE}
-        planName={electricQuote?.retailerName ?? ''}
+        planName={electricQuote?.productName ?? ''}
       />
     ) : null
 
@@ -83,7 +83,7 @@ const PersonalDetailPage1 = () => {
       <MiniPlanCard
         brandIcon={gasQuote?.retailerLogo ?? ''}
         energyType={GAS_VALUE}
-        planName={gasQuote?.retailerName ?? ''}
+        planName={gasQuote?.productName ?? ''}
       />
     ) : null
 

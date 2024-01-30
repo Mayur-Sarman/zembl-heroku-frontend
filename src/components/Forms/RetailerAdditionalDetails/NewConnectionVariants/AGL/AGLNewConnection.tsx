@@ -16,7 +16,6 @@ import {
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
-import { formatCurrency } from '../../../../../helpers/formatter'
 
 const HAS_CONNECTION_OPTIONS = YES_NO_OPTIONS.map((opt) => ({
   ...opt,
@@ -37,7 +36,7 @@ const AGLNewConnection = ({
 }: AGLNewConnectionProps) => {
   const powerOn = hasPower === YES_VALUE
   const connectionPriceDisplay = (
-    <TextNote>Your connection fee will be {formatCurrency(connectionPrice)} including GST.</TextNote>
+    <TextNote>Your connection fee will be {connectionPrice ?? '$0'} including GST.</TextNote>
   )
   const digitalMeterNote = (
     <TextNote>
@@ -77,9 +76,14 @@ const AGLNewConnection = ({
             <br />
             switch is left in the off position, or your connection may not occur. For your connection/reading to occur
             there will need to be clear access to the meter.
+            <br />
+            <br />
+            If you have a digital meter, please be aware that your reconnection may occur remotely and that the main switch
+            will need to be off between 7am and 10pm.
+            <br />
+            <br />
+            Your connection fee will be {connectionPrice ?? '$0'} including GST.
           </TextNote>
-          {digitalMeterNote}
-          {connectionPriceDisplay}
         </>
       )
       break
@@ -144,7 +148,7 @@ interface AGLNewConnectionProps {
   control: Control
   hasPower?: string
   hasAnyWorkCompleted?: string
-  connectionPrice?: number | null
+  connectionPrice?: string | null
   state?: string
 }
 

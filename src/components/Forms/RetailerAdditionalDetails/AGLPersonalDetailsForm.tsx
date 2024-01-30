@@ -72,7 +72,7 @@ interface AGLPersonalDetailsFormProps {
   secondaryContactName: string
   hasPower?: string
   hasWorkCompleted?: string
-  connectionPrice?: number | null
+  connectionPrice?: string | null
   isTransfer?: boolean
 }
 

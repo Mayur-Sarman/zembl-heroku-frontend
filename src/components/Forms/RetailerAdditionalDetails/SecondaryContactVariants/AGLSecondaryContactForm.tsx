@@ -39,10 +39,7 @@ const AGLSecondaryContactForm = ({
       {isSecondary ? (
         <>
           <TextNote>
-            {contactName} has been added as an authorised contact person. They will be able to maintain your account,
-            including disconnecting the supply. However, they will not be able to accept any product offers, connect you
-            at a new property or establish a concession rebate. Please be aware that their name will not be displayed on
-            the bill, and they will remain on the account until removed or it is no longer active.
+          ${contactName} has been added as an authorised contact person. They will be able to maintain your account, including disconnecting the supply. However, they will not be able to accept any product offers, connect you at a new property or establish a concession rebate. Please be aware that their name will not be displayed on the bill, and they will remain on the account until removed or it is no longer active.
           </TextNote>
         </>
       ) : null}

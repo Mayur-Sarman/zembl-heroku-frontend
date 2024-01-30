@@ -66,11 +66,13 @@ const SelectPlansPage = () => {
         ...data.electricityQuote,
         ...electricityQuoteLineResponse?.comparison,
         quoteLineId: electricityQuoteLineResponse?.quoteLineId,
+        feeText: electricityQuoteLineResponse?.feeText
       }
       const gasQuoteData = {
         ...data.gasQuote,
         ...gasQuoteLineResponse?.comparison,
         quoteLineId: electricityQuoteLineResponse?.quoteLineId,
+        feeTextGas: electricityQuoteLineResponse?.feeTextGas
       }
 
       setRegistrationData((prev) => ({

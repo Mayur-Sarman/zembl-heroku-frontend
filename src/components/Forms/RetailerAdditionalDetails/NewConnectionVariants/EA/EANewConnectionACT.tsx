@@ -3,7 +3,6 @@ import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
 import { OFF_VALUE, ON_VALUE } from '../../../../../constants'
-import { formatCurrency } from '../../../../../helpers/formatter'
 
 const OPTIONS = [
   { value: ON_VALUE, label: ON_VALUE },
@@ -11,9 +10,9 @@ const OPTIONS = [
 ]
 
 const EANewConnectionACT = ({ control, powerAware, powerOnText, electricPrice, gasPrice }: EANewConnectionACTProps) => {
-  const priceText = `${electricPrice ? `electricity is ${formatCurrency(electricPrice)}` : ''} ${
+  const priceText = `${electricPrice ? `electricity is ${electricPrice ?? '$0'}` : ''} ${
     electricPrice && gasPrice ? 'and' : ''
-  } ${gasPrice ? `gas is ${formatCurrency(gasPrice)}` : ''}`
+  } ${gasPrice ? `gas is ${gasPrice ?? '$0'}` : ''}`
 
   const powerOffText = `The connection fee for your ${priceText}, which will appear on your first bill. As the power is off at the new property, a visual inspection is required on the day of connection. An adult over the age of 18 will have to be present on site between 7am-6pm. A technician will require clear access to the main switch. Please ensure there are no access restrictions such as locked gates and unrestrained animals as you may be charged additional fees if the provider incurs additional costs.`
 
@@ -34,8 +33,8 @@ interface EANewConnectionACTProps {
   control: Control
   powerAware: string
   powerOnText: string
-  electricPrice: number
-  gasPrice: number
+  electricPrice?: string | null
+  gasPrice?: string | null
 }
 
 export default EANewConnectionACT
