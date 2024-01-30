@@ -1,15 +1,14 @@
 import { Control } from 'react-hook-form'
 import { NSW_VALUE, QLD_VALUE, SA_VALUE, VIC_VALUE } from '../../../../../constants'
-import { formatCurrency } from '../../../../../helpers/formatter'
 import SENewConnectionNSW from './SENewConnectionNSW'
 import SENewConnectionVIC from './SENewConnectionVIC'
 import SENewConnectionQLD from './SENewConnectionQLD'
 import SENewConnectionSA from './SENewConnectionSA'
 
 const SENewConnection = ({ control, powerAware, state, electricPrice, gasPrice }: SENewConnectionProps) => {
-  const priceText = `${electricPrice ? `${formatCurrency(electricPrice)} for electricity` : ''} ${
+  const priceText = `${electricPrice ? `${electricPrice ?? '$0'} for electricity` : ''} ${
     electricPrice && gasPrice ? 'and' : ''
-  } ${gasPrice ? `${formatCurrency(gasPrice)} for gas` : ''}`
+  } ${gasPrice ? `${gasPrice ?? '$0'} for gas` : ''}`
 
   let display = null
   switch (state) {
@@ -33,8 +32,8 @@ interface SENewConnectionProps {
   control: Control
   powerAware: string
   state?: string
-  electricPrice?: number | null
-  gasPrice?: number | null
+  electricPrice?: string | null
+  gasPrice?: string | null
 }
 
 export default SENewConnection

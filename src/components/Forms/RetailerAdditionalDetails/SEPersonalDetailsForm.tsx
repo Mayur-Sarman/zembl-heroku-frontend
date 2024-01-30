@@ -72,8 +72,8 @@ interface SEPersonalDetailsFormProps {
   hasSecondaryContact: string
   secondaryContactName: string
   powerAware: string
-  electricityConnectionPrice?: number | null
-  gasConnectionPrice?: number | null
+  electricityConnectionPrice?: string | null
+  gasConnectionPrice?: string | null
   concessionCardHolder: string
   concessionConsent: string
   registrationType: string

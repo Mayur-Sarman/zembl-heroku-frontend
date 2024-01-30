@@ -23,7 +23,7 @@ interface NBEPersonalDetailsForm {
   control: Control
   hasSecondaryContact: string
   powerAware: string
-  connectionPrice?: number | null
+  connectionPrice?: string | null
   isNewConnection: boolean
 }
 

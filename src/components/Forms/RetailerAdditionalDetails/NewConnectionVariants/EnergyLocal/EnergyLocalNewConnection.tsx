@@ -3,7 +3,6 @@ import { YES_NO_OPTIONS, YES_VALUE } from '../../../../../constants'
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
-import { formatCurrency } from '../../../../../helpers/formatter'
 import ControllerTextArea from '../../../../Inputs/ControllerTextArea'
 
 const EnergyLocalNewConnection = ({ control, electricalRenovationWork, connectionPrice }: EnergyLocalNewConnectionProps) => {
@@ -25,7 +24,7 @@ const EnergyLocalNewConnection = ({ control, electricalRenovationWork, connectio
         />
       ) : 
       <TextNote className="text-green-500">
-        A standard move in reconnection fee of {formatCurrency(connectionPrice)} inc GST will apply and the fee for this
+        A standard move in reconnection fee of {connectionPrice ?? '$0'} inc GST will apply and the fee for this
         will be passed through to you directly from the distributor on your first bill.
       </TextNote>
       }
@@ -38,7 +37,7 @@ const EnergyLocalNewConnection = ({ control, electricalRenovationWork, connectio
 interface EnergyLocalNewConnectionProps {
   control: Control
   electricalRenovationWork?: string
-  connectionPrice: number | null
+  connectionPrice?: string | null
 }
 
 export default EnergyLocalNewConnection

@@ -52,8 +52,8 @@ interface MomentumPersonalDetailsFormProps {
   state: string
   hasSecondaryContact: string
   powerAware: string
-  electricityConnectionPrice?: number | null
-  gasConnectionPrice?: number | null
+  electricityConnectionPrice?: string | null
+  gasConnectionPrice?: string | null
   gasConnected?: string
   registrationType: string
   concessionCardHolder: string

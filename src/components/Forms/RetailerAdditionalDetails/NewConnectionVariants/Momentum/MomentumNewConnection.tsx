@@ -42,8 +42,8 @@ interface MomentumNewConnectionProps {
   state: string
   powerAware: string
   gasConnected?: string
-  electricityConnectionPrice?: number | null
-  gasConnectionPrice?: number | null
+  electricityConnectionPrice?: string | null
+  gasConnectionPrice?: string | null
   gas: boolean
   electricity: boolean
 }
