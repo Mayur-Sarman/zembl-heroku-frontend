@@ -1,6 +1,5 @@
 import { Control } from 'react-hook-form'
 import { OFF_VALUE, ON_VALUE } from '../../../../../constants'
-import { formatCurrency } from '../../../../../helpers/formatter'
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
@@ -11,7 +10,7 @@ const OPTIONS = [
 ]
 
 const NBENewConnection = ({ connectionPrice, control, powerAware }: NBENewConnectionProps) => {
-  const priceText = `This fee is ${formatCurrency(connectionPrice)} including GST`
+  const priceText = `This fee is ${connectionPrice ?? '$0'} including GST`
 
   let powerNote = null
   switch (powerAware) {
@@ -38,7 +37,7 @@ const NBENewConnection = ({ connectionPrice, control, powerAware }: NBENewConnec
 }
 
 interface NBENewConnectionProps {
-  connectionPrice?: number | null
+  connectionPrice?: string | null
   control: Control
   powerAware: string
 }

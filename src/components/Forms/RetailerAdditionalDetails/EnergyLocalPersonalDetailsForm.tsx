@@ -40,7 +40,7 @@ interface EnergyLocalPersonalDetailsFormProps {
   registrationType: string
   isNewConnection: boolean
   electricalRenovationWork?: string
-  connectionPrice: number | null
+  connectionPrice?: string | null
 }
 
 export default EnergyLocalPersonalDetailsForm

@@ -30,7 +30,7 @@ const PlanSelector = ({ plans, planType, selectedPlanId, onPlanSelect, title }: 
             <PlanCard
               key={plan?.id}
               planId={plan?.id ?? uniqueId('quoteComparison')}
-              brand={plan.retailerName ?? ''}
+              brand={plan.productName ?? ''}
               // logoImageHTML={plan.retailerLogo}
               logoURL={plan.retailerLogo}
               bpidLink={plan.linkBPID ?? ''}
@@ -55,7 +55,7 @@ const PlanSelector = ({ plans, planType, selectedPlanId, onPlanSelect, title }: 
         <div className="py-4 w-full">
           <PlanCard
             planId={selectedPlan?.id ?? uniqueId('quoteComparison')}
-            brand={selectedPlan.retailerName ?? ''}
+            brand={selectedPlan.productName ?? ''}
             // logoImageHTML={selectedPlan.retailerLogo}
             logoURL={selectedPlan.retailerLogo}
             bpidLink={selectedPlan.linkBPID ?? ''}

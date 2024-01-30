@@ -125,6 +125,8 @@ export interface CreateQuoteLinePayload {
 
 export interface CreateQuoteLineResponse {
   quoteLineId?: string
+  feeText?: string
+  feeTextGas?: string
   comparison?: QuoteComparison
 }
 
@@ -203,6 +205,8 @@ export interface Quote extends QuoteComparison {
   mirn?: string | null
   quotePreferences?: Record<string, unknown>
   connectionPrice?: number | null
+  feeText?: string | null
+  feeTextGas?: string | null
 }
 
 export interface TermAndCondition {
@@ -226,7 +230,6 @@ export interface QuoteComparison {
   exitPenalty?: string
   australianOwned?: boolean
   contractLength?: string
-
   billSize?: number
   annualBillSize?: number
   billCostGas?: number

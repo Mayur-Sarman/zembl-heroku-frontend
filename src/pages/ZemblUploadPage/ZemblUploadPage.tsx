@@ -17,7 +17,7 @@ const SUPPORTED_FILE_TYPES = [PDF_FILE_TYPE, PNG_FILE_TYPE, JPEG_FILE_TYPE, DOC_
 const ZemblUploadPage = () => {
   const navigate = useNavigate()
   const { fireAlert } = useToast()
-  const { registrationData, uploadFileMutation, handleErrorResponse } = useRegistration()
+  const { registrationData, uploadFileMutation } = useRegistration()
   const { control, handleSubmit, formState } = useForm({ mode: 'all' })
 
   const onSubmit = async (data: FieldValues) => {
@@ -46,16 +46,17 @@ const ZemblUploadPage = () => {
     }
   }, [uploadFileMutation, fireAlert, navigate])
 
-  useEffect(() => {
-    if (uploadFileMutation.isError && uploadFileMutation.error) {
-      handleErrorResponse(uploadFileMutation.error, 'OTP code is invalid or expired.')
-      return
-    }
-  }, [uploadFileMutation.isError, uploadFileMutation.error, handleErrorResponse])
+  // useEffect(() => {
+  //   if (uploadFileMutation.isError && uploadFileMutation.error) {
+  //     handleErrorResponse(uploadFileMutation.error, 'OTP code is invalid or expired.')
+  //     return
+  //   }
+  // }, [uploadFileMutation.isError, uploadFileMutation.error, handleErrorResponse])
 
   const backdrop = uploadFileMutation.isLoading ? (
-    <div className="w-full h-full absolute z-50 top-0 left-0 backdrop-blur-sm flex items-center justify-center">
+    <div className="w-full h-full fixed z-50 top-0 left-0 backdrop-blur-sm flex items-center justify-center">
       <Spinner className="h-16 w-16 m-auto absolute opacity-100" />
+      <div className="mt-28"><p className="text-black">{'Please wait while we scan your bill. This will only take a moment.'}</p></div>
     </div>
   ) : null
 

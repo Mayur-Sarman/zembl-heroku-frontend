@@ -5,7 +5,6 @@ import EANewConnectionQLD from './EANewConnectionQLD'
 import EANewConnectionNSW from './EANewConnectionNSW'
 import EANewConnectionSA from './EANewConnectionSA'
 import EANewConnectionACT from './EANewConnectionACT'
-import { formatCurrency } from '../../../../../helpers/formatter'
 
 const EANewConnection = ({
   control,
@@ -15,10 +14,10 @@ const EANewConnection = ({
   state,
   accessMethod,
 }: EANewConnectionProps) => {
-  const priceText = `${electricPrice ? `electricity is ${formatCurrency(electricPrice)}` : ''} ${
+  const priceText = `${electricPrice ? `electricity is ${electricPrice ?? '$0'}` : ''} ${
     electricPrice && gasPrice ? 'and' : ''
   } ${
-    gasPrice ? `gas is ${state === VIC_VALUE.shortName ? 'up to ' : ''}${formatCurrency(gasPrice)}` : ''
+    gasPrice ? `gas is ${state === VIC_VALUE.shortName ? 'up to ' : ''}${gasPrice ?? '$0'}` : ''
   } including GST`
 
   const commonPowerOnText = `The connection fee for your ${priceText}, which will appear on your first bill. A technician will require clear access to the main switch and/or meter. Please ensure there are no access restrictions such as locked gates and unrestrained animals as you may be charged additional fees if the provider incurs additional costs.`
@@ -73,8 +72,8 @@ const EANewConnection = ({
           control={control}
           powerAware={powerAware}
           powerOnText={commonPowerOnText}
-          electricPrice={electricPrice ?? NaN}
-          gasPrice={gasPrice ?? NaN}
+          electricPrice={electricPrice ?? null}
+          gasPrice={gasPrice ?? null}
         />
       )
       break
@@ -86,8 +85,8 @@ const EANewConnection = ({
 interface EANewConnectionProps {
   control: Control
   powerAware: string
-  electricPrice: number | null
-  gasPrice: number | null
+  electricPrice: string | null
+  gasPrice: string | null
   state: string
   accessMethod: string
 }

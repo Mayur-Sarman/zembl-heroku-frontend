@@ -113,7 +113,7 @@ const PersonalDetailPage3 = () => {
   const contactName = `${firstName ?? ''} ${lastName ?? ''}`.trim()
   const selectedGasRetailer = registrationData?.gasQuote?.retailerName ?? ENERGY_AU
   const isGasTransfer = selectedGasRetailer !== registrationData?.currentRetailerGas
-  const gasPrice = registrationData?.gasQuote?.connectionPrice ?? null
+  const gasPrice = registrationData?.gasQuote?.feeTextGas ?? null
 
   // registrationData.gas = true
   // registrationData.newConnection = true
@@ -152,6 +152,10 @@ const PersonalDetailPage3 = () => {
     }
 
     if(([selectedGasRetailer].includes(ENERGY_LOCALS)) && (concessionConsent === NO_VALUE)) {
+      isNextDisabled = true
+    }
+
+    if([selectedGasRetailer].includes(AGL) && (concessionConsent === NO_VALUE)) {
       isNextDisabled = true
     }
 
@@ -223,7 +227,7 @@ const PersonalDetailPage3 = () => {
           state={registrationData?.connectionDetails?.state ?? 'NSW'}
           onlyResidence={onlyResidence}
           siteAddress={
-            (registrationData?.fullAddress as string) ??
+            (registrationData?.fullAddress) ??
             (registrationData?.address as GoogleMapExtractedComponents)?.fullAddress ??
             ''
           }
@@ -284,7 +288,7 @@ const PersonalDetailPage3 = () => {
         />
       ) : null}
 
-      <PageNavigationActions prevLink="/personal-detail-2" />
+      <PageNavigationActions prevLink="/personal-detail-2" nextDisabled={registrationData.nextPageDisabled}/>
     </form>
   )
 }
