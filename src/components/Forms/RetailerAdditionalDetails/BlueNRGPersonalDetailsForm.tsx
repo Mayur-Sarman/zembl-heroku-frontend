@@ -36,7 +36,7 @@ interface BlueNRGPersonalDetailsFormProps {
   electric: boolean
   hasSecondaryContact: string
   hasPower?: string
-  connectionPrice?: number | null
+  connectionPrice?: string | null
   connectionDate: Date | null
 }
 

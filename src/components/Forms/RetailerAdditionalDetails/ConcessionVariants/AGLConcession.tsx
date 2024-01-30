@@ -30,7 +30,7 @@ const AGLConcession = ({ control, state, cardHolder, concessionConsent }: AGLCon
             required
           />
           {['NSW', 'VIC', 'QLD'].includes(state ?? '') && concessionConsent === NO_VALUE ? (
-            <TextNote className="text-blue-700">
+            <TextNote className="text-black-700">
               Without this consent we can not validate your concession eligiblity. Update your preference or please call
               Zembl on 1300 957 721 for assistance.
             </TextNote>

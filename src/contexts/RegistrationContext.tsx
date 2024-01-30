@@ -247,7 +247,11 @@ export const RegistrationContextProvider = ({ children }: PropsWithChildren) => 
     onError: (error: AxiosError, req) => {
       if (ZEMBL_DEBUG_MODE) console.log('UPLOAD_FILE_MUTATION_ERROR', error, 'REQ:', req)
       handleErrorResponse(error)
+      setUploadText(null)
     },
+    onSuccess: () => {
+      setUploadText(null)
+    }
   })
 
 

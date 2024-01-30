@@ -1,6 +1,5 @@
 import { Control } from 'react-hook-form'
 import { OFF_VALUE, ON_VALUE, UNSURE_VALUE } from '../../../../../constants'
-import { formatCurrency } from '../../../../../helpers/formatter'
 import AccordionCard from '../../../../AccordionCard'
 import ControllerRadioGroupInput from '../../../../Inputs/ControllerRadioGroupInput'
 import TextNote from '../../../../TextNote'
@@ -12,7 +11,7 @@ const OPTIONS = [
 ]
 
 const MomentumNewConnectionSA = ({ connectionPrice, control, powerAware }: MomentumNewConnectionSAProps) => {
-  const priceText = `The standard new connection fee is up to ${formatCurrency(connectionPrice)} including GST`
+  const priceText = `The standard new connection fee is up to ${connectionPrice ?? '$0'} including GST`
 
   let powerNote = null
   switch (powerAware) {
@@ -43,7 +42,7 @@ const MomentumNewConnectionSA = ({ connectionPrice, control, powerAware }: Momen
 }
 
 interface MomentumNewConnectionSAProps {
-  connectionPrice?: number | null
+  connectionPrice?: string | null
   control: Control
   powerAware: string
 }

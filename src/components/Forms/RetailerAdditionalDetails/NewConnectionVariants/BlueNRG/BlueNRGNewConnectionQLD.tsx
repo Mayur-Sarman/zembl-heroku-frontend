@@ -51,7 +51,7 @@ const BlueNRGNewConnectionQLD = ({
           Failure to provide clear access to your meter may result in additional fees and/or a delay to your connection
           or transfer to Blue NRG. If you choose to terminate your contract during the cooling-off period, you may incur
           and be required to pay for any usage and any pass-through costs associated with your reconnection. Move in
-          fees are {businessHoursFee} including GST for connections during business hours and {nonBusinessHoursFee}{' '}
+          fees are {businessHoursFee ?? '$0'} including GST for connections during business hours and {nonBusinessHoursFee ?? '$0'}{' '}
           including GST for connections outside business hours.
         </TextNote>
       )}
@@ -63,8 +63,8 @@ interface BlueNRGNewConnectionQLDProps {
   control: Control
   connectionDate: Date | null
   hasPower?: string
-  businessHoursFee: number | null
-  nonBusinessHoursFee: number | null
+  businessHoursFee: string | null
+  nonBusinessHoursFee: string | null
 }
 
 export default BlueNRGNewConnectionQLD

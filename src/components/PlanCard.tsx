@@ -80,7 +80,7 @@ const PlanCard = ({
               <>
                 <div></div>
                 <PlanHilight
-                  className={planType === ELECTRICITY_VALUE ? 'mb-2' : 'hidden lg:flex opacity-0 h-0 pointer-events-none'}
+                  className={planType === ELECTRICITY_VALUE ? 'mb-2 h-[67px]' : 'hidden lg:flex opacity-0 h-0 pointer-events-none'}
                 >
                   <Typography variant="h6" className="text-lg">
                     {formatPercent(planLessThanCurrentPricePercent)} Less than
@@ -131,7 +131,7 @@ const PlanCard = ({
             </PlanHilight>
           </div>
         </div>
-        <Typography variant="small" className="font-normal text-left" title={planDescription}>
+        <Typography variant="small" className="font-small text-left" title={planDescription}>
           {planDescription}
         </Typography>
       </CardBody>

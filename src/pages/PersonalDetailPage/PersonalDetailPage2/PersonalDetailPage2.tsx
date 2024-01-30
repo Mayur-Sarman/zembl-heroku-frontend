@@ -154,13 +154,13 @@ const PersonalDetailPage2 = () => {
   }
 
   const contactName = `${firstName ?? ''} ${lastName ?? ''}`.trim()
-  const selectedElecRetailer = registrationData?.electricityQuote?.retailerName ?? null
+  const selectedElecRetailer = registrationData?.electricityQuote?.retailerName ?? AGL
   const selectedGasRetailer = registrationData?.gasQuote?.retailerName ?? null
   const isElectricTransfer = selectedElecRetailer !== registrationData?.currentRetailerElectric
   const isGasTransfer = selectedGasRetailer !== registrationData?.currentRetailerGas
 
-  const electricPrice = registrationData?.electricityQuote?.connectionPrice ?? null
-  const gasPrice = registrationData?.gasQuote?.connectionPrice ?? null
+  const electricPrice = registrationData?.electricityQuote?.feeText ?? null
+  const gasPrice = registrationData?.gasQuote?.feeTextGas ?? null
 
   // registrationData.registrationType = REGISTRATION_TYPE_RESIDENTIAL
   // registrationData.electricity = true
@@ -203,6 +203,10 @@ const PersonalDetailPage2 = () => {
     }
 
     if(([selectedElecRetailer].includes(ENERGY_LOCALS) || [selectedGasRetailer].includes(ENERGY_LOCALS)) && (concessionConsent === NO_VALUE)) {
+      isNextDisabled = true
+    }
+
+    if(([selectedElecRetailer].includes(AGL) || [selectedGasRetailer].includes(AGL)) && (concessionConsent === NO_VALUE)) {
       isNextDisabled = true
     }
 
@@ -294,7 +298,7 @@ const PersonalDetailPage2 = () => {
           state={registrationData?.connectionDetails?.state ?? 'NSW'}
           onlyResidence={onlyResidence}
           siteAddress={
-            (registrationData?.fullAddress as string) ??
+            (registrationData?.fullAddress) ??
             (registrationData?.address as GoogleMapExtractedComponents)?.fullAddress ??
             ''
           }
@@ -335,11 +339,7 @@ const PersonalDetailPage2 = () => {
           electricalRenovationWork={electricalRenovationWork}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
-          connectionPrice={
-            selectedElecRetailer === ENERGY_LOCALS
-              ? electricPrice
-              : null
-          }
+          connectionPrice={electricPrice}
         />
       ) : null}
 
@@ -349,11 +349,7 @@ const PersonalDetailPage2 = () => {
           isNewConnection={!!registrationData?.newConnection}
           hasSecondaryContact={hasSecondaryContact}
           powerAware={powerAware}
-          connectionPrice={
-            selectedElecRetailer === NEXT_BUSINESS_ENERGY
-              ? electricPrice
-              : null
-          }
+          connectionPrice={electricPrice}
         />
       ) : null}
       
@@ -412,7 +408,7 @@ const PersonalDetailPage2 = () => {
           state={registrationData?.connectionDetails?.state ?? 'NSW'}
           onlyResidence={onlyResidence}
           siteAddress={
-            (registrationData?.fullAddress as string) ??
+            (registrationData?.fullAddress) ??
             (registrationData?.address as GoogleMapExtractedComponents)?.fullAddress ??
             ''
           }
@@ -451,11 +447,7 @@ const PersonalDetailPage2 = () => {
           electricalRenovationWork={electricalRenovationWork}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
-          connectionPrice={
-            selectedGasRetailer === ENERGY_LOCALS
-              ? gasPrice
-              : null
-          }
+          connectionPrice={gasPrice}
         />
       ) : null}
 
@@ -465,11 +457,7 @@ const PersonalDetailPage2 = () => {
           isNewConnection={!!registrationData?.newConnection}
           hasSecondaryContact={hasSecondaryContact}
           powerAware={powerAware}
-          connectionPrice={
-            selectedGasRetailer === NEXT_BUSINESS_ENERGY
-              ? gasPrice
-              : null
-          }
+          connectionPrice={gasPrice}
         />
       ) : null}
       </>
