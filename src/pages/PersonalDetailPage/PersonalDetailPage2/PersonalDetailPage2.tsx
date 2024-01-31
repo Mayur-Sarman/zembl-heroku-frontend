@@ -69,6 +69,7 @@ const PersonalDetailPage2 = () => {
     accessMethod,
     firstName,
     lastName,
+    isAuthorize
   ]: string[] = watch([
     'concession.concessionCardHolder',
     'concession.concessionConsent',
@@ -83,6 +84,7 @@ const PersonalDetailPage2 = () => {
     'newConnection.accessMethod',
     'secondaryContact.firstName',
     'secondaryContact.lastName',
+    'secondaryContact.isAuthorize'
   ]) as string[]
 
   const onSubmit = (data: Record<string, unknown>) => {
@@ -156,8 +158,8 @@ const PersonalDetailPage2 = () => {
   const contactName = `${firstName ?? ''} ${lastName ?? ''}`.trim()
   const selectedElecRetailer = registrationData?.electricityQuote?.retailerName ?? null
   const selectedGasRetailer = registrationData?.gasQuote?.retailerName ?? null
-  const isElectricTransfer = selectedElecRetailer !== registrationData?.currentRetailerElectric
-  const isGasTransfer = selectedGasRetailer !== registrationData?.currentRetailerGas
+  const isElectricTransfer = (selectedElecRetailer !== registrationData?.currentRetailerElectric) || registrationData.newConnection
+  const isGasTransfer = (selectedGasRetailer !== registrationData?.currentRetailerGas) || registrationData.newConnection
 
   const electricPrice = registrationData?.electricityQuote?.feeText ?? null
   const gasPrice = registrationData?.gasQuote?.feeTextGas ?? null
@@ -198,7 +200,7 @@ const PersonalDetailPage2 = () => {
       setValue('concession', {})
     }
 
-    if(([selectedElecRetailer].includes(SIMPLY_ENERGY) || [selectedGasRetailer].includes(SIMPLY_ENERGY)) && (onlyResidence === NO_VALUE || concessionConsent === NO_VALUE || (!consessionCardType && concessionConsent === YES_VALUE))) {
+    if(([selectedElecRetailer].includes(SIMPLY_ENERGY) || [selectedGasRetailer].includes(SIMPLY_ENERGY)) && (onlyResidence === NO_VALUE || concessionConsent === NO_VALUE || (!consessionCardType && concessionConsent === YES_VALUE) || isAuthorize === NO_VALUE)) {
       isNextDisabled = true
     }
 
@@ -310,6 +312,7 @@ const PersonalDetailPage2 = () => {
           secondaryContactName={contactName}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
+          isAuthorize={isAuthorize}
         />
       ) : null}
 
@@ -419,6 +422,7 @@ const PersonalDetailPage2 = () => {
           secondaryContactName={contactName}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
+          isAuthorize={isAuthorize}
         />
       ) : null}
 
