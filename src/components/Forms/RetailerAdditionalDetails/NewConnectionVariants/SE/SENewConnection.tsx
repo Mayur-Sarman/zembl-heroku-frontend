@@ -6,9 +6,9 @@ import SENewConnectionQLD from './SENewConnectionQLD'
 import SENewConnectionSA from './SENewConnectionSA'
 
 const SENewConnection = ({ control, powerAware, state, electricPrice, gasPrice }: SENewConnectionProps) => {
-  const priceText = `${electricPrice ? `${electricPrice ?? '$0'} for electricity` : ''} ${
-    electricPrice && gasPrice ? 'and' : ''
-  } ${gasPrice ? `${gasPrice ?? '$0'} for gas` : ''}`
+  const priceText = `${`${electricPrice ?? '$0'} for electricity`} ${
+    'and'
+  } ${`${gasPrice ?? '$0'} for gas`}`
 
   let display = null
   switch (state) {
