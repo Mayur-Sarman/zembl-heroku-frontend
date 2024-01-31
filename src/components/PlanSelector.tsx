@@ -26,6 +26,7 @@ const PlanSelector = ({ plans, planType, selectedPlanId, onPlanSelect, title }: 
       <Accordion open={open} key={Math.random()}>
         <AccordionHeader onClick={openToggleHandler}>{title}</AccordionHeader>
         <AccordionBody className="flex flex-col gap-6">
+          {!plans || plans.length === 0 ? <p>No plans available for your selected preferences, please update or request a call back.</p> : null}
           {plans.map((plan) => (
             <PlanCard
               key={plan?.id}
