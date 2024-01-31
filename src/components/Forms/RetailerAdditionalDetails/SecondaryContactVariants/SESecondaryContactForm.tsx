@@ -39,15 +39,15 @@ const SESecondaryContactForm = ({
         </TextNote>
       ) : null}
 
-      {/* {isSecondary ? (
+      {isSecondary ? (
         <ControllerRadioGroupInput
-          name="isAuthorize"
+          name="secondaryContact.isAuthorize"
           control={control}
-          label={`Do you authorise to add ${contactName} to this account?`}
-          options={ADD_SECONDARY_OPTIONS}
+          label={`Do you authorise to add ${(contactName && contactName != '') ? contactName : 'the nominated contact'} to this account?`}
+          options={YES_NO_OPTIONS}
           required
         />
-      ) : null} */}
+      ) : null}
 
       <TextNote className={`${isAuthorize ? '' : 'hidden'}`}>
         Simply Energy can add a signatory to your account, which means they will be able to make changes. You can do
@@ -61,7 +61,7 @@ interface SESecondaryContactFormProps {
   control: Control
   contactName?: string
   hasSecondaryContact: string
-  isAuthorize?: boolean
+  isAuthorize?: string
 }
 
 export default SESecondaryContactForm

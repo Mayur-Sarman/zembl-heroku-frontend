@@ -20,6 +20,7 @@ const SEPersonalDetailsForm = ({
   registrationType,
   siteAddress,
   onlyResidence,
+  isAuthorize
 }: SEPersonalDetailsFormProps) => {
   const showConcessionForm =
     registrationType === RESIDENTIAL_VALUE &&
@@ -48,6 +49,7 @@ const SEPersonalDetailsForm = ({
         control={control}
         hasSecondaryContact={hasSecondaryContact}
         contactName={secondaryContactName}
+        isAuthorize={isAuthorize}
       />
 
       {concessionForm}
@@ -79,6 +81,7 @@ interface SEPersonalDetailsFormProps {
   registrationType: string
   onlyResidence: string
   siteAddress: string
+  isAuthorize?: string
 }
 
 export default SEPersonalDetailsForm

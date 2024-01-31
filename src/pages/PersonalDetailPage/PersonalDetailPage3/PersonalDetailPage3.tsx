@@ -66,6 +66,7 @@ const PersonalDetailPage3 = () => {
     electricalRenovationWork,
     firstName,
     lastName,
+    isAuthorize
   ]: string[] = watch([
     'concession.concessionCardHolder',
     'concession.concessionConsent',
@@ -78,6 +79,7 @@ const PersonalDetailPage3 = () => {
     'newConnection.electricalRenovationWork',
     'secondaryContact.firstName',
     'secondaryContact.lastName',
+    'secondaryContact.isAuthorize'
   ]) as string[]
 
   const onSubmit = (data: Record<string, unknown>) => {
@@ -147,7 +149,7 @@ const PersonalDetailPage3 = () => {
       setValue('concession', {})
     }
 
-    if(([selectedGasRetailer].includes(SIMPLY_ENERGY)) && (onlyResidence === NO_VALUE || concessionConsent === NO_VALUE || (!consessionCardType && concessionConsent === YES_VALUE))) {
+    if(([selectedGasRetailer].includes(SIMPLY_ENERGY)) && (onlyResidence === NO_VALUE || concessionConsent === NO_VALUE || (!consessionCardType && concessionConsent === YES_VALUE) || isAuthorize === NO_VALUE)) {
       isNextDisabled = true
     }
 
@@ -238,6 +240,7 @@ const PersonalDetailPage3 = () => {
           secondaryContactName={contactName}
           concessionCardHolder={concessionCardHolder}
           concessionConsent={concessionConsent}
+          isAuthorize={isAuthorize}
         />
       ) : null}
 
