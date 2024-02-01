@@ -32,8 +32,8 @@ const SESecondaryContactForm = ({
       {isSecondary ? <SecondaryContactForm control={control} /> : null}
       {isSecondary ? (
         <TextNote>
-          Please let {contactName} know about Simply Energy’s Privacy Policy, which sets out how we collect and use
-          personal information. This can be found on Simply Energy’s website. By adding {contactName} as a contact on
+          Please let {contactName ? contactName : 'the nominated contact'} know about Simply Energy’s Privacy Policy, which sets out how we collect and use
+          personal information. This can be found on Simply Energy’s website. By adding {contactName ? contactName : 'the nominated contact'} as a contact on
           your account, you consent to us providing them with any of your account details. That person will not have the
           right to terminate or agree to any changes to the contract or to move premises on your behalf.
         </TextNote>
