@@ -10,7 +10,7 @@ import {
   BLUE_NRG,
   ENERGY_AU,
   ENERGY_LOCALS,
-  MOMENTUM,
+  MOMENTUM_ENERGY,
   NEXT_BUSINESS_ENERGY,
   NO_VALUE,
   YES_VALUE,
@@ -157,6 +157,10 @@ const PersonalDetailPage3 = () => {
       isNextDisabled = true
     }
 
+    if(([selectedGasRetailer].includes(MOMENTUM_ENERGY)) && (concessionConsent === NO_VALUE)) {
+      isNextDisabled = true
+    }
+
     if([selectedGasRetailer].includes(AGL) && (concessionConsent === NO_VALUE)) {
       isNextDisabled = true
     }
@@ -244,7 +248,7 @@ const PersonalDetailPage3 = () => {
         />
       ) : null}
 
-      {[selectedGasRetailer].includes(MOMENTUM) ? (
+      {[selectedGasRetailer].includes(MOMENTUM_ENERGY) ? (
         <MomentumPersonalDetailsForm
           control={control}
           registrationType={registrationData?.registrationType ?? ''}

@@ -23,7 +23,6 @@ const BasicInfoPage1 = () => {
 
   const onSubmit = (data: FieldValues) => {
     const buildedData = buildLeadPayload(data)
-
     updateLeadMutation.mutate(buildedData)
   }
 
