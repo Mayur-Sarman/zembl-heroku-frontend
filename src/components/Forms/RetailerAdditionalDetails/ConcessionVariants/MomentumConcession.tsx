@@ -35,7 +35,7 @@ const MomentumConcession = ({ control, concessionCardHolder, concessionConsent }
       ) : null}
 
       {concessionConsent === NO_VALUE ? (
-        <TextNote className="text-blue-700">
+        <TextNote className="text-back-700">
           You must consent to Momentum Energy accessing your information held by the Services Australia to have your
           concession applied. Update your preference or please call Zembl on 1300 957 721 for assistance.
         </TextNote>

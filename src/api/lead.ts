@@ -39,7 +39,7 @@ export const buildLeadPayload = (data: RegistrationData) => {
     recordType = CAndI_VALUE
   }
   const address = data?.address as GoogleMapExtractedComponents
-
+  
   const buildedData = {
     ...data,
     electricity: [ELECTRICITY_VALUE, BOTH_VALUE].includes(data?.energyType ?? ''),
@@ -54,9 +54,13 @@ export const buildLeadPayload = (data: RegistrationData) => {
       country: address?.country,
       fullAddress: address?.fullAddress,
       postCode: address?.postCode,
-      street: address?.street + ' ' + address?.route,
+      street: address?.street,
+      fullStreet: ((address?.unitType ?? '').toUpperCase() + ' ' + (address?.unitNumber ?? '').toUpperCase() + ' ' + (address?.street ?? '') + ' ' + (address?.route ?? '')).trim(),
+      route: address?.route,
       state: address?.state,
-      city: address?.suburb
+      city: address?.suburb,
+      unitNumber: address?.unitNumber,
+      unitType: address?.unitType,
     }
   }
 
