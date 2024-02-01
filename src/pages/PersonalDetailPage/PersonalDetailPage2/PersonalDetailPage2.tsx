@@ -10,7 +10,7 @@ import {
   BLUE_NRG,
   ENERGY_AU,
   ENERGY_LOCALS,
-  MOMENTUM,
+  MOMENTUM_ENERGY,
   NEXT_BUSINESS_ENERGY,
   NO_VALUE,
   YES_VALUE,
@@ -208,6 +208,10 @@ const PersonalDetailPage2 = () => {
       isNextDisabled = true
     }
 
+    if(([selectedElecRetailer].includes(MOMENTUM_ENERGY) || [selectedGasRetailer].includes(MOMENTUM_ENERGY)) && (concessionConsent === NO_VALUE)) {
+      isNextDisabled = true
+    }
+
     if(([selectedElecRetailer].includes(AGL) || [selectedGasRetailer].includes(AGL)) && (concessionConsent === NO_VALUE)) {
       isNextDisabled = true
     }
@@ -316,7 +320,7 @@ const PersonalDetailPage2 = () => {
         />
       ) : null}
 
-      {[selectedElecRetailer].includes(MOMENTUM) ? (
+      {[selectedElecRetailer].includes(MOMENTUM_ENERGY) ? (
         <MomentumPersonalDetailsForm
           control={control}
           registrationType={registrationData?.registrationType ?? ''}
@@ -426,7 +430,7 @@ const PersonalDetailPage2 = () => {
         />
       ) : null}
 
-      {[selectedGasRetailer].includes(MOMENTUM) ? (
+      {[selectedGasRetailer].includes(MOMENTUM_ENERGY) ? (
         <MomentumPersonalDetailsForm
           control={control}
           registrationType={registrationData?.registrationType ?? ''}
