@@ -24,7 +24,7 @@ const BasicPreference = ({ control }: BasicPreferenceProps) => {
 
       <ControllerRadioGroupInput
         control={control}
-        name="isConsentMomentumCreditCheck"
+        name="creditCheckConsent"
         required
         label={'Do you consent to Momentum performing a credit check on you?'}
         options={YES_NO_OPTIONS}

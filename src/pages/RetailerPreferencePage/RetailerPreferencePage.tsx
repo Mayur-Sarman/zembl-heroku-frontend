@@ -24,9 +24,9 @@ const RetailerPreferencePage = () => {
         if((electricQuotePref[key] != null && electricQuotePref[key] === 'No' && 
         ((key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBills'
+        && key !== 'receiveEmailBill'
         && key !== 'interestedGreenPower' 
-        && (key !== 'consentMonthlyBilling' || (key === 'consentMonthlyBilling' && registrationData?.electricityQuote?.retailerName === BLUE_NRG))
+        && (key !== 'consentBillsMonthlyBasis' || (key === 'consentBillsMonthlyBasis' && registrationData?.electricityQuote?.retailerName === BLUE_NRG))
         ))
         )) {
           isNextDisabled = true
@@ -41,9 +41,9 @@ const RetailerPreferencePage = () => {
         if((gasQuotePref[key] != null && gasQuotePref[key] === 'No' && 
         (key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBills'
+        && key !== 'receiveEmailBill'
         && key !== 'interestedGreenPower' 
-        && (key !== 'consentMonthlyBilling' || (key === 'consentMonthlyBilling' && registrationData?.gasQuote?.retailerName === BLUE_NRG))) 
+        && (key !== 'consentBillsMonthlyBasis' || (key === 'consentBillsMonthlyBasis' && registrationData?.gasQuote?.retailerName === BLUE_NRG))) 
         )) {
           isNextDisabled = true;
         }
