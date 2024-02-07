@@ -11,13 +11,13 @@ const BlueNRGPreference = ({ control, prefix, pref }: BlueNRGPreferenceProps) =>
     <AccordionCard alwaysOpen open title="Blue NRG Preferences" bodyClassName="flex-col text-left gap-y-6">
       <ControllerRadioGroupInput
         control={control}
-        name={`${prefix}.consentMonthlyBilling`}
+        name={`${prefix}.consentBillsMonthlyBasis`}
         required
         label={'Do you consent to receive your electricity bills from Blue NRG on a monthly basis?'}
         options={YES_NO_OPTIONS}
       />
       {
-              pref?.consentMonthlyBilling === 'No' ? 
+              pref?.consentBillsMonthlyBasis === 'No' ? 
       <TextNote className='text-sm'>
         This plan is not available to customers who do not consent to monthly billing. Update your preference or please
         call Zembl on 1300 957 721 for assistance.

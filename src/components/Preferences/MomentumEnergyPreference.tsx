@@ -23,14 +23,14 @@ const MomentumEnergyPreference = ({ control, prefix, pref }: MomentumEnergyPrefe
       <>
       <ControllerRadioGroupInput
         control={control}
-        name={`${prefix}.consentMonthlyBilling`}
+        name={`${prefix}.consentBillsMonthlyBasis`}
         label={`For your electricity, would you like to receive monthly billing?`}
         options={YES_NO_OPTIONS}
         required
       />
 
       {
-        pref?.consentMonthlyBilling === 'Yes' ? 
+        pref?.consentBillsMonthlyBasis === 'Yes' ? 
         <TextNote className='text-sm'>
         The plan you’ve chosen has some fixed billing and communication preferences. Whenever possible, Momentum will email you, but sometimes they’ll need to contact you via phone or post.
         </TextNote>
