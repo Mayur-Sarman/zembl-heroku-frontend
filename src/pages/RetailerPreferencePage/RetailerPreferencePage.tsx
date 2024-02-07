@@ -24,7 +24,7 @@ const RetailerPreferencePage = () => {
         if((electricQuotePref[key] != null && electricQuotePref[key] === 'No' && 
         ((key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBill'
+        && key !== 'recieveEmailBill'
         && key !== 'interestedGreenPower' 
         && (key !== 'consentBillsMonthlyBasis' || (key === 'consentBillsMonthlyBasis' && registrationData?.electricityQuote?.retailerName === BLUE_NRG))
         ))
@@ -41,7 +41,7 @@ const RetailerPreferencePage = () => {
         if((gasQuotePref[key] != null && gasQuotePref[key] === 'No' && 
         (key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
-        && key !== 'receiveEmailBill'
+        && key !== 'recieveEmailBill'
         && key !== 'interestedGreenPower' 
         && (key !== 'consentBillsMonthlyBasis' || (key === 'consentBillsMonthlyBasis' && registrationData?.gasQuote?.retailerName === BLUE_NRG))) 
         )) {
