@@ -325,6 +325,7 @@ export const PREF_RETAILERS: string[] = [
   ENERGY_LOCALS,
   MOMENTUM_ENERGY,
   SIMPLY_ENERGY,
+  ENERGY_AU
 ]
 
 export const AGL_CONCESSION_CARD_TYPES = [

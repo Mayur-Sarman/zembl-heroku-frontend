@@ -125,9 +125,6 @@ const RetailerPreferencePage = () => {
     if(registrationData.gasQuote?.retailerName === NEXT_BUSINESS_ENERGY && (registrationData.lifeSupport != YES_VALUE || registrationData.accountType !== RESIDENTIAL_VALUE)) {
       registrationData.toSkipPref = false
     }
-    if(registrationData.electricityQuote?.retailerName === ENERGY_AU || registrationData.gasQuote?.retailerName === ENERGY_AU) {
-      registrationData.toSkipPref = false
-    }
 
     if(registrationData.toSkipPref) {
       navigate('/review-terms')
