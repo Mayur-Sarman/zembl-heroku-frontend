@@ -55,7 +55,17 @@ const VerificationCodePage = () => {
   const validateOTP = useValidateOTPMutation(token, {
     onSuccess: (data) => {
       setRegistrationToken(data.accessToken)
-      navigate('/review-plan')
+
+      if(data.multiSite) {
+        setRegistrationData((prev) => ({ ...prev,
+          multiSite: data.multiSite,
+          quoteListToken: registrationData.quoteToken
+        }))
+        navigate('/plan-selection')
+      } else {
+        navigate('/review-plan')
+      }
+      
     },
     onError: (error) => {
       handleErrorResponse(error, 'OTP code is invalid or expired.')

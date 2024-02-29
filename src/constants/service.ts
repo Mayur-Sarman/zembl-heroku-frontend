@@ -35,3 +35,4 @@ export const VALIDATE_RE_CAPTCHA_ENDPOINT = `${import.meta.env.VITE_SERVICE_VALI
 export const PROCESS_OCR_ENDPOINT = `${import.meta.env.VITE_SERVICE_PROCESS_OCR_ENDPOINT ?? '/mule/api/zembl-energy/ocr/process'}`
 export const SEARCH_ABN_ENDPOINT = `${import.meta.env.VITE_SERVICE_SEARCH_ABN_ENDPOINT ?? '/api/abn/v202001/search/mule/api/zembl-energy/abn/v202001/search'}`
 export const SAVE_ERROR_LOG_ENDPOINT = `${import.meta.env.VITE_SERVICE_SAVE_ERROR_LOG_ENDPOINT ?? '/mule/api/zembl-energy/common/log'}`
+export const GET_QUOTE_LIST_ENDPOINT = `${import.meta.env.VITE_SERVICE_GET_QUOTE_LIST_ENDPOINT ?? '/mule/api/zembl-energy/quote/list'}`

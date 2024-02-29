@@ -10,6 +10,7 @@ import {
   VALIDATE_OTP_ENDPOINT,
   UPDATE_QUOTE_CALLBACK_ENDPOINT,
   GET_QUOTE_TOKEN_AND_SEND_OTP_ENDPOINT,
+  GET_QUOTE_LIST_ENDPOINT
 } from '../constants'
 import { performGetRequest, performPatchRequest, performPostRequest, performNewPatchRequest } from '../helpers'
 import { Preference, SimpleResponse } from './common'
@@ -88,6 +89,12 @@ export const patchUpdateQuotePlan = async (planData: ProcessQuoteOutput, token: 
   return response.data as SimpleResponse
 }
 
+export const getFetchQuoteListData = async (quoteToken: string, token: string) => {
+  const encodedToken = encodeURIComponent(quoteToken)
+  const response = await performGetRequest(`${GET_QUOTE_LIST_ENDPOINT}?token=${encodedToken}`, undefined, token)
+  return response.data as QuoteData[]
+}
+
 export interface ConfirmQuotePayload {
   electricQuoteId?: string
   gasQuoteId?: string
@@ -105,6 +112,17 @@ export interface ValidateTokenResponse extends SimpleResponse {
 
 export interface ValidateOTPResponse extends SimpleResponse {
   accessToken?: string
+  multiSite?: boolean
+}
+
+export interface QuoteData {
+  quoteId?: string
+  fuelType?: string
+  nmi?: string
+  mirn?: string
+  address?: string
+  status?: string
+  token?: string
 }
 
 export interface PostCreateQuotePayload {

@@ -35,7 +35,7 @@ const ReZemblDetailPage = () => {
 registrationData.electricityQuote = {
   ...registrationData.electricityQuote,
   nmi: registrationData?.nmi,
-  address: registrationData?.fullAddress as string,
+  address: registrationData?.fullAddress,
   fuelType: 'Electricity',
   nextReZemblDate: registrationData?.nextReZemblDate as string
 }
