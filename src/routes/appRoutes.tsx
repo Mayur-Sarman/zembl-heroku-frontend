@@ -24,6 +24,7 @@ const RegistrationThankYouPage = lazy(() => import('../pages/RegistrationThankYo
 const ReZemblDetailPage = lazy(() => import('../pages/ReZemblDetailPage/ReZemblDetailPage'))
 const ReZemblTermsPage = lazy(() => import('../pages/ReZemblTermsPage/ReZemblTermsPage'))
 const ZemblUploadPage = lazy(() => import('../pages/ZemblUploadPage/ZemblUploadPage'))
+const PlanSelectionPage = lazy(() => import('../pages/PlanSelectionPage/PlanSelectionPage'))
 
 const wrappedEnergyPage = (
   <GoogleReCaptchaProvider reCaptchaKey={GOOGLE_RECAPTCHA_KEY}>
@@ -241,6 +242,14 @@ const appRoutes = [
       },
       { path: 'energy', element: wrappedEnergyPage },
       { path: '', element: wrappedEnergyPage },
+      {
+        path: 'plan-selection',
+        element: (
+          <Suspense fallback={spinnerFallback}>
+            <PlanSelectionPage />
+          </Suspense>
+        ),
+      }
     ],
   },
 ]
