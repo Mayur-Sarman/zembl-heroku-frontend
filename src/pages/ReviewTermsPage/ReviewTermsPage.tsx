@@ -6,7 +6,9 @@ import { useRegistration } from '../../hooks/useRegistration'
 import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
 import { getJSONDateString, getPhoneNumber } from '../../helpers/formatter'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
-import { lazy } from 'react'
+import { lazy, useEffect } from 'react'
+import { useFetchQuoteListDataQuery } from '../../hooks/useQueryQuoteListData'
+import { QuoteData } from '../../api/quote'
 
 const PageWrapper = lazy(() => import('../../components/PageWrapper'))
 const RegistrationStep = lazy(() => import('../../components/RegistrationStep'))
@@ -25,7 +27,24 @@ const ReviewTermsPage = () => {
       setRegistrationData((prev) => ({ ...prev, ...data.planData }))
       if(registrationData.registrationType === 'Residential' || 
         (registrationData?.gasQuote?.quoteId != null && registrationData?.electricityQuote?.quoteId == null)) {
-        navigate('/rezembl-no-thank-you')
+          if(registrationData.multiSite) {
+            let isAllAccepted = true
+            if(registrationData.quoteList != null && Array.isArray(registrationData.quoteList)) {
+              registrationData.quoteList.forEach((quote: QuoteData) => {
+                if(quote?.status !== 'Accepted') {
+                  isAllAccepted = false
+                }
+              })
+            }
+            
+            if(isAllAccepted) {
+              navigate('/rezembl-no-thank-you')
+            } else {
+              navigate('/plan-selection')
+            }
+          } else {
+            navigate('/rezembl-no-thank-you')
+          }
       } else {
         navigate('/thank-you')
       }
@@ -67,6 +86,34 @@ const ReviewTermsPage = () => {
   } else if (registrationData?.gasQuote) {
     energyType = GAS_VALUE
   }
+
+  const getPlanListData = useFetchQuoteListDataQuery(
+    { 
+      quoteToken: registrationData?.quoteListToken as string, 
+      token: registrationToken ?? '' 
+    },
+    {
+      onSuccess: (data: QuoteData[]) => {
+        // console.log('data =>', data)
+        setRegistrationData((prev) => ({
+          ...prev,
+          quoteList: data
+        }))
+      },
+      onError: (error) => {
+        handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
+      },
+    },
+  )
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getPlanListData.refetch()
+    }
+    if(registrationData.multiSite) {
+      fetchData().catch(error => console.log(error))
+    }
+  }, [])
 
   // console.log('registrationData review term page =>', registrationData)
   return (

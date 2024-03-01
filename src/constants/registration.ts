@@ -3,6 +3,7 @@ import { Lead } from '../api/lead'
 import { ProcessSiteOutput, Site } from '../api/site'
 import { Account } from '../api/account'
 import { ProcessQuoteOutput } from '../api/quote'
+import { Quote } from '../api/quote'
 
 export const ELECTRICITY_VALUE = 'Electricity'
 export const GAS_VALUE = 'Gas'
@@ -395,6 +396,13 @@ export interface RegistrationData
   accountType?: string
   nextPageDisabled?: boolean
   fullAddress?: string
+  electricityQuote?: Quote | null
+  gasQuote?: Quote | null
+  electricityQuotes?: Quote[] | null
+  gasQuotes?: Quote[] | null
+  isSkipElectricPref?: boolean
+  isSkipGasPref?: boolean
+  
 }
 
 interface BillInfo {
