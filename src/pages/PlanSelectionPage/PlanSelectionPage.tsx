@@ -78,12 +78,12 @@ const PlanSelectionPage = () => {
                         disabled={status === 'Accepted' ? true : false}
                         size="sm"
                         color={status === 'Accepted' ? 'gray' : 'green'}
-                        className='flex m-auto'
+                        className={`flex m-auto capitalize ${status === 'Accepted' ? '' : '!zembl-btn'}`}
+                        ripple={false}
                         onClick={() => navigateNextPage(token)}>
                         Accept
                     </Button>
                 </div>
-
             </div>
         )
     }
