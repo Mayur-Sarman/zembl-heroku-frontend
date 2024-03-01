@@ -78,10 +78,11 @@ const PlanSelectionPage = () => {
                         disabled={status === 'Accepted' ? true : false}
                         size="sm"
                         color={status === 'Accepted' ? 'gray' : 'green'}
-                        className={`flex m-auto capitalize ${status === 'Accepted' ? '' : '!zembl-btn'}`}
+                        className={`flex justify-center w-24 text-center flex m-auto capitalize ${status === 'Accepted' ? '' : '!zembl-btn'}`}
                         ripple={false}
+                        
                         onClick={() => navigateNextPage(token)}>
-                        Accept
+                        {status === 'Accepted' ? 'Accepted' : 'Accept'}
                     </Button>
                 </div>
             </div>
@@ -93,6 +94,9 @@ const PlanSelectionPage = () => {
             <form className="flex flex-col gap-6 w-full md:w-10/12 items-center">
                 <Typography variant="h1" className="text-center text-zembl-p text-3xl lg:text-5xl">
                     Energy Plan Confirmation
+                </Typography>
+                <Typography variant="small" className="text-center text-zembl-p">
+                    Please review and accept the below energy plans
                 </Typography>
                 {/* <AccordionCard open={false} alwaysOpen={false} title={cardHeader} bodyClassName="flex flex-col p-0">
             <></>
