@@ -54,34 +54,35 @@ const PlanSelectionPage = () => {
     const cardHeader = (address?: string, electricType?: string, nmi?: string, mirn?: string, status?: string, token?: string) => {
         const energyMeterLabel = electricType === 'Electricity' ? 'NMI' : 'MIRN'
         const energyMeterNumber = electricType === 'Electricity' ? nmi : mirn
-        const planTypeIcon = electricType === 'Electricity' ? <ElectricIcon /> : <GasIcon />
+        const planTypeIcon = electricType === 'Electricity' ? <ElectricIcon className="min-w-[20px] min-h-[20px]"/> : <GasIcon className="min-w-[20px] min-h-[20px]"/>
         return (
             <div className="flex md:gap-6">
-                <div className="w-[5%] flex items-center lg:flex-row gap-1 lg:gap-2">
+                <div className="md:w-[5%] flex items-center lg:flex-row gap-1 lg:gap-2">
                     {planTypeIcon ?? null}
                 </div>
 
-                <div className="flex items-center lg:flex-row w-[60%]">
+                <div className="flex items-center lg:flex-row md:w-[60%]">
                     <span className="flex items-center flex-col lg:flex-row gap-1 lg:gap-2">
                         <Typography variant="h6">Address</Typography>
                         <Typography className='lg:w-[400px] text-left' variant="paragraph">{address}</Typography>
                     </span>
                 </div>
-                <div className="flex items-center lg:flex-row w-[20%]">
+                <div className="flex items-center lg:flex-row md:w-[20%]">
                     <span className="flex flex-col lg:flex-row gap-1 lg:gap-2">
                         <Typography variant="h6">{energyMeterLabel}</Typography>
                         <Typography variant="paragraph">{energyMeterNumber}</Typography>
                     </span>
                 </div>
-                <div className="flex w-[15%] text-right block">
+                <div className="flex md:w-[15%] text-right block">
                     <Button
                         disabled={status === 'Accepted' ? true : false}
                         size="sm"
                         color={status === 'Accepted' ? 'gray' : 'green'}
-                        className={`flex m-auto capitalize ${status === 'Accepted' ? '' : '!zembl-btn'}`}
+                        className={`flex justify-center w-24 text-center flex m-auto capitalize ${status === 'Accepted' ? '' : '!zembl-btn'}`}
                         ripple={false}
+                        
                         onClick={() => navigateNextPage(token)}>
-                        Accept
+                        {status === 'Accepted' ? 'Accepted' : 'Accept'}
                     </Button>
                 </div>
             </div>
@@ -94,6 +95,9 @@ const PlanSelectionPage = () => {
                 <Typography variant="h1" className="text-center text-zembl-p text-3xl lg:text-5xl">
                     Energy Plan Confirmation
                 </Typography>
+                <Typography variant="small" className="text-center text-zembl-p">
+                    Please review and accept the below energy plans
+                </Typography>
                 {/* <AccordionCard open={false} alwaysOpen={false} title={cardHeader} bodyClassName="flex flex-col p-0">
             <></>
           </AccordionCard> */}
@@ -103,7 +107,7 @@ const PlanSelectionPage = () => {
                     {registrationData.quoteList != null && Array.isArray(registrationData.quoteList) ?
                         registrationData.quoteList?.map((quote: QuoteData, index) => {
                             return (
-                                <div key={index} className={'my-4 py-3 px-6 bg-zembl-s rounded-lg flex flex-col p-0 w-full text-black'}>
+                                <div key={index} className={'my-4 py-3 px-3 bg-zembl-s rounded-lg flex flex-col p-0 w-full text-black'}>
                                     {cardHeader(quote.address, quote.fuelType, quote.nmi, quote.mirn, quote.status, quote.token)}
                                 </div>
                             )
