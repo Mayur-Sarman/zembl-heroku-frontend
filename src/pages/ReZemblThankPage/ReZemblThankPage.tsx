@@ -88,7 +88,7 @@ const ReZemblThankPage = () => {
           </Typography>
         </div>
         <Button className="capitalize !zembl-btn m-auto" onClick={() => handleNextButton()}>
-          Next
+        Back to Zembl
         </Button>
       </div>
     </div>
