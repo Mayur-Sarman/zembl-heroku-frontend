@@ -100,7 +100,7 @@ const ReviewPlanPage = () => {
       }
       registrationData.accountDetails = updatedAccount
       registrationData.disabledNextPage = false
-      const updatedPlanData = { ...registrationData, accountDetails: updatedAccount }
+      const updatedPlanData = { ...registrationData, accountDetails: updatedAccount, isEdited: true }
       updatePlanData.mutate({ planData: updatedPlanData, token: registrationToken ?? '' })
     }
   }
