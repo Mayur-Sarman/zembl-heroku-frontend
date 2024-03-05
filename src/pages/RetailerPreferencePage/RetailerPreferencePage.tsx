@@ -94,24 +94,22 @@ const RetailerPreferencePage = () => {
     navigate('/review-terms')
   }
 
-  registrationData.electricityQuote.retailerName = AGL
-
-  useEffect(() => {
-    console.log('registrationData => ', registrationData)
-    setRegistrationData((prev) => ({
-      ...prev,
-      accountType: RESIDENTIAL_VALUE,
-      billType: 'Post',
-      electricityQuote: {
-        ...prev.electricityQuote,
-        retailerName: AGL,
-      },
-      // gasQuote: {
-        // ...prev.gasQuote,
-        // retailerName: MOMENTUM,
-      // }
-    }))
-  }, [])
+  // useEffect(() => {
+  //   console.log('registrationData => ', registrationData)
+  //   setRegistrationData((prev) => ({
+  //     ...prev,
+  //     accountType: RESIDENTIAL_VALUE,
+  //     billType: 'Post',
+  //     electricityQuote: {
+  //       ...prev.electricityQuote,
+  //       retailerName: AGL,
+  //     },
+  //     // gasQuote: {
+  //       // ...prev.gasQuote,
+  //       // retailerName: MOMENTUM,
+  //     // }
+  //   }))
+  // }, [])
 
   useEffect(() => {
     registrationData.toSkipPref = true
