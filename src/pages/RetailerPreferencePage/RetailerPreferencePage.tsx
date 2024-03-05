@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useRegistration } from '../../hooks/useRegistration'
-import {BLUE_NRG, NEXT_BUSINESS_ENERGY, RESIDENTIAL_VALUE, RegistrationData, YES_VALUE } from '../../constants'
+import {AGL, BLUE_NRG, MOMENTUM_ENERGY, NEXT_BUSINESS_ENERGY, RESIDENTIAL_VALUE, RegistrationData, YES_VALUE } from '../../constants'
 import { lazy, useEffect } from 'react'
 import { PREF_RETAILERS } from '../../constants'
 
@@ -22,12 +22,13 @@ const RetailerPreferencePage = () => {
       const keys = Object.keys(electricQuotePref)
       keys.forEach(key => {
         if((electricQuotePref[key] != null && electricQuotePref[key] === 'No' && 
-        ((key !== 'greenPowerOption' 
+        (key !== 'greenPowerOption' 
         && key !== 'carbonNeutral' 
         && key !== 'recieveEmailBill'
         && key !== 'interestedGreenPower' 
         && (key !== 'consentBillsMonthlyBasis' || (key === 'consentBillsMonthlyBasis' && registrationData?.electricityQuote?.retailerName === BLUE_NRG))
-        ))
+        && (key !== 'creditCheckConsent' && registrationData?.electricityQuote?.retailerName === AGL)
+        )
         )) {
           isNextDisabled = true
         }
@@ -43,7 +44,9 @@ const RetailerPreferencePage = () => {
         && key !== 'carbonNeutral' 
         && key !== 'recieveEmailBill'
         && key !== 'interestedGreenPower' 
-        && (key !== 'consentBillsMonthlyBasis' || (key === 'consentBillsMonthlyBasis' && registrationData?.gasQuote?.retailerName === BLUE_NRG))) 
+        && (key !== 'consentBillsMonthlyBasis' || (key === 'consentBillsMonthlyBasis' && registrationData?.gasQuote?.retailerName === BLUE_NRG))
+        && (key !== 'creditCheckConsent' && registrationData?.electricityQuote?.retailerName === AGL)
+        )
         )) {
           isNextDisabled = true;
         }
@@ -99,7 +102,7 @@ const RetailerPreferencePage = () => {
   //     billType: 'Post',
   //     electricityQuote: {
   //       ...prev.electricityQuote,
-  //       retailerName: MOMENTUM_ENERGY,
+  //       retailerName: AGL,
   //     },
   //     // gasQuote: {
   //       // ...prev.gasQuote,
