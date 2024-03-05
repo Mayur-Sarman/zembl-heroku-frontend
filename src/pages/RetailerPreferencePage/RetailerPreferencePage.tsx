@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useRegistration } from '../../hooks/useRegistration'
-import {AGL, BLUE_NRG, MOMENTUM_ENERGY, NEXT_BUSINESS_ENERGY, RESIDENTIAL_VALUE, RegistrationData, YES_VALUE } from '../../constants'
+import {AGL, BLUE_NRG, NEXT_BUSINESS_ENERGY, RESIDENTIAL_VALUE, RegistrationData, YES_VALUE } from '../../constants'
 import { lazy, useEffect } from 'react'
 import { PREF_RETAILERS } from '../../constants'
 
