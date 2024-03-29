@@ -17,21 +17,23 @@ const ReZemblThankPage = () => {
   const navigate = useNavigate()
   const { registrationData, registrationToken, setRegistrationData, handleErrorResponse } = useContext(RegistrationContext)
 
-  const getPlanListData = useFetchQuoteListDataQuery(
+  const GetPlanListData = () => useFetchQuoteListDataQuery(
     { 
-      quoteToken: registrationData?.quoteListToken as string, 
-      token: registrationToken ?? '' 
+      quoteToken: registrationData?.quoteListToken as string ?? '', 
+      token: registrationToken ?? '' ,
+      isMultiSite: registrationData.multiSite === true ? registrationData.multiSite as boolean : false
     },
     {
       onSuccess: (data: QuoteData[]) => {
-        // console.log('data =>', data)
         setRegistrationData((prev) => ({
           ...prev,
           quoteList: data
         }))
       },
       onError: (error) => {
-        handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
+        if(registrationData.multiSite) {
+          handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
+        }
       },
     },
   )
@@ -60,7 +62,7 @@ const ReZemblThankPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getPlanListData.refetch()
+      if(registrationData.multiSite) await GetPlanListData().refetch()
     }
     if(registrationData.multiSite) {
       fetchData().catch(error => console.log(error))
@@ -68,7 +70,7 @@ const ReZemblThankPage = () => {
   }, [])
 
   return (
-    <PageWrapper showLoading={getPlanListData.isLoading}>
+    <PageWrapper showLoading={GetPlanListData().isLoading}>
     <div className="flex flex-col text-center h-full justify-center">
       <div className="flex text-black flex-col gap-8 justify-center items-center py-8 px-6 sm:px-0 w-full">
         <img src={zemblLogo} alt="Zembl" className="w-24 md:w-auto"></img>

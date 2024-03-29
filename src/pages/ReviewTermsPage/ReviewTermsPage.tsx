@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Typography } from '@material-tailwind/react'
 import { BOTH_VALUE, ELECTRICITY_VALUE, GAS_VALUE, RegistrationData } from '../../constants'
-import { useRegistration } from '../../hooks/useRegistration'
+import RegistrationContext from '../../contexts/RegistrationContext'
 import { useUpdateQuoteMutation } from '../../hooks/useUpdateQuoteMutation'
 import { getJSONDateString, getPhoneNumber } from '../../helpers/formatter'
 import { ZEMBL_DEBUG_MODE } from '../../constants/misc'
-import { lazy, useEffect } from 'react'
+import { lazy, useEffect, useContext } from 'react'
 import { useFetchQuoteListDataQuery } from '../../hooks/useQueryQuoteListData'
 import { QuoteData } from '../../api/quote'
 
@@ -16,7 +16,7 @@ const SelectedPlans = lazy(() => import('../../components/SelectedPlans'))
 const PageNavigationActions = lazy(() => import('../../components/PageNavigationActions'))
 
 const ReviewTermsPage = () => {
-  const { registrationData, setRegistrationData, registrationToken, handleErrorResponse } = useRegistration()
+  const { registrationData, setRegistrationData, registrationToken, handleErrorResponse } = useContext(RegistrationContext)
   const navigate = useNavigate()
 
   // On load page get data from context
@@ -87,10 +87,11 @@ const ReviewTermsPage = () => {
     energyType = GAS_VALUE
   }
 
-  const getPlanListData = useFetchQuoteListDataQuery(
+  const GetPlanListData = useFetchQuoteListDataQuery(
     { 
-      quoteToken: registrationData?.quoteListToken as string, 
-      token: registrationToken ?? '' 
+      token: registrationToken ?? '' ,
+      quoteToken: registrationData?.quoteListToken as string,
+      isMultiSite: registrationData.multiSite === true ? registrationData.multiSite as boolean : false
     },
     {
       onSuccess: (data: QuoteData[]) => {
@@ -101,16 +102,20 @@ const ReviewTermsPage = () => {
         }))
       },
       onError: (error) => {
-        handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
+        if(registrationData.multiSite) {
+          handleErrorResponse(error, 'Unfortunately, we cannot find your quote.')
+        }
       },
     },
   )
 
   useEffect(() => {
     const fetchData = async () => {
-      await getPlanListData.refetch()
+      console.log('do here')
+      if(registrationData.multiSite) await GetPlanListData.refetch()
     }
     if(registrationData.multiSite) {
+      console.log('registrationData.multiSite', registrationData.multiSite)
       fetchData().catch(error => console.log(error))
     }
   }, [])
