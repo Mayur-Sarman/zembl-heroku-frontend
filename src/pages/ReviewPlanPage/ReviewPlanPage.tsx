@@ -32,7 +32,7 @@ const ReviewPlanPage = () => {
   const businessDetails: unknown = watch('businessDetails')
   // const accountDetails: unknown = watch('accountDetails')
   const getPlanData = useFetchQuoteDataQuery(
-    { 
+    {
       quoteToken: registrationData?.quoteToken as string, 
       token: registrationToken ?? '' 
     },

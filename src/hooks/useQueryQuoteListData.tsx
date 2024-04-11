@@ -3,12 +3,14 @@ import { QuoteData, getFetchQuoteListData } from '../api/quote'
 import { AxiosError } from 'axios'
 
 export const useFetchQuoteListDataQuery = (
-  { token, quoteToken }: FetchQuoteDataQueryPayload,
+  { token, quoteToken, isMultiSite }: FetchQuoteDataQueryPayload,
   { onSuccess, onError }: UseQueryOptions<QuoteData[], AxiosError>,
 ) =>
   useQuery({
     queryKey: ['fetchQuoteListData', token, quoteToken],
-    queryFn: () => getFetchQuoteListData(quoteToken, token),
+    queryFn: () => { 
+      if(isMultiSite) return getFetchQuoteListData(quoteToken, token)
+    },
     staleTime: Infinity,
     refetchInterval: Infinity,
     refetchOnMount: false,
@@ -25,4 +27,5 @@ export const useFetchQuoteListDataQuery = (
 interface FetchQuoteDataQueryPayload {
   token: string
   quoteToken: string
+  isMultiSite: boolean
 }

@@ -25,7 +25,8 @@ const RegistrationThankYouPage = () => {
   const getPlanListData = useFetchQuoteListDataQuery(
     { 
       quoteToken: registrationData?.quoteListToken as string, 
-      token: registrationToken ?? '' 
+      token: registrationToken ?? '' ,
+      isMultiSite: registrationData.multiSite === true ? registrationData.multiSite as boolean : false
     },
     {
       onSuccess: (data: QuoteData[]) => {
