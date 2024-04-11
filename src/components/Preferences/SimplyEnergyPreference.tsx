@@ -8,7 +8,7 @@ const SimplyEnergyPreference = () => {
   const word = registrationData?.billType ?? ''
   const concessionCardNumber = registrationData?.concessionCardNumber
   return (
-    <AccordionCard alwaysOpen open title="Engie Preferences" bodyClassName="flex-col text-left gap-y-6">
+    <AccordionCard alwaysOpen open title="ENGIE Preferences" bodyClassName="flex-col text-left gap-y-6">
       <Typography className='text-sm'>
         {`You have selected you want to receive your bills and other notices via ${word}`}
       </Typography>
