@@ -111,11 +111,9 @@ const ReviewTermsPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('do here')
       if(registrationData.multiSite) await GetPlanListData.refetch()
     }
     if(registrationData.multiSite) {
-      console.log('registrationData.multiSite', registrationData.multiSite)
       fetchData().catch(error => console.log(error))
     }
   }, [])
