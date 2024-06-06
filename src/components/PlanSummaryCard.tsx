@@ -87,7 +87,7 @@ interface PlanSummaryCardProps {
   australianOwned?: boolean
   contractLength?: string
   planDescription: string
-  planLessThanCurrentPricePercent?: number
+  planLessThanCurrentPricePercent?: number | string
   planEstAnnualSaving?: number
   planEstCostPerMonth?: number
   planEstCostPerYear?: number

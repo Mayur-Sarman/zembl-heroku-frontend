@@ -17,7 +17,7 @@ export const formatCurrency = (
     : 'N/A'
 
 export const formatPercent = (
-  number: number | null | undefined,
+  number: string | number | null | undefined,
   options: DecimalOptions = { maxDecimal: 0, minDecimal: 0 },
 ): string => {
   return isNumber(number)

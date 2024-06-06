@@ -83,9 +83,9 @@ const PlanCard = ({
                   className={planType === ELECTRICITY_VALUE ? 'mb-2 h-[67px]' : 'hidden lg:flex opacity-0 h-0 pointer-events-none'}
                 >
                   <Typography variant="h6" className="text-lg">
-                    {formatPercent(planLessThanCurrentPricePercent)} Less than
+                    {formatPercent(planLessThanCurrentPricePercent)} {formatPercent(planLessThanCurrentPricePercent) != 'N/A' ? 'Less than' : '' }
                   </Typography>
-                  <Typography className="text-[10px] font-normal">the current reference price</Typography>
+                  <Typography className="text-[10px] font-normal">{formatPercent(planLessThanCurrentPricePercent) != 'N/A' ? 'the current reference price' : 'no reference price information available' }</Typography>
                 </PlanHilight>
               </> : null
             }
@@ -176,7 +176,7 @@ export interface PlanCardProps {
   australianOwned?: boolean
   contractLength?: string
   planDescription?: string
-  planLessThanCurrentPricePercent?: number
+  planLessThanCurrentPricePercent?: number | string
   planEstAnnualSaving?: number
   planEstCostPerMonth?: number
   planEstCostPerYear?: number
