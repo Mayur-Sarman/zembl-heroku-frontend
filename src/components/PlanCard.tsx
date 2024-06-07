@@ -104,7 +104,7 @@ const PlanCard = ({
               </div>
             </PlanHilight> */}
 
-            <PlanHilight>
+            {/* <PlanHilight>
               <div className="inline-block">
               <Typography className="text-xs font-normal inline-block mr-1">Estimated Cost</Typography>
               <ControllerTooltip tooltipText={`Approximate charges (incl GST) for 31 days based on average 27.47 KWh daily usage. The estimated cost displayed is rounded up to the closest dollar (Example: $352.38 is rounded up to $353)`} />
@@ -128,7 +128,7 @@ const PlanCard = ({
                 </Typography>
                 <Typography className="text-xs font-normal">/ Year</Typography>
               </div>
-            </PlanHilight>
+            </PlanHilight> */}
           </div>
         </div>
         <Typography variant="small" className="font-small text-left" title={planDescription}>
